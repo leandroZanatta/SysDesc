@@ -31,13 +31,13 @@ public class Usuario implements Serializable {
 	private long idUsuario;
 
 	@Column(name = "tx_senha")
-	private String txSenha;
+	private String senha;
 
 	@Column(name = "tx_usuario")
-	private String txUsuario;
+	private String usuario;
 
-	@OneToMany(mappedBy = "tbUsuario")
-	private List<PermissaoPrograma> tbPermissaoprogramas;
+	@OneToMany(mappedBy = "usuario")
+	private List<PermissaoPrograma> permissaoPprogramas;
 
 	@ManyToMany
 	@JoinTable(name = "tb_perfilusuario", joinColumns = { @JoinColumn(name = "cd_usuario") }, inverseJoinColumns = {

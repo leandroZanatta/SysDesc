@@ -12,9 +12,9 @@ public class PesquisaDAO extends AbstractGenericDAO<Pesquisa> {
 		super(pesquisa, pesquisa.idPesquisa);
 	}
 
-	public List<Pesquisa> buscarConfiguracoesPorPrograma(Long codigoTabela) {
+	public List<Pesquisa> buscarConfiguracoesPorPrograma(Long codigoPesquisa) {
 
-		return sqlFrom().where(pesquisa.codigoTabela.eq(codigoTabela)).list(pesquisa);
+		return sqlFrom().where(pesquisa.codigoPesquisa.eq(codigoPesquisa)).list(pesquisa);
 	}
 
 }

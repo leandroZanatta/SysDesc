@@ -18,28 +18,41 @@ public class QUsuario extends EntityPathBase<Usuario> {
 
     private static final long serialVersionUID = -2133677984L;
 
-    public static final QUsuario usuario = new QUsuario("usuario");
+    private static final PathInits INITS = PathInits.DIRECT2;
 
-    public final NumberPath<java.math.BigDecimal> cdCliente = createNumber("cdCliente", java.math.BigDecimal.class);
+    public static final QUsuario usuario1 = new QUsuario("usuario1");
+
+    public final QCliente cliente;
 
     public final NumberPath<Long> idUsuario = createNumber("idUsuario", Long.class);
 
-    public final ListPath<PermissaoPrograma, QPermissaoPrograma> tbPermissaoprogramas = this.<PermissaoPrograma, QPermissaoPrograma>createList("tbPermissaoprogramas", PermissaoPrograma.class, QPermissaoPrograma.class, PathInits.DIRECT2);
+    public final ListPath<Perfil, QPerfil> perfils = this.<Perfil, QPerfil>createList("perfils", Perfil.class, QPerfil.class, PathInits.DIRECT2);
 
-    public final StringPath txSenha = createString("txSenha");
+    public final ListPath<PermissaoPrograma, QPermissaoPrograma> permissaoPprogramas = this.<PermissaoPrograma, QPermissaoPrograma>createList("permissaoPprogramas", PermissaoPrograma.class, QPermissaoPrograma.class, PathInits.DIRECT2);
 
-    public final StringPath txUsuario = createString("txUsuario");
+    public final StringPath senha = createString("senha");
+
+    public final StringPath usuario = createString("usuario");
 
     public QUsuario(String variable) {
-        super(Usuario.class, forVariable(variable));
+        this(Usuario.class, forVariable(variable), INITS);
     }
 
     public QUsuario(Path<? extends Usuario> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);
     }
 
     public QUsuario(PathMetadata<?> metadata) {
-        super(Usuario.class, metadata);
+        this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);
+    }
+
+    public QUsuario(PathMetadata<?> metadata, PathInits inits) {
+        this(Usuario.class, metadata, inits);
+    }
+
+    public QUsuario(Class<? extends Usuario> type, PathMetadata<?> metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.cliente = inits.isInitialized("cliente") ? new QCliente(forProperty("cliente"), inits.get("cliente")) : null;
     }
 
 }

@@ -30,9 +30,9 @@ public class QPermissaoPrograma extends EntityPathBase<PermissaoPrograma> {
 
     public final NumberPath<Long> idPermissaoprograma = createNumber("idPermissaoprograma", Long.class);
 
-    public final QPrograma tbPrograma;
+    public final QPrograma programa;
 
-    public final QUsuario tbUsuario;
+    public final QUsuario usuario;
 
     public QPermissaoPrograma(String variable) {
         this(PermissaoPrograma.class, forVariable(variable), INITS);
@@ -52,8 +52,8 @@ public class QPermissaoPrograma extends EntityPathBase<PermissaoPrograma> {
 
     public QPermissaoPrograma(Class<? extends PermissaoPrograma> type, PathMetadata<?> metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.tbPrograma = inits.isInitialized("tbPrograma") ? new QPrograma(forProperty("tbPrograma")) : null;
-        this.tbUsuario = inits.isInitialized("tbUsuario") ? new QUsuario(forProperty("tbUsuario")) : null;
+        this.programa = inits.isInitialized("programa") ? new QPrograma(forProperty("programa")) : null;
+        this.usuario = inits.isInitialized("usuario") ? new QUsuario(forProperty("usuario"), inits.get("usuario")) : null;
     }
 
 }

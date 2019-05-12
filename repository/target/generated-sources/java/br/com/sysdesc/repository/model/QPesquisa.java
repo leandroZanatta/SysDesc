@@ -20,7 +20,7 @@ public class QPesquisa extends EntityPathBase<Pesquisa> {
 
     public static final QPesquisa pesquisa = new QPesquisa("pesquisa");
 
-    public final NumberPath<Long> codigoTabela = createNumber("codigoTabela", Long.class);
+    public final NumberPath<Long> codigoPesquisa = createNumber("codigoPesquisa", Long.class);
 
     public final NumberPath<Long> idPesquisa = createNumber("idPesquisa", Long.class);
 

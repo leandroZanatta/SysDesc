@@ -1,70 +1,30 @@
 package br.com.sysdesc.repository.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-/**
- * The persistent class for the tb_programa database table.
- * 
- */
+import lombok.Data;
+
+@Data
 @Entity
-@Table(name="tb_programa")
-@NamedQuery(name="Programa.findAll", query="SELECT p FROM Programa p")
+@Table(name = "tb_programa")
 public class Programa implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="id_programa")
+	@Column(name = "id_programa")
 	private long idPrograma;
 
-	@Column(name="tx_descricao")
-	private String txDescricao;
+	@Column(name = "tx_descricao")
+	private String descricao;
 
-	//bi-directional many-to-one association to PermissaoPrograma
-	@OneToMany(mappedBy="tbPrograma")
-	private List<PermissaoPrograma> tbPermissaoprogramas;
-
-	public Programa() {
-	}
-
-	public long getIdPrograma() {
-		return this.idPrograma;
-	}
-
-	public void setIdPrograma(long idPrograma) {
-		this.idPrograma = idPrograma;
-	}
-
-	public String getTxDescricao() {
-		return this.txDescricao;
-	}
-
-	public void setTxDescricao(String txDescricao) {
-		this.txDescricao = txDescricao;
-	}
-
-	public List<PermissaoPrograma> getTbPermissaoprogramas() {
-		return this.tbPermissaoprogramas;
-	}
-
-	public void setTbPermissaoprogramas(List<PermissaoPrograma> tbPermissaoprogramas) {
-		this.tbPermissaoprogramas = tbPermissaoprogramas;
-	}
-
-	public PermissaoPrograma addTbPermissaoprograma(PermissaoPrograma tbPermissaoprograma) {
-		getTbPermissaoprogramas().add(tbPermissaoprograma);
-		tbPermissaoprograma.setTbPrograma(this);
-
-		return tbPermissaoprograma;
-	}
-
-	public PermissaoPrograma removeTbPermissaoprograma(PermissaoPrograma tbPermissaoprograma) {
-		getTbPermissaoprogramas().remove(tbPermissaoprograma);
-		tbPermissaoprograma.setTbPrograma(null);
-
-		return tbPermissaoprograma;
-	}
+	@OneToMany(mappedBy = "programa")
+	private List<PermissaoPrograma> permissaoProgramas;
 
 }

@@ -20,11 +20,11 @@ public class QPrograma extends EntityPathBase<Programa> {
 
     public static final QPrograma programa = new QPrograma("programa");
 
+    public final StringPath descricao = createString("descricao");
+
     public final NumberPath<Long> idPrograma = createNumber("idPrograma", Long.class);
 
-    public final ListPath<PermissaoPrograma, QPermissaoPrograma> tbPermissaoprogramas = this.<PermissaoPrograma, QPermissaoPrograma>createList("tbPermissaoprogramas", PermissaoPrograma.class, QPermissaoPrograma.class, PathInits.DIRECT2);
-
-    public final StringPath txDescricao = createString("txDescricao");
+    public final ListPath<PermissaoPrograma, QPermissaoPrograma> permissaoProgramas = this.<PermissaoPrograma, QPermissaoPrograma>createList("permissaoProgramas", PermissaoPrograma.class, QPermissaoPrograma.class, PathInits.DIRECT2);
 
     public QPrograma(String variable) {
         super(Programa.class, forVariable(variable));
