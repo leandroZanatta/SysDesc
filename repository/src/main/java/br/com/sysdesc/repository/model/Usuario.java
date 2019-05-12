@@ -1,27 +1,34 @@
 package br.com.sysdesc.repository.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
 
-/**
- * The persistent class for the tb_usuario database table.
- * 
- */
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "tb_usuario")
-@NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
+@SequenceGenerator(name = "GEN_USUARIO", sequenceName = "GEN_USUARIO")
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name = "TB_USUARIO_IDUSUARIO_GENERATOR", sequenceName = "GEN_USUARIO")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_USUARIO_IDUSUARIO_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_USUARIO")
 	@Column(name = "id_usuario")
 	private long idUsuario;
-
-	@Column(name = "cd_cliente")
-	private java.math.BigDecimal cdCliente;
 
 	@Column(name = "tx_senha")
 	private String txSenha;
@@ -29,8 +36,16 @@ public class Usuario implements Serializable {
 	@Column(name = "tx_usuario")
 	private String txUsuario;
 
-	// bi-directional many-to-one association to PermissaoPrograma
 	@OneToMany(mappedBy = "tbUsuario")
 	private List<PermissaoPrograma> tbPermissaoprogramas;
+
+	@ManyToMany
+	@JoinTable(name = "tb_perfilusuario", joinColumns = { @JoinColumn(name = "cd_usuario") }, inverseJoinColumns = {
+			@JoinColumn(name = "cd_perfil") })
+	private List<Perfil> perfils;
+
+	@ManyToOne
+	@JoinColumn(name = "cd_cliente")
+	private Cliente cliente;
 
 }

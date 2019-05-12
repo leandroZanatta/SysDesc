@@ -28,8 +28,8 @@ public class Pesquisa implements Serializable {
 	@Column(name = "id_pesquisa")
 	private Long idPesquisa;
 
-	@Column(name = "cd_tabela")
-	private Long codigoTabela;
+	@Column(name = "cd_pesquisa")
+	private Long codigoPesquisa;
 
 	@ManyToMany
 	@JoinTable(name = "tb_perfilpesquisa", joinColumns = { @JoinColumn(name = "cd_pesquisa") }, inverseJoinColumns = {
