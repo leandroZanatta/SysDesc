@@ -27,24 +27,24 @@ public class PermissaoPrograma implements Serializable {
 	private long idPermissaoprograma;
 
 	@Column(name = "fl_cadastro")
-	private Boolean flCadastro;
+	private Boolean flagCadastro;
 
 	@Column(name = "fl_exclusao")
-	private Boolean flExclusao;
+	private Boolean flagExclusao;
 
 	@Column(name = "fl_leitura")
-	private Boolean flLeitura;
+	private Boolean flagLeitura;
 
 	@ManyToOne
-	@JoinColumn(name = "cd_programa")
-	private Programa programa;
+	@JoinColumn(name = "cd_perfil")
+	private Perfil perfil;
 
 	@ManyToOne
 	@JoinColumn(name = "cd_usuario")
 	private Usuario usuario;
 
 	@ManyToOne
-	@JoinColumn(name = "cd_perfil")
-	private Perfil perfil;
+	@JoinColumn(name = "cd_programa")
+	private Programa programa;
 
 }

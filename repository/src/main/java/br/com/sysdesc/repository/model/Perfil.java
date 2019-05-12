@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -35,7 +36,7 @@ public class Perfil implements Serializable {
 	@ManyToMany(mappedBy = "perfils")
 	private List<Usuario> usuarios;
 
-	@ManyToMany(mappedBy = "perfil")
+	@OneToMany(mappedBy = "perfil")
 	private List<PermissaoPrograma> permissaoProgramas;
 
 }
