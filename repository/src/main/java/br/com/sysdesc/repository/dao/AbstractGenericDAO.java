@@ -9,6 +9,8 @@ import javax.persistence.EntityManager;
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.jpa.sql.JPASQLQuery;
+import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.path.NumberPath;
 
@@ -18,6 +20,7 @@ import br.com.sysdesc.util.classes.interfaces.GenericDAO;
 public abstract class AbstractGenericDAO<T> implements GenericDAO<T> {
 
 	private final EntityManager entityManager = Conexao.getEntityManager();
+	private final SQLTemplates sqlTemplates = Conexao.getSqlTemplates();
 	private EntityPath<T> entityPath;
 	private NumberPath<Long> campoId;
 	private Field fieldId;
@@ -35,25 +38,34 @@ public abstract class AbstractGenericDAO<T> implements GenericDAO<T> {
 		}
 	}
 
-	public JPAQuery sqlQuery() {
-		return new JPAQuery(entityManager);
+	public JPASQLQuery sqlQuery() {
+
+		return new JPASQLQuery(entityManager, sqlTemplates);
+	}
+
+	public JPASQLQuery sqlFrom() {
+		return new JPASQLQuery(entityManager, sqlTemplates).from(entityPath);
 	}
 
 	public JPASubQuery subQuery() {
 		return new JPASubQuery();
 	}
 
-	public JPAQuery sqlFrom() {
+	public JPAQuery query() {
+		return new JPAQuery(entityManager);
+	}
+
+	public JPAQuery from() {
 		return new JPAQuery(entityManager).from(entityPath);
 	}
 
 	public List<T> listar() {
-		return sqlQuery().from(entityPath).list(entityPath);
+		return query().from(entityPath).list(entityPath);
 	}
 
 	public List<T> pesquisar(BooleanBuilder clausulas, NumberPath<Long> aliasOrdenacao, Integer numeroRegistros,
 			Integer tamanhoPagina) {
-		JPAQuery query = sqlQuery().from(entityPath);
+		JPAQuery query = from();
 
 		if (clausulas.hasValue()) {
 			query.where(clausulas);
@@ -96,14 +108,14 @@ public abstract class AbstractGenericDAO<T> implements GenericDAO<T> {
 	}
 
 	public T obterPorId(Long id) {
-		return sqlFrom().where(campoId.eq(id)).singleResult(entityPath);
+		return from().where(campoId.eq(id)).singleResult(entityPath);
 	}
 
 	public T obterPorId(Long id, BooleanBuilder filter) {
 
 		filter.and(campoId.eq(id));
 
-		return sqlFrom().where(filter).singleResult(entityPath);
+		return from().where(filter).singleResult(entityPath);
 	}
 
 	public T next(T classeConsulta) {
@@ -114,7 +126,7 @@ public abstract class AbstractGenericDAO<T> implements GenericDAO<T> {
 				return last();
 			}
 
-			T objeto = sqlFrom().where(campoId.gt(Long.valueOf(fieldId.get(classeConsulta).toString())))
+			T objeto = from().where(campoId.gt(Long.valueOf(fieldId.get(classeConsulta).toString())))
 					.orderBy(campoId.asc()).limit(1L).singleResult(entityPath);
 
 			if (objeto == null) {
@@ -139,7 +151,7 @@ public abstract class AbstractGenericDAO<T> implements GenericDAO<T> {
 				return last();
 			}
 
-			T objeto = sqlFrom().where(campoId.lt(Long.valueOf(fieldId.get(classeConsulta).toString())))
+			T objeto = from().where(campoId.lt(Long.valueOf(fieldId.get(classeConsulta).toString())))
 					.orderBy(campoId.desc()).limit(1L).singleResult(entityPath);
 
 			if (objeto == null) {
@@ -155,11 +167,11 @@ public abstract class AbstractGenericDAO<T> implements GenericDAO<T> {
 	}
 
 	public T last() {
-		return sqlFrom().orderBy(campoId.desc()).singleResult(entityPath);
+		return from().orderBy(campoId.desc()).singleResult(entityPath);
 	}
 
 	public T first() {
-		return sqlFrom().orderBy(campoId.asc()).singleResult(entityPath);
+		return from().orderBy(campoId.asc()).singleResult(entityPath);
 	}
 
 	public Field getFieldId() {

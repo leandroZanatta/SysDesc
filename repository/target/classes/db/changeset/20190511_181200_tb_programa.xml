@@ -25,6 +25,14 @@
 				<constraints nullable="false" />
 			</column>
 
+			<column name="tx_icone" type="VARCHAR(100)" remarks="ÍCONE DO MENU">
+				<constraints nullable="true" />
+			</column>
+
+			<column name="fl_acessorapido" type="BOOLEAN" remarks="ADICIONA AO ACESSO RÁPIDO">
+				<constraints nullable="false" />
+			</column>
+
 		</createTable>
 
 		<addForeignKeyConstraint baseColumnNames="cd_programa" baseTableName="tb_programa" constraintName="fk_programa_modulo"

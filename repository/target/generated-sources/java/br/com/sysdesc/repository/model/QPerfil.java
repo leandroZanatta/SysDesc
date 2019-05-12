@@ -24,11 +24,11 @@ public class QPerfil extends EntityPathBase<Perfil> {
 
     public final NumberPath<Long> idPerfil = createNumber("idPerfil", Long.class);
 
+    public final ListPath<PerfilUsuario, QPerfilUsuario> perfilUsuarios = this.<PerfilUsuario, QPerfilUsuario>createList("perfilUsuarios", PerfilUsuario.class, QPerfilUsuario.class, PathInits.DIRECT2);
+
     public final ListPath<PermissaoPrograma, QPermissaoPrograma> permissaoProgramas = this.<PermissaoPrograma, QPermissaoPrograma>createList("permissaoProgramas", PermissaoPrograma.class, QPermissaoPrograma.class, PathInits.DIRECT2);
 
     public final ListPath<Pesquisa, QPesquisa> pesquisas = this.<Pesquisa, QPesquisa>createList("pesquisas", Pesquisa.class, QPesquisa.class, PathInits.DIRECT2);
-
-    public final ListPath<Usuario, QUsuario> usuarios = this.<Usuario, QUsuario>createList("usuarios", Usuario.class, QUsuario.class, PathInits.DIRECT2);
 
     public QPerfil(String variable) {
         super(Perfil.class, forVariable(variable));

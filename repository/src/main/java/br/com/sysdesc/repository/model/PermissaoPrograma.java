@@ -24,7 +24,16 @@ public class PermissaoPrograma implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_PERMISSAOPROGRAMA")
 	@Column(name = "id_permissaoprograma")
-	private long idPermissaoprograma;
+	private Long idPermissaoprograma;
+
+	@Column(name = "cd_usuario", insertable = false, updatable = false)
+	private Long codigoUsuario;
+
+	@Column(name = "cd_perfil", insertable = false, updatable = false)
+	private Long codigoPerfil;
+
+	@Column(name = "cd_programa", insertable = false, updatable = false)
+	private Long codigoPrograma;
 
 	@Column(name = "fl_cadastro")
 	private Boolean flagCadastro;

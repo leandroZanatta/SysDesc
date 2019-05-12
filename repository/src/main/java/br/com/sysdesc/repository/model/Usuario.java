@@ -9,8 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -39,10 +37,8 @@ public class Usuario implements Serializable {
 	@OneToMany(mappedBy = "usuario")
 	private List<PermissaoPrograma> permissaoProgramas;
 
-	@ManyToMany
-	@JoinTable(name = "tb_perfilusuario", joinColumns = { @JoinColumn(name = "cd_usuario") }, inverseJoinColumns = {
-			@JoinColumn(name = "cd_perfil") })
-	private List<Perfil> perfils;
+	@OneToMany(mappedBy = "usuario")
+	private List<PerfilUsuario> perfilUsuarios;
 
 	@ManyToOne
 	@JoinColumn(name = "cd_cliente")

@@ -67,6 +67,13 @@
 			</dependency>
 
 			<dependency>
+				<groupId>com.mysema.querydsl</groupId>
+				<artifactId>querydsl-sql</artifactId>
+				<version>3.7.4</version>
+			</dependency>
+
+
+			<dependency>
 				<groupId>org.eclipse.persistence</groupId>
 				<artifactId>eclipselink</artifactId>
 				<version>2.6.4</version>

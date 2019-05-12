@@ -12,7 +12,7 @@ public class UsuarioDAO extends AbstractGenericDAO<Usuario> {
 
 	public Usuario obterLogin(String usuario, String md5) {
 
-		return sqlFrom().where(usuario1.usuario.eq(usuario).and(usuario1.senha.eq(md5))).singleResult(usuario1);
+		return from().where(usuario1.usuario.eq(usuario).and(usuario1.senha.eq(md5))).singleResult(usuario1);
 	}
 
 }

@@ -22,6 +22,12 @@ public class QPermissaoPrograma extends EntityPathBase<PermissaoPrograma> {
 
     public static final QPermissaoPrograma permissaoPrograma = new QPermissaoPrograma("permissaoPrograma");
 
+    public final NumberPath<Long> codigoPerfil = createNumber("codigoPerfil", Long.class);
+
+    public final NumberPath<Long> codigoPrograma = createNumber("codigoPrograma", Long.class);
+
+    public final NumberPath<Long> codigoUsuario = createNumber("codigoUsuario", Long.class);
+
     public final BooleanPath flagCadastro = createBoolean("flagCadastro");
 
     public final BooleanPath flagExclusao = createBoolean("flagExclusao");

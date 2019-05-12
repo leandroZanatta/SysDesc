@@ -33,8 +33,8 @@ public class Perfil implements Serializable {
 	@ManyToMany(mappedBy = "perfils")
 	private List<Pesquisa> pesquisas;
 
-	@ManyToMany(mappedBy = "perfils")
-	private List<Usuario> usuarios;
+	@OneToMany(mappedBy = "perfil")
+	private List<PerfilUsuario> perfilUsuarios;
 
 	@OneToMany(mappedBy = "perfil")
 	private List<PermissaoPrograma> permissaoProgramas;

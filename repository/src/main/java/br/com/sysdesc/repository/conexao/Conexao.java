@@ -12,6 +12,11 @@ import javax.persistence.Persistence;
 
 import org.apache.commons.io.FileUtils;
 
+import com.mysema.query.sql.MySQLTemplates;
+import com.mysema.query.sql.PostgresTemplates;
+import com.mysema.query.sql.SQLTemplates;
+
+import br.com.sysdesc.repository.enumeradores.TipoConexaoEnum;
 import br.com.sysdesc.util.classes.CryptoUtil;
 import br.com.sysdesc.util.resources.Configuracoes;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 public class Conexao {
 
 	private static EntityManager entityManager;
+
+	private static SQLTemplates sqlTemplates;
 
 	private static Boolean isconfigured() {
 		return new File(Configuracoes.CONEXAO).exists();
@@ -37,13 +44,32 @@ public class Conexao {
 
 	public static void buildEntityManager() throws ConfigurationException {
 
-		entityManager = Persistence.createEntityManagerFactory("SysDesc", buscarPropertiesConexao())
-				.createEntityManager();
+		Properties propertiesConexao = buscarPropertiesConexao();
+
+		entityManager = Persistence.createEntityManagerFactory("SysDesc", propertiesConexao).createEntityManager();
+
+		sqlTemplates = createTemplate(propertiesConexao);
+
+	}
+
+	private static SQLTemplates createTemplate(Properties propertiesConexao) {
+
+		TipoConexaoEnum conexao = TipoConexaoEnum.POSTGRES;
+
+		if (propertiesConexao.get(conexao.getJdbcDriver()).equals(conexao.getDriver())) {
+			return PostgresTemplates.DEFAULT;
+		}
+
+		return MySQLTemplates.DEFAULT;
 	}
 
 	public static EntityManager getEntityManager() {
 
 		return entityManager;
+	}
+
+	public static SQLTemplates getSqlTemplates() {
+		return sqlTemplates;
 	}
 
 	private static Properties buscarPropertiesConexao() throws ConfigurationException {
