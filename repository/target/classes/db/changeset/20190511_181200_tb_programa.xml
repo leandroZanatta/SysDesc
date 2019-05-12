@@ -17,11 +17,19 @@
 				<constraints primaryKey="true" primaryKeyName="programa_pk" nullable="false" />
 			</column>
 
+			<column name="cd_programa" type="NUMBER(18,0)" remarks="CÓDIGO DO MÓDULO">
+				<constraints nullable="true" />
+			</column>
+
 			<column name="tx_descricao" type="VARCHAR(100)" remarks="NOME DO PROGRAMA">
 				<constraints nullable="false" />
 			</column>
-		
+
 		</createTable>
+
+		<addForeignKeyConstraint baseColumnNames="cd_programa" baseTableName="tb_programa" constraintName="fk_programa_modulo"
+			onDelete="CASCADE" onUpdate="CASCADE" referencedColumnNames="id_programa" referencedTableName="tb_programa" />
+
 	</changeSet>
 
 

@@ -9,23 +9,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-/**
- * The persistent class for the tb_permissaoprograma database table.
- * 
- */
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "tb_permissaoprograma")
-@NamedQuery(name = "PermissaoPrograma.findAll", query = "SELECT p FROM PermissaoPrograma p")
+@SequenceGenerator(name = "GEN_PERMISSAOPROGRAMA", sequenceName = "GEN_PERMISSAOPROGRAMA")
 public class PermissaoPrograma implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name = "TB_PERMISSAOPROGRAMA_IDPERMISSAOPROGRAMA_GENERATOR", sequenceName = "GEN_PERMISSAOPROGRAMA")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_PERMISSAOPROGRAMA_IDPERMISSAOPROGRAMA_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_PERMISSAOPROGRAMA")
 	@Column(name = "id_permissaoprograma")
 	private long idPermissaoprograma;
 
@@ -45,5 +42,9 @@ public class PermissaoPrograma implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "cd_usuario")
 	private Usuario usuario;
+
+	@ManyToOne
+	@JoinColumn(name = "cd_perfil")
+	private Perfil perfil;
 
 }

@@ -35,4 +35,7 @@ public class Perfil implements Serializable {
 	@ManyToMany(mappedBy = "perfils")
 	private List<Usuario> usuarios;
 
+	@ManyToMany(mappedBy = "perfil")
+	private List<PermissaoPrograma> permissaoProgramas;
+
 }

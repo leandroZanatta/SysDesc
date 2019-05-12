@@ -28,7 +28,7 @@ public class QUsuario extends EntityPathBase<Usuario> {
 
     public final ListPath<Perfil, QPerfil> perfils = this.<Perfil, QPerfil>createList("perfils", Perfil.class, QPerfil.class, PathInits.DIRECT2);
 
-    public final ListPath<PermissaoPrograma, QPermissaoPrograma> permissaoPprogramas = this.<PermissaoPrograma, QPermissaoPrograma>createList("permissaoPprogramas", PermissaoPrograma.class, QPermissaoPrograma.class, PathInits.DIRECT2);
+    public final ListPath<PermissaoPrograma, QPermissaoPrograma> permissaoProgramas = this.<PermissaoPrograma, QPermissaoPrograma>createList("permissaoProgramas", PermissaoPrograma.class, QPermissaoPrograma.class, PathInits.DIRECT2);
 
     public final StringPath senha = createString("senha");
 

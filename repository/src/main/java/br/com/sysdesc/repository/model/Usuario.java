@@ -37,7 +37,7 @@ public class Usuario implements Serializable {
 	private String usuario;
 
 	@OneToMany(mappedBy = "usuario")
-	private List<PermissaoPrograma> permissaoPprogramas;
+	private List<PermissaoPrograma> permissaoProgramas;
 
 	@ManyToMany
 	@JoinTable(name = "tb_perfilusuario", joinColumns = { @JoinColumn(name = "cd_usuario") }, inverseJoinColumns = {

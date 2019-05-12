@@ -18,7 +18,9 @@ public class QPrograma extends EntityPathBase<Programa> {
 
     private static final long serialVersionUID = 1397597035L;
 
-    public static final QPrograma programa = new QPrograma("programa");
+    private static final PathInits INITS = PathInits.DIRECT2;
+
+    public static final QPrograma programa1 = new QPrograma("programa1");
 
     public final StringPath descricao = createString("descricao");
 
@@ -26,16 +28,27 @@ public class QPrograma extends EntityPathBase<Programa> {
 
     public final ListPath<PermissaoPrograma, QPermissaoPrograma> permissaoProgramas = this.<PermissaoPrograma, QPermissaoPrograma>createList("permissaoProgramas", PermissaoPrograma.class, QPermissaoPrograma.class, PathInits.DIRECT2);
 
+    public final QPrograma programa;
+
     public QPrograma(String variable) {
-        super(Programa.class, forVariable(variable));
+        this(Programa.class, forVariable(variable), INITS);
     }
 
     public QPrograma(Path<? extends Programa> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);
     }
 
     public QPrograma(PathMetadata<?> metadata) {
-        super(Programa.class, metadata);
+        this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);
+    }
+
+    public QPrograma(PathMetadata<?> metadata, PathInits inits) {
+        this(Programa.class, metadata, inits);
+    }
+
+    public QPrograma(Class<? extends Programa> type, PathMetadata<?> metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.programa = inits.isInitialized("programa") ? new QPrograma(forProperty("programa"), inits.get("programa")) : null;
     }
 
 }
