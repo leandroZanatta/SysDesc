@@ -1,0 +1,7 @@
+br\com\sysdesc\repository\model\QEstado.class
+br\com\sysdesc\repository\model\QUsuario.class
+br\com\sysdesc\repository\model\QPesquisaCampo.class
+br\com\sysdesc\repository\model\QCidade.class
+br\com\sysdesc\repository\model\QCliente.class
+br\com\sysdesc\repository\model\QPesquisa.class
+br\com\sysdesc\repository\model\QPerfil.class

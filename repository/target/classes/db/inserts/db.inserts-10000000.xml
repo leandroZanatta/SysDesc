@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd  http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	<changeSet id="carga_tb_cliente" author="leandro">
+		<insert tableName="tb_estado">
+			<column name="id_estado" value="1" />
+			<column name="tx_descricao" value="Santa Catarina" />
+			<column name="tx_uf" value="SC" />
+		</insert>
+
+		<insert tableName="tb_cidade">
+			<column name="id_cidade" value="1" />
+			<column name="cd_estado" value="1" />
+			<column name="tx_descricao" value="Descanso" />
+		</insert>
+
+		<insert tableName="tb_cliente">
+			<column name="id_cliente" value="1" />
+			<column name="tx_nome" value="Leandro Zanatta" />
+			<column name="cd_cidade" value="1" />
+		</insert>
+
+	</changeSet>
+
+	<changeSet id="carga_tb_usuario" author="leandro">
+		<insert tableName="tb_usuario">
+			<column name="id_usuario" value="1" />
+			<column name="cd_cliente" value="1" />
+			<column name="tx_usuario" value="admin" />
+			<column name="tx_senha" value="6c77b86bff8c717c2d4615e27b4d503c" />
+		</insert>
+
+	</changeSet>
+
+	<changeSet id="carga_permissoes" author="leandro">
+
+		<insert tableName="tb_programa">
+			<column name="id_programa" value="1" />
+			<column name="tx_descricao" value="Cadastro de Clientes" />
+		</insert>
+
+		<insert tableName="tb_programa">
+			<column name="id_programa" value="2" />
+			<column name="tx_descricao" value="Cadastro de Usuários" />
+		</insert>
+
+		<insert tableName="tb_permissaoprograma">
+			<column name="id_permissaoprograma" value="1" />
+			<column name="cd_usuario" value="1" />
+			<column name="cd_programa" value="1" />
+			<column name="fl_leitura" valueBoolean="true" />
+			<column name="fl_cadastro" valueBoolean="true" />
+			<column name="fl_exclusao" valueBoolean="true" />
+		</insert>
+
+		<insert tableName="tb_permissaoprograma">
+			<column name="id_permissaoprograma" value="2" />
+			<column name="cd_usuario" value="1" />
+			<column name="cd_programa" value="2" />
+			<column name="fl_leitura" valueBoolean="true" />
+			<column name="fl_cadastro" valueBoolean="true" />
+			<column name="fl_exclusao" valueBoolean="true" />
+		</insert>
+	</changeSet>
+</databaseChangeLog>
