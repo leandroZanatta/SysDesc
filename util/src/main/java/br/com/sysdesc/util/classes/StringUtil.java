@@ -29,4 +29,15 @@ public class StringUtil {
 
 		return true;
 	}
+
+	public static String setchar(String string, Long value) {
+
+		StringBuilder stringBuilder = new StringBuilder();
+
+		for (Long i = 0L; i < value; i++) {
+			stringBuilder.append(string);
+		}
+
+		return stringBuilder.toString();
+	}
 }

@@ -17,13 +17,15 @@ import javax.swing.JTextField;
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.actionbuttons.buttons.JButtonAction;
 import br.com.sysdesc.components.actionbuttons.listeners.PanelActionListener;
+import br.com.sysdesc.util.classes.ContadorUtil;
+import br.com.sysdesc.util.classes.StringUtil;
 import net.miginfocom.swing.MigLayout;
 
 public class AbstractPanel<T> extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	private Map<Class<? extends Component>, List<Component>> camposTela = new HashMap<>();
+	protected Map<Class<? extends Component>, List<Component>> camposTela = new HashMap<>();
 	private final AbstractInternalFrame<T> internalFrame;
 	private final JButtonAction[] actions;
 
@@ -36,9 +38,16 @@ public class AbstractPanel<T> extends JPanel {
 
 	private void initComponents() {
 
-		setLayout(new MigLayout("", "[grow][][][][][][][][][][grow]", "[23px,grow,center]"));
+		this.registrarCampos();
 
-		registrarCampos();
+		ContadorUtil contadorUtil = new ContadorUtil();
+
+		for (JButtonAction jButtonAction : actions) {
+			add(jButtonAction, "cell 1 " + contadorUtil.next() + ",alignx left,aligny center");
+		}
+
+		setLayout(new MigLayout("", "[grow]" + StringUtil.setchar("[]", contadorUtil.getValue()) + "[grow]",
+				"[23px,grow,center]"));
 
 		limpar();
 
@@ -56,7 +65,7 @@ public class AbstractPanel<T> extends JPanel {
 		for (Component component : container.getComponents()) {
 
 			if (component instanceof Container) {
-				findComponents((Container) component);
+				this.findComponents((Container) component);
 			}
 
 			if (component instanceof JTextField) {
