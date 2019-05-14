@@ -4,21 +4,25 @@ import javax.swing.JInternalFrame;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import br.com.sysdesc.repository.dao.AbstractGenericDAO;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 
-public class AbstractInternalFrame extends JInternalFrame {
+public class AbstractInternalFrame<T> extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	protected final ApplicationJframe frmApplication;
-	protected final PermissaoPrograma permissaoPrograma;
+	private final ApplicationJframe frmApplication;
+	private final PermissaoPrograma permissaoPrograma;
+	private final AbstractGenericDAO<T> abstractGenericDAO;
 
-	public AbstractInternalFrame(ApplicationJframe frmApplication, PermissaoPrograma permissaoPrograma) {
+	public AbstractInternalFrame(ApplicationJframe frmApplication, PermissaoPrograma permissaoPrograma,
+			AbstractGenericDAO<T> abstractGenericDAO) {
 
 		this.frmApplication = frmApplication;
 		this.permissaoPrograma = permissaoPrograma;
+		this.abstractGenericDAO = abstractGenericDAO;
 
-		AbstractInternalFrame abstractInternalFrame = this;
+		AbstractInternalFrame<T> abstractInternalFrame = this;
 
 		this.addInternalFrameListener(new InternalFrameAdapter() {
 
@@ -31,6 +35,18 @@ public class AbstractInternalFrame extends JInternalFrame {
 			}
 		});
 
+	}
+
+	public ApplicationJframe getFrmApplication() {
+		return frmApplication;
+	}
+
+	public PermissaoPrograma getPermissaoPrograma() {
+		return permissaoPrograma;
+	}
+
+	public AbstractGenericDAO<T> getAbstractGenericDAO() {
+		return abstractGenericDAO;
 	}
 
 }

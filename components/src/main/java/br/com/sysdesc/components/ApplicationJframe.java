@@ -16,26 +16,26 @@ public class ApplicationJframe extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	protected List<AbstractInternalFrame> frames = new ArrayList<>();
+	protected List<AbstractInternalFrame<?>> frames = new ArrayList<>();
 	protected JDesktopPane desktopPane;;
 
-	public void closeFrame(AbstractInternalFrame abstractInternalFrame) {
+	public <T> void closeFrame(AbstractInternalFrame<T> abstractInternalFrame) {
 
 		this.frames.remove(abstractInternalFrame);
 	}
 
-	protected void getSingleInstance(Class<? extends AbstractInternalFrame> frame,
+	protected <T> void getSingleInstance(Class<? extends AbstractInternalFrame<T>> frame,
 			PermissaoPrograma permissaoPrograma) {
 
 		try {
 
-			Optional<AbstractInternalFrame> optional = frames.stream().filter(x -> x.getClass().equals(frame))
+			Optional<AbstractInternalFrame<?>> optional = frames.stream().filter(x -> x.getClass().equals(frame))
 					.findFirst();
 
 			if (!optional.isPresent()) {
 
-				Constructor<? extends AbstractInternalFrame> constructor = frame.getConstructor(ApplicationJframe.class,
-						PermissaoPrograma.class);
+				Constructor<? extends AbstractInternalFrame<T>> constructor = frame
+						.getConstructor(ApplicationJframe.class, PermissaoPrograma.class);
 
 				optional = Optional.of(constructor.newInstance(this, permissaoPrograma));
 

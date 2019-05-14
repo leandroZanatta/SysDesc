@@ -23,9 +23,9 @@ public enum ProgramasEnum {
 
 	private final Long codigo;
 
-	private final Class<? extends AbstractInternalFrame> internalFrame;
+	private final Class<? extends AbstractInternalFrame<?>> internalFrame;
 
-	ProgramasEnum(Long codigo, Class<? extends AbstractInternalFrame> internalFrame) {
+	<T> ProgramasEnum(Long codigo, Class<? extends AbstractInternalFrame<?>> internalFrame) {
 		this.codigo = codigo;
 		this.internalFrame = internalFrame;
 	}
@@ -34,7 +34,7 @@ public enum ProgramasEnum {
 		return codigo;
 	}
 
-	public Class<? extends AbstractInternalFrame> getInternalFrame() {
+	public <T> Class<? extends AbstractInternalFrame<?>> getInternalFrame() {
 		return internalFrame;
 	}
 

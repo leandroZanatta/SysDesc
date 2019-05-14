@@ -22,6 +22,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.EventListenerList;
 
+import br.com.sysdesc.components.actionbuttons.buttons.SaveButtonAction;
 import br.com.sysdesc.components.actionbuttons.listeners.PanelActionListener;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.util.classes.ClassTypeUtil;
@@ -29,14 +30,14 @@ import br.com.sysdesc.util.classes.ImageUtil;
 import br.com.sysdesc.util.classes.interfaces.GenericDAO;
 import net.miginfocom.swing.MigLayout;
 
-public abstract class PanelActions<T> extends JPanel {
+public abstract class AbstractPanelActions<T> extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private static final String NENHUM_REGISTRO_ENCONTRADO = "NENHUM REGISTRO ENCONTRADO.";
 	protected EventListenerList listenerList = new EventListenerList();
 	private JButton btnFirst;
 	private JButton btnFowad;
-	private JButton btnSave;
+	private SaveButtonAction btnSave;
 	private JButton btnEdit;
 	private JButton btnNew;
 	private JButton btnSearch;
@@ -49,14 +50,12 @@ public abstract class PanelActions<T> extends JPanel {
 	protected Boolean isEdit = Boolean.FALSE;
 	private final JFrame jframe;
 	private final JInternalFrame internalFrame;
-	private final PermissaoPrograma permissaoPrograma;
 	private final GenericDAO<T> genericDAO;
 
-	public PanelActions(JFrame jframe, JInternalFrame internalFrame, PermissaoPrograma permissaoPrograma,
-			GenericDAO<T> genericDAO) {
+	public AbstractPanelActions(JFrame jframe, JInternalFrame internalFrame,
+			PermissaoPrograma permissaoPrograma, GenericDAO<T> genericDAO) {
 		this.jframe = jframe;
 		this.internalFrame = internalFrame;
-		this.permissaoPrograma = permissaoPrograma;
 		this.genericDAO = genericDAO;
 		initComponents();
 	}
@@ -67,7 +66,7 @@ public abstract class PanelActions<T> extends JPanel {
 
 		btnFirst = new JButton("");
 		btnFowad = new JButton("");
-		btnSave = new JButton("");
+		btnSave = new SaveButtonAction();
 		btnEdit = new JButton("");
 		btnNew = new JButton("");
 		btnSearch = new JButton("");
@@ -77,7 +76,6 @@ public abstract class PanelActions<T> extends JPanel {
 
 		btnFirst.setIcon(ImageUtil.resize("first.png", 24, 24));
 		btnFowad.setIcon(ImageUtil.resize("fowad.png", 24, 24));
-		btnSave.setIcon(ImageUtil.resize("save.png", 24, 24));
 		btnEdit.setIcon(ImageUtil.resize("edit.png", 24, 24));
 		btnNew.setIcon(ImageUtil.resize("new.png", 24, 24));
 		btnSearch.setIcon(ImageUtil.resize("search.png", 24, 24));
@@ -87,7 +85,6 @@ public abstract class PanelActions<T> extends JPanel {
 
 		btnFirst.setToolTipText("Primeiro");
 		btnFowad.setToolTipText("Anterior");
-		btnSave.setToolTipText("Salvar");
 		btnEdit.setToolTipText("Editar");
 		btnNew.setToolTipText("Novo");
 		btnSearch.setToolTipText("Pesquisar");
@@ -95,7 +92,7 @@ public abstract class PanelActions<T> extends JPanel {
 		btnNext.setToolTipText("Proximo");
 		btnLast.setToolTipText("Último");
 
-		final PanelActions<T> painel = this;
+		final AbstractPanelActions<T> painel = this;
 
 		btnCancel.addActionListener(e -> internalFrame.dispose());
 
@@ -167,7 +164,7 @@ public abstract class PanelActions<T> extends JPanel {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void newEvent(PanelActions<T> painel) {
+	private void newEvent(AbstractPanelActions<T> painel) {
 
 		try {
 
@@ -200,7 +197,7 @@ public abstract class PanelActions<T> extends JPanel {
 		fireSaveEvent(objetoPesquisa);
 	}
 
-	private void fowadEvent(PanelActions<T> painel) {
+	private void fowadEvent(AbstractPanelActions<T> painel) {
 
 		objetoPesquisa = genericDAO.previows(objetoPesquisa);
 
@@ -218,7 +215,7 @@ public abstract class PanelActions<T> extends JPanel {
 
 	}
 
-	private void lastEvent(PanelActions<T> painel) {
+	private void lastEvent(AbstractPanelActions<T> painel) {
 
 		objetoPesquisa = genericDAO.last();
 
@@ -235,7 +232,7 @@ public abstract class PanelActions<T> extends JPanel {
 		bloquearBotoes(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE);
 	}
 
-	private void firstEvent(PanelActions<T> painel) {
+	private void firstEvent(AbstractPanelActions<T> painel) {
 
 		objetoPesquisa = genericDAO.first();
 
@@ -253,7 +250,7 @@ public abstract class PanelActions<T> extends JPanel {
 
 	}
 
-	private void nextEvent(PanelActions<T> painel) {
+	private void nextEvent(AbstractPanelActions<T> painel) {
 
 		objetoPesquisa = genericDAO.next(objetoPesquisa);
 
