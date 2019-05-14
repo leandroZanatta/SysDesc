@@ -10,8 +10,8 @@
 	<modules>
 		<module>libraries</module>
 		<module>util</module>
-		<module>components</module>
 		<module>repository</module>
+		<module>components</module>
 		<module>service</module>
 		<module>pesquisa</module>
 		<module>interface</module>
