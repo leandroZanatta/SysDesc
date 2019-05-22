@@ -57,6 +57,14 @@
 			<column name="tx_icone" value="user.png" />
 			<column name="fl_acessorapido" valueBoolean="false" />
 		</insert>
+		
+		<insert tableName="tb_programa">
+			<column name="id_programa" value="6" />
+			<column name="cd_programa" value="1" />
+			<column name="tx_descricao" value="FRMAPPLICATION_MI_ESTADOS" />
+			<column name="tx_icone" value="estados.png" />
+			<column name="fl_acessorapido" valueBoolean="false" />
+		</insert>
 
 		<insert tableName="tb_permissaoprograma">
 			<column name="id_permissaoprograma" value="1" />
@@ -80,6 +88,14 @@
 			<column name="id_permissaoprograma" value="3" />
 			<column name="cd_usuario" value="1" />
 			<column name="cd_programa" value="3" />
+			<column name="fl_leitura" valueBoolean="true" />
+			<column name="fl_cadastro" valueBoolean="true" />
+			<column name="fl_exclusao" valueBoolean="true" />
+		</insert>
+			<insert tableName="tb_permissaoprograma">
+			<column name="id_permissaoprograma" value="6" />
+			<column name="cd_usuario" value="1" />
+			<column name="cd_programa" value="6" />
 			<column name="fl_leitura" valueBoolean="true" />
 			<column name="fl_cadastro" valueBoolean="true" />
 			<column name="fl_exclusao" valueBoolean="true" />
