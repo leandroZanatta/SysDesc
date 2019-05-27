@@ -59,6 +59,10 @@ public class Resources {
 	public static final String DRIVER_NAO_ENCONTRADO = "DRIVER_NAO_ENCONTRADO";
 	public static final String CONEXAO_INVALIDA = "CONEXAO_INVALIDA";
 
+	public static final String FRMESTADO_TITLE = "FRMESTADO_TITLE";
+	public static final String FRMESTADO_LB_CODIGO = "FRMESTADO_LB_CODIGO";
+	public static final String FRMESTADO_LB_DESCRICAO = "FRMESTADO_LB_DESCRICAO";
+
 	static {
 		try {
 			File arquivoConfiguracao = new File(Configuracoes.RESOURCES);
