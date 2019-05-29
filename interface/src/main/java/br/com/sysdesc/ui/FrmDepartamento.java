@@ -10,23 +10,29 @@ import javax.swing.JPanel;
 
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
+import br.com.sysdesc.components.PanelActions;
+import br.com.sysdesc.repository.dao.DepartamentoDAO;
+import br.com.sysdesc.repository.model.Departamento;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmDepartamento extends AbstractInternalFrame {
 
-	private JTextFieldMaiusculo txDescricao;
-	private JNumericField txCodigo;
-
-	private JLabel lblCodigo;
+	private static final long serialVersionUID = 1L;
 
 	private JPanel painelContent;
 
+	private JLabel lblCodigo;
 	private JLabel lblDescricao;
+
+	private JNumericField txCodigo;
+	private JTextFieldMaiusculo txDescricao;
+	private PanelActions<Departamento> panelActions;
+	private DepartamentoDAO departamentoDAO = new DepartamentoDAO();
 
 	public FrmDepartamento(FrmApplication frmApplication) {
 		super(frmApplication);
 
-		setSize(450, 210);
+		setSize(450, 160);
 		setClosable(Boolean.TRUE);
 		setTitle(translate(FRMDEPARTAMENTO_TITLE));
 
@@ -39,14 +45,30 @@ public class FrmDepartamento extends AbstractInternalFrame {
 		lblDescricao = new JLabel(translate(FRMDEPARTAMENTO_LB_DESCRICAO));
 
 		txDescricao = new JTextFieldMaiusculo();
-		
+
 		painelContent.setLayout(new MigLayout("", "[grow]", "[][][][][][][grow]"));
 		getContentPane().add(painelContent);
 
 		painelContent.add(lblCodigo, "cell 0 0");
-		painelContent.add(txCodigo, "cell 0 1");
+		painelContent.add(txCodigo, "cell 0 1,growx");
 		painelContent.add(lblDescricao, "cell 0 2");
-		painelContent.add(txDescricao, "cell 0 3");
+		painelContent.add(txDescricao, "cell 0 3,growx");
+
+		panelActions = new PanelActions<Departamento>(this, departamentoDAO) {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void carregarObjeto(Departamento objeto) {
+
+			}
+
+			@Override
+			public void preencherObjeto(Departamento objetoPesquisa) {
+
+			}
+		};
+		painelContent.add(panelActions, "cell 0 4,grow");
 	}
 
 }
