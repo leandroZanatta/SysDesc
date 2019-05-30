@@ -1,9 +1,0 @@
-br\com\sysdesc\ui\FrmUsuarios.class
-br\com\sysdesc\startup\StartUp.class
-br\com\sysdesc\ui\FrmLogin.class
-br\com\sysdesc\ui\FrmUsuarios$1.class
-br\com\sysdesc\ui\AbstractInternalFrame$1.class
-br\com\sysdesc\thread\TimerThread.class
-br\com\sysdesc\ui\FrmApplication.class
-br\com\sysdesc\ui\AbstractInternalFrame.class
-br\com\sysdesc\ui\FrmConexao.class
