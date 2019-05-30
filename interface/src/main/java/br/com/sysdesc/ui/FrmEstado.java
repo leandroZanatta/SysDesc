@@ -61,11 +61,16 @@ public class FrmEstado extends AbstractInternalFrame {
 
 			@Override
 			public void carregarObjeto(Estado objeto) {
-
+				txCodigo.setValue(objeto.getIdEstado());
+				txDescricao.setText(objeto.getDescricao());
+				txUF.setText(objeto.getUf());
 			}
 
 			@Override
 			public void preencherObjeto(Estado objetoPesquisa) {
+				objetoPesquisa.setIdEstado(txCodigo.getValue());
+				objetoPesquisa.setDescricao(txDescricao.getText());
+				objetoPesquisa.setUf(txUF.getText());
 
 			}
 		};
