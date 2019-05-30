@@ -29,7 +29,7 @@
 			<column name="id_usuario" value="1" />
 			<column name="cd_cliente" value="1" />
 			<column name="tx_usuario" value="admin" />
-			<column name="tx_senha" value="6c77b86bff8c717c2d4615e27b4d503c" />
+			<column name="tx_senha" value="e10adc3949ba59abbe56e057f20f883e" />
 		</insert>
 
 	</changeSet>

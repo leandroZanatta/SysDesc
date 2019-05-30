@@ -62,6 +62,7 @@ public class Resources {
 	public static final String FRMESTADO_TITLE = "FRMESTADO_TITLE";
 	public static final String FRMESTADO_LB_CODIGO = "FRMESTADO_LB_CODIGO";
 	public static final String FRMESTADO_LB_DESCRICAO = "FRMESTADO_LB_DESCRICAO";
+	public static final String FRMESTADO_LB_UF = "FRMESTADO_LB_UF";
 
 	static {
 		try {

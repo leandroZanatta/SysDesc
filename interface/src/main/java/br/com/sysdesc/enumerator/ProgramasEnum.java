@@ -4,13 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import br.com.sysdesc.ui.AbstractInternalFrame;
+import br.com.sysdesc.ui.FrmEstado;
 import br.com.sysdesc.ui.FrmUsuarios;
 
 public enum ProgramasEnum {
 
 	CADASTRO_CLIENTES(2L, FrmUsuarios.class),
 
-	CADASTRO_USUARIOS(3L, FrmUsuarios.class);
+	CADASTRO_USUARIOS(3L, FrmUsuarios.class),
+
+	CADASTRO_ESTADOS(6L, FrmEstado.class);
 
 	private static Map<Long, ProgramasEnum> mapa = new HashMap<>();
 
