@@ -60,12 +60,14 @@ public class FrmDepartamento extends AbstractInternalFrame {
 
 			@Override
 			public void carregarObjeto(Departamento objeto) {
-
+				txCodigo.setValue(objeto.getIdDepartamento());
+				txDescricao.setText(objeto.getDescricao());
 			}
 
 			@Override
 			public void preencherObjeto(Departamento objetoPesquisa) {
-
+				objetoPesquisa.setIdDepartamento(txCodigo.getValue());
+				objetoPesquisa.setDescricao(txDescricao.getText());
 			}
 		};
 		painelContent.add(panelActions, "cell 0 4,grow");
