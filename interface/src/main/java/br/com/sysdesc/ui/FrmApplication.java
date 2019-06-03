@@ -4,10 +4,14 @@ import static br.com.sysdesc.util.resources.Resources.FRMAPPLICATION_LB_USUARIO;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
@@ -16,11 +20,11 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.border.EtchedBorder;
 
-import br.com.sysdesc.components.ApplicationJframe;
 import br.com.sysdesc.enumerator.ProgramasEnum;
 import br.com.sysdesc.repository.model.Programa;
 import br.com.sysdesc.repository.model.Usuario;
@@ -30,7 +34,7 @@ import br.com.sysdesc.util.classes.ImageUtil;
 import br.com.sysdesc.util.classes.ListUtil;
 import br.com.sysdesc.util.classes.StringUtil;
 
-public class FrmApplication extends ApplicationJframe {
+public class FrmApplication extends JFrame {
 
 	private static final String SYS_DESC = "SysDesc";
 
@@ -40,12 +44,15 @@ public class FrmApplication extends ApplicationJframe {
 	private static Usuario usuario;
 	private static JLabel lbUsuario;
 	private JMenuBar menuBar;
+	private JDesktopPane desktopPane;
 	private JToolBar toolBar;
 	private JPanel panel;
 	private JPanel panel_2;
 	private JPanel panel_3;
 	private JLabel lbHorario;
 	private static FrmApplication frmApplication;
+
+	private List<AbstractInternalFrame> frames = new ArrayList<>();
 
 	public FrmApplication() {
 
@@ -107,6 +114,38 @@ public class FrmApplication extends ApplicationJframe {
 		setExtendedState(MAXIMIZED_BOTH);
 		setLocationRelativeTo(null);
 		setContentPane(contentPane);
+
+	}
+
+	private void getSingleInstance(Class<? extends AbstractInternalFrame> frame) {
+
+		try {
+
+			Optional<AbstractInternalFrame> optional = frames.stream().filter(x -> x.getClass().equals(frame))
+					.findFirst();
+
+			if (!optional.isPresent()) {
+
+				Constructor<? extends AbstractInternalFrame> constructor = frame.getConstructor(FrmApplication.class);
+
+				optional = Optional.of(constructor.newInstance(this));
+
+				desktopPane.add(optional.get());
+
+				Dimension desktopSize = desktopPane.getSize();
+				Dimension jInternalFrameSize = optional.get().getSize();
+
+				optional.get().setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
+						(desktopSize.height - jInternalFrameSize.height) / 2);
+
+				frames.add(optional.get());
+			}
+
+			optional.get().setVisible(Boolean.TRUE);
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "ERRO");
+		}
 
 	}
 
@@ -187,8 +226,7 @@ public class FrmApplication extends ApplicationJframe {
 		ProgramasEnum programa = ProgramasEnum.findByCodigo(menu.getIdPrograma());
 
 		if (programa != null) {
-			menuitem.addActionListener(
-					(e) -> getSingleInstance(programa.getInternalFrame(), menu.getPermissaoProgramas().get(0)));
+			menuitem.addActionListener((e) -> getSingleInstance(programa.getInternalFrame()));
 		}
 
 		if (!StringUtil.isNullOrEmpty(menu.getIcone())) {
@@ -201,8 +239,7 @@ public class FrmApplication extends ApplicationJframe {
 
 				botao.setToolTipText(translate(menu.getDescricao()));
 
-				botao.addActionListener(
-						(e) -> getSingleInstance(programa.getInternalFrame(), menu.getPermissaoProgramas().get(0)));
+				botao.addActionListener((e) -> getSingleInstance(programa.getInternalFrame()));
 
 				toolBar.add(botao);
 			}
@@ -210,6 +247,11 @@ public class FrmApplication extends ApplicationJframe {
 
 		menuToolbar.add(menuitem);
 
+	}
+
+	public void closeFrame(AbstractInternalFrame abstractInternalFrame) {
+
+		this.frames.remove(abstractInternalFrame);
 	}
 
 }

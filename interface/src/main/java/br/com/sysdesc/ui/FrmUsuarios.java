@@ -11,17 +11,14 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import br.com.sysdesc.components.AbstractInternalFrame;
-import br.com.sysdesc.components.ApplicationJframe;
-import br.com.sysdesc.components.actionbuttons.AbstractPanel;
+import br.com.sysdesc.components.PanelActions;
 import br.com.sysdesc.repository.dao.UsuarioDAO;
-import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Usuario;
 import br.com.sysdesc.util.classes.CryptoUtil;
 import br.com.sysdesc.util.classes.StringUtil;
 import net.miginfocom.swing.MigLayout;
 
-public class FrmUsuarios extends AbstractInternalFrame<Usuario> {
+public class FrmUsuarios extends AbstractInternalFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel painelContent;
@@ -31,12 +28,11 @@ public class FrmUsuarios extends AbstractInternalFrame<Usuario> {
 	private JLabel lblId;
 	private JLabel lblUsurio;
 	private JLabel lblSenha;
-	private AbstractPanel<Usuario> panelActions;
+	private PanelActions<Usuario> panelActions;
+	private UsuarioDAO loginDAO = new UsuarioDAO();
 
-	public FrmUsuarios(ApplicationJframe frmApplication, PermissaoPrograma permissaoPrograma) {
-
-		super(frmApplication, permissaoPrograma, new UsuarioDAO());
-
+	public FrmUsuarios(FrmApplication frmApplication) {
+		super(frmApplication);
 		setSize(450, 210);
 		setClosable(Boolean.TRUE);
 		setTitle(translate(FRMUSUARIO_TITLE));
@@ -58,7 +54,7 @@ public class FrmUsuarios extends AbstractInternalFrame<Usuario> {
 		painelContent.add(lblSenha, "cell 0 4");
 		painelContent.add(passwordField, "cell 0 5,growx");
 
-		panelActions = new AbstractPanel<Usuario>(this) {
+		panelActions = new PanelActions<Usuario>(this, loginDAO) {
 
 			private static final long serialVersionUID = 1L;
 
