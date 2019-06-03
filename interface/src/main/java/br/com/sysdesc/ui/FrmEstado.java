@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.components.PanelActions;
+import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.repository.dao.EstadoDAO;
 import br.com.sysdesc.repository.model.Estado;
 import net.miginfocom.swing.MigLayout;
@@ -74,6 +75,14 @@ public class FrmEstado extends AbstractInternalFrame {
 
 			}
 		};
+		panelActions.addEventListener(new PanelEventAdapter<Estado>() {
+
+			public void saveEvent(Estado objeto) {
+
+				txCodigo.setValue(objeto.getIdEstado());
+
+			};
+		});
 
 		painelContent.add(panelActions, "cell 0 6,grow");
 
