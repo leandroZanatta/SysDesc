@@ -14,7 +14,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "tb_deapratmento")
+@Table(name = "tb_departamento")
 @SequenceGenerator(name = "GEN_DEPARTAMENTO", allocationSize = 1, sequenceName = "GEN_DEPARTAMENTO")
 public class Departamento implements Serializable {
 	private static final long serialVersionUID = 1L;

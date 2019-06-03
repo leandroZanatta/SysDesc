@@ -59,7 +59,7 @@ public class Resources {
 	public static final String DRIVER_NAO_ENCONTRADO = "DRIVER_NAO_ENCONTRADO";
 	public static final String CONEXAO_INVALIDA = "CONEXAO_INVALIDA";
 
-	public static final String FRMDEPARTAMENTO_TITLE = "FRMDEPARTEMENTO_TITLE";
+	public static final String FRMDEPARTAMENTO_TITLE = "FRMDEPARTAMENTO_TITLE";
 	public static final String FRMDEPARTAMENTO_LB_CODIGO = "FRMDEPARTAMENTO_LB_CODIGO";
 	public static final String FRMDEPARTAMENTO_LB_DESCRICAO = "FRMDEPARTAMENTO_LB_DESCRICAO";
 	static {

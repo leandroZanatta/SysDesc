@@ -12,6 +12,7 @@
 		<class>br.com.sysdesc.repository.model.Programa</class>
 		<class>br.com.sysdesc.repository.model.PermissaoPrograma</class>
 		<class>br.com.sysdesc.repository.model.PerfilUsuario</class>
+		<class>br.com.sysdesc.repository.model.Departamento</class>
 	</persistence-unit>
 
 </persistence>
