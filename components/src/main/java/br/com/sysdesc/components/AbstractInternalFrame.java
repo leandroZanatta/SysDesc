@@ -33,4 +33,8 @@ public class AbstractInternalFrame extends JInternalFrame {
 		return permissaoPrograma;
 	}
 
+	public JFrame getParent() {
+		return parent;
+	}
+
 }

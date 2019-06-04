@@ -461,7 +461,7 @@ public abstract class PanelActions<T> extends JPanel {
 
 			Method metodoVisibilidade = classePesquisa.getMethod("setVisible", Boolean.class);
 
-			Object instancia = constructor.newInstance();
+			Object instancia = constructor.newInstance(this.internalFrame.getParent());
 
 			metodoVisibilidade.invoke(instancia, Boolean.TRUE);
 
