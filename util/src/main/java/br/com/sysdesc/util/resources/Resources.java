@@ -37,8 +37,6 @@ public class Resources {
 
 	public static final String FRMCONEXAO_TITULO = "FRMCONEXAO_TITULO";
 	public static final String FRMCONEXAO_MSG_SALVAR = "FRMCONEXAO_MSG_SALVAR";
-	public static final String FRMMARCA_MSG_DESCRICAO_INVALIDA = "FRMMARCA_MSG_DESCRICAO_INVALIDA";
-
 	public static final String FRMCONEXAO_PRP_CONEXAO = "FRMCONEXAO_PRP_CONEXAO";
 	public static final String FRMCONEXAO_BT_SALVAR = "FRMCONEXAO_BT_SALVAR";
 	public static final String FRMCONEXAO_BT_CANCELAR = "FRMCONEXAO_BT_CANCELAR";
@@ -54,6 +52,11 @@ public class Resources {
 	public static final String FRMUSUARIO_LB_USUARIO = "FRMUSUARIO_LB_USUARIO";
 	public static final String FRMUSUARIO_LB_SENHA = "FRMUSUARIO_LB_SENHA";
 
+	public static final String FRMMARCA_TITLE = "FRMMARCA_TITLE";
+	public static final String FRMMARCA_LB_CODIGO = "FRMMARCA_LB_CODIGO";
+	public static final String FRMMARCA_LB_DESCRICAO = "FRMMARCA_LB_DESCRICAO";
+	public static final String FRMMARCA_MSG_DESCRICAO_INVALIDA = "FRMMARCA_MSG_DESCRICAO_INVALIDA";
+
 	public static final String FRMAPPLICATION_MN_CADASTRO = "FRMAPPLICATION_MN_CADASTRO";
 	public static final String FRMAPPLICATION_MI_USUARIOS = "FRMAPPLICATION_MI_USUARIOS";
 	public static final String FRMAPPLICATION_LB_USUARIO = "FRMAPPLICATION_LB_USUARIO";
@@ -61,9 +64,11 @@ public class Resources {
 	public static final String DRIVER_NAO_ENCONTRADO = "DRIVER_NAO_ENCONTRADO";
 	public static final String CONEXAO_INVALIDA = "CONEXAO_INVALIDA";
 
-	public static final String FRMMARCA_TITLE = "FRMMARCA_TITLE";
-	public static final String FRMMARCA_LB_CODIGO = "FRMMARCA_LB_CODIGO";
-	public static final String FRMMARCA_LB_DESCRICAO = "FRMMARCA_LB_DESCRICAO";
+	public static final String FRMESTADO_TITLE = "FRMESTADO_TITLE";
+	public static final String FRMESTADO_LB_CODIGO = "FRMESTADO_LB_CODIGO";
+	public static final String FRMESTADO_LB_DESCRICAO = "FRMESTADO_LB_DESCRICAO";
+	public static final String FRMESTADO_LB_UF = "FRMESTADO_LB_UF";
+
 	static {
 		try {
 			File arquivoConfiguracao = new File(Configuracoes.RESOURCES);
