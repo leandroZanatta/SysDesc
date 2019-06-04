@@ -37,7 +37,7 @@ public class Pesquisa<T> extends JDialog {
 	private Boolean ok = Boolean.FALSE;
 	private T objeto;
 
-	public Pesquisa(JFrame frame, Long codigoUsuario, Long codigoPesquisa) {
+	public Pesquisa(JFrame frame) {
 		super(frame);
 
 		initComponents();

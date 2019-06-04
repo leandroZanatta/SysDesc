@@ -34,14 +34,17 @@ public class Usuario implements Serializable {
 	@Column(name = "tx_usuario")
 	private String usuario;
 
+	@ManyToOne
+	@JoinColumn(name = "cd_cliente")
+	private Cliente cliente;
+
 	@OneToMany(mappedBy = "usuario")
 	private List<PermissaoPrograma> permissaoProgramas;
 
 	@OneToMany(mappedBy = "usuario")
 	private List<PerfilUsuario> perfilUsuarios;
 
-	@ManyToOne
-	@JoinColumn(name = "cd_cliente")
-	private Cliente cliente;
+	@OneToMany(mappedBy = "usuario")
+	private List<PermissaoPesquisa> permissaoPesquisas;
 
 }

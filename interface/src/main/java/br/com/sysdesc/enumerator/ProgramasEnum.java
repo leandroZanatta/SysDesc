@@ -3,7 +3,7 @@ package br.com.sysdesc.enumerator;
 import java.util.HashMap;
 import java.util.Map;
 
-import br.com.sysdesc.ui.AbstractInternalFrame;
+import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.ui.FrmDepartamento;
 import br.com.sysdesc.ui.FrmEstado;
 import br.com.sysdesc.ui.FrmMarca;

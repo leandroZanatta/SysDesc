@@ -13,7 +13,7 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JInternalFrame;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -41,13 +41,13 @@ public abstract class PanelActions<T> extends JPanel {
 	private JButton btnCancel;
 	private JButton btnNext;
 	private JButton btnLast;
-	private JInternalFrame internalFrame;
+	private AbstractInternalFrame internalFrame;
 	private GenericDAO<T> genericDAO;
 	private T objetoPesquisa;
 	private Map<Class<? extends Component>, List<Component>> camposTela = new HashMap<>();
 	protected Boolean isEdit = Boolean.FALSE;
 
-	public PanelActions(JInternalFrame internalFrame, GenericDAO<T> genericDAO) {
+	public PanelActions(AbstractInternalFrame internalFrame, GenericDAO<T> genericDAO) {
 		this.internalFrame = internalFrame;
 		this.genericDAO = genericDAO;
 		initComponents();
@@ -455,13 +455,13 @@ public abstract class PanelActions<T> extends JPanel {
 
 		try {
 
-			Class<?> classePesquisa = Class.forName("");
+			Class<?> classePesquisa = Class.forName("br.com.sysdesc.pesquisa.ui.Pesquisa");
 
-			Constructor<?> constructor = classePesquisa.getConstructor(JInternalFrame.class);
+			Constructor<?> constructor = classePesquisa.getConstructor(JFrame.class);
 
 			Method metodoVisibilidade = classePesquisa.getMethod("setVisible", Boolean.class);
 
-			Object instancia = constructor.newInstance(this.internalFrame);
+			Object instancia = constructor.newInstance();
 
 			metodoVisibilidade.invoke(instancia, Boolean.TRUE);
 

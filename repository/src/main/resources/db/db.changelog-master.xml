@@ -11,7 +11,7 @@
 	<include file="db/changeset/20190508_221100_tb_perfilusuario.xml" />
 	<include file="db/changeset/20190508_221800_tb_pesquisa.xml" />
 	<include file="db/changeset/20190508_223000_tb_pesquisacampo.xml" />
-	<include file="db/changeset/20190508_223300_tb_perfilpesquisa.xml" />
+	<include file="db/changeset/20190508_223300_tb_permissaopesquisa.xml" />
 	<include file="db/changeset/20190511_181200_tb_programa.xml" />
 	<include file="db/changeset/20190511_181600_tb_permissaoprograma.xml" />
 	<include file="db/changeset/20190515_201300_tb_marca.xml" />
