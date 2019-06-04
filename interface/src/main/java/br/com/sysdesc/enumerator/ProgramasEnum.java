@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import br.com.sysdesc.ui.AbstractInternalFrame;
+import br.com.sysdesc.ui.FrmDepartamento;
 import br.com.sysdesc.ui.FrmEstado;
 import br.com.sysdesc.ui.FrmMarca;
 import br.com.sysdesc.ui.FrmUsuarios;
@@ -15,6 +16,8 @@ public enum ProgramasEnum {
 	CADASTRO_USUARIOS(3L, FrmUsuarios.class),
 
 	CADASTRO_MARCAS(4L, FrmMarca.class),
+
+	CADASTRO_DEPARTAMENTOS(5L, FrmDepartamento.class),
 
 	CADASTRO_ESTADOS(6L, FrmEstado.class);
 
