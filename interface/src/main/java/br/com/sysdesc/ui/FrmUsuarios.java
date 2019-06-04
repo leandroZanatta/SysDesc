@@ -6,7 +6,6 @@ import static br.com.sysdesc.util.resources.Resources.FRMUSUARIO_LB_USUARIO;
 import static br.com.sysdesc.util.resources.Resources.FRMUSUARIO_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -34,8 +33,8 @@ public class FrmUsuarios extends AbstractInternalFrame {
 	private PanelActions<Usuario> panelActions;
 	private UsuarioDAO loginDAO = new UsuarioDAO();
 
-	public FrmUsuarios(JFrame jFrame, PermissaoPrograma permissaoPrograma) {
-		super(jFrame, permissaoPrograma);
+	public FrmUsuarios(PermissaoPrograma permissaoPrograma) {
+		super(permissaoPrograma);
 
 		setSize(450, 210);
 		setClosable(Boolean.TRUE);

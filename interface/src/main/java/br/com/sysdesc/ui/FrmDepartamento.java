@@ -5,7 +5,6 @@ import static br.com.sysdesc.util.resources.Resources.FRMDEPARTAMENTO_LB_DESCRIC
 import static br.com.sysdesc.util.resources.Resources.FRMDEPARTAMENTO_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -33,8 +32,8 @@ public class FrmDepartamento extends AbstractInternalFrame {
 	private PanelActions<Departamento> panelActions;
 	private DepartamentoDAO departamentoDAO = new DepartamentoDAO();
 
-	public FrmDepartamento(JFrame jFrame, PermissaoPrograma permissaoPrograma) {
-		super(jFrame, permissaoPrograma);
+	public FrmDepartamento(PermissaoPrograma permissaoPrograma) {
+		super(permissaoPrograma);
 
 		setSize(450, 160);
 		setClosable(Boolean.TRUE);

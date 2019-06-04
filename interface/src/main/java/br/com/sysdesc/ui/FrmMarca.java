@@ -6,7 +6,6 @@ import static br.com.sysdesc.util.resources.Resources.FRMMARCA_MSG_DESCRICAO_INV
 import static br.com.sysdesc.util.resources.Resources.FRMMARCA_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -34,8 +33,8 @@ public class FrmMarca extends AbstractInternalFrame {
 	private PanelActions<Marca> panelActions;
 	private MarcaDAO marcaDAO = new MarcaDAO();
 
-	public FrmMarca(JFrame jFrame, PermissaoPrograma permissaoPrograma) {
-		super(jFrame, permissaoPrograma);
+	public FrmMarca(PermissaoPrograma permissaoPrograma) {
+		super(permissaoPrograma);
 
 		setSize(450, 160);
 		setClosable(Boolean.TRUE);

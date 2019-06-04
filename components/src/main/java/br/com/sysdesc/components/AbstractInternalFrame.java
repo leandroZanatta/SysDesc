@@ -1,6 +1,5 @@
 package br.com.sysdesc.components;
 
-import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.event.InternalFrameEvent;
 
@@ -11,12 +10,10 @@ public class AbstractInternalFrame extends JInternalFrame {
 	private static final long serialVersionUID = 1L;
 
 	private final PermissaoPrograma permissaoPrograma;
-	private final JFrame parent;
 
-	public AbstractInternalFrame(JFrame parent, PermissaoPrograma permissaoPrograma) {
+	public AbstractInternalFrame(PermissaoPrograma permissaoPrograma) {
 
 		this.permissaoPrograma = permissaoPrograma;
-		this.parent = parent;
 
 		this.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
 
@@ -31,10 +28,6 @@ public class AbstractInternalFrame extends JInternalFrame {
 
 	public PermissaoPrograma getPermissaoPrograma() {
 		return permissaoPrograma;
-	}
-
-	public JFrame getParent() {
-		return parent;
 	}
 
 }

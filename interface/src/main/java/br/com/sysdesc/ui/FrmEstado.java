@@ -6,7 +6,6 @@ import static br.com.sysdesc.util.resources.Resources.FRMESTADO_LB_UF;
 import static br.com.sysdesc.util.resources.Resources.FRMESTADO_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -34,8 +33,8 @@ public class FrmEstado extends AbstractInternalFrame {
 	private PanelActions<Estado> panelActions;
 	private EstadoDAO estadoDAO = new EstadoDAO();
 
-	public FrmEstado(JFrame jFrame, PermissaoPrograma permissaoPrograma) {
-		super(jFrame, permissaoPrograma);
+	public FrmEstado(PermissaoPrograma permissaoPrograma) {
+		super(permissaoPrograma);
 
 		setSize(450, 210);
 		setClosable(Boolean.TRUE);

@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.event.EventListenerList;
 
 import br.com.sysdesc.components.listeners.PanelActionListener;
@@ -459,13 +460,13 @@ public abstract class PanelActions<T> extends JPanel {
 
 			Constructor<?> constructor = classePesquisa.getConstructor(JFrame.class);
 
-			Method metodoVisibilidade = classePesquisa.getMethod("setVisible", Boolean.class);
+			Method metodoVisibilidade = classePesquisa.getMethod("setVisible", boolean.class);
 
-			Object instancia = constructor.newInstance(this.internalFrame.getParent());
+			Object instancia = constructor.newInstance(SwingUtilities.getAncestorOfClass(JFrame.class, this));
 
 			metodoVisibilidade.invoke(instancia, Boolean.TRUE);
 
-			Method metodoIsOK = classePesquisa.getMethod("isOk");
+			Method metodoIsOK = classePesquisa.getDeclaredMethod("getOk");
 
 			Boolean isOk = (Boolean) metodoIsOK.invoke(instancia);
 
