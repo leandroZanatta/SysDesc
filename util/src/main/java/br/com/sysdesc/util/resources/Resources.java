@@ -73,6 +73,10 @@ public class Resources {
 	public static final String FRMDEPARTAMENTO_LB_CODIGO = "FRMDEPARTAMENTO_LB_CODIGO";
 	public static final String FRMDEPARTAMENTO_LB_DESCRICAO = "FRMDEPARTAMENTO_LB_DESCRICAO";
 
+	public static final String FRMCATEGORIA_TITLE = "FRMCATEGORIA_TITLE";
+	public static final String FRMCATEGORIA_LB_CODIGO = "FRMCATEGORIA_LB_CODIGO";
+	public static final String FRMCATEGORIA_LB_DESCRICAO = "FRMCATEGORIA_LB_DESCRICAO";
+
 	static {
 		try {
 			File arquivoConfiguracao = new File(Configuracoes.RESOURCES);
