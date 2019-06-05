@@ -7,6 +7,7 @@ import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.ui.FrmDepartamento;
 import br.com.sysdesc.ui.FrmEstado;
 import br.com.sysdesc.ui.FrmMarca;
+import br.com.sysdesc.ui.FrmUnidade;
 import br.com.sysdesc.ui.FrmUsuarios;
 
 public enum ProgramasEnum {
@@ -19,7 +20,9 @@ public enum ProgramasEnum {
 
 	CADASTRO_DEPARTAMENTOS(5L, FrmDepartamento.class),
 
-	CADASTRO_ESTADOS(6L, FrmEstado.class);
+	CADASTRO_ESTADOS(6L, FrmEstado.class),
+
+	CADASTRO_UNIDADE(9L, FrmUnidade.class);
 
 	private static Map<Long, ProgramasEnum> mapa = new HashMap<>();
 

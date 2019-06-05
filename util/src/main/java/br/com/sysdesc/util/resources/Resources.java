@@ -73,6 +73,10 @@ public class Resources {
 	public static final String FRMDEPARTAMENTO_LB_CODIGO = "FRMDEPARTAMENTO_LB_CODIGO";
 	public static final String FRMDEPARTAMENTO_LB_DESCRICAO = "FRMDEPARTAMENTO_LB_DESCRICAO";
 
+	public static final String FRMUNIDADE_TITLE = "FRMUNIDADE_TITLE";
+	public static final String FRMUNIDADE_LB_CODIGO = "FRMUNIDADE_LB_CODIGO";
+	public static final String FRMUNIDADE_LB_DESCRICAO = "FRMUNIDADE_LB_DESCRICAO";
+
 	static {
 		try {
 			File arquivoConfiguracao = new File(Configuracoes.RESOURCES);
@@ -86,7 +90,8 @@ public class Resources {
 			mapaValores = new Properties();
 
 			mapaValores.load(new InputStreamReader(
-					new FileInputStream(Configuracoes.PATH_RESOURCES + "\\" + arquivoConfig), charset));
+					new FileInputStream(Configuracoes.PATH_RESOURCES + Configuracoes.SEPARATOR + arquivoConfig),
+					charset));
 
 		} catch (IOException e) {
 
