@@ -10,12 +10,14 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.components.PanelActions;
 import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.repository.dao.MarcaDAO;
 import br.com.sysdesc.repository.model.Marca;
+import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.util.classes.StringUtil;
 import net.miginfocom.swing.MigLayout;
 
@@ -31,8 +33,8 @@ public class FrmMarca extends AbstractInternalFrame {
 	private PanelActions<Marca> panelActions;
 	private MarcaDAO marcaDAO = new MarcaDAO();
 
-	public FrmMarca(FrmApplication frmApplication) {
-		super(frmApplication);
+	public FrmMarca(PermissaoPrograma permissaoPrograma) {
+		super(permissaoPrograma);
 
 		setSize(450, 160);
 		setClosable(Boolean.TRUE);

@@ -38,6 +38,12 @@
 			<artifactId>util</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>br.com.sysdesc</groupId>
+			<artifactId>repository</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>

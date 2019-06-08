@@ -4,16 +4,18 @@
 	<persistence-unit name="SysDesc">
 		<class>br.com.sysdesc.repository.model.Cidade</class>
 		<class>br.com.sysdesc.repository.model.Cliente</class>
+		<class>br.com.sysdesc.repository.model.Departamento</class>
 		<class>br.com.sysdesc.repository.model.Estado</class>
+		<class>br.com.sysdesc.repository.model.Marca</class>
 		<class>br.com.sysdesc.repository.model.Perfil</class>
+		<class>br.com.sysdesc.repository.model.PermissaoPesquisa</class>
+		<class>br.com.sysdesc.repository.model.PermissaoPrograma</class>
 		<class>br.com.sysdesc.repository.model.Pesquisa</class>
 		<class>br.com.sysdesc.repository.model.PesquisaCampo</class>
-		<class>br.com.sysdesc.repository.model.Usuario</class>
 		<class>br.com.sysdesc.repository.model.Programa</class>
-		<class>br.com.sysdesc.repository.model.PermissaoPrograma</class>
+		<class>br.com.sysdesc.repository.model.Usuario</class>
 		<class>br.com.sysdesc.repository.model.PerfilUsuario</class>
-		<class>br.com.sysdesc.repository.model.Marca</class>
-		<class>br.com.sysdesc.repository.model.Departamento</class>
+		<class>br.com.sysdesc.repository.model.pk.PerfilUsuarioPk</class>
 	</persistence-unit>
 
 </persistence>

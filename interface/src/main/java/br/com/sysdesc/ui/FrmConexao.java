@@ -52,7 +52,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FrmConexao extends JDialog {
 
-	private static final String BARRA = "/";
 	private static final String SEARCH_PNG = "search.png";
 	private static final String DOIS_PONTOS = ":";
 
@@ -168,7 +167,8 @@ public class FrmConexao extends JDialog {
 
 		TipoConexaoEnum tipoConexaoEnum = (TipoConexaoEnum) cbTipoBanco.getSelectedItem();
 
-		String url = txUrl.getText() + DOIS_PONTOS + txPorta.getText() + BARRA + cbBanco.getSelectedItem().toString();
+		String url = txUrl.getText() + DOIS_PONTOS + txPorta.getText() + Configuracoes.SEPARATOR
+				+ cbBanco.getSelectedItem().toString();
 
 		Properties properties = new Properties();
 		properties.put(tipoConexaoEnum.getJdbcDriver(), tipoConexaoEnum.getDriver());
@@ -198,7 +198,7 @@ public class FrmConexao extends JDialog {
 
 			TipoConexaoEnum tipoConexaoEnum = (TipoConexaoEnum) cbTipoBanco.getSelectedItem();
 
-			String urlConexao = txUrl.getText() + DOIS_PONTOS + txPorta.getText() + BARRA
+			String urlConexao = txUrl.getText() + DOIS_PONTOS + txPorta.getText() + Configuracoes.SEPARATOR
 					+ tipoConexaoEnum.getDefaultDatabase();
 
 			try {
