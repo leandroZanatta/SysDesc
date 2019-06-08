@@ -16,6 +16,7 @@
 	<include file="db/changeset/20190511_181600_tb_permissaoprograma.xml" />
 	<include file="db/changeset/20190515_201300_tb_marca.xml" />
 	<include file="db/changeset/20190522_193200_tb_departamento.xml" />
+	<include file="db/changeset/20190508_221900_tb_pesquisaselect.xmls" />
 
 	<include file="db/inserts/db.inserts-10000000.xml" />
 
