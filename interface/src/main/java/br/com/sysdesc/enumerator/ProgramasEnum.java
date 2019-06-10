@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
+import br.com.sysdesc.pesquisa.ui.FrmCadastroPesquisa;
 import br.com.sysdesc.ui.FrmDepartamento;
 import br.com.sysdesc.ui.FrmEstado;
 import br.com.sysdesc.ui.FrmMarca;
@@ -22,7 +23,9 @@ public enum ProgramasEnum {
 
 	CADASTRO_ESTADOS(6L, FrmEstado.class),
 
-	CADASTRO_UNIDADE(9L, FrmUnidade.class);
+	CADASTRO_UNIDADE(9L, FrmUnidade.class),
+
+	CADASTRO_PESQUISA(11L, FrmCadastroPesquisa.class);
 
 	private static Map<Long, ProgramasEnum> mapa = new HashMap<>();
 

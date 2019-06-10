@@ -21,17 +21,6 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>br.com.sysdesc</groupId>
-				<artifactId>libraries</artifactId>
-				<version>${project.parent.version}</version>
-				<scope>import</scope>
-				<type>pom</type>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<dependencies>
 
@@ -97,6 +86,11 @@
 					<artifactId>google-java-format</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>br.com.sysdesc</groupId>
+			<artifactId>components</artifactId>
+			<version>${project.parent.version}</version>
 		</dependency>
 	</dependencies>
 </project>

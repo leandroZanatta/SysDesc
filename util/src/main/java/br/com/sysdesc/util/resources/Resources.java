@@ -34,6 +34,7 @@ public class Resources {
 	public static final String TBLCONFIG_FORMATO = "TBLCONFIG_FORMATO";
 	public static final String TBLCONFIG_TIPO_TAMANHO = "TBLCONFIG_TIPO_TAMANHO";
 	public static final String TBLCONFIG_TAMANHO = "TBLCONFIG_TAMANHO";
+	public static final String TBLCONFIG_FORMATACAO = "TBLCONFIG_FORMATACAO";
 
 	public static final String FRMCONEXAO_TITULO = "FRMCONEXAO_TITULO";
 	public static final String FRMCONEXAO_MSG_SALVAR = "FRMCONEXAO_MSG_SALVAR";
@@ -76,6 +77,11 @@ public class Resources {
 	public static final String FRMUNIDADE_TITLE = "FRMUNIDADE_TITLE";
 	public static final String FRMUNIDADE_LB_CODIGO = "FRMUNIDADE_LB_CODIGO";
 	public static final String FRMUNIDADE_LB_DESCRICAO = "FRMUNIDADE_LB_DESCRICAO";
+
+	public static final String FRMPESQUISA_TITLE = "FRMPESQUISA_TITLE";
+	public static final String FRMPESQUISA_LB_CODIGO = "FRMPESQUISA_LB_CODIGO";
+	public static final String FRMPESQUISA_LB_PESQUISA = "FRMPESQUISA_LB_PESQUISA";
+	public static final String FRMPESQUISA_LB_PAGINACAO = "FRMPESQUISA_LB_PAGINACAO";
 
 	static {
 		try {
