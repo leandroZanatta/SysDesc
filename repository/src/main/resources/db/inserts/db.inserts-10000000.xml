@@ -82,7 +82,7 @@
 		<insert tableName="tb_programa">
 			<column name="id_programa" value="6" />
 			<column name="cd_programa" value="1" />
-			<column name="tx_descricao" value="FRMAPPLICATION_MI_CIDADE" />
+			<column name="tx_descricao" value="FRMAPPLICATION_MI_ESTADOS" />
 			<column name="tx_icone" value="estados.png" />
 			<column name="fl_acessorapido" valueBoolean="false" />
 		</insert>
@@ -90,11 +90,10 @@
 		<insert tableName="tb_programa">
 			<column name="id_programa" value="8" />
 			<column name="cd_programa" value="1" />
-			<column name="tx_descricao" value="FRMAPPLICATION_MI_ESTADOS" />
+			<column name="tx_descricao" value="FRMAPPLICATION_MI_CIDADE" />
 			<column name="tx_icone" value="estados.png" />
 			<column name="fl_acessorapido" valueBoolean="false" />
 		</insert>
-
 
 		<insert tableName="tb_permissaoprograma">
 			<column name="id_permissaoprograma" value="1" />
