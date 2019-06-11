@@ -167,8 +167,7 @@ public class FrmConexao extends JDialog {
 
 		TipoConexaoEnum tipoConexaoEnum = (TipoConexaoEnum) cbTipoBanco.getSelectedItem();
 
-		String url = txUrl.getText() + DOIS_PONTOS + txPorta.getText() + Configuracoes.SEPARATOR
-				+ cbBanco.getSelectedItem().toString();
+		String url = txUrl.getText() + DOIS_PONTOS + txPorta.getText() + "/" + cbBanco.getSelectedItem().toString();
 
 		Properties properties = new Properties();
 		properties.put(tipoConexaoEnum.getJdbcDriver(), tipoConexaoEnum.getDriver());
@@ -198,7 +197,7 @@ public class FrmConexao extends JDialog {
 
 			TipoConexaoEnum tipoConexaoEnum = (TipoConexaoEnum) cbTipoBanco.getSelectedItem();
 
-			String urlConexao = txUrl.getText() + DOIS_PONTOS + txPorta.getText() + Configuracoes.SEPARATOR
+			String urlConexao = txUrl.getText() + DOIS_PONTOS + txPorta.getText() + "/"
 					+ tipoConexaoEnum.getDefaultDatabase();
 
 			try {
