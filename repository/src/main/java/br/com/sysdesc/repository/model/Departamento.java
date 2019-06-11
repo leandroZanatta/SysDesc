@@ -12,9 +12,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "tb_departamento")
 @SequenceGenerator(name = "GEN_DEPARTAMENTO", allocationSize = 1, sequenceName = "GEN_DEPARTAMENTO")
@@ -31,5 +33,10 @@ public class Departamento implements Serializable {
 
 	@OneToMany(mappedBy = "departamento")
 	private List<Categoria> categorias;
+
+	@Override
+	public String toString() {
+		return descricao;
+	}
 
 }

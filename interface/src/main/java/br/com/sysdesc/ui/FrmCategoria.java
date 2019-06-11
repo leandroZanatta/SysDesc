@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
@@ -61,6 +63,8 @@ public class FrmCategoria extends AbstractInternalFrame {
 		txDescricao = new JTextFieldMaiusculo();
 
 		departamentoDAO.listar().forEach(cbDepartamento::addItem);
+		cbDepartamento.setEditable(Boolean.TRUE);
+		AutoCompleteDecorator.decorate(cbDepartamento);
 
 		painelContent.setLayout(new MigLayout("", "[grow]", "[][][][][][][grow]"));
 		getContentPane().add(painelContent);
