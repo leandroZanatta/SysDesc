@@ -76,7 +76,7 @@ public class Resources {
 	public static final String FRMCATEGORIA_TITLE = "FRMCATEGORIA_TITLE";
 	public static final String FRMCATEGORIA_LB_CODIGO = "FRMCATEGORIA_LB_CODIGO";
 	public static final String FRMCATEGORIA_LB_DEPARTAMENTO = "FRMCATEGORIA_LB_DEPARTAMENTO";
-	public static final String FRMCATEGORIA_LB_DESCRICAOCATEGORIA = "FRMCATEGORIA_LB_DESCRICAOCATEGORIA";
+	public static final String FRMCATEGORIA_LB_DESCRICAO = "FRMCATEGORIA_LB_DESCRICAO";
 
 	static {
 		try {
