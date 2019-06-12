@@ -29,6 +29,15 @@ public class Pesquisa implements Serializable {
 	@Column(name = "cd_pesquisa")
 	private Long codigoPesquisa;
 
+	@Column(name = "tx_descricao")
+	private String descricao;
+
+	@Column(name = "nr_paginacao")
+	private Long paginacao;
+
+	@Column(name = "cd_tipo")
+	private Long tipo;
+
 	@OneToMany(mappedBy = "pesquisa")
 	private List<PermissaoPesquisa> permissaoPesquisas;
 

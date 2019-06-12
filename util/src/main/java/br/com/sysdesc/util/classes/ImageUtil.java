@@ -15,7 +15,7 @@ public class ImageUtil {
 	public static ImageIcon resize(String source, Integer width, Integer height) {
 
 		try {
-			return resize(new File(Configuracoes.FOLDER_IMAGE + "\\" + source), width, height);
+			return resize(new File(Configuracoes.FOLDER_IMAGE + File.separator + source), width, height);
 		} catch (MalformedURLException e) {
 			return null;
 		}

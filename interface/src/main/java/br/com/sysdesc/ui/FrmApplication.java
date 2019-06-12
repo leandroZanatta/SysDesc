@@ -182,13 +182,12 @@ public class FrmApplication extends JFrame {
 					createSubMenus(menuToolbar, programa);
 
 				});
-
-				menuBar.repaint();
-				toolBar.repaint();
-
 			}
 
 		});
+
+		menuBar.repaint();
+		toolBar.repaint();
 	}
 
 	private void createSubMenus(JMenu menuToolbar, Programa menu) {

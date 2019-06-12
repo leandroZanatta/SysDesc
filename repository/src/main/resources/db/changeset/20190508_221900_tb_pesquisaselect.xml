@@ -3,38 +3,43 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd  http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-	<changeSet id="20190508_221800" author="leandro">
+	<changeSet id="20190508_221900" author="leandro">
 
 		<preConditions onFail="CONTINUE">
 			<not>
-				<tableExists tableName="tb_pesquisa" />
+				<tableExists tableName="tb_pesquisaselect" />
 			</not>
 		</preConditions>
 
-		<createTable tableName="tb_pesquisa">
+		<createTable tableName="tb_pesquisaselect">
 
-			<column name="id_pesquisa" type="NUMBER(18,0)" remarks="CÓDIGO INDENTIFICADOR">
-				<constraints primaryKey="true" primaryKeyName="pesquisa_pk" nullable="false" />
+			<column name="id_pesquisaselect" type="NUMBER(18,0)" remarks="CÓDIGO INDENTIFICADOR">
+				<constraints primaryKey="true" primaryKeyName="pesquisaselect_pk" nullable="false" />
 			</column>
 
 			<column name="cd_pesquisa" type="NUMBER(18,0)" remarks="CÓDIGO DA PESQUISA">
 				<constraints nullable="false" />
 			</column>
 
-			<column name="tx_descricao" type="VARCHAR(50)" remarks="DESCRIÇÃO DA PESQUISA">
+			<column name="fl_pesquisaavancada" type="BOOLEAN" remarks="USA PROJECTIONS E SELECT PERSONALIZADO">
 				<constraints nullable="false" />
 			</column>
 
-			<column name="nr_paginacao" type="NUMBER(18,0)" remarks="NÚMERO PAGINACAO">
+			<column name="tx_select" type="TEXT" remarks="SELECT DA PESQUISA">
 				<constraints nullable="false" />
 			</column>
-			
-			<column name="cd_tipo" type="NUMBER(18,0)" remarks="TIPO DE PESQUISA(0 = NORMAL, 1 = AVANÇADA)">
+
+			<column name="bl_projection" type="BLOB" remarks="CLASSE DA PROJECTION">
 				<constraints nullable="false" />
 			</column>
+
 		</createTable>
 
-		<createSequence sequenceName="gen_pesquisa" />
+		<addForeignKeyConstraint baseColumnNames="cd_pesquisa" baseTableName="tb_pesquisaselect" constraintName="fk_select_pesquisa"
+			onDelete="CASCADE" onUpdate="CASCADE" referencedColumnNames="id_pesquisa" referencedTableName="tb_pesquisa" />
+
+
+		<createSequence sequenceName="gen_pesquisaselect" />
 	</changeSet>
 
 </databaseChangeLog>

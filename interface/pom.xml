@@ -23,31 +23,46 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>br.com.sysdesc</groupId>
 			<artifactId>util</artifactId>
 			<version>${project.parent.version}</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>br.com.sysdesc</groupId>
 			<artifactId>repository</artifactId>
 			<version>${project.parent.version}</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>br.com.sysdesc</groupId>
 			<artifactId>components</artifactId>
-			<version>1.00.00.000</version>
+			<version>${project.parent.version}</version>
+			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>br.com.sysdesc</groupId>
 			<artifactId>service</artifactId>
 			<version>${project.parent.version}</version>
+			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>br.com.sysdesc</groupId>
 			<artifactId>pesquisa</artifactId>
 			<version>${project.parent.version}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 

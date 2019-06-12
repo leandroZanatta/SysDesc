@@ -17,7 +17,7 @@
 				<constraints primaryKey="true" primaryKeyName="permissaopesquisa_pk" nullable="false" />
 			</column>
 
-			<column name="cd_pesquisa" type="NUMBER(18,0)" remarks="CÓDIGO DO USUÁRIO">
+			<column name="cd_pesquisa" type="NUMBER(18,0)" remarks="CÓDIGO DA PESQUISA">
 				<constraints nullable="false" />
 			</column>
 
