@@ -18,6 +18,8 @@
 	<include file="db/changeset/20190522_193200_tb_departamento.xml" />
 	<include file="db/changeset/20190508_221900_tb_pesquisaselect.xml" />
 	<include file="db/changeset/20190605_195000_tb_unidade.xml" />
+	<include file="db/changeset/20190522_193200_tb_departamento.xml" />
+	<include file="db/changeset/20190605_190100_tb_categoria.xml" />
 
 	<include file="db/inserts/db.inserts-10000000.xml" />
 

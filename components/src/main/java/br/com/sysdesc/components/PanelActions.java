@@ -327,7 +327,7 @@ public abstract class PanelActions<T> extends JPanel {
 		}
 
 		if (camposTela.containsKey(JComboBox.class)) {
-			camposTela.get(JComboBox.class).forEach(x -> ((JComboBox<?>) x).setEditable(!bloquear));
+			camposTela.get(JComboBox.class).forEach(x -> ((JComboBox<?>) x).setEnabled(!bloquear));
 		}
 
 		if (camposTela.containsKey(JCheckBox.class)) {
