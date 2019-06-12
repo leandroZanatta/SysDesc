@@ -82,6 +82,10 @@ public class Resources {
 	public static final String FRMPESQUISA_LB_CODIGO = "FRMPESQUISA_LB_CODIGO";
 	public static final String FRMPESQUISA_LB_PESQUISA = "FRMPESQUISA_LB_PESQUISA";
 	public static final String FRMPESQUISA_LB_PAGINACAO = "FRMPESQUISA_LB_PAGINACAO";
+	public static final String FRMPESQUISA_LB_DESCRICAO = "FRMPESQUISA_LB_DESCRICAO";
+	public static final String FRMPESQUISA_MSG_DESCRICAO = "FRMPESQUISA_MSG_DESCRICAO";
+	public static final String FRMPESQUISA_MSG_PAGINACAO = "FRMPESQUISA_MSG_PAGINACAO";
+	public static final String FRMPESQUISA_MSG_PESQUISA = "FRMPESQUISA_MSG_PESQUISA";
 
 	static {
 		try {
