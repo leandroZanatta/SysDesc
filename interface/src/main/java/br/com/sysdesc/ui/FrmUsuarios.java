@@ -12,12 +12,13 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
-import br.com.sysdesc.components.PanelActions;
+import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.dao.UsuarioDAO;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Usuario;
 import br.com.sysdesc.util.classes.CryptoUtil;
 import br.com.sysdesc.util.classes.StringUtil;
+import br.com.sysdesc.util.enumeradores.PesquisaEnum;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmUsuarios extends AbstractInternalFrame {
@@ -33,8 +34,8 @@ public class FrmUsuarios extends AbstractInternalFrame {
 	private PanelActions<Usuario> panelActions;
 	private UsuarioDAO loginDAO = new UsuarioDAO();
 
-	public FrmUsuarios(PermissaoPrograma permissaoPrograma) {
-		super(permissaoPrograma);
+	public FrmUsuarios(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
+		super(permissaoPrograma, codigoUsuario);
 
 		setSize(450, 210);
 		setClosable(Boolean.TRUE);
@@ -57,7 +58,7 @@ public class FrmUsuarios extends AbstractInternalFrame {
 		painelContent.add(lblSenha, "cell 0 4");
 		painelContent.add(passwordField, "cell 0 5,growx");
 
-		panelActions = new PanelActions<Usuario>(this, loginDAO) {
+		panelActions = new PanelActions<Usuario>(this, loginDAO, PesquisaEnum.PES_USUARIOS) {
 
 			private static final long serialVersionUID = 1L;
 

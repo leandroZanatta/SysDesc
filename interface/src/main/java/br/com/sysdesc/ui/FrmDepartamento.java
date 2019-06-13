@@ -11,11 +11,12 @@ import javax.swing.JPanel;
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
-import br.com.sysdesc.components.PanelActions;
 import br.com.sysdesc.components.adapters.PanelEventAdapter;
+import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.dao.DepartamentoDAO;
 import br.com.sysdesc.repository.model.Departamento;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
+import br.com.sysdesc.util.enumeradores.PesquisaEnum;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmDepartamento extends AbstractInternalFrame {
@@ -32,8 +33,8 @@ public class FrmDepartamento extends AbstractInternalFrame {
 	private PanelActions<Departamento> panelActions;
 	private DepartamentoDAO departamentoDAO = new DepartamentoDAO();
 
-	public FrmDepartamento(PermissaoPrograma permissaoPrograma) {
-		super(permissaoPrograma);
+	public FrmDepartamento(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
+		super(permissaoPrograma, codigoUsuario);
 
 		setSize(450, 160);
 		setClosable(Boolean.TRUE);
@@ -57,7 +58,7 @@ public class FrmDepartamento extends AbstractInternalFrame {
 		painelContent.add(lblDescricao, "cell 0 2");
 		painelContent.add(txDescricao, "cell 0 3,growx");
 
-		panelActions = new PanelActions<Departamento>(this, departamentoDAO) {
+		panelActions = new PanelActions<Departamento>(this, departamentoDAO, PesquisaEnum.PES_DEPARTAMENTOS) {
 
 			private static final long serialVersionUID = 1L;
 

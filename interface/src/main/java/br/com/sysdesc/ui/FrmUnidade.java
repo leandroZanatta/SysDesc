@@ -24,8 +24,8 @@ public class FrmUnidade extends AbstractInternalFrame {
 	private JLabel lblDescricao;
 	private JTextFieldMaiusculo txDescricao;
 
-	public FrmUnidade(PermissaoPrograma permissaoPrograma) {
-		super(permissaoPrograma);
+	public FrmUnidade(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
+		super(permissaoPrograma, codigoUsuario);
 
 		setSize(450, 210);
 		setClosable(Boolean.TRUE);

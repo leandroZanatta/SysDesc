@@ -119,9 +119,10 @@ public class FrmApplication extends JFrame {
 
 		try {
 
-			Constructor<? extends AbstractInternalFrame> constructor = frame.getConstructor(PermissaoPrograma.class);
+			Constructor<? extends AbstractInternalFrame> constructor = frame.getConstructor(PermissaoPrograma.class,
+					Long.class);
 
-			AbstractInternalFrame internalFrame = constructor.newInstance(permissaoPrograma);
+			AbstractInternalFrame internalFrame = constructor.newInstance(permissaoPrograma, usuario.getIdUsuario());
 
 			desktopPane.add(internalFrame);
 

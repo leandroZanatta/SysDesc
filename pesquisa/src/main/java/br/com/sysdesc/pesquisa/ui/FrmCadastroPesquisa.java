@@ -1,9 +1,5 @@
 package br.com.sysdesc.pesquisa.ui;
 
-import static br.com.sysdesc.util.resources.Resources.FRMPESQUISA_LB_CODIGO;
-import static br.com.sysdesc.util.resources.Resources.FRMPESQUISA_LB_DESCRICAO;
-import static br.com.sysdesc.util.resources.Resources.FRMPESQUISA_LB_PAGINACAO;
-import static br.com.sysdesc.util.resources.Resources.FRMPESQUISA_LB_PESQUISA;
 import static br.com.sysdesc.util.resources.Resources.FRMPESQUISA_MSG_DESCRICAO;
 import static br.com.sysdesc.util.resources.Resources.FRMPESQUISA_MSG_PAGINACAO;
 import static br.com.sysdesc.util.resources.Resources.FRMPESQUISA_MSG_PESQUISA;
@@ -12,26 +8,25 @@ import static br.com.sysdesc.util.resources.Resources.translate;
 
 import java.awt.BorderLayout;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTable;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
-import br.com.sysdesc.components.CampoPesquisa;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
-import br.com.sysdesc.components.PanelActions;
 import br.com.sysdesc.components.adapters.PanelEventAdapter;
-import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
+import br.com.sysdesc.pesquisa.components.CampoPesquisa;
+import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.dao.PesquisaNormalDAO;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Pesquisa;
 import br.com.sysdesc.util.classes.LongUtil;
 import br.com.sysdesc.util.classes.StringUtil;
+import br.com.sysdesc.util.enumeradores.PesquisaEnum;
 import br.com.sysdesc.util.enumeradores.TipoPesquisaEnum;
 import net.miginfocom.swing.MigLayout;
 
@@ -48,91 +43,89 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 	private JComboBox<PesquisaEnum> cbPesquisa;
 	private JPanel painelContent;
 	private JTextFieldMaiusculo txDescricao;
-	private JTabbedPane tabbedPane;
-	private JPanel contentGeral;
 
 	private PanelActions<Pesquisa> panelActions;
 	private PesquisaNormalDAO pesquisaDAO = new PesquisaNormalDAO();
-	private JPanel panel;
-	private JScrollPane scrollPane;
-	private JTable table;
 	private JLabel lblNewLabel;
 	private CampoPesquisa pesquisaUsuario;
 	private JLabel lblNewLabel_1;
 	private CampoPesquisa pesquisaPerfis;
+	private JPanel panel;
+	private JPanel panel_1;
+	private JScrollPane scrollPane;
+	private JButton btnNewButton;
+	private JButton btnNewButton_1;
 
 	public FrmCadastroPesquisa() {
-		this(null);
+		this(null, 1L);
 	}
 
-	public FrmCadastroPesquisa(PermissaoPrograma permissaoPrograma) {
-		super(permissaoPrograma);
+	public FrmCadastroPesquisa(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
+		super(permissaoPrograma, codigoUsuario);
 
-		setSize(643, 400);
+		setSize(800, 400);
 		setClosable(Boolean.TRUE);
 		setTitle(translate(FRMPESQUISA_TITLE));
 
 		painelContent = new JPanel();
-		painelContent.setLayout(new BorderLayout(0, 0));
-		lblCodigo = new JLabel(translate(FRMPESQUISA_LB_CODIGO));
-		lblPesquisa = new JLabel(translate(FRMPESQUISA_LB_PESQUISA));
-		lblPaginacao = new JLabel(translate(FRMPESQUISA_LB_PAGINACAO));
-		lblDescricao = new JLabel(translate(FRMPESQUISA_LB_DESCRICAO));
 
-		tabbedPane = new JTabbedPane();
-		contentGeral = new JPanel();
-		panel = new JPanel();
+		lblCodigo = new JLabel("Código:");
+		lblPaginacao = new JLabel("Paginacao:");
+		lblDescricao = new JLabel("Descrição:");
 
 		txCodigo = new JNumericField();
 		txDescricao = new JTextFieldMaiusculo();
 		txPaginacao = new JNumericField();
-		cbPesquisa = new JComboBox<PesquisaEnum>(PesquisaEnum.values());
-		// cbPesquisa = new JComboBox<PesquisaEnum>();
 
-		tabbedPane.addTab("Geral", null, contentGeral, null);
-		tabbedPane.addTab("Fields", null, panel, null);
+		painelContent.setLayout(new MigLayout("", "[grow][grow][80.00]", "[][][][][][][grow][]"));
+
+		painelContent.add(lblCodigo, "cell 0 0");
+		painelContent.add(txCodigo, "cell 0 1, width 50:100:100");
+
+		painelContent.add(lblDescricao, "cell 0 2");
+		lblPesquisa = new JLabel("Pesquisa:");
+
+		painelContent.add(lblPesquisa, "cell 1 2");
+		painelContent.add(txDescricao, "cell 0 3,growx");
+
+		painelContent.add(lblPaginacao, "cell 2 2");
+		// cbPesquisa = new JComboBox<PesquisaEnum>(PesquisaEnum.values());
+		cbPesquisa = new JComboBox<PesquisaEnum>();
+		painelContent.add(cbPesquisa, "cell 1 3,growx");
+		painelContent.add(txPaginacao, "cell 2 3,growx");
+
+		lblNewLabel_1 = new JLabel("Perfis:");
+		painelContent.add(lblNewLabel_1, "cell 0 4");
+
+		lblNewLabel = new JLabel("Usuário:");
+		painelContent.add(lblNewLabel, "cell 1 4");
+
+		pesquisaPerfis = new CampoPesquisa();
+		painelContent.add(pesquisaPerfis, "cell 0 5,growx");
+
+		pesquisaUsuario = new CampoPesquisa();
+		painelContent.add(pesquisaUsuario, "cell 1 5 2 1,growx");
+
+		getContentPane().add(painelContent);
+
+		panel = new JPanel();
+		painelContent.add(panel, "cell 0 6 3 1,grow");
 		panel.setLayout(new BorderLayout(0, 0));
+
+		panel_1 = new JPanel();
+		panel.add(panel_1, BorderLayout.EAST);
+		panel_1.setLayout(new MigLayout("", "[]", "[23px,grow][][][grow]"));
+
+		btnNewButton = new JButton("");
+		panel_1.add(btnNewButton, "cell 0 1,alignx left,aligny top");
+
+		btnNewButton_1 = new JButton("");
+		panel_1.add(btnNewButton_1, "cell 0 2,alignx left,aligny top");
 
 		scrollPane = new JScrollPane();
 		panel.add(scrollPane, BorderLayout.CENTER);
 
-		table = new JTable();
-		scrollPane.setViewportView(table);
-
-		cbPesquisa.addActionListener((e) -> tabbedPane.setEnabledAt(1, cbPesquisa.getSelectedIndex() >= 0));
-
-		tabbedPane.setEnabledAt(1, false);
-		painelContent.add(tabbedPane);
-
-		contentGeral.setLayout(new MigLayout("", "[grow][80.00]", "[][][][][][][][][][][grow]"));
-
-		contentGeral.add(lblCodigo, "cell 0 0");
-		contentGeral.add(txCodigo, "cell 0 1, width 50:100:100");
-
-		contentGeral.add(lblDescricao, "cell 0 2");
-		contentGeral.add(txDescricao, "cell 0 3,growx");
-
-		contentGeral.add(lblPaginacao, "cell 1 2");
-		contentGeral.add(txPaginacao, "cell 1 3,growx");
-
-		contentGeral.add(lblPesquisa, "cell 0 4");
-		contentGeral.add(cbPesquisa, "cell 0 5 2 1,growx");
-
-		lblNewLabel = new JLabel("Usuário:");
-		contentGeral.add(lblNewLabel, "cell 0 6");
-
-		pesquisaUsuario = new CampoPesquisa();
-		contentGeral.add(pesquisaUsuario, "cell 0 7 2 1,growx");
-
-		lblNewLabel_1 = new JLabel("Perfis:");
-		contentGeral.add(lblNewLabel_1, "cell 0 8");
-
-		pesquisaPerfis = new CampoPesquisa();
-		contentGeral.add(pesquisaPerfis, "cell 0 9 2 1,growx");
-
-		getContentPane().add(painelContent);
-
-		panelActions = new PanelActions<Pesquisa>(this, pesquisaDAO) {
+		panelActions = new PanelActions<Pesquisa>(this, pesquisaDAO, PesquisaEnum.PES_CATEGORIAS) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -194,7 +187,7 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 			}
 		});
 
-		painelContent.add(panelActions, BorderLayout.SOUTH);
+		painelContent.add(panelActions, "cell 0 7 3 1,alignx center");
 
 	}
 

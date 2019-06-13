@@ -13,12 +13,13 @@ import javax.swing.JPanel;
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
-import br.com.sysdesc.components.PanelActions;
 import br.com.sysdesc.components.adapters.PanelEventAdapter;
+import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.dao.MarcaDAO;
 import br.com.sysdesc.repository.model.Marca;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.util.classes.StringUtil;
+import br.com.sysdesc.util.enumeradores.PesquisaEnum;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmMarca extends AbstractInternalFrame {
@@ -33,8 +34,8 @@ public class FrmMarca extends AbstractInternalFrame {
 	private PanelActions<Marca> panelActions;
 	private MarcaDAO marcaDAO = new MarcaDAO();
 
-	public FrmMarca(PermissaoPrograma permissaoPrograma) {
-		super(permissaoPrograma);
+	public FrmMarca(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
+		super(permissaoPrograma, codigoUsuario);
 
 		setSize(450, 160);
 		setClosable(Boolean.TRUE);
@@ -54,7 +55,7 @@ public class FrmMarca extends AbstractInternalFrame {
 		painelContent.add(lblDescricao, "cell 0 2");
 		painelContent.add(txDescricao, "cell 0 3,growx");
 
-		panelActions = new PanelActions<Marca>(this, marcaDAO) {
+		panelActions = new PanelActions<Marca>(this, marcaDAO, PesquisaEnum.PES_MARCAS) {
 
 			private static final long serialVersionUID = 1L;
 

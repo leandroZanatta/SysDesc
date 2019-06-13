@@ -12,11 +12,12 @@ import javax.swing.JPanel;
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
-import br.com.sysdesc.components.PanelActions;
 import br.com.sysdesc.components.adapters.PanelEventAdapter;
+import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.dao.EstadoDAO;
 import br.com.sysdesc.repository.model.Estado;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
+import br.com.sysdesc.util.enumeradores.PesquisaEnum;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmEstado extends AbstractInternalFrame {
@@ -33,8 +34,8 @@ public class FrmEstado extends AbstractInternalFrame {
 	private PanelActions<Estado> panelActions;
 	private EstadoDAO estadoDAO = new EstadoDAO();
 
-	public FrmEstado(PermissaoPrograma permissaoPrograma) {
-		super(permissaoPrograma);
+	public FrmEstado(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
+		super(permissaoPrograma, codigoUsuario);
 
 		setSize(450, 210);
 		setClosable(Boolean.TRUE);
@@ -58,7 +59,7 @@ public class FrmEstado extends AbstractInternalFrame {
 		painelContent.add(lblUF, "cell 0 4,growx");
 		painelContent.add(txUF, "cell 0 5,growx");
 
-		panelActions = new PanelActions<Estado>(this, estadoDAO) {
+		panelActions = new PanelActions<Estado>(this, estadoDAO, PesquisaEnum.PES_ESTADOS) {
 
 			private static final long serialVersionUID = 1L;
 

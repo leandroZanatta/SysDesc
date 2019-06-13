@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import br.com.sysdesc.util.classes.ImageUtil;
+import br.com.sysdesc.util.enumeradores.PesquisaEnum;
 import net.miginfocom.swing.MigLayout;
 
 public class Pesquisa<T> extends JDialog {
@@ -36,9 +37,14 @@ public class Pesquisa<T> extends JDialog {
 
 	private Boolean ok = Boolean.FALSE;
 	private T objeto;
+	private final PesquisaEnum pesquisa;
+	private final Long codigoUsuario;
 
-	public Pesquisa(JFrame parent) {
+	public Pesquisa(JFrame parent, PesquisaEnum pesquisa, Long codigoUsuario) {
 		super(parent, Boolean.TRUE);
+
+		this.pesquisa = pesquisa;
+		this.codigoUsuario = codigoUsuario;
 
 		initComponents();
 

@@ -11,9 +11,12 @@ public class AbstractInternalFrame extends JInternalFrame {
 
 	private final PermissaoPrograma permissaoPrograma;
 
-	public AbstractInternalFrame(PermissaoPrograma permissaoPrograma) {
+	private final Long codigoUsuario;
+
+	public AbstractInternalFrame(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 
 		this.permissaoPrograma = permissaoPrograma;
+		this.codigoUsuario = codigoUsuario;
 
 		this.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
 
@@ -28,6 +31,10 @@ public class AbstractInternalFrame extends JInternalFrame {
 
 	public PermissaoPrograma getPermissaoPrograma() {
 		return permissaoPrograma;
+	}
+
+	public Long getCodigoUsuario() {
+		return codigoUsuario;
 	}
 
 }
