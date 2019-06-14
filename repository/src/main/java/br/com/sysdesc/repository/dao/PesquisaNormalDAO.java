@@ -3,6 +3,7 @@ package br.com.sysdesc.repository.dao;
 import static br.com.sysdesc.repository.model.QPesquisa.pesquisa;
 
 import br.com.sysdesc.repository.model.Pesquisa;
+import br.com.sysdesc.util.classes.LongUtil;
 import br.com.sysdesc.util.enumeradores.TipoPesquisaEnum;
 
 public class PesquisaNormalDAO extends AbstractGenericDAO<Pesquisa> {
@@ -12,15 +13,14 @@ public class PesquisaNormalDAO extends AbstractGenericDAO<Pesquisa> {
 	}
 
 	@Override
-	public Pesquisa next(Pesquisa classeConsulta) {
+	public Pesquisa next(Long id) {
 
-		if (classeConsulta == null || classeConsulta.getIdPesquisa() == null) {
+		if (LongUtil.isNullOrZero(id)) {
 			return last();
 		}
 
 		Pesquisa objeto = from()
-				.where(pesquisa.tipo.eq(TipoPesquisaEnum.NORMAL.getCodigo())
-						.and(pesquisa.idPesquisa.gt(Long.valueOf(classeConsulta.getIdPesquisa()))))
+				.where(pesquisa.tipo.eq(TipoPesquisaEnum.NORMAL.getCodigo()).and(pesquisa.idPesquisa.gt(id)))
 				.orderBy(pesquisa.idPesquisa.asc()).limit(1L).singleResult(pesquisa);
 
 		if (objeto == null) {
@@ -31,15 +31,14 @@ public class PesquisaNormalDAO extends AbstractGenericDAO<Pesquisa> {
 	}
 
 	@Override
-	public Pesquisa previows(Pesquisa classeConsulta) {
+	public Pesquisa previows(Long id) {
 
-		if (classeConsulta == null || classeConsulta.getIdPesquisa() == null) {
+		if (LongUtil.isNullOrZero(id)) {
 			return first();
 		}
 
 		Pesquisa objeto = from()
-				.where(pesquisa.tipo.eq(TipoPesquisaEnum.NORMAL.getCodigo())
-						.and(pesquisa.idPesquisa.lt(Long.valueOf(classeConsulta.getIdPesquisa()))))
+				.where(pesquisa.tipo.eq(TipoPesquisaEnum.NORMAL.getCodigo()).and(pesquisa.idPesquisa.lt(id)))
 				.orderBy(pesquisa.idPesquisa.desc()).limit(1L).singleResult(pesquisa);
 
 		if (objeto == null) {

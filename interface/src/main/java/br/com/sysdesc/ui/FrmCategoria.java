@@ -1,5 +1,6 @@
 package br.com.sysdesc.ui;
 
+import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_CATEGORIAS;
 import static br.com.sysdesc.util.resources.Resources.FRMCATEGORIA_LB_CODIGO;
 import static br.com.sysdesc.util.resources.Resources.FRMCATEGORIA_LB_DEPARTAMENTO;
 import static br.com.sysdesc.util.resources.Resources.FRMCATEGORIA_LB_DESCRICAO;
@@ -24,7 +25,6 @@ import br.com.sysdesc.repository.model.Categoria;
 import br.com.sysdesc.repository.model.Departamento;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.util.classes.StringUtil;
-import br.com.sysdesc.util.enumeradores.PesquisaEnum;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmCategoria extends AbstractInternalFrame {
@@ -77,7 +77,7 @@ public class FrmCategoria extends AbstractInternalFrame {
 		painelContent.add(lblDescricao, "cell 0 4");
 		painelContent.add(txDescricao, "cell 0 5,growx");
 
-		panelActions = new PanelActions<Categoria>(this, categoriaDAO, PesquisaEnum.PES_CATEGORIAS) {
+		panelActions = new PanelActions<Categoria>(this, Categoria::getIdCategoria, categoriaDAO, PES_CATEGORIAS) {
 
 			private static final long serialVersionUID = 1L;
 

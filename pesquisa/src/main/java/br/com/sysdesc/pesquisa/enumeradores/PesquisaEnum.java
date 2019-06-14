@@ -6,18 +6,21 @@ import java.util.Map;
 import br.com.sysdesc.repository.model.Departamento;
 import br.com.sysdesc.repository.model.Estado;
 import br.com.sysdesc.repository.model.Marca;
+import br.com.sysdesc.repository.model.Usuario;
 
 public enum PesquisaEnum {
 
-	PES_ESTADOS(1L, "Estados", Estado.class),
+	PES_USUARIOS(1L, "Usuários", Usuario.class),
 
-	PES_MARCAS(2L, "Marcas", Marca.class),
+	PES_ESTADOS(2L, "Estados", Estado.class),
 
-	PES_DEPARTAMENTOS(3L, "Departamentos", Departamento.class),
+	PES_MARCAS(3L, "Marcas", Marca.class),
 
-	PES_UNIDADES(4L, "Unidades", Departamento.class),
+	PES_DEPARTAMENTOS(4L, "Departamentos", Departamento.class),
 
-	PES_CATEGORIAS(5L, "Categorias", Departamento.class);
+	PES_UNIDADES(5L, "Unidades", Departamento.class),
+
+	PES_CATEGORIAS(6L, "Categorias", Departamento.class);
 
 	private static Map<Long, PesquisaEnum> map = new HashMap<>();
 

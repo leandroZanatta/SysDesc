@@ -1,5 +1,6 @@
 package br.com.sysdesc.ui;
 
+import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_USUARIOS;
 import static br.com.sysdesc.util.resources.Resources.FRMUSUARIO_LB_CODIGO;
 import static br.com.sysdesc.util.resources.Resources.FRMUSUARIO_LB_SENHA;
 import static br.com.sysdesc.util.resources.Resources.FRMUSUARIO_LB_USUARIO;
@@ -18,7 +19,6 @@ import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Usuario;
 import br.com.sysdesc.util.classes.CryptoUtil;
 import br.com.sysdesc.util.classes.StringUtil;
-import br.com.sysdesc.util.enumeradores.PesquisaEnum;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmUsuarios extends AbstractInternalFrame {
@@ -58,7 +58,7 @@ public class FrmUsuarios extends AbstractInternalFrame {
 		painelContent.add(lblSenha, "cell 0 4");
 		painelContent.add(passwordField, "cell 0 5,growx");
 
-		panelActions = new PanelActions<Usuario>(this, loginDAO, PesquisaEnum.PES_USUARIOS) {
+		panelActions = new PanelActions<Usuario>(this, Usuario::getIdUsuario, loginDAO, PES_USUARIOS) {
 
 			private static final long serialVersionUID = 1L;
 

@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -24,7 +26,7 @@ public class PesquisaCampo implements Serializable {
 	@Column(name = "id_pesquisacampo")
 	private Long idPesquisacampo;
 
-	@Column(name = "cd_pesquisa")
+	@Column(name = "cd_pesquisa", insertable = false, updatable = false)
 	private Long codigoPesquisa;
 
 	@Column(name = "fl_formatacao")
@@ -53,5 +55,9 @@ public class PesquisaCampo implements Serializable {
 
 	@Column(name = "tx_formato")
 	private String formato;
+
+	@ManyToOne
+	@JoinColumn(name = "cd_pesquisa")
+	private Pesquisa pesquisa;
 
 }

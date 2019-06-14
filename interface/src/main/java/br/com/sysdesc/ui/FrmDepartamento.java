@@ -1,5 +1,6 @@
 package br.com.sysdesc.ui;
 
+import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_DEPARTAMENTOS;
 import static br.com.sysdesc.util.resources.Resources.FRMDEPARTAMENTO_LB_CODIGO;
 import static br.com.sysdesc.util.resources.Resources.FRMDEPARTAMENTO_LB_DESCRICAO;
 import static br.com.sysdesc.util.resources.Resources.FRMDEPARTAMENTO_TITLE;
@@ -16,7 +17,6 @@ import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.dao.DepartamentoDAO;
 import br.com.sysdesc.repository.model.Departamento;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
-import br.com.sysdesc.util.enumeradores.PesquisaEnum;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmDepartamento extends AbstractInternalFrame {
@@ -58,7 +58,8 @@ public class FrmDepartamento extends AbstractInternalFrame {
 		painelContent.add(lblDescricao, "cell 0 2");
 		painelContent.add(txDescricao, "cell 0 3,growx");
 
-		panelActions = new PanelActions<Departamento>(this, departamentoDAO, PesquisaEnum.PES_DEPARTAMENTOS) {
+		panelActions = new PanelActions<Departamento>(this, Departamento::getIdDepartamento, departamentoDAO,
+				PES_DEPARTAMENTOS) {
 
 			private static final long serialVersionUID = 1L;
 

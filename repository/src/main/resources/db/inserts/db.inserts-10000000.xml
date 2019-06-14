@@ -219,6 +219,56 @@
 			<column name="fl_exclusao" valueBoolean="true" />
 		</insert>
 
+		<insert tableName="tb_pesquisa">
+			<column name="id_pesquisa" value="1" />
+			<column name="cd_pesquisa" value="1" />
+			<column name="tx_descricao" value="USUÁRIOS GERAL" />
+			<column name="nr_paginacao" value="20" />
+			<column name="cd_tipo" value="0" />
+		</insert>
+
+		<insert tableName="tb_permissaopesquisa">
+			<column name="id_permissaopesquisa" value="1" />
+			<column name="cd_pesquisa" value="1" />
+			<column name="cd_usuario" value="1" />
+		</insert>
+
+		<insert tableName="tb_pesquisacampo">
+			<column name="id_pesquisacampo" value="1" />
+			<column name="cd_pesquisa" value="1" />
+			<column name="fl_formatacao" value="0" />
+			<column name="fl_tipodado" value="1" />
+			<column name="fl_tipotamanho" value="1" />
+			<column name="fl_ordem" value="1" />
+			<column name="nr_tamanho" value="120" />
+			<column name="tx_campo" value="usuario1.idUsuario" />
+			<column name="tx_descricao" value="Código" />
+		</insert>
+
+		<insert tableName="tb_pesquisacampo">
+			<column name="id_pesquisacampo" value="2" />
+			<column name="cd_pesquisa" value="1" />
+			<column name="fl_formatacao" value="0" />
+			<column name="fl_tipodado" value="2" />
+			<column name="fl_tipotamanho" value="2" />
+			<column name="fl_ordem" value="2" />
+			<column name="nr_tamanho" value="1" />
+			<column name="tx_campo" value="usuario1.usuario" />
+			<column name="tx_descricao" value="Usuário" />
+		</insert>
+
+		<insert tableName="tb_pesquisacampo">
+			<column name="id_pesquisacampo" value="3" />
+			<column name="cd_pesquisa" value="1" />
+			<column name="fl_formatacao" value="0" />
+			<column name="fl_tipodado" value="2" />
+			<column name="fl_tipotamanho" value="2" />
+			<column name="fl_ordem" value="3" />
+			<column name="nr_tamanho" value="2" />
+			<column name="tx_campo" value="usuario1.cliente.nome" />
+			<column name="tx_descricao" value="Nome" />
+		</insert>
+
 	</changeSet>
 </databaseChangeLog>
 

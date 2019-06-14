@@ -3,12 +3,11 @@ package br.com.sysdesc.pesquisa.components;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Insets;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -24,10 +23,11 @@ import javax.swing.event.EventListenerList;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.listeners.PanelActionListener;
+import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
+import br.com.sysdesc.pesquisa.ui.FrmPesquisa;
+import br.com.sysdesc.repository.interfaces.GenericDAO;
 import br.com.sysdesc.util.classes.ClassTypeUtil;
 import br.com.sysdesc.util.classes.ImageUtil;
-import br.com.sysdesc.util.classes.interfaces.GenericDAO;
-import br.com.sysdesc.util.enumeradores.PesquisaEnum;
 import net.miginfocom.swing.MigLayout;
 
 public abstract class PanelActions<T> extends JPanel {
@@ -50,11 +50,14 @@ public abstract class PanelActions<T> extends JPanel {
 	private T objetoPesquisa;
 	private Map<Class<? extends Component>, List<Component>> camposTela = new HashMap<>();
 	protected Boolean isEdit = Boolean.FALSE;
+	private final Function<T, Long> id;
 
-	public PanelActions(AbstractInternalFrame internalFrame, GenericDAO<T> genericDAO, PesquisaEnum pesquisa) {
+	public PanelActions(AbstractInternalFrame internalFrame, Function<T, Long> id, GenericDAO<T> genericDAO,
+			PesquisaEnum pesquisa) {
 		this.internalFrame = internalFrame;
 		this.genericDAO = genericDAO;
 		this.pesquisa = pesquisa;
+		this.id = id;
 		initComponents();
 	}
 
@@ -203,7 +206,7 @@ public abstract class PanelActions<T> extends JPanel {
 
 	private void fowadEvent(PanelActions<T> painel) {
 
-		objetoPesquisa = genericDAO.previows(objetoPesquisa);
+		objetoPesquisa = genericDAO.previows(getValueId());
 
 		if (objetoPesquisa == null) {
 			JOptionPane.showMessageDialog(painel, NENHUM_REGISTRO_ENCONTRADO);
@@ -256,7 +259,7 @@ public abstract class PanelActions<T> extends JPanel {
 
 	private void nextEvent(PanelActions<T> painel) {
 
-		objetoPesquisa = genericDAO.next(objetoPesquisa);
+		objetoPesquisa = genericDAO.next(getValueId());
 
 		if (objetoPesquisa == null) {
 			JOptionPane.showMessageDialog(painel, NENHUM_REGISTRO_ENCONTRADO);
@@ -270,6 +273,15 @@ public abstract class PanelActions<T> extends JPanel {
 
 		bloquearBotoes(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE);
 
+	}
+
+	private Long getValueId() {
+		Long valor = null;
+
+		if (objetoPesquisa != null) {
+			valor = id.apply(objetoPesquisa);
+		}
+		return valor;
 	}
 
 	protected void bloquearBotoes(Boolean edit, Boolean save, Boolean novo) {
@@ -455,44 +467,26 @@ public abstract class PanelActions<T> extends JPanel {
 		this.objetoPesquisa = objetoPesquisa;
 	}
 
-	@SuppressWarnings("unchecked")
 	public void pesquisar() {
 
-		try {
+		JFrame parent = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
 
-			Class<?> classePesquisa = Class.forName("br.com.sysdesc.pesquisa.ui.Pesquisa");
+		FrmPesquisa<T> pesquisa = new FrmPesquisa<>(parent, this.pesquisa, this.genericDAO,
+				this.internalFrame.getCodigoUsuario());
 
-			Constructor<?> constructor = classePesquisa.getConstructor(JFrame.class, PesquisaEnum.class, Long.class);
+		pesquisa.setVisible(Boolean.TRUE);
 
-			Method metodoVisibilidade = classePesquisa.getMethod("setVisible", boolean.class);
+		if (pesquisa.getOk()) {
 
-			Object instancia = constructor.newInstance(SwingUtilities.getAncestorOfClass(JFrame.class, this),
-					this.pesquisa, this.internalFrame.getCodigoUsuario());
+			this.objetoPesquisa = pesquisa.getObjeto();
 
-			metodoVisibilidade.invoke(instancia, Boolean.TRUE);
+			limpar();
 
-			Method metodoIsOK = classePesquisa.getDeclaredMethod("getOk");
+			bloquear(Boolean.TRUE);
 
-			Boolean isOk = (Boolean) metodoIsOK.invoke(instancia);
+			carregarObjeto(objetoPesquisa);
 
-			if (isOk) {
-
-				Method metodoGetObjeto = classePesquisa.getMethod("getObjeto");
-
-				this.objetoPesquisa = (T) metodoGetObjeto.invoke(instancia);
-
-				limpar();
-
-				bloquear(Boolean.TRUE);
-
-				carregarObjeto(objetoPesquisa);
-
-				bloquearBotoes(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE);
-
-			}
-
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "ERRO AO INICIAR PESQUISA");
+			bloquearBotoes(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE);
 		}
 
 	}

@@ -1,7 +1,5 @@
 package br.com.sysdesc.repository.dao;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -15,7 +13,9 @@ import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.path.NumberPath;
 
 import br.com.sysdesc.repository.conexao.Conexao;
-import br.com.sysdesc.util.classes.interfaces.GenericDAO;
+import br.com.sysdesc.repository.interfaces.GenericDAO;
+import br.com.sysdesc.repository.model.Pesquisa;
+import br.com.sysdesc.util.classes.LongUtil;
 
 public abstract class AbstractGenericDAO<T> implements GenericDAO<T> {
 
@@ -23,19 +23,10 @@ public abstract class AbstractGenericDAO<T> implements GenericDAO<T> {
 	private final SQLTemplates sqlTemplates = Conexao.getSqlTemplates();
 	private EntityPath<T> entityPath;
 	private NumberPath<Long> campoId;
-	private Field fieldId;
 
-	@SuppressWarnings("unchecked")
 	public AbstractGenericDAO(EntityPath<T> entityPath, NumberPath<Long> idLogin) {
 		this.entityPath = entityPath;
 		this.campoId = idLogin;
-		Class<T> persistentClass = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass())
-				.getActualTypeArguments()[0];
-		try {
-			this.fieldId = persistentClass.getDeclaredField(idLogin.getMetadata().getName());
-		} catch (NoSuchFieldException | SecurityException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public JPASQLQuery sqlQuery() {
@@ -118,51 +109,35 @@ public abstract class AbstractGenericDAO<T> implements GenericDAO<T> {
 		return from().where(filter).singleResult(entityPath);
 	}
 
-	public T next(T classeConsulta) {
-		try {
-			fieldId.setAccessible(Boolean.TRUE);
+	public T next(Long id) {
 
-			if (classeConsulta == null || fieldId.get(classeConsulta) == null) {
-				return last();
-			}
-
-			T objeto = from().where(campoId.gt(Long.valueOf(fieldId.get(classeConsulta).toString())))
-					.orderBy(campoId.asc()).limit(1L).singleResult(entityPath);
-
-			if (objeto == null) {
-				return first();
-			}
-
-			return objeto;
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-
-			return null;
+		if (LongUtil.isNullOrZero(id)) {
+			return last();
 		}
+
+		T objeto = from().where(campoId.gt(id)).orderBy(campoId.asc()).limit(1L).singleResult(entityPath);
+
+		if (objeto == null) {
+			return first();
+		}
+
+		return objeto;
 
 	}
 
-	public T previows(T classeConsulta) {
+	public T previows(Long id) {
 
-		try {
-
-			fieldId.setAccessible(Boolean.TRUE);
-
-			if (classeConsulta == null || fieldId.get(classeConsulta) == null) {
-				return last();
-			}
-
-			T objeto = from().where(campoId.lt(Long.valueOf(fieldId.get(classeConsulta).toString())))
-					.orderBy(campoId.desc()).limit(1L).singleResult(entityPath);
-
-			if (objeto == null) {
-				return last();
-			}
-
-			return objeto;
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-
-			return null;
+		if (LongUtil.isNullOrZero(id)) {
+			return last();
 		}
+
+		T objeto = from().where(campoId.lt(id)).orderBy(campoId.desc()).limit(1L).singleResult(entityPath);
+
+		if (objeto == null) {
+			return last();
+		}
+
+		return objeto;
 
 	}
 
@@ -174,12 +149,10 @@ public abstract class AbstractGenericDAO<T> implements GenericDAO<T> {
 		return from().orderBy(campoId.asc()).singleResult(entityPath);
 	}
 
-	public Field getFieldId() {
-		return fieldId;
-	}
-
-	public void setFieldId(Field fieldId) {
-		this.fieldId = fieldId;
+	@Override
+	public List<T> pesquisar(boolean selected, String pesquisa, Pesquisa pesquisaExibir, Integer rows) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public EntityManager getEntityManager() {

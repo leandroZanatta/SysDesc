@@ -1,5 +1,6 @@
 package br.com.sysdesc.ui;
 
+import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_MARCAS;
 import static br.com.sysdesc.util.resources.Resources.FRMMARCA_LB_CODIGO;
 import static br.com.sysdesc.util.resources.Resources.FRMMARCA_LB_DESCRICAO;
 import static br.com.sysdesc.util.resources.Resources.FRMMARCA_MSG_DESCRICAO_INVALIDA;
@@ -19,7 +20,6 @@ import br.com.sysdesc.repository.dao.MarcaDAO;
 import br.com.sysdesc.repository.model.Marca;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.util.classes.StringUtil;
-import br.com.sysdesc.util.enumeradores.PesquisaEnum;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmMarca extends AbstractInternalFrame {
@@ -55,7 +55,7 @@ public class FrmMarca extends AbstractInternalFrame {
 		painelContent.add(lblDescricao, "cell 0 2");
 		painelContent.add(txDescricao, "cell 0 3,growx");
 
-		panelActions = new PanelActions<Marca>(this, marcaDAO, PesquisaEnum.PES_MARCAS) {
+		panelActions = new PanelActions<Marca>(this, Marca::getIdMarca, marcaDAO, PES_MARCAS) {
 
 			private static final long serialVersionUID = 1L;
 

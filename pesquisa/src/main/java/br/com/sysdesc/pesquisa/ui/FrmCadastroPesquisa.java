@@ -1,5 +1,8 @@
 package br.com.sysdesc.pesquisa.ui;
 
+import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_CATEGORIAS;
+import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.forValue;
+import static br.com.sysdesc.util.enumeradores.TipoPesquisaEnum.NORMAL;
 import static br.com.sysdesc.util.resources.Resources.FRMPESQUISA_MSG_DESCRICAO;
 import static br.com.sysdesc.util.resources.Resources.FRMPESQUISA_MSG_PAGINACAO;
 import static br.com.sysdesc.util.resources.Resources.FRMPESQUISA_MSG_PESQUISA;
@@ -21,13 +24,12 @@ import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.pesquisa.components.CampoPesquisa;
 import br.com.sysdesc.pesquisa.components.PanelActions;
+import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.repository.dao.PesquisaNormalDAO;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Pesquisa;
 import br.com.sysdesc.util.classes.LongUtil;
 import br.com.sysdesc.util.classes.StringUtil;
-import br.com.sysdesc.util.enumeradores.PesquisaEnum;
-import br.com.sysdesc.util.enumeradores.TipoPesquisaEnum;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmCadastroPesquisa extends AbstractInternalFrame {
@@ -125,7 +127,7 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 		scrollPane = new JScrollPane();
 		panel.add(scrollPane, BorderLayout.CENTER);
 
-		panelActions = new PanelActions<Pesquisa>(this, pesquisaDAO, PesquisaEnum.PES_CATEGORIAS) {
+		panelActions = new PanelActions<Pesquisa>(this, Pesquisa::getIdPesquisa, pesquisaDAO, PES_CATEGORIAS) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -134,7 +136,7 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 				txCodigo.setValue(objeto.getIdPesquisa());
 				txDescricao.setText(objeto.getDescricao());
 				txPaginacao.setValue(objeto.getPaginacao());
-				cbPesquisa.setSelectedItem(PesquisaEnum.forValue(objeto.getCodigoPesquisa()));
+				cbPesquisa.setSelectedItem(forValue(objeto.getCodigoPesquisa()));
 			}
 
 			@Override
@@ -143,7 +145,7 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 				objetoPesquisa.setDescricao(txDescricao.getText());
 				objetoPesquisa.setPaginacao(txPaginacao.getValue());
 				objetoPesquisa.setCodigoPesquisa(((PesquisaEnum) cbPesquisa.getSelectedItem()).getCodigoPesquisa());
-				objetoPesquisa.setTipo(TipoPesquisaEnum.NORMAL.getCodigo());
+				objetoPesquisa.setTipo(NORMAL.getCodigo());
 			}
 
 			@Override

@@ -41,4 +41,7 @@ public class Pesquisa implements Serializable {
 	@OneToMany(mappedBy = "pesquisa")
 	private List<PermissaoPesquisa> permissaoPesquisas;
 
+	@OneToMany(mappedBy = "pesquisa")
+	private List<PesquisaCampo> pesquisaCampos;
+
 }

@@ -1,5 +1,6 @@
 package br.com.sysdesc.ui;
 
+import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_ESTADOS;
 import static br.com.sysdesc.util.resources.Resources.FRMESTADO_LB_CODIGO;
 import static br.com.sysdesc.util.resources.Resources.FRMESTADO_LB_DESCRICAO;
 import static br.com.sysdesc.util.resources.Resources.FRMESTADO_LB_UF;
@@ -17,7 +18,6 @@ import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.dao.EstadoDAO;
 import br.com.sysdesc.repository.model.Estado;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
-import br.com.sysdesc.util.enumeradores.PesquisaEnum;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmEstado extends AbstractInternalFrame {
@@ -59,7 +59,7 @@ public class FrmEstado extends AbstractInternalFrame {
 		painelContent.add(lblUF, "cell 0 4,growx");
 		painelContent.add(txUF, "cell 0 5,growx");
 
-		panelActions = new PanelActions<Estado>(this, estadoDAO, PesquisaEnum.PES_ESTADOS) {
+		panelActions = new PanelActions<Estado>(this, Estado::getIdEstado, estadoDAO, PES_ESTADOS) {
 
 			private static final long serialVersionUID = 1L;
 
