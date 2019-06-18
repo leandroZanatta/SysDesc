@@ -1,6 +1,10 @@
 package br.com.sysdesc.pesquisa.components;
 
 import java.awt.Insets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,7 +18,7 @@ import br.com.sysdesc.repository.interfaces.GenericDAO;
 import br.com.sysdesc.util.classes.ImageUtil;
 import net.miginfocom.swing.MigLayout;
 
-public abstract class CampoPesquisa<T> extends JPanel {
+public abstract class CampoPesquisaMultiSelect<T> extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
@@ -23,10 +27,10 @@ public abstract class CampoPesquisa<T> extends JPanel {
 	private GenericDAO<T> genericDAO;
 	private PesquisaEnum pesquisaEnum;
 	private Long codigoUsuario;
-	private T objetoPesquisado;
+	private List<T> objetosPesquisados;
 	private Boolean pesquisaOk = Boolean.FALSE;
 
-	public CampoPesquisa(GenericDAO<T> genericDAO, PesquisaEnum pesquisaEnum, Long codigoUsuario) {
+	public CampoPesquisaMultiSelect(GenericDAO<T> genericDAO, PesquisaEnum pesquisaEnum, Long codigoUsuario) {
 
 		this.genericDAO = genericDAO;
 		this.pesquisaEnum = pesquisaEnum;
@@ -55,7 +59,7 @@ public abstract class CampoPesquisa<T> extends JPanel {
 
 		JFrame parent = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
 
-		FrmPesquisa<T> frmPesquisa = new FrmPesquisa<T>(parent, pesquisaEnum, genericDAO, codigoUsuario);
+		FrmPesquisa<T> frmPesquisa = new FrmPesquisa<T>(parent, pesquisaEnum, genericDAO, codigoUsuario, Boolean.TRUE);
 
 		frmPesquisa.setVisible(Boolean.TRUE);
 
@@ -63,26 +67,44 @@ public abstract class CampoPesquisa<T> extends JPanel {
 
 		if (frmPesquisa.getOk()) {
 
-			this.objetoPesquisado = frmPesquisa.getObjeto();
+			this.objetosPesquisados = frmPesquisa.getObjetos();
 
-			this.carregarCampo(txValorPesquisa, this.objetoPesquisado);
+			this.carregarCampo();
 
 			return;
 		}
 
 		txValorPesquisa.setText("");
-		this.objetoPesquisado = null;
+		this.objetosPesquisados = new ArrayList<>();
 
 	}
 
-	public abstract void carregarCampo(JTextField campoPesquisa, T objeto);
+	protected <K> void carregarCampo() {
+
+		if (this.objetosPesquisados.size() == 1) {
+
+			T objeto = this.objetosPesquisados.get(0);
+
+			txValorPesquisa.setText(String.format("%d - %s", getId().apply(objeto), getDescricao().apply(objeto)));
+
+			return;
+		}
+
+		txValorPesquisa.setText(objetosPesquisados.stream().map(x -> getId().apply(x).toString())
+				.collect(Collectors.joining(",", "< ", " >")));
+
+	};
+
+	public abstract Function<T, Long> getId();
+
+	public abstract Function<T, String> getDescricao();
 
 	public Boolean getPesquisaOk() {
 		return pesquisaOk;
 	}
 
-	public T getObjetoPesquisado() {
-		return objetoPesquisado;
+	public List<T> getObjetosPesquisado() {
+		return objetosPesquisados;
 	}
 
 }

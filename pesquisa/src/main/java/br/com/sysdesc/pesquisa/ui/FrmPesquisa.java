@@ -1,6 +1,9 @@
 package br.com.sysdesc.pesquisa.ui;
 
 import java.awt.BorderLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -8,11 +11,12 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 
+import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.pesquisa.enumeradores.TipoTamanhoEnum;
 import br.com.sysdesc.pesquisa.models.GenericTableModel;
@@ -28,19 +32,20 @@ public class FrmPesquisa<T> extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final String STR_REGISTROS = "Exibindo %d de %d registros";
 	private JTable table;
 	private JButton btConfigurar;
 	private JPanel panel;
 	private JPanel panel_1;
 	private JScrollPane scrollPane;
-	private JTextField textField;
-	private JButton btnNewButton;
+	private JTextFieldMaiusculo textField;
+	private JButton btImprimir;
 	private JButton btnPesquisar;
 	private JButton btnSelecionar;
 	private JCheckBox chckbxContm;
 
 	private Boolean ok = Boolean.FALSE;
-	private T objeto;
+	private List<T> objeto = new ArrayList<>();
 	private final PesquisaEnum pesquisaEnum;
 	private final Long codigoUsuario;
 	private PesquisaDAO pesquisaDAO = new PesquisaDAO();
@@ -48,13 +53,22 @@ public class FrmPesquisa<T> extends JDialog {
 	private GenericTableModel<T> genericTableModel;
 	private final GenericDAO<T> genericDAO;
 	private Integer rows = 0;
+	private Long numeroregistros = 0L;
+	private JLabel lbRegistros;
+	private final Boolean multiselect;
 
 	public FrmPesquisa(JFrame parent, PesquisaEnum pesquisaEnum, GenericDAO<T> genericDAO, Long codigoUsuario) {
+		this(parent, pesquisaEnum, genericDAO, codigoUsuario, Boolean.FALSE);
+	}
+
+	public FrmPesquisa(JFrame parent, PesquisaEnum pesquisaEnum, GenericDAO<T> genericDAO, Long codigoUsuario,
+			Boolean multiselect) {
 		super(parent, Boolean.TRUE);
 
 		this.pesquisaEnum = pesquisaEnum;
 		this.codigoUsuario = codigoUsuario;
 		this.genericDAO = genericDAO;
+		this.multiselect = multiselect;
 
 		this.initComponents();
 		this.buscarPesquisa();
@@ -62,11 +76,90 @@ public class FrmPesquisa<T> extends JDialog {
 		this.iniciarPesquisa();
 	}
 
+	private void initComponents() {
+		setSize(800, 450);
+		setLocationRelativeTo(null);
+		getContentPane().setLayout(new BorderLayout(0, 0));
+
+		panel = new JPanel();
+		getContentPane().add(panel, BorderLayout.SOUTH);
+		panel.setLayout(new MigLayout("", "[grow][][]", "[14px]"));
+
+		lbRegistros = new JLabel("");
+		panel.add(lbRegistros, "flowx,cell 0 0,alignx left,aligny center");
+
+		btConfigurar = new JButton("");
+		btConfigurar.setIcon(ImageUtil.resize("config.png", 20, 20));
+
+		panel.add(btConfigurar, "cell 1 0");
+
+		btImprimir = new JButton("");
+		panel.add(btImprimir, "cell 2 0,grow");
+		btImprimir.setIcon(ImageUtil.resize("print.png", 20, 20));
+		panel_1 = new JPanel();
+		getContentPane().add(panel_1, BorderLayout.NORTH);
+		panel_1.setLayout(new MigLayout("", "[63px,left][86px,grow][79px][81px]", "[23px]"));
+
+		chckbxContm = new JCheckBox("Contém");
+		panel_1.add(chckbxContm, "cell 0 0,alignx left,aligny top");
+
+		textField = new JTextFieldMaiusculo();
+		panel_1.add(textField, "cell 1 0,growx,aligny center");
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+
+					iniciarPesquisa();
+				}
+			}
+		});
+
+		btnPesquisar = new JButton("Pesquisar");
+		panel_1.add(btnPesquisar, "cell 2 0,alignx left,aligny top");
+
+		btnSelecionar = new JButton("Selecionar");
+		btnSelecionar.addActionListener((e) -> selecionarRegistro());
+		panel_1.add(btnSelecionar, "cell 3 0,alignx left,aligny top");
+
+		scrollPane = new JScrollPane();
+		getContentPane().add(scrollPane, BorderLayout.CENTER);
+
+		table = new JTable();
+		scrollPane.setViewportView(table);
+
+	}
+
+	private void selecionarRegistro() {
+
+		if (table.getSelectedRowCount() == 0) {
+			JOptionPane.showMessageDialog(getParent(), "SELECIONE UM REGITRO");
+			return;
+		}
+
+		if (!this.multiselect && table.getSelectedRowCount() != 1) {
+			JOptionPane.showMessageDialog(getParent(), "SELECIONE APENAS UM REGITRO");
+			return;
+		}
+
+		for (int row : table.getSelectedRows()) {
+			this.objeto.add(genericTableModel.getRow(row));
+		}
+
+		this.ok = Boolean.TRUE;
+
+		dispose();
+
+	}
+
 	private void iniciarPesquisa() {
 
 		this.rows = 0;
 
 		genericTableModel.removeAll();
+
+		numeroregistros = genericDAO.count(chckbxContm.isSelected(), textField.getText(), pesquisaExibir);
 
 		this.pesquisar();
 
@@ -79,6 +172,8 @@ public class FrmPesquisa<T> extends JDialog {
 		genericTableModel.addRows(valores);
 
 		rows += valores.size();
+
+		lbRegistros.setText(String.format(STR_REGISTROS, rows, numeroregistros));
 
 	}
 
@@ -94,6 +189,10 @@ public class FrmPesquisa<T> extends JDialog {
 	}
 
 	private void selecionarPesquisa(List<Pesquisa> pesquisa) {
+
+		if (pesquisa.size() == 0) {
+			throw new RuntimeException("PESQUISA NÃO CONFIGURADA");
+		}
 
 		if (pesquisa.size() == 1) {
 			this.pesquisaExibir = pesquisa.get(0);
@@ -149,56 +248,17 @@ public class FrmPesquisa<T> extends JDialog {
 		}
 	}
 
-	private void initComponents() {
-		setSize(800, 500);
-		setLocationRelativeTo(null);
-		getContentPane().setLayout(new BorderLayout(0, 0));
-
-		panel = new JPanel();
-		getContentPane().add(panel, BorderLayout.SOUTH);
-		panel.setLayout(new MigLayout("", "[grow][46px]", "[14px]"));
-
-		JLabel lbRegistros = new JLabel("");
-		panel.add(lbRegistros, "cell 0 0,alignx left,aligny top");
-
-		btConfigurar = new JButton("");
-		btConfigurar.setIcon(ImageUtil.resize("image//config.png", 24, 24));
-
-		panel.add(btConfigurar, "cell 1 0");
-
-		panel_1 = new JPanel();
-		getContentPane().add(panel_1, BorderLayout.NORTH);
-		panel_1.setLayout(new MigLayout("", "[63px,left][86px,grow][79px][81px][71px][75px]", "[23px]"));
-
-		chckbxContm = new JCheckBox("Contém");
-		panel_1.add(chckbxContm, "cell 0 0,alignx left,aligny top");
-
-		textField = new JTextField();
-		panel_1.add(textField, "cell 1 0,growx,aligny center");
-		textField.setColumns(10);
-
-		btnPesquisar = new JButton("Pesquisar");
-		panel_1.add(btnPesquisar, "cell 2 0,alignx left,aligny top");
-
-		btnSelecionar = new JButton("Selecionar");
-		panel_1.add(btnSelecionar, "cell 3 0,alignx left,aligny top");
-
-		btnNewButton = new JButton("Imprimir");
-		panel_1.add(btnNewButton, "cell 4 0,alignx left,aligny top");
-
-		scrollPane = new JScrollPane();
-		getContentPane().add(scrollPane, BorderLayout.CENTER);
-
-		table = new JTable();
-		scrollPane.setViewportView(table);
-
-	}
-
 	public Boolean getOk() {
 		return ok;
 	}
 
 	public T getObjeto() {
+
+		return objeto.get(0);
+	}
+
+	public List<T> getObjetos() {
+
 		return objeto;
 	}
 

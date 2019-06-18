@@ -10,12 +10,15 @@ import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.sql.JPASQLQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.path.NumberPath;
 
 import br.com.sysdesc.repository.conexao.Conexao;
 import br.com.sysdesc.repository.interfaces.GenericDAO;
 import br.com.sysdesc.repository.model.Pesquisa;
+import br.com.sysdesc.repository.util.EntityPathUtil;
 import br.com.sysdesc.util.classes.LongUtil;
+import br.com.sysdesc.util.classes.StringUtil;
 
 public abstract class AbstractGenericDAO<T> implements GenericDAO<T> {
 
@@ -151,8 +154,53 @@ public abstract class AbstractGenericDAO<T> implements GenericDAO<T> {
 
 	@Override
 	public List<T> pesquisar(boolean selected, String pesquisa, Pesquisa pesquisaExibir, Integer rows) {
-		// TODO Auto-generated method stub
-		return null;
+
+		JPAQuery query = from();
+
+		BooleanBuilder booleanBuilder = getClausule(selected, pesquisa, pesquisaExibir);
+
+		if (booleanBuilder.hasValue()) {
+			query.where(booleanBuilder);
+		}
+
+		return query.orderBy(campoId.asc()).offset(rows.intValue()).limit(pesquisaExibir.getPaginacao())
+				.list(entityPath);
+	}
+
+	@Override
+	public Long count(boolean selected, String pesquisa, Pesquisa pesquisaExibir) {
+
+		JPAQuery query = from();
+
+		BooleanBuilder booleanBuilder = getClausule(selected, pesquisa, pesquisaExibir);
+
+		if (booleanBuilder.hasValue()) {
+			query.where(booleanBuilder);
+		}
+
+		return query.orderBy(campoId.asc()).count();
+	}
+
+	private BooleanBuilder getClausule(boolean selected, String pesquisa, Pesquisa pesquisaExibir) {
+
+		BooleanBuilder booleanBuilder = new BooleanBuilder();
+
+		if (!StringUtil.isNullOrEmpty(pesquisa)) {
+
+			pesquisaExibir.getPesquisaCampos().forEach(campo -> {
+
+				BooleanExpression clausula = EntityPathUtil.getExpressionLike(this.entityPath, selected, pesquisa,
+						campo);
+
+				if (clausula != null) {
+
+					booleanBuilder.or(clausula);
+				}
+			});
+
+		}
+
+		return booleanBuilder;
 	}
 
 	public EntityManager getEntityManager() {

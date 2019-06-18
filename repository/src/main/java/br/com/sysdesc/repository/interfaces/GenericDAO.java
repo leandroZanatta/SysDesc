@@ -18,4 +18,6 @@ public interface GenericDAO<T> {
 
 	public abstract List<T> pesquisar(boolean selected, String text, Pesquisa pesquisaExibir, Integer rows);
 
+	public abstract Long count(boolean selected, String pesquisa, Pesquisa pesquisaExibir);
+
 }

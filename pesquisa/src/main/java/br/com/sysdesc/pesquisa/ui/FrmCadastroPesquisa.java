@@ -10,6 +10,7 @@ import static br.com.sysdesc.util.resources.Resources.FRMPESQUISA_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
 import java.awt.BorderLayout;
+import java.util.function.Function;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -17,17 +18,23 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.pesquisa.components.CampoPesquisa;
+import br.com.sysdesc.pesquisa.components.CampoPesquisaMultiSelect;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
+import br.com.sysdesc.repository.dao.PerfilDAO;
 import br.com.sysdesc.repository.dao.PesquisaNormalDAO;
+import br.com.sysdesc.repository.dao.UsuarioDAO;
+import br.com.sysdesc.repository.model.Perfil;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Pesquisa;
+import br.com.sysdesc.repository.model.Usuario;
 import br.com.sysdesc.util.classes.LongUtil;
 import br.com.sysdesc.util.classes.StringUtil;
 import net.miginfocom.swing.MigLayout;
@@ -49,14 +56,16 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 	private PanelActions<Pesquisa> panelActions;
 	private PesquisaNormalDAO pesquisaDAO = new PesquisaNormalDAO();
 	private JLabel lblNewLabel;
-	private CampoPesquisa pesquisaUsuario;
+	private CampoPesquisa<Usuario> pesquisaUsuario;
 	private JLabel lblNewLabel_1;
-	private CampoPesquisa pesquisaPerfis;
+	private CampoPesquisaMultiSelect<Perfil> pesquisaPerfis;
 	private JPanel panel;
 	private JPanel panel_1;
 	private JScrollPane scrollPane;
 	private JButton btnNewButton;
 	private JButton btnNewButton_1;
+	private UsuarioDAO usuarioDAO = new UsuarioDAO();
+	private PerfilDAO perfilDAO = new PerfilDAO();
 
 	public FrmCadastroPesquisa() {
 		this(null, 1L);
@@ -102,10 +111,38 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 		lblNewLabel = new JLabel("Usuário:");
 		painelContent.add(lblNewLabel, "cell 1 4");
 
-		pesquisaPerfis = new CampoPesquisa();
+		pesquisaPerfis = new CampoPesquisaMultiSelect<Perfil>(perfilDAO, PesquisaEnum.PES_PERFIL, codigoUsuario) {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Function<Perfil, Long> getId() {
+
+				return Perfil::getIdPerfil;
+			}
+
+			@Override
+			public Function<Perfil, String> getDescricao() {
+
+				return Perfil::getDescricao;
+			}
+
+		};
+
 		painelContent.add(pesquisaPerfis, "cell 0 5,growx");
 
-		pesquisaUsuario = new CampoPesquisa();
+		pesquisaUsuario = new CampoPesquisa<Usuario>(usuarioDAO, PesquisaEnum.PES_USUARIOS, codigoUsuario) {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void carregarCampo(JTextField campoPesquisa, Usuario objeto) {
+				campoPesquisa.setText(String.format("%d - %s", objeto.getIdUsuario(), objeto.getCliente().getNome()));
+
+			}
+
+		};
+
 		painelContent.add(pesquisaUsuario, "cell 1 5 2 1,growx");
 
 		getContentPane().add(painelContent);

@@ -1,8 +1,10 @@
 package br.com.sysdesc.pesquisa.models;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -12,17 +14,74 @@ public class GenericTableModel<T> extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 	private List<T> rows = new ArrayList<>();
-	private List<String> configuracoesPesquisa;
+	private List<PesquisaCampo> configuracoesPesquisa;
 
 	public GenericTableModel(List<PesquisaCampo> campos) {
 
-		configuracoesPesquisa = campos.stream().map(PesquisaCampo::getDescricao).collect(Collectors.toList());
+		campos.sort(Comparator.comparing(PesquisaCampo::getFlagOrdem));
+
+		configuracoesPesquisa = campos;
 	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 
-		return null;
+		T value = rows.get(rowIndex);
+
+		return getValue(value, configuracoesPesquisa.get(columnIndex));
+	}
+
+	private Object getValue(T value, PesquisaCampo pesquisaCampo) {
+
+		Object valorcampo = parseValue(value, pesquisaCampo.getCampo().split("\\."));
+
+		if (valorcampo == null) {
+			return "";
+		}
+
+		return valorcampo.toString();
+	}
+
+	private <K> Object parseValue(K value, String[] camposObjeto) {
+
+		if (camposObjeto.length == 1) {
+
+			return parseObject(value, camposObjeto[0]);
+		}
+
+		Object objeto = parseObject(value, camposObjeto[0]);
+
+		if (objeto == null) {
+
+			return null;
+		}
+
+		Object subObject = parseValue(objeto, Arrays.copyOfRange(camposObjeto, 1, camposObjeto.length));
+
+		if (subObject == null) {
+
+			return null;
+		}
+
+		return subObject;
+	}
+
+	private <K> Object parseObject(K value, String campoObjeto) {
+
+		Field field;
+
+		try {
+			field = value.getClass().getDeclaredField(campoObjeto);
+
+			field.setAccessible(Boolean.TRUE);
+
+			return field.get(value);
+
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+
+			return null;
+		}
+
 	}
 
 	@Override
@@ -32,7 +91,8 @@ public class GenericTableModel<T> extends AbstractTableModel {
 
 	@Override
 	public String getColumnName(int column) {
-		return configuracoesPesquisa.get(column);
+
+		return configuracoesPesquisa.get(column).getDescricao();
 	}
 
 	@Override
@@ -53,25 +113,33 @@ public class GenericTableModel<T> extends AbstractTableModel {
 	}
 
 	public T getRow(int selectedRow) {
+
 		return rows.get(selectedRow);
 	}
 
 	public void remove(int selectedRow) {
+
 		rows.remove(selectedRow);
+
 		fireTableDataChanged();
 	}
 
 	public void removeAll() {
+
 		rows = new ArrayList<>();
+
 		fireTableDataChanged();
 	}
 
 	public List<T> getRows() {
+
 		return rows;
 	}
 
 	public void setRows(List<T> rows) {
+
 		this.rows = rows;
+
 		fireTableDataChanged();
 	}
 

@@ -43,12 +43,6 @@
 		</insert>
 
 		<insert tableName="tb_programa">
-			<column name="id_programa" value="10" />
-			<column name="tx_descricao" value="FRMAPPLICATION_MN_PESQUISA" />
-			<column name="fl_acessorapido" valueBoolean="false" />
-		</insert>
-
-		<insert tableName="tb_programa">
 			<column name="id_programa" value="2" />
 			<column name="cd_programa" value="1" />
 			<column name="tx_descricao" value="FRMAPPLICATION_MI_CLIENTES" />
@@ -56,9 +50,16 @@
 			<column name="fl_acessorapido" valueBoolean="true" />
 		</insert>
 
-
 		<insert tableName="tb_programa">
 			<column name="id_programa" value="3" />
+			<column name="cd_programa" value="1" />
+			<column name="tx_descricao" value="FRMAPPLICATION_MI_PERFIS" />
+			<column name="tx_icone" value="perfil.png" />
+			<column name="fl_acessorapido" valueBoolean="false" />
+		</insert>
+
+		<insert tableName="tb_programa">
+			<column name="id_programa" value="4" />
 			<column name="cd_programa" value="1" />
 			<column name="tx_descricao" value="FRMAPPLICATION_MI_USUARIOS" />
 			<column name="tx_icone" value="user.png" />
@@ -66,7 +67,7 @@
 		</insert>
 
 		<insert tableName="tb_programa">
-			<column name="id_programa" value="4" />
+			<column name="id_programa" value="5" />
 			<column name="cd_programa" value="1" />
 			<column name="tx_descricao" value="FRMAPPLICATION_MI_MARCAS" />
 			<column name="tx_icone" value="marca.png" />
@@ -74,7 +75,7 @@
 		</insert>
 
 		<insert tableName="tb_programa">
-			<column name="id_programa" value="5" />
+			<column name="id_programa" value="6" />
 			<column name="cd_programa" value="1" />
 			<column name="tx_descricao" value="FRMAPPLICATION_MI_DEPARTAMENTOS" />
 			<column name="tx_icone" value="departamento.png" />
@@ -82,9 +83,17 @@
 		</insert>
 
 		<insert tableName="tb_programa">
-			<column name="id_programa" value="6" />
+			<column name="id_programa" value="7" />
 			<column name="cd_programa" value="1" />
 			<column name="tx_descricao" value="FRMAPPLICATION_MI_ESTADOS" />
+			<column name="tx_icone" value="estados.png" />
+			<column name="fl_acessorapido" valueBoolean="false" />
+		</insert>
+
+		<insert tableName="tb_programa">
+			<column name="id_programa" value="8" />
+			<column name="cd_programa" value="1" />
+			<column name="tx_descricao" value="FRMAPPLICATION_MI_CATEGORIA" />
 			<column name="tx_icone" value="estados.png" />
 			<column name="fl_acessorapido" valueBoolean="false" />
 		</insert>
@@ -97,6 +106,12 @@
 			<column name="fl_acessorapido" valueBoolean="false" />
 		</insert>
 
+		<insert tableName="tb_programa">
+			<column name="id_programa" value="10" />
+			<column name="tx_descricao" value="FRMAPPLICATION_MN_PESQUISA" />
+			<column name="fl_acessorapido" valueBoolean="false" />
+		</insert>
+		
 		<insert tableName="tb_programa">
 			<column name="id_programa" value="11" />
 			<column name="cd_programa" value="10" />
@@ -112,13 +127,7 @@
 			<column name="tx_icone" value="pesquisa-avancada.png" />
 			<column name="fl_acessorapido" valueBoolean="false" />
 		</insert>
-		<insert tableName="tb_programa">
-			<column name="id_programa" value="7" />
-			<column name="cd_programa" value="1" />
-			<column name="tx_descricao" value="FRMAPPLICATION_MI_CATEGORIA" />
-			<column name="tx_icone" value="estados.png" />
-			<column name="fl_acessorapido" valueBoolean="false" />
-		</insert>
+
 
 		<insert tableName="tb_permissaoprograma">
 			<column name="id_permissaoprograma" value="1" />
@@ -173,6 +182,24 @@
 			<column name="fl_cadastro" valueBoolean="true" />
 			<column name="fl_exclusao" valueBoolean="true" />
 		</insert>
+		
+		<insert tableName="tb_permissaoprograma">
+			<column name="id_permissaoprograma" value="7" />
+			<column name="cd_usuario" value="1" />
+			<column name="cd_programa" value="7" />
+			<column name="fl_leitura" valueBoolean="true" />
+			<column name="fl_cadastro" valueBoolean="true" />
+			<column name="fl_exclusao" valueBoolean="true" />
+		</insert>
+		
+		<insert tableName="tb_permissaoprograma">
+			<column name="id_permissaoprograma" value="8" />
+			<column name="cd_usuario" value="1" />
+			<column name="cd_programa" value="8" />
+			<column name="fl_leitura" valueBoolean="true" />
+			<column name="fl_cadastro" valueBoolean="true" />
+			<column name="fl_exclusao" valueBoolean="true" />
+		</insert>
 
 		<insert tableName="tb_permissaoprograma">
 			<column name="id_permissaoprograma" value="9" />
@@ -210,15 +237,6 @@
 			<column name="fl_exclusao" valueBoolean="true" />
 		</insert>
 
-		<insert tableName="tb_permissaoprograma">
-			<column name="id_permissaoprograma" value="7" />
-			<column name="cd_usuario" value="1" />
-			<column name="cd_programa" value="7" />
-			<column name="fl_leitura" valueBoolean="true" />
-			<column name="fl_cadastro" valueBoolean="true" />
-			<column name="fl_exclusao" valueBoolean="true" />
-		</insert>
-
 		<insert tableName="tb_pesquisa">
 			<column name="id_pesquisa" value="1" />
 			<column name="cd_pesquisa" value="1" />
@@ -226,10 +244,24 @@
 			<column name="nr_paginacao" value="20" />
 			<column name="cd_tipo" value="0" />
 		</insert>
+		
+		<insert tableName="tb_pesquisa">
+			<column name="id_pesquisa" value="2" />
+			<column name="cd_pesquisa" value="2" />
+			<column name="tx_descricao" value="PERFIS GERAL" />
+			<column name="nr_paginacao" value="20" />
+			<column name="cd_tipo" value="0" />
+		</insert>
 
 		<insert tableName="tb_permissaopesquisa">
 			<column name="id_permissaopesquisa" value="1" />
 			<column name="cd_pesquisa" value="1" />
+			<column name="cd_usuario" value="1" />
+		</insert>
+		
+		<insert tableName="tb_permissaopesquisa">
+			<column name="id_permissaopesquisa" value="2" />
+			<column name="cd_pesquisa" value="2" />
 			<column name="cd_usuario" value="1" />
 		</insert>
 
@@ -241,7 +273,7 @@
 			<column name="fl_tipotamanho" value="1" />
 			<column name="fl_ordem" value="1" />
 			<column name="nr_tamanho" value="120" />
-			<column name="tx_campo" value="usuario1.idUsuario" />
+			<column name="tx_campo" value="idUsuario" />
 			<column name="tx_descricao" value="Código" />
 		</insert>
 
@@ -253,7 +285,7 @@
 			<column name="fl_tipotamanho" value="2" />
 			<column name="fl_ordem" value="2" />
 			<column name="nr_tamanho" value="1" />
-			<column name="tx_campo" value="usuario1.usuario" />
+			<column name="tx_campo" value="usuario" />
 			<column name="tx_descricao" value="Usuário" />
 		</insert>
 
@@ -265,8 +297,32 @@
 			<column name="fl_tipotamanho" value="2" />
 			<column name="fl_ordem" value="3" />
 			<column name="nr_tamanho" value="2" />
-			<column name="tx_campo" value="usuario1.cliente.nome" />
+			<column name="tx_campo" value="cliente.nome" />
 			<column name="tx_descricao" value="Nome" />
+		</insert>
+		
+		<insert tableName="tb_pesquisacampo">
+			<column name="id_pesquisacampo" value="4" />
+			<column name="cd_pesquisa" value="2" />
+			<column name="fl_formatacao" value="0" />
+			<column name="fl_tipodado" value="1" />
+			<column name="fl_tipotamanho" value="1" />
+			<column name="fl_ordem" value="1" />
+			<column name="nr_tamanho" value="120" />
+			<column name="tx_campo" value="idPerfil" />
+			<column name="tx_descricao" value="Código" />
+		</insert>
+		
+		<insert tableName="tb_pesquisacampo">
+			<column name="id_pesquisacampo" value="5" />
+			<column name="cd_pesquisa" value="2" />
+			<column name="fl_formatacao" value="0" />
+			<column name="fl_tipodado" value="2" />
+			<column name="fl_tipotamanho" value="2" />
+			<column name="fl_ordem" value="2" />
+			<column name="nr_tamanho" value="1" />
+			<column name="tx_campo" value="descricao" />
+			<column name="tx_descricao" value="Perfil" />
 		</insert>
 
 	</changeSet>

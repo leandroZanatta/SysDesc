@@ -1,10 +1,10 @@
 package br.com.sysdesc.pesquisa.models;
 
-import static br.com.sysdesc.pesquisa.enumeradores.TipoDadoEnum.STRING;
-import static br.com.sysdesc.pesquisa.enumeradores.TipoDadoEnum.tipoDadoForCodigo;
 import static br.com.sysdesc.pesquisa.enumeradores.TipoTamanhoEnum.FLEX;
 import static br.com.sysdesc.pesquisa.enumeradores.TipoTamanhoEnum.tipoTamanhoForCodigo;
 import static br.com.sysdesc.util.classes.IfNull.get;
+import static br.com.sysdesc.util.enumeradores.TipoDadoEnum.STRING;
+import static br.com.sysdesc.util.enumeradores.TipoDadoEnum.tipoDadoForCodigo;
 import static br.com.sysdesc.util.resources.Resources.TBLCONFIG_CAMPO;
 import static br.com.sysdesc.util.resources.Resources.TBLCONFIG_DESCRICAO;
 import static br.com.sysdesc.util.resources.Resources.TBLCONFIG_FORMATACAO;
