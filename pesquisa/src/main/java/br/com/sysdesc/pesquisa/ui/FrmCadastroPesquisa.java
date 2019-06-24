@@ -35,6 +35,7 @@ import br.com.sysdesc.repository.model.Perfil;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Pesquisa;
 import br.com.sysdesc.repository.model.Usuario;
+import br.com.sysdesc.util.classes.ImageUtil;
 import br.com.sysdesc.util.classes.LongUtil;
 import br.com.sysdesc.util.classes.StringUtil;
 import net.miginfocom.swing.MigLayout;
@@ -62,8 +63,8 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 	private JPanel panel;
 	private JPanel panel_1;
 	private JScrollPane scrollPane;
-	private JButton btnNewButton;
-	private JButton btnNewButton_1;
+	private JButton btAdd;
+	private JButton btRemove;
 	private UsuarioDAO usuarioDAO = new UsuarioDAO();
 	private PerfilDAO perfilDAO = new PerfilDAO();
 
@@ -155,11 +156,13 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 		panel.add(panel_1, BorderLayout.EAST);
 		panel_1.setLayout(new MigLayout("", "[]", "[23px,grow][][][grow]"));
 
-		btnNewButton = new JButton("");
-		panel_1.add(btnNewButton, "cell 0 1,alignx left,aligny top");
+		btAdd = new JButton("");
+		btAdd.setIcon(ImageUtil.resize("add.png", 15, 15));
+		panel_1.add(btAdd, "cell 0 1,alignx left,aligny top");
 
-		btnNewButton_1 = new JButton("");
-		panel_1.add(btnNewButton_1, "cell 0 2,alignx left,aligny top");
+		btRemove = new JButton("");
+		btRemove.setIcon(ImageUtil.resize("minus.png", 15, 15));
+		panel_1.add(btRemove, "cell 0 2,alignx left,aligny top");
 
 		scrollPane = new JScrollPane();
 		panel.add(scrollPane, BorderLayout.CENTER);

@@ -321,6 +321,9 @@ public abstract class PanelActions<T> extends JPanel {
 			} else if (component instanceof JTable) {
 
 				addCampo(component, JTable.class);
+			} else if (component instanceof JButton) {
+
+				addCampo(component, JButton.class);
 			}
 
 		}
@@ -356,6 +359,10 @@ public abstract class PanelActions<T> extends JPanel {
 
 		if (camposTela.containsKey(JTable.class)) {
 			camposTela.get(JTable.class).forEach(x -> ((JTable) x).setEnabled(!bloquear));
+		}
+
+		if (camposTela.containsKey(JButton.class)) {
+			camposTela.get(JButton.class).forEach(x -> ((JButton) x).setEnabled(!bloquear));
 		}
 
 		fireChangeStateEvent(bloquear);
