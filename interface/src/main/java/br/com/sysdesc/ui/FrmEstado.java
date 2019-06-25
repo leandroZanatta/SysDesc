@@ -7,6 +7,7 @@ import static br.com.sysdesc.util.resources.Resources.FRMESTADO_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
@@ -17,6 +18,7 @@ import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.repository.dao.EstadoDAO;
 import br.com.sysdesc.repository.model.Estado;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
+import br.com.sysdesc.util.classes.StringUtil;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmEstado extends AbstractInternalFrame {
@@ -51,7 +53,7 @@ public class FrmEstado extends AbstractInternalFrame {
 		painelContent.setLayout(new MigLayout("", "[grow]", "[][][][][][][grow]"));
 		getContentPane().add(painelContent);
 		painelContent.add(lblCodigo, "cell 0 0");
-		painelContent.add(txCodigo, "cell 0 1,growx");
+		painelContent.add(txCodigo, "cell 0 1,width 50:100:100");
 
 		painelContent.add(lblDescricao, "cell 0 2");
 		painelContent.add(txDescricao, "cell 0 3,growx");
@@ -75,6 +77,19 @@ public class FrmEstado extends AbstractInternalFrame {
 				objetoPesquisa.setDescricao(txDescricao.getText());
 				objetoPesquisa.setUf(txUF.getText());
 
+			}
+
+			@Override
+			public Boolean objetoValido() {
+
+				if (StringUtil.isNullOrEmpty(txDescricao.getText())) {
+
+					JOptionPane.showMessageDialog(null, "Insira uma descrição válida");
+
+					return Boolean.FALSE;
+				}
+
+				return Boolean.TRUE;
 			}
 		};
 		panelActions.addEventListener(new PanelEventAdapter<Estado>() {

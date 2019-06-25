@@ -17,6 +17,7 @@
 		<class>br.com.sysdesc.repository.model.PerfilUsuario</class>
 		<class>br.com.sysdesc.repository.model.pk.PerfilUsuarioPk</class>
 		<class>br.com.sysdesc.repository.model.Categoria</class>
+		<class>br.com.sysdesc.repository.model.Unidade</class>
 	</persistence-unit>
 
 </persistence>

@@ -65,6 +65,8 @@ public class FrmCidade extends AbstractInternalFrame {
 
 		painelBotoes = new PanelActions<Cidade>(this, cidadeDAO) {
 
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void carregarObjeto(Cidade objeto) {
 				txCodigo.setValue(objeto.getIdCidade());
@@ -83,14 +85,17 @@ public class FrmCidade extends AbstractInternalFrame {
 
 			@Override
 			public Boolean objetoValido() {
+
 				if (cbEstado.getSelectedIndex() < 0) {
 					JOptionPane.showMessageDialog(null, "Selecione um estado");
 					return false;
 				}
+
 				if (StringUtil.isNullOrEmpty(txDescricao.getText())) {
 					JOptionPane.showMessageDialog(null, "Insira uma descrição");
 					return false;
 				}
+
 				return true;
 			}
 		};
@@ -101,6 +106,7 @@ public class FrmCidade extends AbstractInternalFrame {
 				txCodigo.setValue(cidade.getIdCidade());
 			}
 		});
+
 		painelContent.add(painelBotoes, "cell 0 6,grow");
 	}
 

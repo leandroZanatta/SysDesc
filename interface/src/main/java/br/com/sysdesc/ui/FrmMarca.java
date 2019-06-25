@@ -36,7 +36,7 @@ public class FrmMarca extends AbstractInternalFrame {
 	public FrmMarca(PermissaoPrograma permissaoPrograma) {
 		super(permissaoPrograma);
 
-		setSize(450, 160);
+		setSize(450, 170);
 		setClosable(Boolean.TRUE);
 		setTitle(translate(FRMMARCA_TITLE));
 
@@ -46,7 +46,7 @@ public class FrmMarca extends AbstractInternalFrame {
 		lblDescricao = new JLabel(translate(FRMMARCA_LB_DESCRICAO));
 		txDescricao = new JTextFieldMaiusculo();
 
-		painelContent.setLayout(new MigLayout("", "[grow]", "[][][][][][][grow]"));
+		painelContent.setLayout(new MigLayout("", "[grow]", "[][][][][grow]"));
 		getContentPane().add(painelContent);
 
 		painelContent.add(lblCodigo, "cell 0 0");
