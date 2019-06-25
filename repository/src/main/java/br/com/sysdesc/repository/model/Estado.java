@@ -35,4 +35,9 @@ public class Estado implements Serializable {
 	@OneToMany(mappedBy = "estado")
 	private List<Cidade> cidades;
 
+	@Override
+	public String toString() {
+		return this.descricao;
+	}
+
 }

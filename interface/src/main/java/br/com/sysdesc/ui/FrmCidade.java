@@ -5,14 +5,20 @@ import static br.com.sysdesc.util.resources.Resources.translate;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.components.PanelActions;
+import br.com.sysdesc.components.adapters.PanelEventAdapter;
+import br.com.sysdesc.repository.dao.CidadeDAO;
+import br.com.sysdesc.repository.dao.EstadoDAO;
 import br.com.sysdesc.repository.model.Cidade;
+import br.com.sysdesc.repository.model.Estado;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
+import br.com.sysdesc.util.classes.StringUtil;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmCidade extends AbstractInternalFrame {
@@ -25,9 +31,11 @@ public class FrmCidade extends AbstractInternalFrame {
 	private JNumericField txCodigo;
 	private JTextFieldMaiusculo txDescricao;
 	private JLabel lbEstado;
-	private JComboBox cbEstado;
+	private JComboBox<Estado> cbEstado;
 	private JLabel lbDescricao;
 	private PanelActions<Cidade> painelBotoes;
+	private CidadeDAO cidadeDAO = new CidadeDAO();
+	private EstadoDAO estadoDAO = new EstadoDAO();
 
 	public FrmCidade(PermissaoPrograma permissaoPrograma) {
 		super(permissaoPrograma);
@@ -40,10 +48,11 @@ public class FrmCidade extends AbstractInternalFrame {
 		lbCodigo = new JLabel("Código:");
 		txCodigo = new JNumericField();
 		lbEstado = new JLabel("Estado:");
-		cbEstado = new JComboBox();
+		cbEstado = new JComboBox<>();
 		lbDescricao = new JLabel("Descrição:");
 		txDescricao = new JTextFieldMaiusculo();
 
+		estadoDAO.listar().stream().forEach(cbEstado::addItem);
 		painelContent.setLayout(new MigLayout("", "[grow]", "[][][][][][][grow]"));
 		getContentPane().add(painelContent);
 
@@ -54,21 +63,45 @@ public class FrmCidade extends AbstractInternalFrame {
 		painelContent.add(lbDescricao, "cell 0 4");
 		painelContent.add(txDescricao, "cell 0 5,growx");
 
-		painelBotoes = new PanelActions<Cidade>(this, null) {
+		painelBotoes = new PanelActions<Cidade>(this, cidadeDAO) {
 
 			@Override
 			public void carregarObjeto(Cidade objeto) {
-				// TODO Auto-generated method stub
-
+				txCodigo.setValue(objeto.getIdCidade());
+				txDescricao.setText(objeto.getDescricao());
+				cbEstado.setSelectedItem(objeto.getEstado());
 			}
 
 			@Override
 			public void preencherObjeto(Cidade objetoPesquisa) {
-				// TODO Auto-generated method stub
+				objetoPesquisa.setIdCidade(txCodigo.getValue());
+
+				objetoPesquisa.setEstado((Estado) cbEstado.getSelectedItem());
+				objetoPesquisa.setDescricao(txDescricao.getText());
 
 			}
-		};
 
+			@Override
+			public Boolean objetoValido() {
+				if (cbEstado.getSelectedIndex() < 0) {
+					JOptionPane.showMessageDialog(null, "Selecione um estado");
+					return false;
+				}
+				if (StringUtil.isNullOrEmpty(txDescricao.getText())) {
+					JOptionPane.showMessageDialog(null, "Insira uma descrição");
+					return false;
+				}
+				return true;
+			}
+		};
+		painelBotoes.addEventListener(new PanelEventAdapter<Cidade>() {
+
+			@Override
+			public void saveEvent(Cidade cidade) {
+				txCodigo.setValue(cidade.getIdCidade());
+			}
+		});
+		painelContent.add(painelBotoes, "cell 0 6,grow");
 	}
 
 }
