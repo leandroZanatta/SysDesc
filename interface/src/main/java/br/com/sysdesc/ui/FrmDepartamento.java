@@ -7,6 +7,7 @@ import static br.com.sysdesc.util.resources.Resources.FRMDEPARTAMENTO_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
@@ -17,6 +18,7 @@ import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.dao.DepartamentoDAO;
 import br.com.sysdesc.repository.model.Departamento;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
+import br.com.sysdesc.util.classes.StringUtil;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmDepartamento extends AbstractInternalFrame {
@@ -36,7 +38,7 @@ public class FrmDepartamento extends AbstractInternalFrame {
 	public FrmDepartamento(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
 
-		setSize(450, 160);
+		setSize(450, 170);
 		setClosable(Boolean.TRUE);
 		setTitle(translate(FRMDEPARTAMENTO_TITLE));
 
@@ -54,7 +56,7 @@ public class FrmDepartamento extends AbstractInternalFrame {
 		getContentPane().add(painelContent);
 
 		painelContent.add(lblCodigo, "cell 0 0");
-		painelContent.add(txCodigo, "cell 0 1,growx");
+		painelContent.add(txCodigo, "cell 0 1,width 50:100:100");
 		painelContent.add(lblDescricao, "cell 0 2");
 		painelContent.add(txDescricao, "cell 0 3,growx");
 
@@ -73,6 +75,19 @@ public class FrmDepartamento extends AbstractInternalFrame {
 			public void preencherObjeto(Departamento objetoPesquisa) {
 				objetoPesquisa.setIdDepartamento(txCodigo.getValue());
 				objetoPesquisa.setDescricao(txDescricao.getText());
+			}
+
+			@Override
+			public Boolean objetoValido() {
+
+				if (StringUtil.isNullOrEmpty(txDescricao.getText())) {
+
+					JOptionPane.showMessageDialog(null, "Insira uma descrição válida");
+
+					return Boolean.FALSE;
+				}
+
+				return Boolean.TRUE;
 			}
 		};
 

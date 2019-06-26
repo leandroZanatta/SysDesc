@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd  http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+	<changeSet id="20190626_113800" author="Leandro Zanatta">
+
+		<insert tableName="tb_estado">
+			<column name="id_estado" value="1" />
+			<column name="tx_descricao" value="Santa Catarina" />
+			<column name="tx_uf" value="SC" />
+		</insert>
+
+		<insert tableName="tb_cidade">
+			<column name="id_cidade" value="1" />
+			<column name="cd_estado" value="1" />
+			<column name="tx_descricao" value="Descanso" />
+		</insert>
+
+		<insert tableName="tb_cliente">
+			<column name="id_cliente" value="1" />
+			<column name="tx_nome" value="Leandro Zanatta" />
+			<column name="cd_cidade" value="1" />
+		</insert>
+
+		<insert tableName="tb_usuario">
+			<column name="id_usuario" value="1" />
+			<column name="cd_cliente" value="1" />
+			<column name="tx_usuario" value="admin" />
+			<column name="tx_senha" value="e10adc3949ba59abbe56e057f20f883e" />
+		</insert>
+
+	</changeSet>
+</databaseChangeLog>

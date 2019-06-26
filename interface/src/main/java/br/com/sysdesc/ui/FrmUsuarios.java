@@ -54,7 +54,7 @@ public class FrmUsuarios extends AbstractInternalFrame {
 
 		painelContent.add(lblId, "cell 0 0");
 		painelContent.add(lblUsurio, "cell 0 2");
-		painelContent.add(txUsuario, "cell 0 3,growx");
+		painelContent.add(txUsuario, "cell 0 3,width 50:100:100");
 		painelContent.add(lblSenha, "cell 0 4");
 		painelContent.add(passwordField, "cell 0 5,growx");
 
