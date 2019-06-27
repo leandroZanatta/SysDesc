@@ -38,6 +38,11 @@
 	<include file="db/inserts/20190626_115000_carga_programa_pesquisa.xml" />
 	<include file="db/inserts/20190626_115100_carga_pesquisa_usuario.xml" />
 	<include file="db/inserts/20190626_115200_carga_pesquisa_perfil.xml" />
-
+	<include file="db/inserts/20190626_115300_carga_pesquisa_estado.xml" />
+	<include file="db/inserts/20190626_115400_carga_pesquisa_marca.xml" />
+	<include file="db/inserts/20190626_115500_carga_pesquisa_departamento.xml" />
+	<include file="db/inserts/20190626_115600_carga_pesquisa_unidade.xml" />
+	<include file="db/inserts/20190626_115700_carga_pesquisa_categoria.xml" />
+	<include file="db/inserts/20190626_115800_carga_pesquisa_cidade.xml" />
 
 </databaseChangeLog>

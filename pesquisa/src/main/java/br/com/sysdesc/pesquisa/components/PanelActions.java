@@ -475,27 +475,29 @@ public abstract class PanelActions<T> extends JPanel {
 	}
 
 	public void pesquisar() {
+		try {
+			JFrame parent = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
 
-		JFrame parent = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
+			FrmPesquisa<T> pesquisa = new FrmPesquisa<>(parent, this.pesquisa, this.genericDAO,
+					this.internalFrame.getCodigoUsuario());
 
-		FrmPesquisa<T> pesquisa = new FrmPesquisa<>(parent, this.pesquisa, this.genericDAO,
-				this.internalFrame.getCodigoUsuario());
+			pesquisa.setVisible(Boolean.TRUE);
 
-		pesquisa.setVisible(Boolean.TRUE);
+			if (pesquisa.getOk()) {
 
-		if (pesquisa.getOk()) {
+				this.objetoPesquisa = pesquisa.getObjeto();
 
-			this.objetoPesquisa = pesquisa.getObjeto();
+				limpar();
 
-			limpar();
+				bloquear(Boolean.TRUE);
 
-			bloquear(Boolean.TRUE);
+				carregarObjeto(objetoPesquisa);
 
-			carregarObjeto(objetoPesquisa);
-
-			bloquearBotoes(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE);
+				bloquearBotoes(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE);
+			}
+		} catch (RuntimeException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
-
 	}
 
 	public abstract void carregarObjeto(T objeto);

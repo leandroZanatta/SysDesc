@@ -21,13 +21,14 @@ public class PesquisaDAO extends AbstractGenericDAO<Pesquisa> {
 
 	public List<Pesquisa> buscarPesquisaPorUsuario(Long codigoUsuario, Long codigoPesquisa) {
 
-		return query().from(permissaoPesquisa)
-				.where(permissaoPesquisa.codigoPesquisa.eq(codigoPesquisa)
+		return query().from(permissaoPesquisa).innerJoin(pesquisa)
+				.on(permissaoPesquisa.codigoPesquisa.eq(pesquisa.idPesquisa))
+				.where(pesquisa.codigoPesquisa.eq(codigoPesquisa)
 						.and(permissaoPesquisa.codigoUsuario.eq(codigoUsuario)
 								.or(permissaoPesquisa.codigoPerfil.in(subQuery().from(perfilUsuario)
 										.where(perfilUsuario.codigoUsuario.eq(codigoUsuario))
 										.list(perfilUsuario.codigoPerfil)))))
-				.innerJoin(pesquisa).on(permissaoPesquisa.codigoPesquisa.eq(pesquisa.codigoPesquisa)).list(pesquisa);
+				.list(pesquisa);
 	}
 
 }
