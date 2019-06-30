@@ -30,6 +30,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -44,16 +46,16 @@ import javax.swing.border.TitledBorder;
 
 import org.apache.commons.io.FileUtils;
 
-import br.com.sysdesc.repository.enumeradores.TipoConexaoEnum;
+import br.com.sysdesc.enumeradores.TipoConexaoEnum;
 import br.com.sysdesc.util.classes.ImageUtil;
 import br.com.sysdesc.util.resources.Configuracoes;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class FrmConexao extends JDialog {
 
+	private static final String BARRA = "/";
 	private static final String SEARCH_PNG = "search.png";
 	private static final String DOIS_PONTOS = ":";
+	private static final Logger log = Logger.getLogger(FrmConexao.class.getName());
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
@@ -167,13 +169,13 @@ public class FrmConexao extends JDialog {
 
 		TipoConexaoEnum tipoConexaoEnum = (TipoConexaoEnum) cbTipoBanco.getSelectedItem();
 
-		String url = txUrl.getText() + DOIS_PONTOS + txPorta.getText() + "/" + cbBanco.getSelectedItem().toString();
+		String url = txUrl.getText() + DOIS_PONTOS + txPorta.getText() + BARRA + cbBanco.getSelectedItem().toString();
 
 		Properties properties = new Properties();
-		properties.put(tipoConexaoEnum.getJdbcDriver(), tipoConexaoEnum.getDriver());
-		properties.put(tipoConexaoEnum.getJdbcUrl(), url);
-		properties.put(tipoConexaoEnum.getJdbcUser(), txUsuario.getText());
-		properties.put(tipoConexaoEnum.getJdbcPassword(), arrayToString(txSenha.getPassword()));
+		properties.put(TipoConexaoEnum.jdbcDriver, tipoConexaoEnum.getDriver());
+		properties.put(TipoConexaoEnum.jdbcUrl, url);
+		properties.put(TipoConexaoEnum.jdbcUser, txUsuario.getText());
+		properties.put(TipoConexaoEnum.jdbcPassword, arrayToString(txSenha.getPassword()));
 
 		StringWriter writer = new StringWriter();
 
@@ -197,7 +199,7 @@ public class FrmConexao extends JDialog {
 
 			TipoConexaoEnum tipoConexaoEnum = (TipoConexaoEnum) cbTipoBanco.getSelectedItem();
 
-			String urlConexao = txUrl.getText() + DOIS_PONTOS + txPorta.getText() + "/"
+			String urlConexao = txUrl.getText() + DOIS_PONTOS + txPorta.getText() + BARRA
 					+ tipoConexaoEnum.getDefaultDatabase();
 
 			try {
@@ -210,7 +212,7 @@ public class FrmConexao extends JDialog {
 
 				JOptionPane.showMessageDialog(this, translate(DRIVER_NAO_ENCONTRADO), ERRO, JOptionPane.ERROR_MESSAGE);
 
-				log.error(translate(DRIVER_NAO_ENCONTRADO), e);
+				log.log(Level.SEVERE, translate(DRIVER_NAO_ENCONTRADO), e);
 			}
 		}
 	}
@@ -230,11 +232,12 @@ public class FrmConexao extends JDialog {
 			while (rs.next()) {
 				cbBanco.addItem(rs.getString(1));
 			}
+
 		} catch (Exception e) {
 
 			JOptionPane.showMessageDialog(this, translate(CONEXAO_INVALIDA), ERRO, JOptionPane.ERROR_MESSAGE);
 
-			log.error(translate(CONEXAO_INVALIDA), e);
+			log.log(Level.SEVERE, translate(CONEXAO_INVALIDA), e);
 		}
 	}
 

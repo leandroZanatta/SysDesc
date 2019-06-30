@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+	<include file="changeset/20190508_215100_tb_estado.xml" />
+	<include file="changeset/20190508_215600_tb_cidade.xml" />
+	<include file="changeset/20190508_215800_tb_cliente.xml" />
+	<include file="changeset/20190508_220000_tb_perfil.xml" />
+	<include file="changeset/20190508_220400_tb_usuario.xml" />
+	<include file="changeset/20190508_221100_tb_perfilusuario.xml" />
+	<include file="changeset/20190508_221800_tb_pesquisa.xml" />
+	<include file="changeset/20190508_223000_tb_pesquisacampo.xml" />
+	<include file="changeset/20190508_223300_tb_permissaopesquisa.xml" />
+	<include file="changeset/20190511_181200_tb_programa.xml" />
+	<include file="changeset/20190511_181600_tb_permissaoprograma.xml" />
+	<include file="changeset/20190515_201300_tb_marca.xml" />
+	<include file="changeset/20190522_193200_tb_departamento.xml" />
+	<include file="changeset/20190508_221900_tb_pesquisaselect.xml" />
+	<include file="changeset/20190605_195000_tb_unidade.xml" />
+	<include file="changeset/20190522_193200_tb_departamento.xml" />
+	<include file="changeset/20190605_190100_tb_categoria.xml" />
+
+	<!-- INSERTS PROGRAMAS E PESQUISAS -->
+	<include file="inserts/20190626_113800_carga_usuario.xml" />
+	<include file="inserts/20190626_113900_carga_menu_cadastro.xml" />
+	<include file="inserts/20190626_114000_carga_programa_clientes.xml" />
+	<include file="inserts/20190626_114100_carga_programa_perfis.xml" />
+	<include file="inserts/20190626_114200_carga_programa_usuarios.xml" />
+	<include file="inserts/20190626_114300_carga_programa_marcas.xml" />
+	<include file="inserts/20190626_114400_carga_programa_departamentos.xml" />
+	<include file="inserts/20190626_114500_carga_programa_estados.xml" />
+	<include file="inserts/20190626_114600_carga_programa_categoria.xml" />
+	<include file="inserts/20190626_114700_carga_programa_cidade.xml" />
+	<include file="inserts/20190626_114800_carga_programa_unidade.xml" />
+	<include file="inserts/20190626_114800_carga_programa_unidade.xml" />
+	<include file="inserts/20190626_114900_carga_menu_pesquisa.xml" />
+	<include file="inserts/20190626_115000_carga_programa_pesquisa.xml" />
+	<include file="inserts/20190626_115100_carga_pesquisa_usuario.xml" />
+	<include file="inserts/20190626_115200_carga_pesquisa_perfil.xml" />
+	<include file="inserts/20190626_115300_carga_pesquisa_estado.xml" />
+	<include file="inserts/20190626_115400_carga_pesquisa_marca.xml" />
+	<include file="inserts/20190626_115500_carga_pesquisa_departamento.xml" />
+	<include file="inserts/20190626_115600_carga_pesquisa_unidade.xml" />
+	<include file="inserts/20190626_115700_carga_pesquisa_categoria.xml" />
+	<include file="inserts/20190626_115800_carga_pesquisa_cidade.xml" />
+
+</databaseChangeLog>
