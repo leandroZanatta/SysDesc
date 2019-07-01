@@ -6,14 +6,21 @@ import static br.com.sysdesc.util.resources.Resources.translate;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.sql.Connection;
 
 import javax.naming.ConfigurationException;
 
+import org.apache.commons.io.FileUtils;
+
+import com.google.gson.Gson;
+
 import br.com.sysdesc.changelog.core.Changelog;
 import br.com.sysdesc.changelog.core.Conexao;
 import br.com.sysdesc.ui.FrmConexao;
+import br.com.sysdesc.ui.FrmDownloader;
 import br.com.sysdesc.util.classes.LookAndFeelUtil;
+import br.com.sysdesc.vo.VersaoVO;
 
 public class StartUp {
 
@@ -38,15 +45,37 @@ public class StartUp {
 		Desktop.getDesktop().open(new File(translate(APPLICATION_JAR, "interface.jar")));
 	}
 
-	private void atualizarAplicacao(Connection connection) {
+	private void atualizarAplicacao(Connection connection, File arquivoVersao) {
 // modificar os Jars e o arquivo upgrade.
 
 		Changelog.runChangelog(connection);
 	}
 
-	private boolean versaoValida(Connection connection) {
-// Conectar na internet e verificar o arquivo de versao.
-		return Boolean.TRUE;
+	private boolean versaoValida(Connection connection, File arquivoVersao) throws Exception {
+
+		Long versaoBanco = this.buscarVersaoBanco(connection);
+
+		Long versaoInternet = this.buscarVersaoInternet(arquivoVersao);
+
+		return versaoBanco.equals(versaoInternet);
+	}
+
+	private Long buscarVersaoInternet(File arquivoVersao) throws Exception {
+
+		FrmDownloader frmDownloader = new FrmDownloader(
+				"https://raw.githubusercontent.com/leandroZanatta/SysDesc/develop/versoes/versao.json", arquivoVersao);
+
+		frmDownloader.setVisible(Boolean.TRUE);
+
+		VersaoVO versaoVO = new Gson().fromJson(FileUtils.readFileToString(arquivoVersao, Charset.forName("UTF-8")),
+				VersaoVO.class);
+
+		return versaoVO.getVersao();
+	}
+
+	private Long buscarVersaoBanco(Connection connection) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -55,9 +84,11 @@ public class StartUp {
 
 		Connection connection = startUp.criarConnection();
 
-		if (!startUp.versaoValida(connection)) {
+		File arquivoVersao = File.createTempFile("versao", ".json");
 
-			startUp.atualizarAplicacao(connection);
+		if (!startUp.versaoValida(connection, arquivoVersao)) {
+
+			startUp.atualizarAplicacao(connection, arquivoVersao);
 
 		}
 
