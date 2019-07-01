@@ -8,6 +8,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.naming.ConfigurationException;
 
@@ -23,6 +27,8 @@ import br.com.sysdesc.util.classes.LookAndFeelUtil;
 import br.com.sysdesc.vo.VersaoVO;
 
 public class StartUp {
+
+	private final Logger logger = Logger.getLogger(StartUp.class.getName());
 
 	private Connection criarConnection() throws Exception {
 
@@ -45,10 +51,38 @@ public class StartUp {
 		Desktop.getDesktop().open(new File(translate(APPLICATION_JAR, "interface.jar")));
 	}
 
-	private void atualizarAplicacao(Connection connection, File arquivoVersao) {
-// modificar os Jars e o arquivo upgrade.
+	private void atualizarAplicacao(Connection connection, File arquivoVersao) throws Exception {
 
-		Changelog.runChangelog(connection);
+		VersaoVO versaoVO = new Gson().fromJson(FileUtils.readFileToString(arquivoVersao, Charset.forName("UTF-8")),
+				VersaoVO.class);
+
+		FrmDownloader frmDownloader = new FrmDownloader(versaoVO.getArquivo(), arquivoVersao);
+
+		frmDownloader.setVisible(Boolean.TRUE);
+
+		if (frmDownloader.isSucesso()) {
+
+			Changelog.runChangelog(connection);
+
+			this.atualizarVersao(connection, versaoVO.getVersao());
+		}
+	}
+
+	private void atualizarVersao(Connection connection, Long versao) throws IOException {
+
+		String sqlQuery = "update tb_versao set nr_versao=?";
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
+
+			preparedStatement.setLong(1, versao);
+
+			preparedStatement.executeUpdate();
+
+			connection.commit();
+		} catch (Exception e) {
+
+			logger.log(Level.SEVERE, "Erro ao atualizar versão no banco de dados", e);
+		}
 	}
 
 	private boolean versaoValida(Connection connection, File arquivoVersao) throws Exception {
@@ -74,8 +108,22 @@ public class StartUp {
 	}
 
 	private Long buscarVersaoBanco(Connection connection) {
-		// TODO Auto-generated method stub
-		return null;
+
+		String sqlQuery = "select nr_versao from tb_versao";
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery);
+				ResultSet rs = preparedStatement.executeQuery()) {
+
+			if (rs.next()) {
+				return rs.getLong(1);
+			}
+
+		} catch (Exception e) {
+
+			logger.log(Level.SEVERE, "Erro ao buscar versão no banco de dados", e);
+		}
+
+		return 0L;
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -91,6 +139,10 @@ public class StartUp {
 			startUp.atualizarAplicacao(connection, arquivoVersao);
 
 		}
+
+		arquivoVersao.delete();
+
+		connection.close();
 
 		startUp.iniciarAplicacao();
 

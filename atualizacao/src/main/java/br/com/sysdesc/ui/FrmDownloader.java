@@ -20,6 +20,7 @@ public class FrmDownloader extends JDialog {
 	private JProgressBar progressBar;
 	private String url;
 	private File fileOut;
+	private boolean sucesso;
 
 	public FrmDownloader(String url, File fileOut) {
 		this.url = url;
@@ -66,11 +67,13 @@ public class FrmDownloader extends JDialog {
 					JOptionPane.showMessageDialog(this, "OCORREU UM ERRO AO EFETUAR O DOWNLOAD:\n" + e.getMessage());
 				}
 
-				dispose();
+				sucesso = Boolean.TRUE;
 
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(this, "OCORREU UM ERRO AO EFETUAR O DOWNLOAD:\n" + e.getMessage());
 			}
+
+			dispose();
 
 		}).start();
 	}
@@ -86,4 +89,9 @@ public class FrmDownloader extends JDialog {
 		progressBar.setStringPainted(true);
 		getContentPane().add(progressBar, "cell 0 1,grow");
 	}
+
+	public boolean isSucesso() {
+		return sucesso;
+	}
+
 }
