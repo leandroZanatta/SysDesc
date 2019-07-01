@@ -93,10 +93,6 @@ public class StartUp {
 
 				System.out.println("Extraindo: " + entry.getName());
 
-				int count;
-
-				byte data[] = new byte[1024];
-
 				if (entry.isDirectory()) {
 
 					new File(Configuracoes.USER_DIR + "/" + entry.getName()).mkdirs();
@@ -110,6 +106,11 @@ public class StartUp {
 						new File(Configuracoes.USER_DIR + "/" + entry.getName().substring(0, di)).mkdirs();
 					}
 				}
+
+				int count;
+
+				byte data[] = new byte[1024];
+
 				FileOutputStream fos = new FileOutputStream(Configuracoes.USER_DIR + "/" + entry.getName());
 
 				dest = new BufferedOutputStream(fos);
@@ -122,6 +123,8 @@ public class StartUp {
 				dest.close();
 			}
 		}
+
+		arquivoVersaoZIP.delete();
 
 	}
 

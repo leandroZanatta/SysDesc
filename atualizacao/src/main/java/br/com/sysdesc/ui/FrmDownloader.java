@@ -85,12 +85,13 @@ public class FrmDownloader extends JDialog {
 	private void initComponents() {
 		setModal(Boolean.TRUE);
 		setUndecorated(Boolean.TRUE);
-		setSize(350, 50);
+		setSize(500, 50);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new MigLayout("", "[grow]", "[grow][27.00][grow]"));
 
 		progressBar = new JProgressBar();
 		progressBar.setStringPainted(true);
+		progressBar.setString(this.url);
 		getContentPane().add(progressBar, "cell 0 1,grow");
 	}
 
