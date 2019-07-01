@@ -42,6 +42,7 @@ public class FrmDownloader extends JDialog {
 				arquivoUrl = new URL(this.url);
 
 				URLConnection urlConnection = arquivoUrl.openConnection();
+				urlConnection.setUseCaches(Boolean.FALSE);
 
 				Long tamanhoArquivo = urlConnection.getContentLengthLong();
 
