@@ -62,18 +62,21 @@ public class FrmDownloader extends JDialog {
 
 						progressBar.setValue(Double
 								.valueOf(bufferTotal.doubleValue() / tamanhoArquivo.doubleValue() * 100).intValue());
+
 					}
+
+					sucesso = Boolean.TRUE;
 				} catch (IOException e) {
 					JOptionPane.showMessageDialog(this, "OCORREU UM ERRO AO EFETUAR O DOWNLOAD:\n" + e.getMessage());
 				}
 
-				sucesso = Boolean.TRUE;
+				dispose();
 
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(this, "OCORREU UM ERRO AO EFETUAR O DOWNLOAD:\n" + e.getMessage());
-			}
 
-			dispose();
+				dispose();
+			}
 
 		}).start();
 	}

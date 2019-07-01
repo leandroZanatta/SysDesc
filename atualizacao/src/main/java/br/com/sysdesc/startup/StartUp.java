@@ -4,14 +4,21 @@ import static br.com.sysdesc.util.resources.Resources.APPLICATION_JAR;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
 import java.awt.Desktop;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import javax.naming.ConfigurationException;
 
@@ -24,7 +31,9 @@ import br.com.sysdesc.changelog.core.Conexao;
 import br.com.sysdesc.ui.FrmConexao;
 import br.com.sysdesc.ui.FrmDownloader;
 import br.com.sysdesc.util.classes.LookAndFeelUtil;
+import br.com.sysdesc.util.resources.Configuracoes;
 import br.com.sysdesc.vo.VersaoVO;
+import liquibase.util.file.FilenameUtils;
 
 public class StartUp {
 
@@ -56,16 +65,80 @@ public class StartUp {
 		VersaoVO versaoVO = new Gson().fromJson(FileUtils.readFileToString(arquivoVersao, Charset.forName("UTF-8")),
 				VersaoVO.class);
 
-		FrmDownloader frmDownloader = new FrmDownloader(versaoVO.getArquivo(), arquivoVersao);
+		File arquivoVersaoZIP = criarDiretorioVersoes(FilenameUtils.getName(new URL(versaoVO.getArquivo()).getPath()));
+
+		FrmDownloader frmDownloader = new FrmDownloader(versaoVO.getArquivo(), arquivoVersaoZIP);
 
 		frmDownloader.setVisible(Boolean.TRUE);
 
 		if (frmDownloader.isSucesso()) {
 
+			this.extrairVersao(arquivoVersaoZIP);
+
 			Changelog.runChangelog(connection);
 
 			this.atualizarVersao(connection, versaoVO.getVersao());
 		}
+	}
+
+	private void extrairVersao(File arquivoVersaoZIP) throws Exception {
+
+		BufferedOutputStream dest = null;
+
+		try (ZipInputStream zis = new ZipInputStream(new BufferedInputStream(new FileInputStream(arquivoVersaoZIP)))) {
+
+			ZipEntry entry;
+
+			while ((entry = zis.getNextEntry()) != null) {
+
+				System.out.println("Extraindo: " + entry.getName());
+
+				int count;
+
+				byte data[] = new byte[1024];
+
+				if (entry.isDirectory()) {
+
+					new File(Configuracoes.USER_DIR + "/" + entry.getName()).mkdirs();
+
+					continue;
+				} else {
+
+					int di = entry.getName().lastIndexOf('/');
+
+					if (di != -1) {
+						new File(Configuracoes.USER_DIR + "/" + entry.getName().substring(0, di)).mkdirs();
+					}
+				}
+				FileOutputStream fos = new FileOutputStream(Configuracoes.USER_DIR + "/" + entry.getName());
+
+				dest = new BufferedOutputStream(fos);
+
+				while ((count = zis.read(data)) != -1)
+					dest.write(data, 0, count);
+
+				dest.flush();
+
+				dest.close();
+			}
+		}
+
+	}
+
+	private File criarDiretorioVersoes(String filename) throws IOException {
+
+		File pathVersoes = new File("versoes");
+
+		if (!pathVersoes.exists()) {
+
+			pathVersoes.mkdirs();
+		}
+
+		File arquivoVersaoRar = new File(pathVersoes, filename);
+
+		arquivoVersaoRar.createNewFile();
+
+		return arquivoVersaoRar;
 	}
 
 	private void atualizarVersao(Connection connection, Long versao) throws IOException {
