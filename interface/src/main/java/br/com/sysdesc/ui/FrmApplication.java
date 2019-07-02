@@ -23,6 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.border.EtchedBorder;
 
+import br.com.sysdesc.atualizacao.util.classes.ImageUtil;
+import br.com.sysdesc.atualizacao.util.classes.StringUtil;
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.enumerator.ProgramasEnum;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
@@ -30,9 +32,7 @@ import br.com.sysdesc.repository.model.Programa;
 import br.com.sysdesc.repository.model.Usuario;
 import br.com.sysdesc.service.main.MainService;
 import br.com.sysdesc.thread.TimerThread;
-import br.com.sysdesc.util.classes.ImageUtil;
 import br.com.sysdesc.util.classes.ListUtil;
-import br.com.sysdesc.util.classes.StringUtil;
 
 public class FrmApplication extends JFrame {
 

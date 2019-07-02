@@ -7,21 +7,23 @@ import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.pesquisa.ui.FrmCadastroPesquisa;
 import br.com.sysdesc.ui.FrmCategoria;
 import br.com.sysdesc.ui.FrmCidade;
-import br.com.sysdesc.ui.FrmClientes;
+import br.com.sysdesc.ui.FrmCliente;
 import br.com.sysdesc.ui.FrmDepartamento;
 import br.com.sysdesc.ui.FrmEstado;
 import br.com.sysdesc.ui.FrmMarca;
 import br.com.sysdesc.ui.FrmPerfil;
+import br.com.sysdesc.ui.FrmProduto;
+import br.com.sysdesc.ui.FrmSubCategoria;
 import br.com.sysdesc.ui.FrmUnidade;
-import br.com.sysdesc.ui.FrmUsuarios;
+import br.com.sysdesc.ui.FrmUsuario;
 
 public enum ProgramasEnum {
 
-	CADASTRO_CLIENTES(2L, FrmClientes.class),
+	CADASTRO_CLIENTES(2L, FrmCliente.class),
 
 	CADASTRO_PERFIS(3L, FrmPerfil.class),
 
-	CADASTRO_USUARIOS(4L, FrmUsuarios.class),
+	CADASTRO_USUARIOS(4L, FrmUsuario.class),
 
 	CADASTRO_MARCAS(5L, FrmMarca.class),
 
@@ -35,7 +37,11 @@ public enum ProgramasEnum {
 
 	CADASTRO_UNIDADE(10L, FrmUnidade.class),
 
-	CADASTRO_PESQUISA(12L, FrmCadastroPesquisa.class);
+	CADASTRO_PESQUISA(12L, FrmCadastroPesquisa.class),
+
+	CADASTRO_SUBCATEGORIA(13L, FrmSubCategoria.class),
+
+	CADASTRO_PRODUTO(14L, FrmProduto.class);
 
 	private static Map<Long, ProgramasEnum> mapa = new HashMap<>();
 
