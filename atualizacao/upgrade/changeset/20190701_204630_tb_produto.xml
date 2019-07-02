@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd  http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+	<changeSet id="20190701_204630" author="Vanessa">
+		<preConditions onFail="CONTINUE">
+			<not>
+				<tableExists tableName="tb_produto" />
+			</not>
+		</preConditions>
+		<createTable tableName="tb_produto">
+			<column name="id_produto" type="NUMBER(18,0)" remarks="CÓDIGO INDENTIFICADOR">
+				<constraints primaryKey="true" primaryKeyName="produto_pk" nullable="false" />
+			</column>
+
+			<column name="cd_subcategoria" type="NUMBER(18,0)" remarks="CÓDIGO DO DEPARTAMENTO">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="cd_fornecedor" type="NUMBER(18,0)" remarks="CÓDIGO DO DEPARTAMENTO">
+				<constraints nullable="false" />
+			</column>
+			
+			<column name="cd_unidade" type="NUMBER(18,0)" remarks="CÓDIGO DO DEPARTAMENTO">
+				<constraints nullable="false" />
+			</column>
+			
+			<column name="cd_marca" type="NUMBER(18,0)" remarks="CÓDIGO DO DEPARTAMENTO">
+				<constraints nullable="false" />
+			</column>
+			
+			<column name="cd_tipo" type="NUMBER(18,0)" remarks="CÓDIGO DO DEPARTAMENTO">
+				<constraints nullable="false" />
+			</column>
+			
+			<column name="vl_estoqueminimo" type="NUMBER(18,3)" remarks="CÓDIGO DO DEPARTAMENTO">
+				<constraints nullable="false" />
+			</column>
+			
+			<column name="vl_estoquemaximo" type="NUMBER(18,3)" remarks="CÓDIGO DO DEPARTAMENTO">
+				<constraints nullable="false" />
+			</column>
+			
+			<column name="fl_quantidadefracionada" type="BOOLEAN" remarks="CÓDIGO DO DEPARTAMENTO">
+				<constraints nullable="false" />
+			</column>
+			
+			<column name="fl_movimentaestoque" type="BOOLEAN" remarks="CÓDIGO DO DEPARTAMENTO">
+				<constraints nullable="false" />
+			</column>
+			
+			<column name="tx_descricao" type="VARCHAR(100)" remarks="DESCRICAO DA CATEGORIA">
+				<constraints nullable="false" />
+			</column>
+			
+		</createTable>
+
+
+	</changeSet>
+</databaseChangeLog>

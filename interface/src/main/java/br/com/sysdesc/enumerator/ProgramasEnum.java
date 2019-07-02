@@ -7,6 +7,7 @@ import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.pesquisa.ui.FrmCadastroPesquisa;
 import br.com.sysdesc.ui.FrmCategoria;
 import br.com.sysdesc.ui.FrmCidade;
+import br.com.sysdesc.ui.FrmClientes;
 import br.com.sysdesc.ui.FrmDepartamento;
 import br.com.sysdesc.ui.FrmEstado;
 import br.com.sysdesc.ui.FrmMarca;
@@ -16,53 +17,53 @@ import br.com.sysdesc.ui.FrmUsuarios;
 
 public enum ProgramasEnum {
 
-    CADASTRO_CLIENTES(2L, FrmUsuarios.class),
+	CADASTRO_CLIENTES(2L, FrmClientes.class),
 
-    CADASTRO_PERFIS(3L, FrmPerfil.class),
+	CADASTRO_PERFIS(3L, FrmPerfil.class),
 
-    CADASTRO_USUARIOS(4L, FrmUsuarios.class),
+	CADASTRO_USUARIOS(4L, FrmUsuarios.class),
 
-    CADASTRO_MARCAS(5L, FrmMarca.class),
+	CADASTRO_MARCAS(5L, FrmMarca.class),
 
-    CADASTRO_DEPARTAMENTOS(6L, FrmDepartamento.class),
+	CADASTRO_DEPARTAMENTOS(6L, FrmDepartamento.class),
 
-    CADASTRO_ESTADOS(7L, FrmEstado.class),
+	CADASTRO_ESTADOS(7L, FrmEstado.class),
 
-    CADASTRO_CATEGORIA(8L, FrmCategoria.class),
+	CADASTRO_CATEGORIA(8L, FrmCategoria.class),
 
-    CADASTRO_CIDADE(9L, FrmCidade.class),
+	CADASTRO_CIDADE(9L, FrmCidade.class),
 
-    CADASTRO_UNIDADE(10L, FrmUnidade.class),
+	CADASTRO_UNIDADE(10L, FrmUnidade.class),
 
-    CADASTRO_PESQUISA(12L, FrmCadastroPesquisa.class);
+	CADASTRO_PESQUISA(12L, FrmCadastroPesquisa.class);
 
-    private static Map<Long, ProgramasEnum> mapa = new HashMap<>();
+	private static Map<Long, ProgramasEnum> mapa = new HashMap<>();
 
-    static {
+	static {
 
-        for (ProgramasEnum programa : ProgramasEnum.values()) {
-            mapa.put(programa.getCodigo(), programa);
-        }
-    }
+		for (ProgramasEnum programa : ProgramasEnum.values()) {
+			mapa.put(programa.getCodigo(), programa);
+		}
+	}
 
-    private final Long codigo;
+	private final Long codigo;
 
-    private final Class<? extends AbstractInternalFrame> internalFrame;
+	private final Class<? extends AbstractInternalFrame> internalFrame;
 
-    ProgramasEnum(Long codigo, Class<? extends AbstractInternalFrame> internalFrame) {
-        this.codigo = codigo;
-        this.internalFrame = internalFrame;
-    }
+	ProgramasEnum(Long codigo, Class<? extends AbstractInternalFrame> internalFrame) {
+		this.codigo = codigo;
+		this.internalFrame = internalFrame;
+	}
 
-    public Long getCodigo() {
-        return codigo;
-    }
+	public Long getCodigo() {
+		return codigo;
+	}
 
-    public Class<? extends AbstractInternalFrame> getInternalFrame() {
-        return internalFrame;
-    }
+	public Class<? extends AbstractInternalFrame> getInternalFrame() {
+		return internalFrame;
+	}
 
-    public static ProgramasEnum findByCodigo(Long codigoPrograma) {
-        return mapa.get(codigoPrograma);
-    }
+	public static ProgramasEnum findByCodigo(Long codigoPrograma) {
+		return mapa.get(codigoPrograma);
+	}
 }
