@@ -8,64 +8,67 @@ import br.com.sysdesc.repository.model.Departamento;
 import br.com.sysdesc.repository.model.Estado;
 import br.com.sysdesc.repository.model.Marca;
 import br.com.sysdesc.repository.model.Perfil;
+import br.com.sysdesc.repository.model.Subcategoria;
 import br.com.sysdesc.repository.model.Usuario;
 
 public enum PesquisaEnum {
 
-    PES_USUARIOS(1L, "Usuários", Usuario.class),
+	PES_USUARIOS(1L, "Usuários", Usuario.class),
 
-    PES_PERFIL(2L, "Perfis", Perfil.class),
+	PES_PERFIL(2L, "Perfis", Perfil.class),
 
-    PES_ESTADOS(3L, "Estados", Estado.class),
+	PES_ESTADOS(3L, "Estados", Estado.class),
 
-    PES_MARCAS(4L, "Marcas", Marca.class),
+	PES_MARCAS(4L, "Marcas", Marca.class),
 
-    PES_DEPARTAMENTOS(5L, "Departamentos", Departamento.class),
+	PES_DEPARTAMENTOS(5L, "Departamentos", Departamento.class),
 
-    PES_UNIDADES(6L, "Unidades", Departamento.class),
+	PES_UNIDADES(6L, "Unidades", Departamento.class),
 
-    PES_CATEGORIAS(7L, "Categorias", Departamento.class),
+	PES_CATEGORIAS(7L, "Categorias", Departamento.class),
 
-    PES_CIDADES(8L, "Cidades", Cidade.class);
+	PES_CIDADES(8L, "Cidades", Cidade.class),
 
-    private static Map<Long, PesquisaEnum> map = new HashMap<>();
+	PES_SUBCATEGORIAS(9L, "Cidades", Subcategoria.class);
 
-    private final Long codigoPesquisa;
+	private static Map<Long, PesquisaEnum> map = new HashMap<>();
 
-    private final String descricaoPesquisa;
+	private final Long codigoPesquisa;
 
-    private final Class<?> clazz;
+	private final String descricaoPesquisa;
 
-    static {
-        for (PesquisaEnum pesquisaEnum : PesquisaEnum.values()) {
-            map.put(pesquisaEnum.codigoPesquisa, pesquisaEnum);
-        }
-    }
+	private final Class<?> clazz;
 
-    private PesquisaEnum(Long codigoPesquisa, String descricaoPesquisa, Class<?> clazz) {
-        this.codigoPesquisa = codigoPesquisa;
-        this.descricaoPesquisa = descricaoPesquisa;
-        this.clazz = clazz;
-    }
+	static {
+		for (PesquisaEnum pesquisaEnum : PesquisaEnum.values()) {
+			map.put(pesquisaEnum.codigoPesquisa, pesquisaEnum);
+		}
+	}
 
-    public static PesquisaEnum forValue(Long value) {
-        return map.get(value);
-    }
+	private PesquisaEnum(Long codigoPesquisa, String descricaoPesquisa, Class<?> clazz) {
+		this.codigoPesquisa = codigoPesquisa;
+		this.descricaoPesquisa = descricaoPesquisa;
+		this.clazz = clazz;
+	}
 
-    public Long getCodigoPesquisa() {
-        return codigoPesquisa;
-    }
+	public static PesquisaEnum forValue(Long value) {
+		return map.get(value);
+	}
 
-    public String getDescricaoPesquisa() {
-        return descricaoPesquisa;
-    }
+	public Long getCodigoPesquisa() {
+		return codigoPesquisa;
+	}
 
-    public Class<?> getClazz() {
-        return clazz;
-    }
+	public String getDescricaoPesquisa() {
+		return descricaoPesquisa;
+	}
 
-    @Override
-    public String toString() {
-        return descricaoPesquisa;
-    }
+	public Class<?> getClazz() {
+		return clazz;
+	}
+
+	@Override
+	public String toString() {
+		return descricaoPesquisa;
+	}
 }

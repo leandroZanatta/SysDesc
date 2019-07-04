@@ -16,28 +16,21 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "tb_categoria")
-@SequenceGenerator(name = "GEN_CATEGORIA", allocationSize = 1, sequenceName = "GEN_CATEGORIA")
-public class Categoria implements Serializable {
+@Table(name = "tb_subcategoria")
+@SequenceGenerator(name = "GEN_SUBCATEGORIA", allocationSize = 1, sequenceName = "GEN_SUBCATEGORIA")
+public class Subcategoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_CATEGORIA")
-	@Column(name = "id_categoria")
-	private Long idCategoria;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_SUBCATEGORIA")
+	@Column(name = "id_subcategoria")
+	private Long idSubcategoria;
 
 	@Column(name = "tx_descricao")
 	private String descricao;
 
-	@Column(name = "cd_departamento", insertable = false, updatable = false)
-	private Long codigoDepartamento;
-
 	@ManyToOne
-	@JoinColumn(name = "cd_departamento")
-	private Departamento departamento;
+	@JoinColumn(name = "cd_categoria")
+	private Categoria categoria;
 
-	@Override
-	public String toString() {
-		return descricao;
-	}
 }
