@@ -11,6 +11,7 @@ import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.pesquisa.components.PanelActions;
+import br.com.sysdesc.repository.dao.CategoriaDAO;
 import br.com.sysdesc.repository.dao.DepartamentoDAO;
 import br.com.sysdesc.repository.dao.SubcategoriaDAO;
 import br.com.sysdesc.repository.model.Categoria;
@@ -21,6 +22,8 @@ import br.com.sysdesc.util.classes.StringUtil;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmSubCategoria extends AbstractInternalFrame {
+	private static final long serialVersionUID = 1L;
+
 	private JNumericField txCodigo;
 	private JTextFieldMaiusculo txDescricao;
 	private JLabel lbCodigo;
@@ -33,6 +36,7 @@ public class FrmSubCategoria extends AbstractInternalFrame {
 	private PanelActions<Subcategoria> panelActions;
 	private SubcategoriaDAO subcategoriaDAO = new SubcategoriaDAO();
 	private DepartamentoDAO departamentoDAO = new DepartamentoDAO();
+	private CategoriaDAO categoriaDAO = new CategoriaDAO();
 
 	public FrmSubCategoria(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
@@ -51,6 +55,8 @@ public class FrmSubCategoria extends AbstractInternalFrame {
 		lbDepartamento = new JLabel("Departamento:");
 
 		departamentoDAO.listar().forEach(cbDepartamento::addItem);
+
+		cbDepartamento.addActionListener((e) -> selecionarCategorias());
 
 		getContentPane().add(lbCodigo, "cell 0 0");
 		getContentPane().add(txCodigo, "cell 0 1,width 50:100:100");
@@ -113,4 +119,14 @@ public class FrmSubCategoria extends AbstractInternalFrame {
 
 	}
 
+	private void selecionarCategorias() {
+
+		cbCategoria.removeAll();
+
+		if (cbDepartamento.getSelectedIndex() >= 0) {
+
+			categoriaDAO.buscarPorDepartamento(((Departamento) cbDepartamento.getSelectedItem()).getIdDepartamento())
+					.forEach(cbCategoria::addItem);
+		}
+	}
 }

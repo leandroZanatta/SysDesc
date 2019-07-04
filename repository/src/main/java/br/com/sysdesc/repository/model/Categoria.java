@@ -29,8 +29,15 @@ public class Categoria implements Serializable {
 	@Column(name = "tx_descricao")
 	private String descricao;
 
+	@Column(name = "cd_departamento", insertable = false, updatable = false)
+	private Long codigoDepartamento;
+
 	@ManyToOne
 	@JoinColumn(name = "cd_departamento")
 	private Departamento departamento;
 
+	@Override
+	public String toString() {
+		return descricao;
+	}
 }
