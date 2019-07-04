@@ -1,10 +1,12 @@
 package br.com.sysdesc.ui;
 
-import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_CATEGORIAS;
+import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_SUBCATEGORIAS;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
@@ -41,7 +43,7 @@ public class FrmSubCategoria extends AbstractInternalFrame {
 	public FrmSubCategoria(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
 
-		setSize(450, 260);
+		setSize(450, 240);
 		setClosable(Boolean.TRUE);
 		getContentPane().setLayout(new MigLayout("", "[grow]", "[][][][][][][][][]"));
 
@@ -54,6 +56,8 @@ public class FrmSubCategoria extends AbstractInternalFrame {
 		lbCategoria = new JLabel("Categoria:");
 		lbDepartamento = new JLabel("Departamento:");
 
+		AutoCompleteDecorator.decorate(cbDepartamento);
+		AutoCompleteDecorator.decorate(cbCategoria);
 		departamentoDAO.listar().forEach(cbDepartamento::addItem);
 
 		cbDepartamento.addActionListener((e) -> selecionarCategorias());
@@ -68,15 +72,15 @@ public class FrmSubCategoria extends AbstractInternalFrame {
 		getContentPane().add(txDescricao, "cell 0 7,growx");
 
 		panelActions = new PanelActions<Subcategoria>(this, Subcategoria::getIdSubcategoria, subcategoriaDAO,
-				PES_CATEGORIAS) {
+				PES_SUBCATEGORIAS) {
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void carregarObjeto(Subcategoria objeto) {
 				txCodigo.setValue(objeto.getIdSubcategoria());
-				cbCategoria.setSelectedItem(objeto.getCategoria());
 				cbDepartamento.setSelectedItem(objeto.getCategoria().getDepartamento());
+				cbCategoria.setSelectedItem(objeto.getCategoria());
 				txDescricao.setText(objeto.getDescricao());
 			}
 
@@ -121,12 +125,14 @@ public class FrmSubCategoria extends AbstractInternalFrame {
 
 	private void selecionarCategorias() {
 
-		cbCategoria.removeAll();
+		cbCategoria.removeAllItems();
 
 		if (cbDepartamento.getSelectedIndex() >= 0) {
 
 			categoriaDAO.buscarPorDepartamento(((Departamento) cbDepartamento.getSelectedItem()).getIdDepartamento())
 					.forEach(cbCategoria::addItem);
+
+			cbCategoria.setSelectedIndex(-1);
 		}
 	}
 }

@@ -150,11 +150,14 @@ public abstract class PanelActions<T> extends JPanel {
 
 		pesquisar();
 
-		limpar();
+		if (objetoPesquisa != null) {
 
-		carregarObjeto(objetoPesquisa);
+			limpar();
 
-		bloquearBotoes(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE);
+			carregarObjeto(objetoPesquisa);
+
+			bloquearBotoes(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE);
+		}
 	}
 
 	private void editEvent() {
@@ -210,6 +213,8 @@ public abstract class PanelActions<T> extends JPanel {
 
 		if (objetoPesquisa == null) {
 			JOptionPane.showMessageDialog(painel, NENHUM_REGISTRO_ENCONTRADO);
+
+			return;
 		}
 
 		limpar();
@@ -228,6 +233,8 @@ public abstract class PanelActions<T> extends JPanel {
 
 		if (objetoPesquisa == null) {
 			JOptionPane.showMessageDialog(painel, NENHUM_REGISTRO_ENCONTRADO);
+
+			return;
 		}
 
 		limpar();
@@ -245,6 +252,8 @@ public abstract class PanelActions<T> extends JPanel {
 
 		if (objetoPesquisa == null) {
 			JOptionPane.showMessageDialog(painel, NENHUM_REGISTRO_ENCONTRADO);
+
+			return;
 		}
 
 		limpar();
@@ -263,6 +272,8 @@ public abstract class PanelActions<T> extends JPanel {
 
 		if (objetoPesquisa == null) {
 			JOptionPane.showMessageDialog(painel, NENHUM_REGISTRO_ENCONTRADO);
+
+			return;
 		}
 
 		limpar();

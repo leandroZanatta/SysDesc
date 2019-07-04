@@ -50,5 +50,6 @@
 	<include file="inserts/20190630_231900_carga_versao.xml" />
 	<include file="inserts/20190701_214800_carga_programa_subcategorias.xml" />
 	<include file="inserts/20190701_214900_carga_programa_produtos.xml" />
+	<include file="inserts/20190704_202400_carga_pesquisa_subcategoria.xml" />
 
 </databaseChangeLog>
