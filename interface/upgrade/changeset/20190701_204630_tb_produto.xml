@@ -53,12 +53,12 @@
 				<constraints nullable="false" />
 			</column>
 
-			<column name="fl_ativo" type="BOOLEAN" remarks="PRODUTO ATIVO">
+			<column name="cd_status" type="NUMERIC(2,0)" remarks="STATUS DO PRODUTO">
 				<constraints nullable="false" />
 			</column>
 
 		</createTable>
 
-
+		<createSequence sequenceName="gen_produto" />
 	</changeSet>
 </databaseChangeLog>

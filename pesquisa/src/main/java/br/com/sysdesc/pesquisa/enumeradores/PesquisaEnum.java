@@ -4,10 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import br.com.sysdesc.repository.model.Cidade;
+import br.com.sysdesc.repository.model.Cliente;
 import br.com.sysdesc.repository.model.Departamento;
 import br.com.sysdesc.repository.model.Estado;
 import br.com.sysdesc.repository.model.Marca;
 import br.com.sysdesc.repository.model.Perfil;
+import br.com.sysdesc.repository.model.Produto;
 import br.com.sysdesc.repository.model.Subcategoria;
 import br.com.sysdesc.repository.model.Usuario;
 
@@ -29,7 +31,11 @@ public enum PesquisaEnum {
 
 	PES_CIDADES(8L, "Cidades", Cidade.class),
 
-	PES_SUBCATEGORIAS(9L, "Cidades", Subcategoria.class);
+	PES_SUBCATEGORIAS(9L, "Cidades", Subcategoria.class),
+
+	PES_CLIENTES(10L, "Clientes", Cliente.class),
+
+	PES_PRODUTOS(11L, "Produtos", Produto.class);
 
 	private static Map<Long, PesquisaEnum> map = new HashMap<>();
 

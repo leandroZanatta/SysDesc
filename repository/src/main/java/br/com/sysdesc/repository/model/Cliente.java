@@ -38,4 +38,7 @@ public class Cliente implements Serializable {
 	@OneToMany(mappedBy = "cliente")
 	private List<Usuario> usuarios;
 
+	@OneToMany(mappedBy = "fornecedor")
+	private List<Produto> produtos;
+
 }

@@ -41,7 +41,7 @@ public abstract class CampoPesquisa<T> extends JPanel {
 
 		btPesquisa.setIcon(ImageUtil.resize("search.png", 16, 16));
 		btPesquisa.setMargin(new Insets(0, 0, 0, 0));
-		btPesquisa.addActionListener((e) -> abrirPesquisa());
+		btPesquisa.addActionListener((e) -> validarPesquisa());
 
 		txValorPesquisa.setEditable(Boolean.FALSE);
 
@@ -49,6 +49,17 @@ public abstract class CampoPesquisa<T> extends JPanel {
 
 		add(txValorPesquisa, "growx");
 		add(btPesquisa, "east");
+	}
+
+	private void validarPesquisa() {
+
+		if (validar()) {
+			abrirPesquisa();
+		}
+	}
+
+	public Boolean validar() {
+		return Boolean.TRUE;
 	}
 
 	private void abrirPesquisa() {
