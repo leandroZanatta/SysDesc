@@ -1,5 +1,10 @@
 package br.com.sysdesc.pesquisa.components;
 
+import static br.com.sysdesc.util.resources.Resources.VALIDACAO;
+import static br.com.sysdesc.util.resources.Resources.translate;
+import static javax.swing.JOptionPane.WARNING_MESSAGE;
+import static javax.swing.JOptionPane.showMessageDialog;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Insets;
@@ -7,13 +12,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
@@ -21,18 +24,20 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.EventListenerList;
 
+import com.mysema.query.BooleanBuilder;
+
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.listeners.PanelActionListener;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.pesquisa.ui.FrmPesquisa;
-import br.com.sysdesc.repository.interfaces.GenericDAO;
+import br.com.sysdesc.service.interfaces.impl.AbstractGenericService;
 import br.com.sysdesc.util.classes.ClassTypeUtil;
 import br.com.sysdesc.util.classes.ImageUtil;
+import br.com.sysdesc.util.exception.SysDescException;
 import net.miginfocom.swing.MigLayout;
 
 public abstract class PanelActions<T> extends JPanel {
 
-	private static final String NENHUM_REGISTRO_ENCONTRADO = "NENHUM REGISTRO ENCONTRADO.";
 	private static final long serialVersionUID = 1L;
 	protected EventListenerList listenerList = new EventListenerList();
 	private JButton btnFirst;
@@ -45,19 +50,19 @@ public abstract class PanelActions<T> extends JPanel {
 	private JButton btnNext;
 	private JButton btnLast;
 	private final AbstractInternalFrame internalFrame;
-	private final GenericDAO<T> genericDAO;
+	private final AbstractGenericService<T> genericService;
 	private final PesquisaEnum pesquisa;
 	private T objetoPesquisa;
 	private Map<Class<? extends Component>, List<Component>> camposTela = new HashMap<>();
 	protected Boolean isEdit = Boolean.FALSE;
-	private final Function<T, Long> id;
+	private final JFrame parent = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
 
-	public PanelActions(AbstractInternalFrame internalFrame, Function<T, Long> id, GenericDAO<T> genericDAO,
+	public PanelActions(AbstractInternalFrame internalFrame, AbstractGenericService<T> genericService,
 			PesquisaEnum pesquisa) {
 		this.internalFrame = internalFrame;
-		this.genericDAO = genericDAO;
+		this.genericService = genericService;
 		this.pesquisa = pesquisa;
-		this.id = id;
+
 		initComponents();
 	}
 
@@ -192,11 +197,13 @@ public abstract class PanelActions<T> extends JPanel {
 
 	private void saveEvent() {
 
-		if (this.objetoValido()) {
+		try {
 
 			preencherObjeto(objetoPesquisa);
 
-			genericDAO.salvar(objetoPesquisa);
+			genericService.validar(objetoPesquisa);
+
+			genericService.salvar(objetoPesquisa);
 
 			bloquear(Boolean.TRUE);
 
@@ -204,94 +211,103 @@ public abstract class PanelActions<T> extends JPanel {
 
 			fireSaveEvent(objetoPesquisa);
 
+		} catch (SysDescException sysDescException) {
+
+			showMessageDialog(parent, sysDescException.getMensagem(), translate(VALIDACAO), WARNING_MESSAGE);
 		}
+
 	}
 
 	private void fowadEvent(PanelActions<T> painel) {
 
-		objetoPesquisa = genericDAO.previows(getValueId());
+		try {
 
-		if (objetoPesquisa == null) {
-			JOptionPane.showMessageDialog(painel, NENHUM_REGISTRO_ENCONTRADO);
+			objetoPesquisa = genericService.previows(getValueId());
 
-			return;
+			limpar();
+
+			bloquear(Boolean.TRUE);
+
+			carregarObjeto(objetoPesquisa);
+
+			bloquearBotoes(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE);
+
+		} catch (SysDescException sysDescException) {
+
+			showMessageDialog(parent, sysDescException.getMensagem(), translate(VALIDACAO), WARNING_MESSAGE);
 		}
-
-		limpar();
-
-		bloquear(Boolean.TRUE);
-
-		carregarObjeto(objetoPesquisa);
-
-		bloquearBotoes(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE);
 
 	}
 
 	private void lastEvent(PanelActions<T> painel) {
 
-		objetoPesquisa = genericDAO.last();
+		try {
+			objetoPesquisa = genericService.last();
 
-		if (objetoPesquisa == null) {
-			JOptionPane.showMessageDialog(painel, NENHUM_REGISTRO_ENCONTRADO);
+			limpar();
 
-			return;
+			bloquear(Boolean.TRUE);
+
+			carregarObjeto(objetoPesquisa);
+
+			bloquearBotoes(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE);
+
+		} catch (SysDescException sysDescException) {
+
+			showMessageDialog(parent, sysDescException.getMensagem(), translate(VALIDACAO), WARNING_MESSAGE);
 		}
-
-		limpar();
-
-		bloquear(Boolean.TRUE);
-
-		carregarObjeto(objetoPesquisa);
-
-		bloquearBotoes(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE);
 	}
 
 	private void firstEvent(PanelActions<T> painel) {
 
-		objetoPesquisa = genericDAO.first();
+		try {
 
-		if (objetoPesquisa == null) {
-			JOptionPane.showMessageDialog(painel, NENHUM_REGISTRO_ENCONTRADO);
+			objetoPesquisa = genericService.first();
 
-			return;
+			limpar();
+
+			bloquear(Boolean.TRUE);
+
+			carregarObjeto(objetoPesquisa);
+
+			bloquearBotoes(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE);
+
+		} catch (SysDescException sysDescException) {
+
+			showMessageDialog(parent, sysDescException.getMensagem(), translate(VALIDACAO), WARNING_MESSAGE);
 		}
-
-		limpar();
-
-		bloquear(Boolean.TRUE);
-
-		carregarObjeto(objetoPesquisa);
-
-		bloquearBotoes(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE);
 
 	}
 
 	private void nextEvent(PanelActions<T> painel) {
 
-		objetoPesquisa = genericDAO.next(getValueId());
+		try {
 
-		if (objetoPesquisa == null) {
-			JOptionPane.showMessageDialog(painel, NENHUM_REGISTRO_ENCONTRADO);
+			objetoPesquisa = genericService.next(getValueId());
 
-			return;
+			limpar();
+
+			bloquear(Boolean.TRUE);
+
+			carregarObjeto(objetoPesquisa);
+
+			bloquearBotoes(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE);
+
+		} catch (SysDescException sysDescException) {
+
+			showMessageDialog(parent, sysDescException.getMensagem(), translate(VALIDACAO), WARNING_MESSAGE);
 		}
-
-		limpar();
-
-		bloquear(Boolean.TRUE);
-
-		carregarObjeto(objetoPesquisa);
-
-		bloquearBotoes(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE);
 
 	}
 
 	private Long getValueId() {
+
 		Long valor = null;
 
 		if (objetoPesquisa != null) {
-			valor = id.apply(objetoPesquisa);
+			valor = genericService.getId().apply(objetoPesquisa);
 		}
+
 		return valor;
 	}
 
@@ -406,17 +422,12 @@ public abstract class PanelActions<T> extends JPanel {
 		fireClearEvent();
 	}
 
-	public Boolean objetoValido() {
-
-		return Boolean.TRUE;
-	}
-
 	public void addEventListener(PanelActionListener<T> panelEvent) {
 
 		listenerList.add(PanelActionListener.class, panelEvent);
 	}
 
-	public void removeMyEventListener(PanelActionListener<T> panelEvent) {
+	public void removeEventListener(PanelActionListener<T> panelEvent) {
 
 		listenerList.remove(PanelActionListener.class, panelEvent);
 	}
@@ -473,10 +484,6 @@ public abstract class PanelActions<T> extends JPanel {
 		}
 	}
 
-	public GenericDAO<T> getGenericDAO() {
-		return genericDAO;
-	}
-
 	public T getObjetoPesquisa() {
 		return objetoPesquisa;
 	}
@@ -487,9 +494,8 @@ public abstract class PanelActions<T> extends JPanel {
 
 	public void pesquisar() {
 		try {
-			JFrame parent = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
 
-			FrmPesquisa<T> pesquisa = new FrmPesquisa<>(parent, this.pesquisa, this.genericDAO,
+			FrmPesquisa<T> pesquisa = new FrmPesquisa<>(parent, this.pesquisa, getPreFilter(), this.genericService,
 					this.internalFrame.getCodigoUsuario());
 
 			pesquisa.setVisible(Boolean.TRUE);
@@ -506,9 +512,14 @@ public abstract class PanelActions<T> extends JPanel {
 
 				bloquearBotoes(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE);
 			}
-		} catch (RuntimeException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
+		} catch (SysDescException e) {
+			showMessageDialog(parent, e.getMessage());
 		}
+	}
+
+	public BooleanBuilder getPreFilter() {
+
+		return new BooleanBuilder();
 	}
 
 	public abstract void carregarObjeto(T objeto);

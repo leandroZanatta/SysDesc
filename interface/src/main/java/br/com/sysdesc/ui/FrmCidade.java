@@ -6,7 +6,6 @@ import static br.com.sysdesc.util.resources.Resources.translate;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
@@ -14,12 +13,11 @@ import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.pesquisa.components.PanelActions;
-import br.com.sysdesc.repository.dao.CidadeDAO;
-import br.com.sysdesc.repository.dao.EstadoDAO;
 import br.com.sysdesc.repository.model.Cidade;
 import br.com.sysdesc.repository.model.Estado;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
-import br.com.sysdesc.util.classes.StringUtil;
+import br.com.sysdesc.service.cidade.CidadeService;
+import br.com.sysdesc.service.estado.EstadoService;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmCidade extends AbstractInternalFrame {
@@ -35,11 +33,16 @@ public class FrmCidade extends AbstractInternalFrame {
 	private JComboBox<Estado> cbEstado;
 	private JLabel lbDescricao;
 	private PanelActions<Cidade> painelBotoes;
-	private CidadeDAO cidadeDAO = new CidadeDAO();
-	private EstadoDAO estadoDAO = new EstadoDAO();
+	private CidadeService cidadeService = new CidadeService();
+	private EstadoService estadoService = new EstadoService();
 
 	public FrmCidade(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
+
+		initComponents();
+	}
+
+	private void initComponents() {
 
 		setSize(450, 210);
 		setClosable(Boolean.TRUE);
@@ -53,7 +56,8 @@ public class FrmCidade extends AbstractInternalFrame {
 		lbDescricao = new JLabel("Descrição:");
 		txDescricao = new JTextFieldMaiusculo();
 
-		estadoDAO.listar().stream().forEach(cbEstado::addItem);
+		estadoService.listarEstados().stream().forEach(cbEstado::addItem);
+
 		painelContent.setLayout(new MigLayout("", "[grow]", "[][][][][][][grow]"));
 		getContentPane().add(painelContent);
 
@@ -64,7 +68,7 @@ public class FrmCidade extends AbstractInternalFrame {
 		painelContent.add(lbDescricao, "cell 0 4");
 		painelContent.add(txDescricao, "cell 0 5,growx");
 
-		painelBotoes = new PanelActions<Cidade>(this, Cidade::getIdCidade, cidadeDAO, PES_CIDADES) {
+		painelBotoes = new PanelActions<Cidade>(this, cidadeService, PES_CIDADES) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -78,26 +82,8 @@ public class FrmCidade extends AbstractInternalFrame {
 			@Override
 			public void preencherObjeto(Cidade objetoPesquisa) {
 				objetoPesquisa.setIdCidade(txCodigo.getValue());
-
 				objetoPesquisa.setEstado((Estado) cbEstado.getSelectedItem());
 				objetoPesquisa.setDescricao(txDescricao.getText());
-
-			}
-
-			@Override
-			public Boolean objetoValido() {
-
-				if (cbEstado.getSelectedIndex() < 0) {
-					JOptionPane.showMessageDialog(null, "Selecione um estado");
-					return false;
-				}
-
-				if (StringUtil.isNullOrEmpty(txDescricao.getText())) {
-					JOptionPane.showMessageDialog(null, "Insira uma descrição");
-					return false;
-				}
-
-				return true;
 			}
 		};
 		painelBotoes.addEventListener(new PanelEventAdapter<Cidade>() {

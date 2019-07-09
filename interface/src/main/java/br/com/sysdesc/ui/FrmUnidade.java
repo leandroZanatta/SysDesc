@@ -8,7 +8,6 @@ import static br.com.sysdesc.util.resources.Resources.FRMUNIDADE_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
@@ -16,10 +15,9 @@ import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.pesquisa.components.PanelActions;
-import br.com.sysdesc.repository.dao.UnidadeDAO;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Unidade;
-import br.com.sysdesc.util.classes.StringUtil;
+import br.com.sysdesc.service.unidade.UnidadeService;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmUnidade extends AbstractInternalFrame {
@@ -33,11 +31,16 @@ public class FrmUnidade extends AbstractInternalFrame {
 	private JLabel lblDescricaoReduzida;
 	private JTextFieldMaiusculo txDescricao;
 	private PanelActions<Unidade> panelActions;
-	private UnidadeDAO unidadeDAO = new UnidadeDAO();
+	private UnidadeService unidadeService = new UnidadeService();
 	private JTextFieldMaiusculo textField;
 
 	public FrmUnidade(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
+
+		initComponents();
+	}
+
+	private void initComponents() {
 
 		setSize(450, 170);
 		setClosable(Boolean.TRUE);
@@ -62,7 +65,7 @@ public class FrmUnidade extends AbstractInternalFrame {
 		painelContent.add(lblDescricaoReduzida, "cell 1 2");
 		painelContent.add(textField, "cell 1 3,width 50:100:100");
 
-		panelActions = new PanelActions<Unidade>(this, Unidade::getIdUnidade, unidadeDAO, PES_UNIDADES) {
+		panelActions = new PanelActions<Unidade>(this, unidadeService, PES_UNIDADES) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -79,33 +82,6 @@ public class FrmUnidade extends AbstractInternalFrame {
 				objetoPesquisa.setDescricao(txDescricao.getText());
 				objetoPesquisa.setDescricaoReduzida(textField.getText());
 			}
-
-			@Override
-			public Boolean objetoValido() {
-
-				if (StringUtil.isNullOrEmpty(txDescricao.getText())) {
-
-					JOptionPane.showMessageDialog(null, "Insira uma descrição válida");
-
-					return Boolean.FALSE;
-				}
-
-				if (StringUtil.isNullOrEmpty(textField.getText())) {
-
-					JOptionPane.showMessageDialog(null, "Insira uma descrição reduzida válida");
-
-					return Boolean.FALSE;
-				}
-
-				if (textField.getText().length() > 3) {
-
-					JOptionPane.showMessageDialog(null, "A descrição reduzida deve conter no máximo 3 caracteres");
-
-					return Boolean.FALSE;
-				}
-
-				return Boolean.TRUE;
-			}
 		};
 
 		panelActions.addEventListener(new PanelEventAdapter<Unidade>() {
@@ -117,7 +93,6 @@ public class FrmUnidade extends AbstractInternalFrame {
 		});
 
 		painelContent.add(panelActions, "cell 0 4 2 1,grow");
-
 	}
 
 }

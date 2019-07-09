@@ -7,7 +7,6 @@ import static br.com.sysdesc.util.resources.Resources.FRMDEPARTAMENTO_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
@@ -15,10 +14,9 @@ import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.pesquisa.components.PanelActions;
-import br.com.sysdesc.repository.dao.DepartamentoDAO;
 import br.com.sysdesc.repository.model.Departamento;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
-import br.com.sysdesc.util.classes.StringUtil;
+import br.com.sysdesc.service.departamento.DepartamentoService;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmDepartamento extends AbstractInternalFrame {
@@ -33,10 +31,15 @@ public class FrmDepartamento extends AbstractInternalFrame {
 	private JNumericField txCodigo;
 	private JTextFieldMaiusculo txDescricao;
 	private PanelActions<Departamento> panelActions;
-	private DepartamentoDAO departamentoDAO = new DepartamentoDAO();
+	private DepartamentoService departamentoService = new DepartamentoService();
 
 	public FrmDepartamento(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
+
+		initComponents();
+	}
+
+	private void initComponents() {
 
 		setSize(450, 170);
 		setClosable(Boolean.TRUE);
@@ -60,8 +63,7 @@ public class FrmDepartamento extends AbstractInternalFrame {
 		painelContent.add(lblDescricao, "cell 0 2");
 		painelContent.add(txDescricao, "cell 0 3,growx");
 
-		panelActions = new PanelActions<Departamento>(this, Departamento::getIdDepartamento, departamentoDAO,
-				PES_DEPARTAMENTOS) {
+		panelActions = new PanelActions<Departamento>(this, departamentoService, PES_DEPARTAMENTOS) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -77,18 +79,6 @@ public class FrmDepartamento extends AbstractInternalFrame {
 				objetoPesquisa.setDescricao(txDescricao.getText());
 			}
 
-			@Override
-			public Boolean objetoValido() {
-
-				if (StringUtil.isNullOrEmpty(txDescricao.getText())) {
-
-					JOptionPane.showMessageDialog(null, "Insira uma descrição válida");
-
-					return Boolean.FALSE;
-				}
-
-				return Boolean.TRUE;
-			}
 		};
 
 		panelActions.addEventListener(new PanelEventAdapter<Departamento>() {
@@ -98,6 +88,7 @@ public class FrmDepartamento extends AbstractInternalFrame {
 				txCodigo.setValue(departamento.getIdDepartamento());
 			}
 		});
+
 		painelContent.add(panelActions, "cell 0 4,grow");
 	}
 

@@ -16,14 +16,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import com.mysema.query.BooleanBuilder;
+
 import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.pesquisa.enumeradores.TipoTamanhoEnum;
 import br.com.sysdesc.pesquisa.models.GenericTableModel;
 import br.com.sysdesc.repository.dao.PesquisaDAO;
-import br.com.sysdesc.repository.interfaces.GenericDAO;
 import br.com.sysdesc.repository.model.Pesquisa;
 import br.com.sysdesc.repository.model.PesquisaCampo;
+import br.com.sysdesc.service.interfaces.impl.AbstractGenericService;
 import br.com.sysdesc.util.classes.ContadorUtil;
 import br.com.sysdesc.util.classes.ImageUtil;
 import net.miginfocom.swing.MigLayout;
@@ -51,23 +53,26 @@ public class FrmPesquisa<T> extends JDialog {
 	private PesquisaDAO pesquisaDAO = new PesquisaDAO();
 	private Pesquisa pesquisaExibir;
 	private GenericTableModel<T> genericTableModel;
-	private final GenericDAO<T> genericDAO;
+	private final AbstractGenericService<T> genericService;
 	private Integer rows = 0;
 	private Long numeroregistros = 0L;
 	private JLabel lbRegistros;
 	private final Boolean multiselect;
+	private final BooleanBuilder preFilter;
 
-	public FrmPesquisa(JFrame parent, PesquisaEnum pesquisaEnum, GenericDAO<T> genericDAO, Long codigoUsuario) {
-		this(parent, pesquisaEnum, genericDAO, codigoUsuario, Boolean.FALSE);
+	public FrmPesquisa(JFrame parent, PesquisaEnum pesquisaEnum, BooleanBuilder preFilter,
+			AbstractGenericService<T> genericService, Long codigoUsuario) {
+		this(parent, pesquisaEnum, preFilter, genericService, codigoUsuario, Boolean.FALSE);
 	}
 
-	public FrmPesquisa(JFrame parent, PesquisaEnum pesquisaEnum, GenericDAO<T> genericDAO, Long codigoUsuario,
-			Boolean multiselect) {
+	public FrmPesquisa(JFrame parent, PesquisaEnum pesquisaEnum, BooleanBuilder preFilter,
+			AbstractGenericService<T> genericService, Long codigoUsuario, Boolean multiselect) {
 		super(parent, Boolean.TRUE);
 
 		this.pesquisaEnum = pesquisaEnum;
 		this.codigoUsuario = codigoUsuario;
-		this.genericDAO = genericDAO;
+		this.preFilter = preFilter;
+		this.genericService = genericService;
 		this.multiselect = multiselect;
 
 		this.initComponents();
@@ -159,7 +164,8 @@ public class FrmPesquisa<T> extends JDialog {
 
 		genericTableModel.removeAll();
 
-		numeroregistros = genericDAO.count(chckbxContm.isSelected(), textField.getText(), pesquisaExibir);
+		numeroregistros = genericService.count(chckbxContm.isSelected(), textField.getText(), this.preFilter,
+				pesquisaExibir);
 
 		this.pesquisar();
 
@@ -167,7 +173,8 @@ public class FrmPesquisa<T> extends JDialog {
 
 	private void pesquisar() {
 
-		List<T> valores = genericDAO.pesquisar(chckbxContm.isSelected(), textField.getText(), pesquisaExibir, rows);
+		List<T> valores = genericService.pesquisar(chckbxContm.isSelected(), textField.getText(), this.preFilter,
+				pesquisaExibir, rows);
 
 		genericTableModel.addRows(valores);
 

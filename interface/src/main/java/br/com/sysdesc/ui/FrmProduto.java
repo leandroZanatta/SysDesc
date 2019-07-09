@@ -15,6 +15,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+import com.mysema.query.BooleanBuilder;
+
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JMoneyField;
 import br.com.sysdesc.components.JNumericField;
@@ -22,13 +24,6 @@ import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.pesquisa.components.CampoPesquisa;
 import br.com.sysdesc.pesquisa.components.PanelActions;
-import br.com.sysdesc.repository.dao.CategoriaDAO;
-import br.com.sysdesc.repository.dao.ClienteDAO;
-import br.com.sysdesc.repository.dao.DepartamentoDAO;
-import br.com.sysdesc.repository.dao.MarcaDAO;
-import br.com.sysdesc.repository.dao.ProdutoDAO;
-import br.com.sysdesc.repository.dao.SubcategoriaDAO;
-import br.com.sysdesc.repository.dao.UnidadeDAO;
 import br.com.sysdesc.repository.model.Categoria;
 import br.com.sysdesc.repository.model.Cliente;
 import br.com.sysdesc.repository.model.Departamento;
@@ -37,6 +32,13 @@ import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Produto;
 import br.com.sysdesc.repository.model.Subcategoria;
 import br.com.sysdesc.repository.model.Unidade;
+import br.com.sysdesc.service.categoria.CategoriaService;
+import br.com.sysdesc.service.cliente.ClienteService;
+import br.com.sysdesc.service.departamento.DepartamentoService;
+import br.com.sysdesc.service.marca.MarcaService;
+import br.com.sysdesc.service.produto.ProdutoService;
+import br.com.sysdesc.service.subcategoria.SubcategoriaService;
+import br.com.sysdesc.service.unidade.UnidadeService;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmProduto extends AbstractInternalFrame {
@@ -80,13 +82,13 @@ public class FrmProduto extends AbstractInternalFrame {
 	private JMoneyField txMinimo;
 	private JMoneyField txMaximo;
 
-	private DepartamentoDAO departamentoDAO = new DepartamentoDAO();
-	private CategoriaDAO categoriaDAO = new CategoriaDAO();
-	private SubcategoriaDAO subcategoriaDAO = new SubcategoriaDAO();
-	private UnidadeDAO unidadeDAO = new UnidadeDAO();
-	private ClienteDAO clienteDAO = new ClienteDAO();
-	private MarcaDAO marcaDAO = new MarcaDAO();
-	private ProdutoDAO produtoDAO = new ProdutoDAO();
+	private DepartamentoService departamentoService = new DepartamentoService();
+	private CategoriaService categoriaService = new CategoriaService();
+	private SubcategoriaService subcategoriaService = new SubcategoriaService();
+	private UnidadeService unidadeService = new UnidadeService();
+	private ClienteService clienteService = new ClienteService();
+	private MarcaService marcaService = new MarcaService();
+	private ProdutoService produtoService = new ProdutoService();
 
 	private PanelActions<Produto> panelActions;
 
@@ -123,7 +125,7 @@ public class FrmProduto extends AbstractInternalFrame {
 		chQuantidadeFracionada = new JCheckBox("Quantidade Fracionada");
 		chMovimentaEstoque = new JCheckBox("Movimenta Estoque");
 
-		cpCategoria = new CampoPesquisa<Categoria>(categoriaDAO, PES_CATEGORIAS, codigoUsuario) {
+		cpCategoria = new CampoPesquisa<Categoria>(categoriaService, PES_CATEGORIAS, codigoUsuario) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -145,9 +147,17 @@ public class FrmProduto extends AbstractInternalFrame {
 				return Boolean.TRUE;
 			}
 
+			@Override
+			public BooleanBuilder getPreFilter() {
+
+				Long codigoDepartamento = ((Departamento) cbDepartamento.getSelectedItem()).getIdDepartamento();
+
+				return categoriaService.getFilterDepartamento(codigoDepartamento);
+			}
+
 		};
 
-		cpSubCategoria = new CampoPesquisa<Subcategoria>(subcategoriaDAO, PES_SUBCATEGORIAS, codigoUsuario) {
+		cpSubCategoria = new CampoPesquisa<Subcategoria>(subcategoriaService, PES_SUBCATEGORIAS, codigoUsuario) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -169,9 +179,17 @@ public class FrmProduto extends AbstractInternalFrame {
 				return Boolean.TRUE;
 			}
 
+			@Override
+			public BooleanBuilder getPreFilter() {
+
+				Long codigoCategoria = cpCategoria.getObjetoPesquisado().getIdCategoria();
+
+				return subcategoriaService.getFilterCategoria(codigoCategoria);
+			}
+
 		};
 
-		cpFornecedor = new CampoPesquisa<Cliente>(clienteDAO, PES_CLIENTES, codigoUsuario) {
+		cpFornecedor = new CampoPesquisa<Cliente>(clienteService, PES_CLIENTES, codigoUsuario) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -182,7 +200,7 @@ public class FrmProduto extends AbstractInternalFrame {
 
 		};
 
-		cpMarca = new CampoPesquisa<Marca>(marcaDAO, PES_MARCAS, codigoUsuario) {
+		cpMarca = new CampoPesquisa<Marca>(marcaService, PES_MARCAS, codigoUsuario) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -193,8 +211,8 @@ public class FrmProduto extends AbstractInternalFrame {
 
 		};
 
-		departamentoDAO.listar().forEach(cbDepartamento::addItem);
-		unidadeDAO.listar().forEach(cbUnidade::addItem);
+		departamentoService.listarDepartamentos().forEach(cbDepartamento::addItem);
+		unidadeService.listarUnidades().forEach(cbUnidade::addItem);
 
 		painelContent.setLayout(new MigLayout("", "[grow][200px:n:200px]", "[][][][][][][][][][][][][][][][][grow]"));
 		panel.setLayout(new MigLayout("", "[][grow]", "[grow][][][][][grow]"));
@@ -232,7 +250,7 @@ public class FrmProduto extends AbstractInternalFrame {
 		panel.add(chQuantidadeFracionada, "cell 0 3 2 1,aligny baseline");
 		panel.add(chMovimentaEstoque, "cell 0 4 2 1");
 
-		panelActions = new PanelActions<Produto>(this, Produto::getIdProduto, produtoDAO, PES_PRODUTOS) {
+		panelActions = new PanelActions<Produto>(this, produtoService, PES_PRODUTOS) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -242,12 +260,6 @@ public class FrmProduto extends AbstractInternalFrame {
 
 			@Override
 			public void preencherObjeto(Produto objetoPesquisa) {
-			}
-
-			@Override
-			public Boolean objetoValido() {
-
-				return Boolean.TRUE;
 			}
 		};
 

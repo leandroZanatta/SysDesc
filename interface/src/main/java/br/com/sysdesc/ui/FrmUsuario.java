@@ -14,9 +14,9 @@ import javax.swing.JTextField;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.pesquisa.components.PanelActions;
-import br.com.sysdesc.repository.dao.UsuarioDAO;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Usuario;
+import br.com.sysdesc.service.login.LoginService;
 import br.com.sysdesc.util.classes.CryptoUtil;
 import br.com.sysdesc.util.classes.StringUtil;
 import net.miginfocom.swing.MigLayout;
@@ -32,10 +32,15 @@ public class FrmUsuario extends AbstractInternalFrame {
 	private JLabel lblUsurio;
 	private JLabel lblSenha;
 	private PanelActions<Usuario> panelActions;
-	private UsuarioDAO loginDAO = new UsuarioDAO();
+	private LoginService loginService = new LoginService();
 
 	public FrmUsuario(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
+
+		initComponents();
+	}
+
+	private void initComponents() {
 
 		setSize(450, 210);
 		setClosable(Boolean.TRUE);
@@ -58,7 +63,7 @@ public class FrmUsuario extends AbstractInternalFrame {
 		painelContent.add(lblSenha, "cell 0 4");
 		painelContent.add(passwordField, "cell 0 5,growx");
 
-		panelActions = new PanelActions<Usuario>(this, Usuario::getIdUsuario, loginDAO, PES_USUARIOS) {
+		panelActions = new PanelActions<Usuario>(this, loginService, PES_USUARIOS) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -92,7 +97,6 @@ public class FrmUsuario extends AbstractInternalFrame {
 		 * "cell 0 1,alignx left");
 		 */
 		painelContent.add(panelActions, "cell 0 6,grow");
-
 	}
 
 }

@@ -8,7 +8,6 @@ import static br.com.sysdesc.util.resources.Resources.FRMESTADO_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
@@ -16,10 +15,9 @@ import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.pesquisa.components.PanelActions;
-import br.com.sysdesc.repository.dao.EstadoDAO;
 import br.com.sysdesc.repository.model.Estado;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
-import br.com.sysdesc.util.classes.StringUtil;
+import br.com.sysdesc.service.estado.EstadoService;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmEstado extends AbstractInternalFrame {
@@ -34,10 +32,15 @@ public class FrmEstado extends AbstractInternalFrame {
 	private JTextFieldMaiusculo txDescricao;
 	private JTextFieldMaiusculo txUF;
 	private PanelActions<Estado> panelActions;
-	private EstadoDAO estadoDAO = new EstadoDAO();
+	private EstadoService estadoService = new EstadoService();
 
 	public FrmEstado(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
+
+		initComponents();
+	}
+
+	private void initComponents() {
 
 		setSize(450, 210);
 		setClosable(Boolean.TRUE);
@@ -61,7 +64,7 @@ public class FrmEstado extends AbstractInternalFrame {
 		painelContent.add(lblUF, "cell 0 4,growx");
 		painelContent.add(txUF, "cell 0 5,growx");
 
-		panelActions = new PanelActions<Estado>(this, Estado::getIdEstado, estadoDAO, PES_ESTADOS) {
+		panelActions = new PanelActions<Estado>(this, estadoService, PES_ESTADOS) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -80,18 +83,6 @@ public class FrmEstado extends AbstractInternalFrame {
 
 			}
 
-			@Override
-			public Boolean objetoValido() {
-
-				if (StringUtil.isNullOrEmpty(txDescricao.getText())) {
-
-					JOptionPane.showMessageDialog(null, "Insira uma descrição válida");
-
-					return Boolean.FALSE;
-				}
-
-				return Boolean.TRUE;
-			}
 		};
 		panelActions.addEventListener(new PanelEventAdapter<Estado>() {
 
@@ -103,7 +94,6 @@ public class FrmEstado extends AbstractInternalFrame {
 		});
 
 		painelContent.add(panelActions, "cell 0 6,grow");
-
 	}
 
 }

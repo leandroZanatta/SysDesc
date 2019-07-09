@@ -28,6 +28,9 @@ public class Subcategoria implements Serializable {
 	@Column(name = "id_subcategoria")
 	private Long idSubcategoria;
 
+	@Column(name = "cd_categoria", insertable = false, updatable = false)
+	private Long codigoCategoria;
+
 	@Column(name = "tx_descricao")
 	private String descricao;
 

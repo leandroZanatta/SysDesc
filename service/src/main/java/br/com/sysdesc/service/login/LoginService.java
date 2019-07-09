@@ -7,13 +7,24 @@ import static br.com.sysdesc.util.resources.Resources.translate;
 
 import br.com.sysdesc.repository.dao.UsuarioDAO;
 import br.com.sysdesc.repository.model.Usuario;
+import br.com.sysdesc.service.interfaces.impl.AbstractGenericService;
 import br.com.sysdesc.util.classes.CryptoUtil;
 import br.com.sysdesc.util.classes.StringUtil;
 import br.com.sysdesc.util.exception.SysDescException;
 
-public class LoginService {
+public class LoginService extends AbstractGenericService<Usuario> {
 
-	private UsuarioDAO usuarioDAO = new UsuarioDAO();
+	private final UsuarioDAO usuarioDAO;
+
+	public LoginService() {
+		this(new UsuarioDAO());
+	}
+
+	public LoginService(UsuarioDAO usuarioDAO) {
+		super(usuarioDAO, Usuario::getIdUsuario);
+
+		this.usuarioDAO = usuarioDAO;
+	}
 
 	public Usuario efetuarLogin(String usuario, String senha) throws SysDescException {
 

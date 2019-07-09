@@ -8,9 +8,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import com.mysema.query.BooleanBuilder;
+
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.pesquisa.ui.FrmPesquisa;
-import br.com.sysdesc.repository.interfaces.GenericDAO;
+import br.com.sysdesc.service.interfaces.impl.AbstractGenericService;
 import br.com.sysdesc.util.classes.ImageUtil;
 import net.miginfocom.swing.MigLayout;
 
@@ -20,15 +22,15 @@ public abstract class CampoPesquisa<T> extends JPanel {
 
 	private JButton btPesquisa;
 	private JTextField txValorPesquisa;
-	private GenericDAO<T> genericDAO;
+	private final AbstractGenericService<T> genericService;
 	private PesquisaEnum pesquisaEnum;
 	private Long codigoUsuario;
 	private T objetoPesquisado;
 	private Boolean pesquisaOk = Boolean.FALSE;
 
-	public CampoPesquisa(GenericDAO<T> genericDAO, PesquisaEnum pesquisaEnum, Long codigoUsuario) {
+	public CampoPesquisa(AbstractGenericService<T> genericService, PesquisaEnum pesquisaEnum, Long codigoUsuario) {
 
-		this.genericDAO = genericDAO;
+		this.genericService = genericService;
 		this.pesquisaEnum = pesquisaEnum;
 		this.codigoUsuario = codigoUsuario;
 
@@ -66,7 +68,8 @@ public abstract class CampoPesquisa<T> extends JPanel {
 
 		JFrame parent = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
 
-		FrmPesquisa<T> frmPesquisa = new FrmPesquisa<T>(parent, pesquisaEnum, genericDAO, codigoUsuario);
+		FrmPesquisa<T> frmPesquisa = new FrmPesquisa<T>(parent, pesquisaEnum, getPreFilter(), genericService,
+				codigoUsuario);
 
 		frmPesquisa.setVisible(Boolean.TRUE);
 
@@ -94,6 +97,11 @@ public abstract class CampoPesquisa<T> extends JPanel {
 
 	public T getObjetoPesquisado() {
 		return objetoPesquisado;
+	}
+
+	public BooleanBuilder getPreFilter() {
+
+		return new BooleanBuilder();
 	}
 
 }

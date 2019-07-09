@@ -153,11 +153,12 @@ public abstract class AbstractGenericDAO<T> implements GenericDAO<T> {
 	}
 
 	@Override
-	public List<T> pesquisar(boolean selected, String pesquisa, Pesquisa pesquisaExibir, Integer rows) {
+	public List<T> pesquisar(boolean selected, String pesquisa, BooleanBuilder preFilter, Pesquisa pesquisaExibir,
+			Integer rows) {
 
 		JPAQuery query = from();
 
-		BooleanBuilder booleanBuilder = getClausule(selected, pesquisa, pesquisaExibir);
+		BooleanBuilder booleanBuilder = getClausule(selected, pesquisa, preFilter, pesquisaExibir);
 
 		if (booleanBuilder.hasValue()) {
 			query.where(booleanBuilder);
@@ -168,11 +169,11 @@ public abstract class AbstractGenericDAO<T> implements GenericDAO<T> {
 	}
 
 	@Override
-	public Long count(boolean selected, String pesquisa, Pesquisa pesquisaExibir) {
+	public Long count(boolean selected, String pesquisa, BooleanBuilder preFilter, Pesquisa pesquisaExibir) {
 
 		JPAQuery query = from();
 
-		BooleanBuilder booleanBuilder = getClausule(selected, pesquisa, pesquisaExibir);
+		BooleanBuilder booleanBuilder = getClausule(selected, pesquisa, preFilter, pesquisaExibir);
 
 		if (booleanBuilder.hasValue()) {
 			query.where(booleanBuilder);
@@ -181,7 +182,8 @@ public abstract class AbstractGenericDAO<T> implements GenericDAO<T> {
 		return query.orderBy(campoId.asc()).count();
 	}
 
-	private BooleanBuilder getClausule(boolean selected, String pesquisa, Pesquisa pesquisaExibir) {
+	private BooleanBuilder getClausule(boolean selected, String pesquisa, BooleanBuilder preFilter,
+			Pesquisa pesquisaExibir) {
 
 		BooleanBuilder booleanBuilder = new BooleanBuilder();
 
@@ -198,6 +200,10 @@ public abstract class AbstractGenericDAO<T> implements GenericDAO<T> {
 				}
 			});
 
+		}
+
+		if (preFilter.hasValue()) {
+			return preFilter.and(booleanBuilder);
 		}
 
 		return booleanBuilder;

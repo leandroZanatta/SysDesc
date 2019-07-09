@@ -42,42 +42,8 @@
 
 		<dependency>
 			<groupId>br.com.sysdesc</groupId>
-			<artifactId>repository</artifactId>
+			<artifactId>service</artifactId>
 			<version>${project.parent.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.projectlombok</groupId>
-					<artifactId>lombok</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>br.com.sysdesc</groupId>
-					<artifactId>util</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.liquibase</groupId>
-					<artifactId>liquibase-core</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.persistence</groupId>
-					<artifactId>eclipselink</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>commons-io</groupId>
-					<artifactId>commons-io</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.mysema.querydsl</groupId>
-					<artifactId>querydsl-jpa</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>mysql</groupId>
-					<artifactId>mysql-connector-java</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.postgresql</groupId>
-					<artifactId>postgresql</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>br.com.sysdesc</groupId>

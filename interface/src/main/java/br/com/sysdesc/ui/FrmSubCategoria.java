@@ -4,7 +4,6 @@ import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_SUBCATEGORIA
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
@@ -13,14 +12,13 @@ import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.pesquisa.components.PanelActions;
-import br.com.sysdesc.repository.dao.CategoriaDAO;
-import br.com.sysdesc.repository.dao.DepartamentoDAO;
-import br.com.sysdesc.repository.dao.SubcategoriaDAO;
 import br.com.sysdesc.repository.model.Categoria;
 import br.com.sysdesc.repository.model.Departamento;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Subcategoria;
-import br.com.sysdesc.util.classes.StringUtil;
+import br.com.sysdesc.service.categoria.CategoriaService;
+import br.com.sysdesc.service.departamento.DepartamentoService;
+import br.com.sysdesc.service.subcategoria.SubcategoriaService;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmSubCategoria extends AbstractInternalFrame {
@@ -36,12 +34,18 @@ public class FrmSubCategoria extends AbstractInternalFrame {
 	private JComboBox<Departamento> cbDepartamento;
 
 	private PanelActions<Subcategoria> panelActions;
-	private SubcategoriaDAO subcategoriaDAO = new SubcategoriaDAO();
-	private DepartamentoDAO departamentoDAO = new DepartamentoDAO();
-	private CategoriaDAO categoriaDAO = new CategoriaDAO();
+
+	private DepartamentoService departamentoService = new DepartamentoService();
+	private CategoriaService categoriaService = new CategoriaService();
+	private SubcategoriaService subcategoriaService = new SubcategoriaService();
 
 	public FrmSubCategoria(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
+
+		initComponents();
+	}
+
+	private void initComponents() {
 
 		setSize(450, 240);
 		setClosable(Boolean.TRUE);
@@ -58,7 +62,7 @@ public class FrmSubCategoria extends AbstractInternalFrame {
 
 		AutoCompleteDecorator.decorate(cbDepartamento);
 		AutoCompleteDecorator.decorate(cbCategoria);
-		departamentoDAO.listar().forEach(cbDepartamento::addItem);
+		departamentoService.listarDepartamentos().forEach(cbDepartamento::addItem);
 
 		cbDepartamento.addActionListener((e) -> selecionarCategorias());
 
@@ -71,8 +75,7 @@ public class FrmSubCategoria extends AbstractInternalFrame {
 		getContentPane().add(lbDescricao, "cell 0 6");
 		getContentPane().add(txDescricao, "cell 0 7,growx");
 
-		panelActions = new PanelActions<Subcategoria>(this, Subcategoria::getIdSubcategoria, subcategoriaDAO,
-				PES_SUBCATEGORIAS) {
+		panelActions = new PanelActions<Subcategoria>(this, subcategoriaService, PES_SUBCATEGORIAS) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -90,25 +93,6 @@ public class FrmSubCategoria extends AbstractInternalFrame {
 				objetoPesquisa.setCategoria((Categoria) cbCategoria.getSelectedItem());
 				objetoPesquisa.setDescricao(txDescricao.getText());
 			}
-
-			@Override
-			public Boolean objetoValido() {
-
-				if (cbCategoria.getSelectedIndex() < 0) {
-
-					JOptionPane.showMessageDialog(null, "SELECIONE UMA CATEGORIA");
-
-					return Boolean.FALSE;
-				}
-
-				if (StringUtil.isNullOrEmpty(txDescricao.getText())) {
-					JOptionPane.showMessageDialog(null, "INSIRA UMA DESCRIÇÃO PARA A SUBCATEGORIA");
-
-					return Boolean.FALSE;
-				}
-
-				return Boolean.TRUE;
-			}
 		};
 
 		panelActions.addEventListener(new PanelEventAdapter<Subcategoria>() {
@@ -120,7 +104,6 @@ public class FrmSubCategoria extends AbstractInternalFrame {
 		});
 
 		getContentPane().add(panelActions, "cell 0 8,grow");
-
 	}
 
 	private void selecionarCategorias() {
@@ -129,8 +112,9 @@ public class FrmSubCategoria extends AbstractInternalFrame {
 
 		if (cbDepartamento.getSelectedIndex() >= 0) {
 
-			categoriaDAO.buscarPorDepartamento(((Departamento) cbDepartamento.getSelectedItem()).getIdDepartamento())
-					.forEach(cbCategoria::addItem);
+			Long codigoDepartamento = ((Departamento) cbDepartamento.getSelectedItem()).getIdDepartamento();
+
+			categoriaService.buscarPorDepartamento(codigoDepartamento).forEach(cbCategoria::addItem);
 
 			cbCategoria.setSelectedIndex(-1);
 		}

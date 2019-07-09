@@ -9,7 +9,6 @@ import static br.com.sysdesc.util.resources.Resources.translate;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -19,12 +18,11 @@ import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.pesquisa.components.PanelActions;
-import br.com.sysdesc.repository.dao.CategoriaDAO;
-import br.com.sysdesc.repository.dao.DepartamentoDAO;
 import br.com.sysdesc.repository.model.Categoria;
 import br.com.sysdesc.repository.model.Departamento;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
-import br.com.sysdesc.util.classes.StringUtil;
+import br.com.sysdesc.service.categoria.CategoriaService;
+import br.com.sysdesc.service.departamento.DepartamentoService;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmCategoria extends AbstractInternalFrame {
@@ -42,12 +40,16 @@ public class FrmCategoria extends AbstractInternalFrame {
 	private JTextFieldMaiusculo txDescricao;
 	private PanelActions<Categoria> panelActions;
 
-	private DepartamentoDAO departamentoDAO = new DepartamentoDAO();
-
-	private CategoriaDAO categoriaDAO = new CategoriaDAO();
+	private DepartamentoService departamentoService = new DepartamentoService();
+	private CategoriaService categoriaService = new CategoriaService();
 
 	public FrmCategoria(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
+
+		initComponents();
+	}
+
+	private void initComponents() {
 
 		setSize(450, 200);
 		setClosable(Boolean.TRUE);
@@ -63,7 +65,7 @@ public class FrmCategoria extends AbstractInternalFrame {
 		cbDepartamento = new JComboBox<>();
 		txDescricao = new JTextFieldMaiusculo();
 
-		departamentoDAO.listar().forEach(cbDepartamento::addItem);
+		departamentoService.listarDepartamentos().forEach(cbDepartamento::addItem);
 		cbDepartamento.setEditable(Boolean.TRUE);
 		AutoCompleteDecorator.decorate(cbDepartamento);
 
@@ -77,7 +79,7 @@ public class FrmCategoria extends AbstractInternalFrame {
 		painelContent.add(lblDescricao, "cell 0 4");
 		painelContent.add(txDescricao, "cell 0 5,growx");
 
-		panelActions = new PanelActions<Categoria>(this, Categoria::getIdCategoria, categoriaDAO, PES_CATEGORIAS) {
+		panelActions = new PanelActions<Categoria>(this, categoriaService, PES_CATEGORIAS) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -94,24 +96,6 @@ public class FrmCategoria extends AbstractInternalFrame {
 				objetoPesquisa.setDepartamento((Departamento) cbDepartamento.getSelectedItem());
 				objetoPesquisa.setDescricao(txDescricao.getText());
 			}
-
-			@Override
-			public Boolean objetoValido() {
-
-				if (cbDepartamento.getSelectedIndex() < 0) {
-					JOptionPane.showMessageDialog(null, "SELECIONE UM DEPARTAMENTO");
-
-					return Boolean.FALSE;
-				}
-
-				if (StringUtil.isNullOrEmpty(txDescricao.getText())) {
-					JOptionPane.showMessageDialog(null, "INSIRA UMA DESCRIÇÃO PARA A CATEGORIA");
-
-					return Boolean.FALSE;
-				}
-
-				return Boolean.TRUE;
-			}
 		};
 
 		panelActions.addEventListener(new PanelEventAdapter<Categoria>() {
@@ -122,7 +106,6 @@ public class FrmCategoria extends AbstractInternalFrame {
 			}
 		});
 		painelContent.add(panelActions, "cell 0 6,grow");
-
 	}
 
 }

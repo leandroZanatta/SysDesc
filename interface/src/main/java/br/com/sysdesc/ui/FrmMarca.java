@@ -3,12 +3,10 @@ package br.com.sysdesc.ui;
 import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_MARCAS;
 import static br.com.sysdesc.util.resources.Resources.FRMMARCA_LB_CODIGO;
 import static br.com.sysdesc.util.resources.Resources.FRMMARCA_LB_DESCRICAO;
-import static br.com.sysdesc.util.resources.Resources.FRMMARCA_MSG_DESCRICAO_INVALIDA;
 import static br.com.sysdesc.util.resources.Resources.FRMMARCA_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
@@ -16,10 +14,9 @@ import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.pesquisa.components.PanelActions;
-import br.com.sysdesc.repository.dao.MarcaDAO;
 import br.com.sysdesc.repository.model.Marca;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
-import br.com.sysdesc.util.classes.StringUtil;
+import br.com.sysdesc.service.marca.MarcaService;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmMarca extends AbstractInternalFrame {
@@ -32,10 +29,15 @@ public class FrmMarca extends AbstractInternalFrame {
 	private JLabel lblDescricao;
 	private JPanel painelContent;
 	private PanelActions<Marca> panelActions;
-	private MarcaDAO marcaDAO = new MarcaDAO();
+	private MarcaService marcaService = new MarcaService();
 
 	public FrmMarca(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
+
+		initComponents();
+	}
+
+	private void initComponents() {
 
 		setSize(450, 170);
 		setClosable(Boolean.TRUE);
@@ -55,7 +57,7 @@ public class FrmMarca extends AbstractInternalFrame {
 		painelContent.add(lblDescricao, "cell 0 2");
 		painelContent.add(txDescricao, "cell 0 3,growx");
 
-		panelActions = new PanelActions<Marca>(this, Marca::getIdMarca, marcaDAO, PES_MARCAS) {
+		panelActions = new PanelActions<Marca>(this, marcaService, PES_MARCAS) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -73,18 +75,6 @@ public class FrmMarca extends AbstractInternalFrame {
 				objetoPesquisa.setDescricao(txDescricao.getText());
 			}
 
-			@Override
-			public Boolean objetoValido() {
-
-				if (StringUtil.isNullOrEmpty(txDescricao.getText())) {
-
-					JOptionPane.showMessageDialog(this, translate(FRMMARCA_MSG_DESCRICAO_INVALIDA));
-
-					return Boolean.FALSE;
-				}
-
-				return Boolean.TRUE;
-			}
 		};
 
 		panelActions.addEventListener(new PanelEventAdapter<Marca>() {

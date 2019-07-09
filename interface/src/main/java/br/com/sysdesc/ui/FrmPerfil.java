@@ -7,7 +7,6 @@ import static br.com.sysdesc.util.resources.Resources.FRMPERFIL_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
@@ -15,10 +14,9 @@ import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.pesquisa.components.PanelActions;
-import br.com.sysdesc.repository.dao.PerfilDAO;
 import br.com.sysdesc.repository.model.Perfil;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
-import br.com.sysdesc.util.classes.StringUtil;
+import br.com.sysdesc.service.perfil.PerfilService;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmPerfil extends AbstractInternalFrame {
@@ -34,10 +32,15 @@ public class FrmPerfil extends AbstractInternalFrame {
 	private JTextFieldMaiusculo txDescricao;
 
 	private PanelActions<Perfil> panelActions;
-	private PerfilDAO perfilDAO = new PerfilDAO();
+	private PerfilService perfilService = new PerfilService();
 
 	public FrmPerfil(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
+
+		initComponents();
+	}
+
+	private void initComponents() {
 
 		setSize(450, 160);
 		setClosable(Boolean.TRUE);
@@ -59,7 +62,7 @@ public class FrmPerfil extends AbstractInternalFrame {
 		painelContent.add(lblDescricao, "cell 0 2");
 		painelContent.add(txDescricao, "cell 0 3,growx");
 
-		panelActions = new PanelActions<Perfil>(this, Perfil::getIdPerfil, perfilDAO, PES_PERFIL) {
+		panelActions = new PanelActions<Perfil>(this, perfilService, PES_PERFIL) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -74,18 +77,6 @@ public class FrmPerfil extends AbstractInternalFrame {
 				objetoPesquisa.setIdPerfil(txCodigo.getValue());
 				objetoPesquisa.setDescricao(txDescricao.getText());
 			}
-
-			@Override
-			public Boolean objetoValido() {
-
-				if (StringUtil.isNullOrEmpty(txDescricao.getText())) {
-					JOptionPane.showMessageDialog(null, "INSIRA UMA DESCRIÇÃO PARA O PERFIL");
-
-					return Boolean.FALSE;
-				}
-
-				return Boolean.TRUE;
-			}
 		};
 
 		panelActions.addEventListener(new PanelEventAdapter<Perfil>() {
@@ -96,7 +87,6 @@ public class FrmPerfil extends AbstractInternalFrame {
 			}
 		});
 		painelContent.add(panelActions, "cell 0 4,grow");
-
 	}
 
 }

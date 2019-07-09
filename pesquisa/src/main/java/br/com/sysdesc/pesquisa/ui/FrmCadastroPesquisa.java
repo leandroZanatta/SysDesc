@@ -3,9 +3,6 @@ package br.com.sysdesc.pesquisa.ui;
 import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_CATEGORIAS;
 import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.forValue;
 import static br.com.sysdesc.util.enumeradores.TipoPesquisaEnum.NORMAL;
-import static br.com.sysdesc.util.resources.Resources.FRMPESQUISA_MSG_DESCRICAO;
-import static br.com.sysdesc.util.resources.Resources.FRMPESQUISA_MSG_PAGINACAO;
-import static br.com.sysdesc.util.resources.Resources.FRMPESQUISA_MSG_PESQUISA;
 import static br.com.sysdesc.util.resources.Resources.FRMPESQUISA_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
@@ -15,7 +12,6 @@ import java.util.function.Function;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -28,16 +24,14 @@ import br.com.sysdesc.pesquisa.components.CampoPesquisa;
 import br.com.sysdesc.pesquisa.components.CampoPesquisaMultiSelect;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
-import br.com.sysdesc.repository.dao.PerfilDAO;
-import br.com.sysdesc.repository.dao.PesquisaNormalDAO;
-import br.com.sysdesc.repository.dao.UsuarioDAO;
 import br.com.sysdesc.repository.model.Perfil;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Pesquisa;
 import br.com.sysdesc.repository.model.Usuario;
+import br.com.sysdesc.service.login.LoginService;
+import br.com.sysdesc.service.perfil.PerfilService;
+import br.com.sysdesc.service.pesquisa.PesquisaBasicaService;
 import br.com.sysdesc.util.classes.ImageUtil;
-import br.com.sysdesc.util.classes.LongUtil;
-import br.com.sysdesc.util.classes.StringUtil;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmCadastroPesquisa extends AbstractInternalFrame {
@@ -55,7 +49,6 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 	private JTextFieldMaiusculo txDescricao;
 
 	private PanelActions<Pesquisa> panelActions;
-	private PesquisaNormalDAO pesquisaDAO = new PesquisaNormalDAO();
 	private JLabel lblNewLabel;
 	private CampoPesquisa<Usuario> pesquisaUsuario;
 	private JLabel lblNewLabel_1;
@@ -65,8 +58,10 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 	private JScrollPane scrollPane;
 	private JButton btAdd;
 	private JButton btRemove;
-	private UsuarioDAO usuarioDAO = new UsuarioDAO();
-	private PerfilDAO perfilDAO = new PerfilDAO();
+
+	private PesquisaBasicaService pesquisaBasicaService = new PesquisaBasicaService();
+	private LoginService loginService = new LoginService();
+	private PerfilService perfilService = new PerfilService();
 
 	public FrmCadastroPesquisa() {
 		this(null, 1L);
@@ -112,7 +107,7 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 		lblNewLabel = new JLabel("Usuário:");
 		painelContent.add(lblNewLabel, "cell 1 4");
 
-		pesquisaPerfis = new CampoPesquisaMultiSelect<Perfil>(perfilDAO, PesquisaEnum.PES_PERFIL, codigoUsuario) {
+		pesquisaPerfis = new CampoPesquisaMultiSelect<Perfil>(perfilService, PesquisaEnum.PES_PERFIL, codigoUsuario) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -132,7 +127,7 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 
 		painelContent.add(pesquisaPerfis, "cell 0 5,growx");
 
-		pesquisaUsuario = new CampoPesquisa<Usuario>(usuarioDAO, PesquisaEnum.PES_USUARIOS, codigoUsuario) {
+		pesquisaUsuario = new CampoPesquisa<Usuario>(loginService, PesquisaEnum.PES_USUARIOS, codigoUsuario) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -167,7 +162,7 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 		scrollPane = new JScrollPane();
 		panel.add(scrollPane, BorderLayout.CENTER);
 
-		panelActions = new PanelActions<Pesquisa>(this, Pesquisa::getIdPesquisa, pesquisaDAO, PES_CATEGORIAS) {
+		panelActions = new PanelActions<Pesquisa>(this, pesquisaBasicaService, PES_CATEGORIAS) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -186,33 +181,6 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 				objetoPesquisa.setPaginacao(txPaginacao.getValue());
 				objetoPesquisa.setCodigoPesquisa(((PesquisaEnum) cbPesquisa.getSelectedItem()).getCodigoPesquisa());
 				objetoPesquisa.setTipo(NORMAL.getCodigo());
-			}
-
-			@Override
-			public Boolean objetoValido() {
-
-				if (StringUtil.isNullOrEmpty(txDescricao.getText())) {
-
-					JOptionPane.showMessageDialog(this, translate(FRMPESQUISA_MSG_DESCRICAO));
-
-					return Boolean.FALSE;
-				}
-
-				if (LongUtil.isNullOrZero(txPaginacao.getValue())) {
-
-					JOptionPane.showMessageDialog(this, translate(FRMPESQUISA_MSG_PAGINACAO));
-
-					return Boolean.FALSE;
-				}
-
-				if (cbPesquisa.getSelectedIndex() < 0) {
-
-					JOptionPane.showMessageDialog(this, translate(FRMPESQUISA_MSG_PESQUISA));
-
-					return Boolean.FALSE;
-				}
-
-				return Boolean.TRUE;
 			}
 		};
 
