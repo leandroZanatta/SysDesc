@@ -17,10 +17,10 @@ public enum TipoConexaoEnum {
 
 	private Integer porta;
 
-	private String jdbcPassword = "javax.persistence.jdbc.password";
-	private String jdbcUser = "javax.persistence.jdbc.user";
-	private String jdbcUrl = "javax.persistence.jdbc.url";
-	private String jdbcDriver = "javax.persistence.jdbc.driver";
+	public static String jdbcPassword = "javax.persistence.jdbc.password";
+	public static String jdbcUser = "javax.persistence.jdbc.user";
+	public static String jdbcUrl = "javax.persistence.jdbc.url";
+	public static String jdbcDriver = "javax.persistence.jdbc.driver";
 
 	private TipoConexaoEnum(String driver, String url, String database, String defaultDatabase, Integer porta) {
 		this.driver = driver;

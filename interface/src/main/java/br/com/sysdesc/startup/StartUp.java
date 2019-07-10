@@ -1,9 +1,9 @@
 package br.com.sysdesc.startup;
 
-import br.com.sysdesc.atualizacao.changelog.core.Changelog;
-import br.com.sysdesc.atualizacao.util.classes.LookAndFeelUtil;
+import br.com.sysdesc.repository.conexao.Changelog;
 import br.com.sysdesc.repository.conexao.Conexao;
 import br.com.sysdesc.ui.FrmApplication;
+import br.com.sysdesc.util.classes.LookAndFeelUtil;
 
 public class StartUp {
 
@@ -11,7 +11,7 @@ public class StartUp {
 
 		LookAndFeelUtil.configureLayout();
 
-		Changelog.runChangelog(br.com.sysdesc.atualizacao.changelog.core.Conexao.buscarConexao());
+		Changelog.runChangelog(Conexao.buscarConexao());
 
 		Conexao.buildEntityManager();
 

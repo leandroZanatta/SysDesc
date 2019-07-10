@@ -63,6 +63,7 @@
 			<groupId>br.com</groupId>
 			<artifactId>atualizacao</artifactId>
 			<version>${project.parent.version}</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -108,6 +109,22 @@
 							<resources>
 								<resource>
 									<directory>resources</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-resources-2</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/upgrade</outputDirectory>
+							<resources>
+								<resource>
+									<directory>upgrade</directory>
 									<filtering>true</filtering>
 								</resource>
 							</resources>
