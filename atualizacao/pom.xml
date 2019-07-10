@@ -67,7 +67,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>br.com.sysdesc.startup.StartUp</mainClass>
+							<mainClass>br.com.sysdesc.atualizacao.startup.StartUp</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
