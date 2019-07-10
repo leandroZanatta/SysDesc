@@ -29,6 +29,8 @@ public class Changelog {
 
 		} catch (LiquibaseException e) {
 
+			e.printStackTrace();
+
 			System.exit(0);
 		}
 
