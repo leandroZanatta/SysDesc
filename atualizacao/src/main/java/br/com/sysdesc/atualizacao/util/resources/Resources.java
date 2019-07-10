@@ -29,9 +29,13 @@ public class Resources {
 	public static final String FRMCONEXAO_LB_SENHA = "FRMCONEXAO_LB_SENHA";
 	public static final String FRMCONEXAO_LB_BANCO = "FRMCONEXAO_LB_BANCO";
 
-	public static final String DRIVER_NAO_ENCONTRADO = "DRIVER_NAO_ENCONTRADO";
-	public static final String CONEXAO_INVALIDA = "CONEXAO_INVALIDA";
+	public static final String MENSAGEM_DRIVER_NAO_ENCONTRADO = "MENSAGEM_DRIVER_NAO_ENCONTRADO";
 	public static final String APPLICATION_JAR = "APPLICATION_JAR";
+
+	public static final String OPTION_ERRO = "OPTION_ERRO";
+	public static final String MENSAGEM_CONEXAO_INVALIDA = "MENSAGEM_CONEXAO_INVALIDA";
+	public static final String MENSAGEM_ERRO_BUSCAR_PROPRIEDADES_CONEXAO = "MENSAGEM_ERRO_BUSCAR_PROPRIEDADES_CONEXAO";
+	public static final String MENSAGEM_CONFIGURACOES_INVALIDAS = "MENSAGEM_CONFIGURACOES_INVALIDAS";
 
 	static {
 		try {

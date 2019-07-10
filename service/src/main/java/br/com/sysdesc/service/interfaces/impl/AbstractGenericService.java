@@ -70,7 +70,7 @@ public abstract class AbstractGenericService<T> implements GenericService<T> {
 	private T validarObjeto(T objetoPesquisa) {
 
 		if (objetoPesquisa == null) {
-			throw new SysDescException(MensagemConstants.NENHUM_REGISTRO_ENCONTRADO);
+			throw new SysDescException(MensagemConstants.MENSAGEM_NENHUM_REGISTRO_ENCONTRADO);
 		}
 
 		return objetoPesquisa;

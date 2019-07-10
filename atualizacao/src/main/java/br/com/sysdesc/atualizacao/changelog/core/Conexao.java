@@ -1,5 +1,8 @@
 package br.com.sysdesc.atualizacao.changelog.core;
 
+import static br.com.sysdesc.atualizacao.util.resources.Resources.MENSAGEM_CONFIGURACOES_INVALIDAS;
+import static br.com.sysdesc.atualizacao.util.resources.Resources.MENSAGEM_ERRO_BUSCAR_PROPRIEDADES_CONEXAO;
+import static br.com.sysdesc.atualizacao.util.resources.Resources.translate;
 import static java.sql.DriverManager.getConnection;
 
 import java.io.File;
@@ -18,7 +21,6 @@ import org.apache.commons.io.FileUtils;
 import br.com.sysdesc.atualizacao.enumeradores.TipoConexaoEnum;
 import br.com.sysdesc.atualizacao.util.classes.CryptoUtil;
 import br.com.sysdesc.atualizacao.util.resources.Configuracoes;
-import br.com.sysdesc.util.atualizacao.constants.MensagemConstants;
 
 public class Conexao {
 
@@ -60,7 +62,7 @@ public class Conexao {
 					.fromBlowfish(FileUtils.readFileToString(getConfiguracaoBanco(), Charset.forName("UTF-8")));
 
 			if (arquivoConfiguracao == null) {
-				throw new ConfigurationException(MensagemConstants.CONFIGURACOES_INVALIDAS);
+				throw new ConfigurationException(translate(MENSAGEM_CONFIGURACOES_INVALIDAS));
 			}
 
 			Properties properties = new Properties();
@@ -71,7 +73,7 @@ public class Conexao {
 
 		} catch (IOException e) {
 
-			log.log(Level.SEVERE, MensagemConstants.ERRO_BUSCAR_PROPRIEDADES_CONEXAO, e);
+			log.log(Level.SEVERE, translate(MENSAGEM_ERRO_BUSCAR_PROPRIEDADES_CONEXAO), e);
 
 			return null;
 		}

@@ -14,7 +14,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
@@ -132,8 +131,9 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void carregarCampo(JTextField campoPesquisa, Usuario objeto) {
-				campoPesquisa.setText(String.format("%d - %s", objeto.getIdUsuario(), objeto.getCliente().getNome()));
+			public String formatarValorCampo(Usuario objeto) {
+
+				return String.format("%d - %s", objeto.getIdUsuario(), objeto.getCliente().getNome());
 
 			}
 

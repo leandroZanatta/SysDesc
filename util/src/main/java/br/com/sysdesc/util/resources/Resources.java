@@ -17,7 +17,7 @@ public class Resources {
 	private static Properties mapaValores;
 	private static Charset charset = Charset.forName("UTF-8");
 
-	public static final String VALIDACAO = "VALIDACAO";
+	public static final String OPTION_VALIDACAO = "OPTION_VALIDACAO";
 
 	public static final String FRMLOGIN_LB_LOGIN = "FRMLOGIN_LB_LOGIN";
 	public static final String FRMLOGIN_BT_LOGAR = "FRMLOGIN_BT_LOGAR";
@@ -64,8 +64,8 @@ public class Resources {
 	public static final String FRMAPPLICATION_MI_USUARIOS = "FRMAPPLICATION_MI_USUARIOS";
 	public static final String FRMAPPLICATION_LB_USUARIO = "FRMAPPLICATION_LB_USUARIO";
 
-	public static final String DRIVER_NAO_ENCONTRADO = "DRIVER_NAO_ENCONTRADO";
-	public static final String CONEXAO_INVALIDA = "CONEXAO_INVALIDA";
+	public static final String MENSAGEM_DRIVER_NAO_ENCONTRADO = "MENSAGEM_DRIVER_NAO_ENCONTRADO";
+	public static final String MENSAGEM_CONEXAO_INVALIDA = "MENSAGEM_CONEXAO_INVALIDA";
 
 	public static final String FRMESTADO_TITLE = "FRMESTADO_TITLE";
 	public static final String FRMESTADO_LB_CODIGO = "FRMESTADO_LB_CODIGO";

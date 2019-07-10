@@ -90,7 +90,10 @@ public class FrmSubCategoria extends AbstractInternalFrame {
 			@Override
 			public void preencherObjeto(Subcategoria objetoPesquisa) {
 				objetoPesquisa.setIdSubcategoria(txCodigo.getValue());
-				objetoPesquisa.setCategoria((Categoria) cbCategoria.getSelectedItem());
+
+				if (cbCategoria.getSelectedIndex() >= 0) {
+					objetoPesquisa.setCategoria((Categoria) cbCategoria.getSelectedItem());
+				}
 				objetoPesquisa.setDescricao(txDescricao.getText());
 			}
 		};

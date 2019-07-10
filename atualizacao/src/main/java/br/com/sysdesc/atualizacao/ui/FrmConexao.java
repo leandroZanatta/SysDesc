@@ -5,8 +5,7 @@ import static br.com.sysdesc.atualizacao.util.classes.StringUtil.CHARSET;
 import static br.com.sysdesc.atualizacao.util.classes.StringUtil.STRING_VAZIA;
 import static br.com.sysdesc.atualizacao.util.classes.StringUtil.arrayToString;
 import static br.com.sysdesc.atualizacao.util.classes.StringUtil.isNullOrEmpty;
-import static br.com.sysdesc.atualizacao.util.resources.Resources.CONEXAO_INVALIDA;
-import static br.com.sysdesc.atualizacao.util.resources.Resources.DRIVER_NAO_ENCONTRADO;
+import static br.com.sysdesc.atualizacao.util.resources.Resources.OPTION_ERRO;
 import static br.com.sysdesc.atualizacao.util.resources.Resources.FRMCONEXAO_BT_CANCELAR;
 import static br.com.sysdesc.atualizacao.util.resources.Resources.FRMCONEXAO_BT_SALVAR;
 import static br.com.sysdesc.atualizacao.util.resources.Resources.FRMCONEXAO_LB_BANCO;
@@ -18,8 +17,9 @@ import static br.com.sysdesc.atualizacao.util.resources.Resources.FRMCONEXAO_LB_
 import static br.com.sysdesc.atualizacao.util.resources.Resources.FRMCONEXAO_MSG_SALVAR;
 import static br.com.sysdesc.atualizacao.util.resources.Resources.FRMCONEXAO_PRP_CONEXAO;
 import static br.com.sysdesc.atualizacao.util.resources.Resources.FRMCONEXAO_TITULO;
+import static br.com.sysdesc.atualizacao.util.resources.Resources.MENSAGEM_CONEXAO_INVALIDA;
+import static br.com.sysdesc.atualizacao.util.resources.Resources.MENSAGEM_DRIVER_NAO_ENCONTRADO;
 import static br.com.sysdesc.atualizacao.util.resources.Resources.translate;
-import static br.com.sysdesc.util.atualizacao.constants.MensagemConstants.ERRO;
 import static java.sql.DriverManager.getConnection;
 
 import java.awt.BorderLayout;
@@ -210,9 +210,10 @@ public class FrmConexao extends JDialog {
 
 			} catch (Exception e) {
 
-				JOptionPane.showMessageDialog(this, translate(DRIVER_NAO_ENCONTRADO), ERRO, JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, translate(MENSAGEM_DRIVER_NAO_ENCONTRADO), OPTION_ERRO,
+						JOptionPane.ERROR_MESSAGE);
 
-				log.log(Level.SEVERE, translate(DRIVER_NAO_ENCONTRADO), e);
+				log.log(Level.SEVERE, translate(MENSAGEM_DRIVER_NAO_ENCONTRADO), e);
 			}
 		}
 	}
@@ -235,9 +236,9 @@ public class FrmConexao extends JDialog {
 
 		} catch (Exception e) {
 
-			JOptionPane.showMessageDialog(this, translate(CONEXAO_INVALIDA), ERRO, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, translate(MENSAGEM_CONEXAO_INVALIDA), OPTION_ERRO, JOptionPane.ERROR_MESSAGE);
 
-			log.log(Level.SEVERE, translate(CONEXAO_INVALIDA), e);
+			log.log(Level.SEVERE, translate(MENSAGEM_CONEXAO_INVALIDA), e);
 		}
 	}
 

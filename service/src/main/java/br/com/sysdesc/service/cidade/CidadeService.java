@@ -18,12 +18,12 @@ public class CidadeService extends AbstractGenericService<Cidade> {
 
 		if (objetoPersistir.getEstado() == null) {
 
-			throw new SysDescException(MensagemConstants.SELECIONE_ESTADO);
+			throw new SysDescException(MensagemConstants.MENSAGEM_SELECIONE_ESTADO);
 		}
 
 		if (StringUtil.isNullOrEmpty(objetoPersistir.getDescricao())) {
 
-			throw new SysDescException(MensagemConstants.INSIRA_DESCRICAO_VALIDA);
+			throw new SysDescException(MensagemConstants.MENSAGEM_INSIRA_DESCRICAO_VALIDA);
 		}
 	}
 }

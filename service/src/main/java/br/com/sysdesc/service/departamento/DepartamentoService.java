@@ -29,7 +29,7 @@ public class DepartamentoService extends AbstractGenericService<Departamento> {
 
 		if (StringUtil.isNullOrEmpty(objetoPersistir.getDescricao())) {
 
-			throw new SysDescException(MensagemConstants.INSIRA_DESCRICAO_VALIDA);
+			throw new SysDescException(MensagemConstants.MENSAGEM_INSIRA_DESCRICAO_VALIDA);
 		}
 
 	}

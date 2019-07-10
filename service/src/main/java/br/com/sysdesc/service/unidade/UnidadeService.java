@@ -28,17 +28,17 @@ public class UnidadeService extends AbstractGenericService<Unidade> {
 
 		if (StringUtil.isNullOrEmpty(objetoPersistir.getDescricao())) {
 
-			throw new SysDescException(MensagemConstants.INSIRA_DESCRICAO_VALIDA);
+			throw new SysDescException(MensagemConstants.MENSAGEM_INSIRA_DESCRICAO_VALIDA);
 		}
 
 		if (StringUtil.isNullOrEmpty(objetoPersistir.getDescricaoReduzida())) {
 
-			throw new SysDescException(MensagemConstants.INSIRA_DESCRICAO_REDUZIDA_VALIDA);
+			throw new SysDescException(MensagemConstants.MENSAGEM_INSIRA_DESCRICAO_REDUZIDA_VALIDA);
 		}
 
 		if (objetoPersistir.getDescricaoReduzida().length() > 3) {
 
-			throw new SysDescException(MensagemConstants.INSIRA_DESCRICAO_REDUZIDA_MAXIMO_TRES);
+			throw new SysDescException(MensagemConstants.MENSAGEM_INSIRA_DESCRICAO_REDUZIDA_MAXIMO_TRES);
 		}
 
 	}

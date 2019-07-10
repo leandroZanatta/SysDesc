@@ -30,12 +30,12 @@ public class CategoriaService extends AbstractGenericService<Categoria> {
 
 		if (objetoPersistir.getDepartamento() == null) {
 
-			throw new SysDescException(MensagemConstants.SELECIONE_DEPARTAMENTO);
+			throw new SysDescException(MensagemConstants.MENSAGEM_SELECIONE_DEPARTAMENTO);
 		}
 
 		if (StringUtil.isNullOrEmpty(objetoPersistir.getDescricao())) {
 
-			throw new SysDescException(MensagemConstants.INSIRA_DESCRICAO_VALIDA);
+			throw new SysDescException(MensagemConstants.MENSAGEM_INSIRA_DESCRICAO_VALIDA);
 		}
 	}
 

@@ -11,7 +11,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
@@ -22,6 +21,8 @@ import br.com.sysdesc.components.JMoneyField;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.components.adapters.PanelEventAdapter;
+import br.com.sysdesc.enumerator.TipoProdutoEnum;
+import br.com.sysdesc.enumerator.TipoStatusEnum;
 import br.com.sysdesc.pesquisa.components.CampoPesquisa;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.model.Categoria;
@@ -39,6 +40,7 @@ import br.com.sysdesc.service.marca.MarcaService;
 import br.com.sysdesc.service.produto.ProdutoService;
 import br.com.sysdesc.service.subcategoria.SubcategoriaService;
 import br.com.sysdesc.service.unidade.UnidadeService;
+import br.com.sysdesc.util.classes.LongUtil;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmProduto extends AbstractInternalFrame {
@@ -71,8 +73,8 @@ public class FrmProduto extends AbstractInternalFrame {
 
 	private JComboBox<Departamento> cbDepartamento;
 	private JComboBox<Unidade> cbUnidade;
-	private JComboBox cbTipo;
-	private JComboBox cbStatus;
+	private JComboBox<TipoProdutoEnum> cbTipo;
+	private JComboBox<TipoStatusEnum> cbStatus;
 
 	private CampoPesquisa<Categoria> cpCategoria;
 	private CampoPesquisa<Subcategoria> cpSubCategoria;
@@ -120,8 +122,8 @@ public class FrmProduto extends AbstractInternalFrame {
 		txMaximo = new JMoneyField();
 		lbTipo = new JLabel("Tipo:");
 		lbStatus = new JLabel("Status:");
-		cbTipo = new JComboBox();
-		cbStatus = new JComboBox();
+		cbTipo = new JComboBox<TipoProdutoEnum>(TipoProdutoEnum.values());
+		cbStatus = new JComboBox<TipoStatusEnum>(TipoStatusEnum.values());
 		chQuantidadeFracionada = new JCheckBox("Quantidade Fracionada");
 		chMovimentaEstoque = new JCheckBox("Movimenta Estoque");
 
@@ -130,8 +132,8 @@ public class FrmProduto extends AbstractInternalFrame {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void carregarCampo(JTextField campoPesquisa, Categoria objeto) {
-				campoPesquisa.setText(String.format("%s - %s", objeto.getIdCategoria(), objeto.getDescricao()));
+			public String formatarValorCampo(Categoria objeto) {
+				return String.format("%s - %s", objeto.getIdCategoria(), objeto.getDescricao());
 			}
 
 			@Override
@@ -162,8 +164,8 @@ public class FrmProduto extends AbstractInternalFrame {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void carregarCampo(JTextField campoPesquisa, Subcategoria objeto) {
-				campoPesquisa.setText(String.format("%s - %s", objeto.getIdSubcategoria(), objeto.getDescricao()));
+			public String formatarValorCampo(Subcategoria objeto) {
+				return String.format("%s - %s", objeto.getIdSubcategoria(), objeto.getDescricao());
 			}
 
 			@Override
@@ -194,8 +196,8 @@ public class FrmProduto extends AbstractInternalFrame {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void carregarCampo(JTextField campoPesquisa, Cliente objeto) {
-				campoPesquisa.setText(String.format("%s - %s", objeto.getIdCliente(), objeto.getNome()));
+			public String formatarValorCampo(Cliente objeto) {
+				return String.format("%s - %s", objeto.getIdCliente(), objeto.getNome());
 			}
 
 		};
@@ -205,8 +207,8 @@ public class FrmProduto extends AbstractInternalFrame {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void carregarCampo(JTextField campoPesquisa, Marca objeto) {
-				campoPesquisa.setText(String.format("%s - %s", objeto.getIdMarca(), objeto.getDescricao()));
+			public String formatarValorCampo(Marca objeto) {
+				return String.format("%s - %s", objeto.getIdMarca(), objeto.getDescricao());
 			}
 
 		};
@@ -256,10 +258,59 @@ public class FrmProduto extends AbstractInternalFrame {
 
 			@Override
 			public void carregarObjeto(Produto objeto) {
+
+				txCodigo.setValue(objeto.getIdProduto());
+				txDescricao.setText(objeto.getDescricao());
+				cbDepartamento.setSelectedItem(objeto.getSubcategoria().getCategoria().getDepartamento());
+				cpCategoria.setValue(objeto.getSubcategoria().getCategoria());
+				cpSubCategoria.setValue(objeto.getSubcategoria());
+				cpMarca.setValue(objeto.getMarca());
+				cpFornecedor.setValue(objeto.getFornecedor());
+
+				chMovimentaEstoque.setSelected(objeto.getFlagMovimentaEstoque());
+				chQuantidadeFracionada.setSelected(objeto.getFlagQuantidadeFracionada());
+				txMaximo.setValue(objeto.getValorEstoqueMaximo());
+				txMinimo.setValue(objeto.getValorEstoqueMinimo());
+
+				if (objeto.getUnidade() != null) {
+					cbUnidade.setSelectedItem(objeto.getUnidade());
+				}
+
+				if (!LongUtil.isNullOrZero(objeto.getCodigoStatus())) {
+					cbStatus.setSelectedItem(TipoStatusEnum.findByCodigo(objeto.getCodigoStatus()));
+				}
+
+				if (!LongUtil.isNullOrZero(objeto.getCodigoTipo())) {
+					cbTipo.setSelectedItem(TipoProdutoEnum.findByCodigo(objeto.getCodigoTipo()));
+				}
+
 			}
 
 			@Override
 			public void preencherObjeto(Produto objetoPesquisa) {
+
+				objetoPesquisa.setIdProduto(txCodigo.getValue());
+				objetoPesquisa.setDescricao(txDescricao.getText());
+				objetoPesquisa.setSubcategoria(cpSubCategoria.getObjetoPesquisado());
+				objetoPesquisa.setMarca(cpMarca.getObjetoPesquisado());
+				objetoPesquisa.setFornecedor(cpFornecedor.getObjetoPesquisado());
+
+				objetoPesquisa.setFlagMovimentaEstoque(chMovimentaEstoque.isSelected());
+				objetoPesquisa.setFlagQuantidadeFracionada(chQuantidadeFracionada.isSelected());
+				objetoPesquisa.setValorEstoqueMaximo(txMaximo.getValue());
+				objetoPesquisa.setValorEstoqueMinimo(txMinimo.getValue());
+
+				if (cbUnidade.getSelectedIndex() >= 0) {
+					objetoPesquisa.setUnidade((Unidade) cbUnidade.getSelectedItem());
+				}
+
+				if (cbStatus.getSelectedIndex() >= 0) {
+					objetoPesquisa.setCodigoStatus(((TipoStatusEnum) cbStatus.getSelectedItem()).getCodigo());
+				}
+
+				if (cbTipo.getSelectedIndex() >= 0) {
+					objetoPesquisa.setCodigoTipo(((TipoProdutoEnum) cbTipo.getSelectedItem()).getCodigo());
+				}
 			}
 		};
 

@@ -79,7 +79,7 @@ public abstract class CampoPesquisa<T> extends JPanel {
 
 			this.objetoPesquisado = frmPesquisa.getObjeto();
 
-			this.carregarCampo(txValorPesquisa, this.objetoPesquisado);
+			carregarCampo();
 
 			return;
 		}
@@ -89,7 +89,26 @@ public abstract class CampoPesquisa<T> extends JPanel {
 
 	}
 
-	public abstract void carregarCampo(JTextField campoPesquisa, T objeto);
+	private void carregarCampo() {
+
+		if (this.objetoPesquisado == null) {
+
+			txValorPesquisa.setText("");
+
+			return;
+		}
+
+		txValorPesquisa.setText(this.formatarValorCampo(this.objetoPesquisado));
+	}
+
+	public void setValue(T objeto) {
+
+		this.objetoPesquisado = objeto;
+
+		carregarCampo();
+	}
+
+	public abstract String formatarValorCampo(T objeto);
 
 	public Boolean getPesquisaOk() {
 		return pesquisaOk;

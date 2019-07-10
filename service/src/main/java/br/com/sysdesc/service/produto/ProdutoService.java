@@ -3,6 +3,7 @@ package br.com.sysdesc.service.produto;
 import br.com.sysdesc.repository.dao.ProdutoDAO;
 import br.com.sysdesc.repository.model.Produto;
 import br.com.sysdesc.service.interfaces.impl.AbstractGenericService;
+import br.com.sysdesc.util.classes.BigDecimalUtil;
 import br.com.sysdesc.util.classes.StringUtil;
 import br.com.sysdesc.util.constants.MensagemConstants;
 import br.com.sysdesc.util.exception.SysDescException;
@@ -18,12 +19,28 @@ public class ProdutoService extends AbstractGenericService<Produto> {
 
 		if (objetoPersistir.getSubcategoria() == null) {
 
-			throw new SysDescException(MensagemConstants.SELECIONE_SUBCATEGORIA);
+			throw new SysDescException(MensagemConstants.MENSAGEM_SELECIONE_SUBCATEGORIA);
 		}
 
 		if (StringUtil.isNullOrEmpty(objetoPersistir.getDescricao())) {
 
-			throw new SysDescException(MensagemConstants.INSIRA_DESCRICAO_VALIDA);
+			throw new SysDescException(MensagemConstants.MENSAGEM_INSIRA_DESCRICAO_VALIDA);
+		}
+
+		if (objetoPersistir.getMarca() == null) {
+
+			throw new SysDescException(MensagemConstants.MENSAGEM_SELECIONE_MARCA);
+		}
+
+		if (objetoPersistir.getUnidade() == null) {
+
+			throw new SysDescException(MensagemConstants.MENSAGEM_SELECIONE_UNIDADE);
+		}
+
+		if (BigDecimalUtil.maiorOuIgual(objetoPersistir.getValorEstoqueMinimo(),
+				objetoPersistir.getValorEstoqueMaximo())) {
+
+			throw new SysDescException(MensagemConstants.MENSAGEM_VALOR_ESTOQUE_MINIMO_MAIOR_MAXIMO);
 		}
 	}
 }

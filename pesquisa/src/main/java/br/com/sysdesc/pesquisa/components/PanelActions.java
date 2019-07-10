@@ -1,6 +1,6 @@
 package br.com.sysdesc.pesquisa.components;
 
-import static br.com.sysdesc.util.resources.Resources.VALIDACAO;
+import static br.com.sysdesc.util.resources.Resources.OPTION_VALIDACAO;
 import static br.com.sysdesc.util.resources.Resources.translate;
 import static javax.swing.JOptionPane.WARNING_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -213,7 +213,7 @@ public abstract class PanelActions<T> extends JPanel {
 
 		} catch (SysDescException sysDescException) {
 
-			showMessageDialog(parent, sysDescException.getMensagem(), translate(VALIDACAO), WARNING_MESSAGE);
+			showMessageDialog(parent, sysDescException.getMensagem(), translate(OPTION_VALIDACAO), WARNING_MESSAGE);
 		}
 
 	}
@@ -234,7 +234,7 @@ public abstract class PanelActions<T> extends JPanel {
 
 		} catch (SysDescException sysDescException) {
 
-			showMessageDialog(parent, sysDescException.getMensagem(), translate(VALIDACAO), WARNING_MESSAGE);
+			showMessageDialog(parent, sysDescException.getMensagem(), translate(OPTION_VALIDACAO), WARNING_MESSAGE);
 		}
 
 	}
@@ -254,7 +254,7 @@ public abstract class PanelActions<T> extends JPanel {
 
 		} catch (SysDescException sysDescException) {
 
-			showMessageDialog(parent, sysDescException.getMensagem(), translate(VALIDACAO), WARNING_MESSAGE);
+			showMessageDialog(parent, sysDescException.getMensagem(), translate(OPTION_VALIDACAO), WARNING_MESSAGE);
 		}
 	}
 
@@ -274,7 +274,7 @@ public abstract class PanelActions<T> extends JPanel {
 
 		} catch (SysDescException sysDescException) {
 
-			showMessageDialog(parent, sysDescException.getMensagem(), translate(VALIDACAO), WARNING_MESSAGE);
+			showMessageDialog(parent, sysDescException.getMensagem(), translate(OPTION_VALIDACAO), WARNING_MESSAGE);
 		}
 
 	}
@@ -295,7 +295,7 @@ public abstract class PanelActions<T> extends JPanel {
 
 		} catch (SysDescException sysDescException) {
 
-			showMessageDialog(parent, sysDescException.getMensagem(), translate(VALIDACAO), WARNING_MESSAGE);
+			showMessageDialog(parent, sysDescException.getMensagem(), translate(OPTION_VALIDACAO), WARNING_MESSAGE);
 		}
 
 	}

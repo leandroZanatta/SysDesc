@@ -82,7 +82,11 @@ public class FrmCidade extends AbstractInternalFrame {
 			@Override
 			public void preencherObjeto(Cidade objetoPesquisa) {
 				objetoPesquisa.setIdCidade(txCodigo.getValue());
-				objetoPesquisa.setEstado((Estado) cbEstado.getSelectedItem());
+
+				if (cbEstado.getSelectedIndex() >= 0) {
+					objetoPesquisa.setEstado((Estado) cbEstado.getSelectedItem());
+				}
+
 				objetoPesquisa.setDescricao(txDescricao.getText());
 			}
 		};

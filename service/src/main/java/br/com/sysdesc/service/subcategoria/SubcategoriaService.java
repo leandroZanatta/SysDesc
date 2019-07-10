@@ -28,12 +28,12 @@ public class SubcategoriaService extends AbstractGenericService<Subcategoria> {
 
 		if (objetoPersistir.getCategoria() == null) {
 
-			throw new SysDescException(MensagemConstants.SELECIONE_CATEGORIA);
+			throw new SysDescException(MensagemConstants.MENSAGEM_SELECIONE_CATEGORIA);
 		}
 
 		if (StringUtil.isNullOrEmpty(objetoPersistir.getDescricao())) {
 
-			throw new SysDescException(MensagemConstants.INSIRA_DESCRICAO_VALIDA);
+			throw new SysDescException(MensagemConstants.MENSAGEM_INSIRA_DESCRICAO_VALIDA);
 		}
 	}
 
