@@ -12,13 +12,15 @@ import javax.persistence.Persistence;
 
 import org.apache.commons.io.FileUtils;
 
+import com.mysema.query.sql.H2Templates;
 import com.mysema.query.sql.MySQLTemplates;
 import com.mysema.query.sql.PostgresTemplates;
 import com.mysema.query.sql.SQLTemplates;
 
-import br.com.sysdesc.repository.enumeradores.TipoConexaoEnum;
 import br.com.sysdesc.util.classes.CryptoUtil;
+import br.com.sysdesc.util.exception.SysDescException;
 import br.com.sysdesc.util.resources.Configuracoes;
+import br.com.sysdesc.util.resources.Resources;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -54,13 +56,20 @@ public class Conexao {
 
 	private static SQLTemplates createTemplate(Properties propertiesConexao) {
 
-		TipoConexaoEnum conexao = TipoConexaoEnum.POSTGRES;
+		String driver = propertiesConexao.getProperty("javax.persistence.jdbc.driver", "");
 
-		if (propertiesConexao.get(conexao.getJdbcDriver()).equals(conexao.getDriver())) {
+		switch (driver) {
+		case "org.postgresql.Driver":
 			return PostgresTemplates.DEFAULT;
+		case "com.mysql.jdbc.Driver":
+			return MySQLTemplates.DEFAULT;
+		case "org.h2.Driver":
+			return H2Templates.DEFAULT;
+
+		default:
+			throw new SysDescException(Resources.translate(Resources.MENSAGEM_DRIVER_NAO_ENCONTRADO));
 		}
 
-		return MySQLTemplates.DEFAULT;
 	}
 
 	public static EntityManager getEntityManager() {

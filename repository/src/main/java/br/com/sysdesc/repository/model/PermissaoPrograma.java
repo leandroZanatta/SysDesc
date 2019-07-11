@@ -22,7 +22,7 @@ public class PermissaoPrograma implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_PERMISSAOPROGRAMA")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "GEN_PERMISSAOPROGRAMA")
 	@Column(name = "id_permissaoprograma")
 	private Long idPermissaoprograma;
 

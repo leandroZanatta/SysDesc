@@ -22,7 +22,7 @@ public class PesquisaCampo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_PESQUISACAMPO")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "GEN_PESQUISACAMPO")
 	@Column(name = "id_pesquisacampo")
 	private Long idPesquisacampo;
 

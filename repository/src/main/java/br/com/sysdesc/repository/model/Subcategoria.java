@@ -24,7 +24,7 @@ public class Subcategoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_SUBCATEGORIA")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "GEN_SUBCATEGORIA")
 	@Column(name = "id_subcategoria")
 	private Long idSubcategoria;
 

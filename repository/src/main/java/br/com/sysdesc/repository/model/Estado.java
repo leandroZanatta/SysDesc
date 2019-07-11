@@ -22,7 +22,7 @@ public class Estado implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_ESTADO")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "GEN_ESTADO")
 	@Column(name = "id_estado")
 	private Long idEstado;
 

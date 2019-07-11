@@ -22,7 +22,7 @@ public class Perfil implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_PERFIL")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "GEN_PERFIL")
 	@Column(name = "id_perfil")
 	private Long idPerfil;
 

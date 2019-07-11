@@ -22,7 +22,7 @@ public class Unidade implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_UNIDADE")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "GEN_UNIDADE")
 	@Column(name = "id_unidade")
 	private Long idUnidade;
 

@@ -24,7 +24,7 @@ public class Departamento implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_DEPARTAMENTO")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "GEN_DEPARTAMENTO")
 	@Column(name = "id_departamento")
 	private Long idDepartamento;
 

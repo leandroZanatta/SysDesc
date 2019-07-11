@@ -24,7 +24,7 @@ public class Categoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_CATEGORIA")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "GEN_CATEGORIA")
 	@Column(name = "id_categoria")
 	private Long idCategoria;
 

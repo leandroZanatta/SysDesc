@@ -5,7 +5,6 @@ import static br.com.sysdesc.atualizacao.util.classes.StringUtil.CHARSET;
 import static br.com.sysdesc.atualizacao.util.classes.StringUtil.STRING_VAZIA;
 import static br.com.sysdesc.atualizacao.util.classes.StringUtil.arrayToString;
 import static br.com.sysdesc.atualizacao.util.classes.StringUtil.isNullOrEmpty;
-import static br.com.sysdesc.atualizacao.util.resources.Resources.OPTION_ERRO;
 import static br.com.sysdesc.atualizacao.util.resources.Resources.FRMCONEXAO_BT_CANCELAR;
 import static br.com.sysdesc.atualizacao.util.resources.Resources.FRMCONEXAO_BT_SALVAR;
 import static br.com.sysdesc.atualizacao.util.resources.Resources.FRMCONEXAO_LB_BANCO;
@@ -19,6 +18,7 @@ import static br.com.sysdesc.atualizacao.util.resources.Resources.FRMCONEXAO_PRP
 import static br.com.sysdesc.atualizacao.util.resources.Resources.FRMCONEXAO_TITULO;
 import static br.com.sysdesc.atualizacao.util.resources.Resources.MENSAGEM_CONEXAO_INVALIDA;
 import static br.com.sysdesc.atualizacao.util.resources.Resources.MENSAGEM_DRIVER_NAO_ENCONTRADO;
+import static br.com.sysdesc.atualizacao.util.resources.Resources.OPTION_ERRO;
 import static br.com.sysdesc.atualizacao.util.resources.Resources.translate;
 import static java.sql.DriverManager.getConnection;
 
@@ -169,7 +169,7 @@ public class FrmConexao extends JDialog {
 
 		TipoConexaoEnum tipoConexaoEnum = (TipoConexaoEnum) cbTipoBanco.getSelectedItem();
 
-		String url = txUrl.getText() + DOIS_PONTOS + txPorta.getText() + BARRA + cbBanco.getSelectedItem().toString();
+		String url = getUrlDatabase(tipoConexaoEnum);
 
 		Properties properties = new Properties();
 		properties.put(TipoConexaoEnum.jdbcDriver, tipoConexaoEnum.getDriver());
@@ -190,6 +190,15 @@ public class FrmConexao extends JDialog {
 		} catch (IOException e1) {
 			JOptionPane.showMessageDialog(this, translate(FRMCONEXAO_MSG_SALVAR));
 		}
+	}
+
+	private String getUrlDatabase(TipoConexaoEnum tipoConexaoEnum) {
+
+		if (tipoConexaoEnum.equals(TipoConexaoEnum.H2)) {
+			return txUrl.getText();
+		}
+
+		return String.format("%s:%s/%s", txUrl.getText(), txPorta.getText(), cbBanco.getSelectedItem().toString());
 	}
 
 	private void buscarBancosRegistrados() {
@@ -236,7 +245,8 @@ public class FrmConexao extends JDialog {
 
 		} catch (Exception e) {
 
-			JOptionPane.showMessageDialog(this, translate(MENSAGEM_CONEXAO_INVALIDA), OPTION_ERRO, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, translate(MENSAGEM_CONEXAO_INVALIDA), OPTION_ERRO,
+					JOptionPane.ERROR_MESSAGE);
 
 			log.log(Level.SEVERE, translate(MENSAGEM_CONEXAO_INVALIDA), e);
 		}
@@ -248,20 +258,29 @@ public class FrmConexao extends JDialog {
 		String porta = STRING_VAZIA;
 		Boolean selecionou = cbTipoBanco.getSelectedIndex() >= 0;
 
+		TipoConexaoEnum tipoConexaoEnum = null;
+
 		if (selecionou) {
-			TipoConexaoEnum tipoConexaoEnum = (TipoConexaoEnum) cbTipoBanco.getSelectedItem();
+			tipoConexaoEnum = (TipoConexaoEnum) cbTipoBanco.getSelectedItem();
 			url = tipoConexaoEnum.getUrl();
 			porta = tipoConexaoEnum.getPorta().toString();
 		}
 
+		Boolean conexaoH2 = tipoConexaoEnum != null && tipoConexaoEnum.equals(TipoConexaoEnum.H2);
+
 		txUrl.setEnabled(selecionou);
-		txPorta.setEnabled(selecionou);
+		txPorta.setEnabled(selecionou && !conexaoH2);
 		txUsuario.setEnabled(selecionou);
 		txSenha.setEnabled(selecionou);
+		cbBanco.setEnabled(!conexaoH2);
+		btnPesquisa.setEnabled(!conexaoH2);
 
 		txUrl.setText(url);
-		txPorta.setText(porta);
+		txPorta.setText(!conexaoH2 ? porta : "");
 		cbBanco.removeAllItems();
+
+		txSenha.setEnabled(conexaoH2);
+		btnSalvar.setEnabled(conexaoH2);
 	}
 
 }
