@@ -9,6 +9,7 @@
 
 	<modules>
 		<module>atualizacao</module>
+		<module>upgrade</module>
 		<module>libraries</module>
 		<module>util</module>
 		<module>repository</module>

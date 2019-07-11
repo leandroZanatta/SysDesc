@@ -1,8 +1,8 @@
-package br.com.sysdesc.repository.conexao;
+package br.com.sysdesc.upgrade.changelog.core;
 
 import java.sql.Connection;
 
-import br.com.sysdesc.util.resources.Configuracoes;
+import br.com.sysdesc.upgrade.util.resources.Configuracoes;
 import liquibase.Contexts;
 import liquibase.LabelExpression;
 import liquibase.Liquibase;
@@ -29,10 +29,9 @@ public class Changelog {
 
 		} catch (LiquibaseException e) {
 
-			e.printStackTrace();
-
 			System.exit(0);
 		}
 
 	}
+
 }

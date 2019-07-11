@@ -1,12 +1,9 @@
 package br.com.sysdesc.repository.conexao;
 
-import static java.sql.DriverManager.getConnection;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.charset.Charset;
-import java.sql.Connection;
 import java.util.Properties;
 
 import javax.naming.ConfigurationException;
@@ -73,21 +70,6 @@ public class Conexao {
 
 	public static SQLTemplates getSqlTemplates() {
 		return sqlTemplates;
-	}
-
-	public static Connection buscarConexao() throws Exception {
-
-		Properties propertiesConexao = buscarPropertiesConexao();
-
-		String clazz = propertiesConexao.getProperty(TipoConexaoEnum.jdbcDriver);
-		String url = propertiesConexao.getProperty(TipoConexaoEnum.jdbcUrl);
-		String usuario = propertiesConexao.getProperty(TipoConexaoEnum.jdbcUser);
-		String senha = propertiesConexao.getProperty(TipoConexaoEnum.jdbcPassword);
-
-		Class.forName(clazz);
-
-		return getConnection(url, usuario, senha);
-
 	}
 
 	private static Properties buscarPropertiesConexao() throws ConfigurationException {

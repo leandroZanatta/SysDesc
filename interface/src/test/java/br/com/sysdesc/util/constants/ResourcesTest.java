@@ -56,7 +56,7 @@ public class ResourcesTest {
 			newList.add("");
 		}
 
-		FileUtils.writeLines(new File("../interface/resources/pt_br.properties"), newList);
+		FileUtils.writeLines(new File("../interface/resources/pt_br.properties"), "UTF-8", newList);
 	}
 
 	@Test
