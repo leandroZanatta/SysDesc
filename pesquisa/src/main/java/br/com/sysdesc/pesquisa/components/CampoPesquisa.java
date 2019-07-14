@@ -20,11 +20,12 @@ public abstract class CampoPesquisa<T> extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
+	private final AbstractGenericService<T> genericService;
+	private final PesquisaEnum pesquisaEnum;
+	private final Long codigoUsuario;
+
 	private JButton btPesquisa;
 	private JTextField txValorPesquisa;
-	private final AbstractGenericService<T> genericService;
-	private PesquisaEnum pesquisaEnum;
-	private Long codigoUsuario;
 	private T objetoPesquisado;
 	private Boolean pesquisaOk = Boolean.FALSE;
 

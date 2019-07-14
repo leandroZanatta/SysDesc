@@ -5,7 +5,7 @@ import java.util.Map;
 
 public enum TipoPesquisaEnum {
 
-	NORMAL(1L), AVANCADA(2L);
+	NORMAL(0L), AVANCADA(1L);
 
 	private Long codigo;
 

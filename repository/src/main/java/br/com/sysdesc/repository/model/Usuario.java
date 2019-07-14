@@ -26,7 +26,7 @@ public class Usuario implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "GEN_USUARIO")
 	@Column(name = "id_usuario")
-	private long idUsuario;
+	private Long idUsuario;
 
 	@Column(name = "tx_senha")
 	private String senha;

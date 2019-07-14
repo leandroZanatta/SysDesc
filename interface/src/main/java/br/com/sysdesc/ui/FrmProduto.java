@@ -5,6 +5,10 @@ import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_CLIENTES;
 import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_MARCAS;
 import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_PRODUTOS;
 import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_SUBCATEGORIAS;
+import static br.com.sysdesc.util.constants.MensagemConstants.MENSAGEM_SELECIONE_CATEGORIA;
+import static br.com.sysdesc.util.constants.MensagemConstants.MENSAGEM_SELECIONE_DEPARTAMENTO;
+import static br.com.sysdesc.util.resources.Resources.FRMLOGIN_MSG_VERIFICACAO;
+import static br.com.sysdesc.util.resources.Resources.translate;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -141,7 +145,8 @@ public class FrmProduto extends AbstractInternalFrame {
 
 				if (cbDepartamento.getSelectedIndex() < 0) {
 
-					JOptionPane.showMessageDialog(null, "SELECIONE UM DEPARTAMENTO");
+					JOptionPane.showMessageDialog(null, translate(MENSAGEM_SELECIONE_DEPARTAMENTO),
+							translate(FRMLOGIN_MSG_VERIFICACAO), JOptionPane.WARNING_MESSAGE);
 
 					return Boolean.FALSE;
 				}
@@ -173,7 +178,8 @@ public class FrmProduto extends AbstractInternalFrame {
 
 				if (cpCategoria.getObjetoPesquisado() == null) {
 
-					JOptionPane.showMessageDialog(null, "SELECIONE UMA CATEGORIA");
+					JOptionPane.showMessageDialog(null, translate(MENSAGEM_SELECIONE_CATEGORIA),
+							translate(FRMLOGIN_MSG_VERIFICACAO), JOptionPane.WARNING_MESSAGE);
 
 					return Boolean.FALSE;
 				}

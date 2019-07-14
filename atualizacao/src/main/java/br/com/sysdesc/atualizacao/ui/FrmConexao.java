@@ -203,8 +203,8 @@ public class FrmConexao extends JDialog {
 
 	private void buscarBancosRegistrados() {
 
-		if (!(isNullOrEmpty(txUrl.getText()) || isNullOrEmpty(txPorta.getText()) || isNullOrEmpty(txUsuario.getText())
-				|| isNullOrEmpty(arrayToString(txSenha.getPassword())))) {
+		if (!(isNullOrEmpty(txUrl.getText()) || isNullOrEmpty(txPorta.getText())
+				|| isNullOrEmpty(txUsuario.getText()))) {
 
 			TipoConexaoEnum tipoConexaoEnum = (TipoConexaoEnum) cbTipoBanco.getSelectedItem();
 
@@ -279,7 +279,6 @@ public class FrmConexao extends JDialog {
 		txPorta.setText(!conexaoH2 ? porta : "");
 		cbBanco.removeAllItems();
 
-		txSenha.setEnabled(conexaoH2);
 		btnSalvar.setEnabled(conexaoH2);
 	}
 

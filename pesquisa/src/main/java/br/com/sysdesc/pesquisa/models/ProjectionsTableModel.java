@@ -3,8 +3,6 @@ package br.com.sysdesc.pesquisa.models;
 import static br.com.sysdesc.pesquisa.enumeradores.TipoTamanhoEnum.FLEX;
 import static br.com.sysdesc.pesquisa.enumeradores.TipoTamanhoEnum.tipoTamanhoForCodigo;
 import static br.com.sysdesc.util.classes.IfNull.get;
-import static br.com.sysdesc.util.enumeradores.TipoDadoEnum.STRING;
-import static br.com.sysdesc.util.enumeradores.TipoDadoEnum.tipoDadoForCodigo;
 import static br.com.sysdesc.util.resources.Resources.TBLCONFIG_CAMPO;
 import static br.com.sysdesc.util.resources.Resources.TBLCONFIG_DESCRICAO;
 import static br.com.sysdesc.util.resources.Resources.TBLCONFIG_FORMATACAO;
@@ -18,6 +16,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import br.com.sysdesc.pesquisa.enumeradores.FormatoPesquisaEnum;
 import br.com.sysdesc.repository.model.PesquisaCampo;
 
 public class ProjectionsTableModel extends AbstractTableModel {
@@ -50,7 +49,8 @@ public class ProjectionsTableModel extends AbstractTableModel {
 			return get(configuracaoPesquisa.getCampo(), STRING_VAZIA);
 
 		case 2:
-			return get(tipoDadoForCodigo(configuracaoPesquisa.getFlagTipoDado()), STRING);
+			return get(FormatoPesquisaEnum.formatoForCodigo(configuracaoPesquisa.getFlagFormatacao()),
+					FormatoPesquisaEnum.DEFAULT);
 
 		case 3:
 			return get(tipoTamanhoForCodigo(configuracaoPesquisa.getFlagTipoTamanho()), FLEX);

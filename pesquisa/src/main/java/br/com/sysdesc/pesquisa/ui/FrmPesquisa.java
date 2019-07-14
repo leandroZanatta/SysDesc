@@ -1,5 +1,10 @@
 package br.com.sysdesc.pesquisa.ui;
 
+import static br.com.sysdesc.util.constants.MensagemConstants.MENSAGEM_SELECIONE_APENAS_UM_REGISTRO;
+import static br.com.sysdesc.util.constants.MensagemConstants.MENSAGEM_SELECIONE_UM_REGISTRO;
+import static br.com.sysdesc.util.resources.Resources.FRMLOGIN_MSG_VERIFICACAO;
+import static br.com.sysdesc.util.resources.Resources.translate;
+
 import java.awt.BorderLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -139,12 +144,14 @@ public class FrmPesquisa<T> extends JDialog {
 	private void selecionarRegistro() {
 
 		if (table.getSelectedRowCount() == 0) {
-			JOptionPane.showMessageDialog(getParent(), "SELECIONE UM REGITRO");
+			JOptionPane.showMessageDialog(getParent(), translate(MENSAGEM_SELECIONE_UM_REGISTRO),
+					translate(FRMLOGIN_MSG_VERIFICACAO), JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 
 		if (!this.multiselect && table.getSelectedRowCount() != 1) {
-			JOptionPane.showMessageDialog(getParent(), "SELECIONE APENAS UM REGITRO");
+			JOptionPane.showMessageDialog(getParent(), MENSAGEM_SELECIONE_APENAS_UM_REGISTRO,
+					translate(FRMLOGIN_MSG_VERIFICACAO), JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 

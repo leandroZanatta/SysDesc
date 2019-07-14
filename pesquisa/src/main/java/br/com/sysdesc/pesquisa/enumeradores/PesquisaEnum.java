@@ -3,39 +3,43 @@ package br.com.sysdesc.pesquisa.enumeradores;
 import java.util.HashMap;
 import java.util.Map;
 
-import br.com.sysdesc.repository.model.Cidade;
-import br.com.sysdesc.repository.model.Cliente;
-import br.com.sysdesc.repository.model.Departamento;
-import br.com.sysdesc.repository.model.Estado;
-import br.com.sysdesc.repository.model.Marca;
-import br.com.sysdesc.repository.model.Perfil;
-import br.com.sysdesc.repository.model.Produto;
-import br.com.sysdesc.repository.model.Subcategoria;
-import br.com.sysdesc.repository.model.Usuario;
+import com.mysema.query.types.path.EntityPathBase;
+
+import br.com.sysdesc.repository.model.QCategoria;
+import br.com.sysdesc.repository.model.QCidade;
+import br.com.sysdesc.repository.model.QCliente;
+import br.com.sysdesc.repository.model.QDepartamento;
+import br.com.sysdesc.repository.model.QEstado;
+import br.com.sysdesc.repository.model.QMarca;
+import br.com.sysdesc.repository.model.QPerfil;
+import br.com.sysdesc.repository.model.QProduto;
+import br.com.sysdesc.repository.model.QSubcategoria;
+import br.com.sysdesc.repository.model.QUnidade;
+import br.com.sysdesc.repository.model.QUsuario;
 
 public enum PesquisaEnum {
 
-	PES_USUARIOS(1L, "Usuários", Usuario.class),
+	PES_USUARIOS(1L, "Usuários", QUsuario.class),
 
-	PES_PERFIL(2L, "Perfis", Perfil.class),
+	PES_PERFIL(2L, "Perfis", QPerfil.class),
 
-	PES_ESTADOS(3L, "Estados", Estado.class),
+	PES_ESTADOS(3L, "Estados", QEstado.class),
 
-	PES_MARCAS(4L, "Marcas", Marca.class),
+	PES_MARCAS(4L, "Marcas", QMarca.class),
 
-	PES_DEPARTAMENTOS(5L, "Departamentos", Departamento.class),
+	PES_DEPARTAMENTOS(5L, "Departamentos", QDepartamento.class),
 
-	PES_UNIDADES(6L, "Unidades", Departamento.class),
+	PES_UNIDADES(6L, "Unidades", QUnidade.class),
 
-	PES_CATEGORIAS(7L, "Categorias", Departamento.class),
+	PES_CATEGORIAS(7L, "Categorias", QCategoria.class),
 
-	PES_CIDADES(8L, "Cidades", Cidade.class),
+	PES_CIDADES(8L, "Cidades", QCidade.class),
 
-	PES_SUBCATEGORIAS(9L, "Cidades", Subcategoria.class),
+	PES_SUBCATEGORIAS(9L, "Cidades", QSubcategoria.class),
 
-	PES_CLIENTES(10L, "Clientes", Cliente.class),
+	PES_CLIENTES(10L, "Clientes", QCliente.class),
 
-	PES_PRODUTOS(11L, "Produtos", Produto.class);
+	PES_PRODUTOS(11L, "Produtos", QProduto.class);
 
 	private static Map<Long, PesquisaEnum> map = new HashMap<>();
 
@@ -43,7 +47,7 @@ public enum PesquisaEnum {
 
 	private final String descricaoPesquisa;
 
-	private final Class<?> clazz;
+	private final Class<? extends EntityPathBase<?>> entityPath;
 
 	static {
 		for (PesquisaEnum pesquisaEnum : PesquisaEnum.values()) {
@@ -51,10 +55,10 @@ public enum PesquisaEnum {
 		}
 	}
 
-	private PesquisaEnum(Long codigoPesquisa, String descricaoPesquisa, Class<?> clazz) {
+	private PesquisaEnum(Long codigoPesquisa, String descricaoPesquisa, Class<? extends EntityPathBase<?>> entityPath) {
 		this.codigoPesquisa = codigoPesquisa;
 		this.descricaoPesquisa = descricaoPesquisa;
-		this.clazz = clazz;
+		this.entityPath = entityPath;
 	}
 
 	public static PesquisaEnum forValue(Long value) {
@@ -69,8 +73,8 @@ public enum PesquisaEnum {
 		return descricaoPesquisa;
 	}
 
-	public Class<?> getClazz() {
-		return clazz;
+	public Class<? extends EntityPathBase<?>> getEntityPath() {
+		return entityPath;
 	}
 
 	@Override

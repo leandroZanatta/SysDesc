@@ -3,7 +3,6 @@ package br.com.sysdesc.service.login;
 import static br.com.sysdesc.util.resources.Resources.FRMLOGIN_MSG_LOGIN;
 import static br.com.sysdesc.util.resources.Resources.FRMLOGIN_MSG_SENHA;
 import static br.com.sysdesc.util.resources.Resources.FRMLOGIN_MSG_USUARIO;
-import static br.com.sysdesc.util.resources.Resources.translate;
 
 import br.com.sysdesc.repository.dao.UsuarioDAO;
 import br.com.sysdesc.repository.model.Usuario;
@@ -30,12 +29,12 @@ public class LoginService extends AbstractGenericService<Usuario> {
 
 		if (StringUtil.isNullOrEmpty(usuario)) {
 
-			throw new SysDescException(translate(FRMLOGIN_MSG_USUARIO));
+			throw new SysDescException(FRMLOGIN_MSG_USUARIO);
 
 		}
 		if (StringUtil.isNullOrEmpty(senha)) {
 
-			throw new SysDescException(translate(FRMLOGIN_MSG_SENHA));
+			throw new SysDescException(FRMLOGIN_MSG_SENHA);
 
 		}
 
@@ -43,7 +42,7 @@ public class LoginService extends AbstractGenericService<Usuario> {
 
 		if (mdlUsuario == null) {
 
-			throw new SysDescException(translate(FRMLOGIN_MSG_LOGIN));
+			throw new SysDescException(FRMLOGIN_MSG_LOGIN);
 		}
 
 		return mdlUsuario;

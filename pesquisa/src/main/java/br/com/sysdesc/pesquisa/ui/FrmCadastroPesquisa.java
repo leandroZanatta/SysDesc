@@ -2,16 +2,22 @@ package br.com.sysdesc.pesquisa.ui;
 
 import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_CATEGORIAS;
 import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.forValue;
+import static br.com.sysdesc.util.constants.MensagemConstants.MENSAGEM_SELECIONE_PESQUISA;
 import static br.com.sysdesc.util.enumeradores.TipoPesquisaEnum.NORMAL;
+import static br.com.sysdesc.util.resources.Resources.FRMLOGIN_MSG_VERIFICACAO;
 import static br.com.sysdesc.util.resources.Resources.FRMPESQUISA_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
 import java.awt.BorderLayout;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -19,13 +25,13 @@ import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.components.adapters.PanelEventAdapter;
-import br.com.sysdesc.pesquisa.components.CampoPesquisa;
 import br.com.sysdesc.pesquisa.components.CampoPesquisaMultiSelect;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.repository.model.Perfil;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Pesquisa;
+import br.com.sysdesc.repository.model.PesquisaCampo;
 import br.com.sysdesc.repository.model.Usuario;
 import br.com.sysdesc.service.login.LoginService;
 import br.com.sysdesc.service.perfil.PerfilService;
@@ -49,7 +55,7 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 
 	private PanelActions<Pesquisa> panelActions;
 	private JLabel lblNewLabel;
-	private CampoPesquisa<Usuario> pesquisaUsuario;
+	private CampoPesquisaMultiSelect<Usuario> pesquisaUsuario;
 	private JLabel lblNewLabel_1;
 	private CampoPesquisaMultiSelect<Perfil> pesquisaPerfis;
 	private JPanel panel;
@@ -83,6 +89,11 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 		txDescricao = new JTextFieldMaiusculo();
 		txPaginacao = new JNumericField();
 
+		panel_1 = new JPanel();
+		btAdd = new JButton("");
+		btRemove = new JButton("");
+		panel = new JPanel();
+
 		painelContent.setLayout(new MigLayout("", "[grow][grow][80.00]", "[][][][][][][grow][]"));
 
 		painelContent.add(lblCodigo, "cell 0 0");
@@ -95,7 +106,6 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 		painelContent.add(txDescricao, "cell 0 3,growx");
 
 		painelContent.add(lblPaginacao, "cell 2 2");
-		// cbPesquisa = new JComboBox<PesquisaEnum>(PesquisaEnum.values());
 		cbPesquisa = new JComboBox<PesquisaEnum>();
 		painelContent.add(cbPesquisa, "cell 1 3,growx");
 		painelContent.add(txPaginacao, "cell 2 3,growx");
@@ -106,35 +116,44 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 		lblNewLabel = new JLabel("Usuário:");
 		painelContent.add(lblNewLabel, "cell 1 4");
 
+		Arrays.asList(PesquisaEnum.values()).forEach(cbPesquisa::addItem);
+
 		pesquisaPerfis = new CampoPesquisaMultiSelect<Perfil>(perfilService, PesquisaEnum.PES_PERFIL, codigoUsuario) {
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Function<Perfil, Long> getId() {
+			protected String formatarValorCampoMultiple(List<Perfil> objetosPesquisados) {
 
-				return Perfil::getIdPerfil;
+				return objetosPesquisados.stream().map(x -> x.getIdPerfil().toString())
+						.collect(Collectors.joining(",", "<", ">"));
 			}
 
 			@Override
-			public Function<Perfil, String> getDescricao() {
+			protected String formatarValorCampoSingle(Perfil objeto) {
 
-				return Perfil::getDescricao;
+				return String.format("%s - %s", objeto.getIdPerfil(), objeto.getDescricao());
 			}
 
 		};
 
 		painelContent.add(pesquisaPerfis, "cell 0 5,growx");
 
-		pesquisaUsuario = new CampoPesquisa<Usuario>(loginService, PesquisaEnum.PES_USUARIOS, codigoUsuario) {
+		pesquisaUsuario = new CampoPesquisaMultiSelect<Usuario>(loginService, PesquisaEnum.PES_USUARIOS,
+				codigoUsuario) {
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public String formatarValorCampo(Usuario objeto) {
+			protected String formatarValorCampoMultiple(List<Usuario> objetosPesquisados) {
 
-				return String.format("%d - %s", objeto.getIdUsuario(), objeto.getCliente().getNome());
+				return objetosPesquisados.stream().map(x -> x.getIdUsuario().toString())
+						.collect(Collectors.joining(",", "<", ">"));
+			}
 
+			@Override
+			protected String formatarValorCampoSingle(Usuario objeto) {
+				return String.format("%s - %s", objeto.getIdUsuario(), objeto.getCliente().getNome());
 			}
 
 		};
@@ -143,19 +162,14 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 
 		getContentPane().add(painelContent);
 
-		panel = new JPanel();
 		painelContent.add(panel, "cell 0 6 3 1,grow");
 		panel.setLayout(new BorderLayout(0, 0));
 
-		panel_1 = new JPanel();
+		btAdd.addActionListener((l) -> abrirPesquisaCampo());
 		panel.add(panel_1, BorderLayout.EAST);
 		panel_1.setLayout(new MigLayout("", "[]", "[23px,grow][][][grow]"));
-
-		btAdd = new JButton("");
 		btAdd.setIcon(ImageUtil.resize("add.png", 15, 15));
 		panel_1.add(btAdd, "cell 0 1,alignx left,aligny top");
-
-		btRemove = new JButton("");
 		btRemove.setIcon(ImageUtil.resize("minus.png", 15, 15));
 		panel_1.add(btRemove, "cell 0 2,alignx left,aligny top");
 
@@ -172,6 +186,23 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 				txDescricao.setText(objeto.getDescricao());
 				txPaginacao.setValue(objeto.getPaginacao());
 				cbPesquisa.setSelectedItem(forValue(objeto.getCodigoPesquisa()));
+
+				List<Perfil> perfis = new ArrayList<>();
+				List<Usuario> usuarios = new ArrayList<>();
+
+				objeto.getPermissaoPesquisas().forEach(x -> {
+
+					if (x.getPerfil() != null) {
+						perfis.add(x.getPerfil());
+					}
+
+					if (x.getUsuario() != null) {
+						usuarios.add(x.getUsuario());
+					}
+				});
+
+				pesquisaPerfis.setValue(perfis);
+				pesquisaUsuario.setValue(usuarios);
 			}
 
 			@Override
@@ -198,6 +229,23 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 		});
 
 		painelContent.add(panelActions, "cell 0 7 3 1,alignx center");
+
+	}
+
+	private void abrirPesquisaCampo() {
+
+		if (cbPesquisa.getSelectedIndex() < 0) {
+
+			JOptionPane.showMessageDialog(null, translate(MENSAGEM_SELECIONE_PESQUISA),
+					translate(FRMLOGIN_MSG_VERIFICACAO), JOptionPane.WARNING_MESSAGE);
+
+			return;
+		}
+
+		FrmPesquisaBasicaCampo frmPesquisaBasicaCampo = new FrmPesquisaBasicaCampo(new PesquisaCampo(),
+				(PesquisaEnum) cbPesquisa.getSelectedItem());
+
+		frmPesquisaBasicaCampo.setVisible(Boolean.TRUE);
 
 	}
 

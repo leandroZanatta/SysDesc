@@ -1,39 +1,214 @@
 package br.com.sysdesc.pesquisa.ui;
 
+import static br.com.sysdesc.util.constants.MensagemConstants.MENSAGEM_INSIRA_DESCRICAO_VALIDA;
+import static br.com.sysdesc.util.constants.MensagemConstants.MENSAGEM_INSIRA_TAMANHO_VALIDO;
+import static br.com.sysdesc.util.constants.MensagemConstants.MENSAGEM_SELECIONE_FIELD;
+import static br.com.sysdesc.util.constants.MensagemConstants.MENSAGEM_SELECIONE_FORMATACAO;
+import static br.com.sysdesc.util.resources.Resources.OPTION_VALIDACAO;
+import static br.com.sysdesc.util.resources.Resources.translate;
+
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.util.Arrays;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import javax.swing.JTextField;
+
+import br.com.sysdesc.components.JNumericField;
+import br.com.sysdesc.pesquisa.enumeradores.FormatoPesquisaEnum;
+import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
+import br.com.sysdesc.pesquisa.enumeradores.TipoTamanhoEnum;
+import br.com.sysdesc.pesquisa.formatters.Formatter;
+import br.com.sysdesc.pesquisa.formatters.impl.StringFormatter;
+import br.com.sysdesc.repository.enumeradores.TipoFieldEnum;
+import br.com.sysdesc.repository.model.PesquisaCampo;
+import br.com.sysdesc.repository.util.EntityPathUtil;
+import br.com.sysdesc.util.classes.ImageUtil;
+import br.com.sysdesc.util.classes.LongUtil;
+import br.com.sysdesc.util.classes.StringUtil;
+import br.com.sysdesc.util.exception.SysDescException;
+import br.com.sysdesc.util.vo.FieldPesquisaVO;
+import net.miginfocom.swing.MigLayout;
 
 public class FrmPesquisaBasicaCampo extends JDialog {
 
-	private final JPanel contentPanel = new JPanel();
+	private static final long serialVersionUID = 1L;
 
-	public FrmPesquisaBasicaCampo() {
-		setBounds(100, 100, 450, 300);
-		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setLayout(new FlowLayout());
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+	private final JPanel contentPanel = new JPanel();
+	private final PesquisaEnum pesquisaEnum;
+	private final PesquisaCampo pesquisaCampo;
+
+	private Boolean sucesso = Boolean.FALSE;
+	private JLabel lbDescricao;
+	private JLabel lbTipoTamanho;
+	private JLabel lbTamanho;
+	private JLabel lbFormatacao;
+	private JLabel lbTipoFormatacao;
+	private JLabel lbField;
+	private JComboBox<FormatoPesquisaEnum> cbFormatacao;
+	private JComboBox<FieldPesquisaVO> cbField;
+	private JComboBox<TipoTamanhoEnum> cbTipoTamanho;
+	private Formatter componentFormatacao;
+	private JTextField txDescricao;
+	private JNumericField txTamanho;
+	private JPanel panel;
+	private JButton btOk;
+	private JButton btCancelar;
+
+	public FrmPesquisaBasicaCampo(PesquisaCampo pesquisaCampo, PesquisaEnum pesquisaEnum) {
+		this.pesquisaEnum = pesquisaEnum;
+		this.pesquisaCampo = pesquisaCampo;
+
+		initComponents();
+
+	}
+
+	private void initComponents() {
+		setSize(450, 250);
+		setModal(Boolean.TRUE);
+		setLocationRelativeTo(null);
+
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			{
-				JButton okButton = new JButton("OK");
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
-			}
-			{
-				JButton cancelButton = new JButton("Cancel");
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
-			}
+		contentPanel.setLayout(new MigLayout("", "[grow][120][]", "[][][][][][][][grow,bottom]"));
+
+		lbField = new JLabel("Field:");
+		lbDescricao = new JLabel("Descrição:");
+		lbTipoTamanho = new JLabel("Tipo Tamanho:");
+		cbField = new JComboBox<FieldPesquisaVO>();
+		lbTamanho = new JLabel("Tamanho:");
+		txDescricao = new JTextField();
+		cbTipoTamanho = new JComboBox<TipoTamanhoEnum>();
+		txTamanho = new JNumericField();
+		lbFormatacao = new JLabel("Formatação:");
+		lbTipoFormatacao = new JLabel("Tipo de formatação:");
+		cbFormatacao = new JComboBox<FormatoPesquisaEnum>();
+		panel = new JPanel();
+		btOk = new JButton("Ok");
+		btCancelar = new JButton("Cancelar");
+		componentFormatacao = new StringFormatter();
+
+		EntityPathUtil.getAllFieldsFromEntity(this.pesquisaEnum.getEntityPath()).forEach(cbField::addItem);
+		Arrays.asList(TipoTamanhoEnum.values()).forEach(cbTipoTamanho::addItem);
+
+		btCancelar.addActionListener((e) -> dispose());
+		cbField.addActionListener((e) -> procesarTipoCampo());
+		cbFormatacao.addActionListener((e) -> processarTipoPesquisa());
+		btOk.addActionListener((e) -> selecionarCampoPesquisa());
+
+		btCancelar.setIcon(ImageUtil.resize("cancel.png", 16, 16));
+		btOk.setIcon(ImageUtil.resize("ok.png", 16, 16));
+
+		contentPanel.add(lbField, "cell 0 0");
+		contentPanel.add(lbFormatacao, "cell 0 4");
+		contentPanel.add(lbDescricao, "cell 0 2");
+		contentPanel.add(lbTipoTamanho, "cell 1 2");
+		contentPanel.add(lbTamanho, "cell 2 2");
+		contentPanel.add(lbTipoFormatacao, "cell 1 4");
+		contentPanel.add(txDescricao, "cell 0 3,growx");
+		contentPanel.add(cbField, "cell 0 1 3 1,growx");
+
+		contentPanel.add(txTamanho, "cell 2 3,growx");
+		contentPanel.add(cbFormatacao, "cell 0 5,growx");
+		contentPanel.add(cbTipoTamanho, "cell 1 3,growx");
+		contentPanel.add(componentFormatacao.getComponent(), "cell 1 5 2 1,growx,aligny top");
+		contentPanel.add(panel, "cell 0 7 3 1,growx,aligny bottom");
+
+		panel.add(btOk);
+		panel.add(btCancelar);
+	}
+
+	private void selecionarCampoPesquisa() {
+
+		try {
+
+			validar();
+
+			pesquisaCampo.setCampo(((FieldPesquisaVO) cbField.getSelectedItem()).getName());
+			pesquisaCampo.setDescricao(txDescricao.getText());
+			pesquisaCampo.setFlagTipoTamanho(((TipoTamanhoEnum) cbTipoTamanho.getSelectedItem()).getCodigo());
+			pesquisaCampo.setNumeroTamanho(txTamanho.getValue());
+			pesquisaCampo.setFlagFormatacao(((FormatoPesquisaEnum) cbFormatacao.getSelectedItem()).getCodigo());
+			pesquisaCampo.setFormato(componentFormatacao.getFormatterKey());
+
+			sucesso = Boolean.TRUE;
+
+			dispose();
+
+		} catch (SysDescException e) {
+			JOptionPane.showMessageDialog(null, e.getMensagem(), translate(OPTION_VALIDACAO),
+					JOptionPane.WARNING_MESSAGE);
 		}
+	}
+
+	private void validar() {
+
+		if (cbField.getSelectedIndex() < 0) {
+
+			throw new SysDescException(MENSAGEM_SELECIONE_FIELD);
+
+		}
+
+		if (StringUtil.isNullOrEmpty(txDescricao.getText())) {
+			throw new SysDescException(MENSAGEM_INSIRA_DESCRICAO_VALIDA);
+		}
+
+		if (LongUtil.isNullOrZero(txTamanho.getValue())) {
+			throw new SysDescException(MENSAGEM_INSIRA_TAMANHO_VALIDO);
+		}
+
+		if (cbFormatacao.getSelectedIndex() < 0) {
+
+			throw new SysDescException(MENSAGEM_SELECIONE_FORMATACAO);
+		}
+
+	}
+
+	private void processarTipoPesquisa() {
+
+		contentPanel.remove(componentFormatacao.getComponent());
+
+		if (cbFormatacao.getSelectedIndex() < 0) {
+
+			componentFormatacao = FormatoPesquisaEnum.DEFAULT.getFormatter();
+
+		} else {
+
+			FormatoPesquisaEnum tipoPesquisaEnum = (FormatoPesquisaEnum) cbFormatacao.getSelectedItem();
+
+			componentFormatacao = tipoPesquisaEnum.getFormatter();
+
+		}
+
+		contentPanel.add(componentFormatacao.getComponent(), "cell 1 5 2 1,growx,aligny top");
+
+		componentFormatacao.getComponent().repaint();
+	}
+
+	private void procesarTipoCampo() {
+
+		cbFormatacao.removeAllItems();
+
+		if (cbField.getSelectedIndex() >= 0) {
+
+			FieldPesquisaVO fieldPesquisaVO = (FieldPesquisaVO) cbField.getSelectedItem();
+
+			TipoFieldEnum tipoField = TipoFieldEnum.getFromPath(fieldPesquisaVO);
+
+			FormatoPesquisaEnum.tipoTamanhoForTipoPesquisa(tipoField).forEach(cbFormatacao::addItem);
+		}
+
+	}
+
+	public Boolean getSucesso() {
+		return sucesso;
+	}
+
+	public PesquisaCampo getPesquisaCampo() {
+		return pesquisaCampo;
 	}
 
 }

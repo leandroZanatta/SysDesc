@@ -1,5 +1,7 @@
 package br.com.sysdesc.repository.conexao;
 
+import static br.com.sysdesc.util.resources.Resources.MENSAGEM_DRIVER_NAO_ENCONTRADO;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -20,7 +22,6 @@ import com.mysema.query.sql.SQLTemplates;
 import br.com.sysdesc.util.classes.CryptoUtil;
 import br.com.sysdesc.util.exception.SysDescException;
 import br.com.sysdesc.util.resources.Configuracoes;
-import br.com.sysdesc.util.resources.Resources;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -38,7 +39,7 @@ public class Conexao {
 
 		if (!isconfigured()) {
 
-			throw new ConfigurationException("Configura√ß√£o de banco de dados n√£o encontrada");
+			throw new ConfigurationException("ConfiguraÁ„o de banco de dados n„o encontrada");
 		}
 
 		return new File(Configuracoes.CONEXAO);
@@ -67,7 +68,7 @@ public class Conexao {
 			return H2Templates.DEFAULT;
 
 		default:
-			throw new SysDescException(Resources.translate(Resources.MENSAGEM_DRIVER_NAO_ENCONTRADO));
+			throw new SysDescException(MENSAGEM_DRIVER_NAO_ENCONTRADO);
 		}
 
 	}
@@ -88,7 +89,7 @@ public class Conexao {
 					.fromBlowfish(FileUtils.readFileToString(getConfiguracaoBanco(), Charset.forName("UTF-8")));
 
 			if (arquivoConfiguracao == null) {
-				throw new ConfigurationException("Configura√ß√£o de conex√£o inv√°lida");
+				throw new ConfigurationException("ConfiguraÁ„o de conex„o inv·lida");
 			}
 
 			Properties properties = new Properties();

@@ -513,7 +513,7 @@ public abstract class PanelActions<T> extends JPanel {
 				bloquearBotoes(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE);
 			}
 		} catch (SysDescException e) {
-			showMessageDialog(parent, e.getMessage());
+			showMessageDialog(parent, e.getMensagem());
 		}
 	}
 

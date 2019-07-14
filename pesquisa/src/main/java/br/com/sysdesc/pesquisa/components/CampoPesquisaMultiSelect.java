@@ -3,8 +3,6 @@ package br.com.sysdesc.pesquisa.components;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,17 +16,19 @@ import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.pesquisa.ui.FrmPesquisa;
 import br.com.sysdesc.service.interfaces.impl.AbstractGenericService;
 import br.com.sysdesc.util.classes.ImageUtil;
+import br.com.sysdesc.util.classes.ListUtil;
 import net.miginfocom.swing.MigLayout;
 
 public abstract class CampoPesquisaMultiSelect<T> extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
+	private final AbstractGenericService<T> genericService;
+	private final PesquisaEnum pesquisaEnum;
+	private final Long codigoUsuario;
+
 	private JButton btPesquisa;
 	private JTextField txValorPesquisa;
-	private AbstractGenericService<T> genericService;
-	private PesquisaEnum pesquisaEnum;
-	private Long codigoUsuario;
 	private List<T> objetosPesquisados;
 	private Boolean pesquisaOk = Boolean.FALSE;
 
@@ -48,7 +48,7 @@ public abstract class CampoPesquisaMultiSelect<T> extends JPanel {
 
 		btPesquisa.setIcon(ImageUtil.resize("search.png", 16, 16));
 		btPesquisa.setMargin(new Insets(0, 0, 0, 0));
-		btPesquisa.addActionListener((e) -> abrirPesquisa());
+		btPesquisa.addActionListener((e) -> validarPesquisa());
 
 		txValorPesquisa.setEditable(Boolean.FALSE);
 
@@ -56,6 +56,17 @@ public abstract class CampoPesquisaMultiSelect<T> extends JPanel {
 
 		add(txValorPesquisa, "growx");
 		add(btPesquisa, "east");
+	}
+
+	private void validarPesquisa() {
+
+		if (validar()) {
+			abrirPesquisa();
+		}
+	}
+
+	public Boolean validar() {
+		return Boolean.TRUE;
 	}
 
 	private void abrirPesquisa() {
@@ -83,25 +94,40 @@ public abstract class CampoPesquisaMultiSelect<T> extends JPanel {
 
 	}
 
+	public void setValue(List<T> objeto) {
+
+		this.objetosPesquisados = objeto;
+
+		carregarCampo();
+	}
+
 	protected <K> void carregarCampo() {
 
-		if (this.objetosPesquisados.size() == 1) {
+		if (ListUtil.isNullOrEmpty(this.objetosPesquisados)) {
 
-			T objeto = this.objetosPesquisados.get(0);
-
-			txValorPesquisa.setText(String.format("%d - %s", getId().apply(objeto), getDescricao().apply(objeto)));
+			txValorPesquisa.setText("");
 
 			return;
 		}
 
-		txValorPesquisa.setText(objetosPesquisados.stream().map(x -> getId().apply(x).toString())
-				.collect(Collectors.joining(",", "< ", " >")));
+		txValorPesquisa.setText(this.formatarValorCampo());
 
 	};
 
-	public abstract Function<T, Long> getId();
+	private String formatarValorCampo() {
 
-	public abstract Function<T, String> getDescricao();
+		if (this.objetosPesquisados.size() == 1) {
+
+			return this.formatarValorCampoSingle(this.objetosPesquisados.get(0));
+
+		}
+
+		return this.formatarValorCampoMultiple(this.objetosPesquisados);
+	}
+
+	protected abstract String formatarValorCampoMultiple(List<T> objetosPesquisados);
+
+	protected abstract String formatarValorCampoSingle(T objeto);
 
 	public Boolean getPesquisaOk() {
 		return pesquisaOk;
