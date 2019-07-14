@@ -1,9 +1,14 @@
 package br.com.sysdesc.pesquisa.components;
 
+import static br.com.sysdesc.util.resources.Resources.OPTION_VALIDACAO;
+import static br.com.sysdesc.util.resources.Resources.translate;
+import static javax.swing.JOptionPane.showMessageDialog;
+
 import java.awt.Insets;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -14,6 +19,7 @@ import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.pesquisa.ui.FrmPesquisa;
 import br.com.sysdesc.service.interfaces.impl.AbstractGenericService;
 import br.com.sysdesc.util.classes.ImageUtil;
+import br.com.sysdesc.util.exception.SysDescException;
 import net.miginfocom.swing.MigLayout;
 
 public abstract class CampoPesquisa<T> extends JPanel {
@@ -67,22 +73,28 @@ public abstract class CampoPesquisa<T> extends JPanel {
 
 	private void abrirPesquisa() {
 
-		JFrame parent = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
+		try {
 
-		FrmPesquisa<T> frmPesquisa = new FrmPesquisa<T>(parent, pesquisaEnum, getPreFilter(), genericService,
-				codigoUsuario);
+			JFrame parent = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
 
-		frmPesquisa.setVisible(Boolean.TRUE);
+			FrmPesquisa<T> frmPesquisa = new FrmPesquisa<T>(parent, pesquisaEnum, getPreFilter(), genericService,
+					codigoUsuario);
 
-		this.pesquisaOk = frmPesquisa.getOk();
+			frmPesquisa.setVisible(Boolean.TRUE);
 
-		if (frmPesquisa.getOk()) {
+			this.pesquisaOk = frmPesquisa.getOk();
 
-			this.objetoPesquisado = frmPesquisa.getObjeto();
+			if (frmPesquisa.getOk()) {
 
-			carregarCampo();
+				this.objetoPesquisado = frmPesquisa.getObjeto();
 
-			return;
+				carregarCampo();
+
+				return;
+			}
+
+		} catch (SysDescException e) {
+			showMessageDialog(null, e.getMensagem(), translate(OPTION_VALIDACAO), JOptionPane.WARNING_MESSAGE);
 		}
 
 		txValorPesquisa.setText("");

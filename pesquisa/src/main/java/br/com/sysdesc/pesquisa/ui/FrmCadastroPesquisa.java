@@ -1,6 +1,6 @@
 package br.com.sysdesc.pesquisa.ui;
 
-import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_CATEGORIAS;
+import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_PESQUISA;
 import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.forValue;
 import static br.com.sysdesc.util.constants.MensagemConstants.MENSAGEM_SELECIONE_PESQUISA;
 import static br.com.sysdesc.util.enumeradores.TipoPesquisaEnum.NORMAL;
@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
@@ -28,7 +29,9 @@ import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.pesquisa.components.CampoPesquisaMultiSelect;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
+import br.com.sysdesc.pesquisa.models.ProjectionsTableModel;
 import br.com.sysdesc.repository.model.Perfil;
+import br.com.sysdesc.repository.model.PermissaoPesquisa;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Pesquisa;
 import br.com.sysdesc.repository.model.PesquisaCampo;
@@ -36,7 +39,9 @@ import br.com.sysdesc.repository.model.Usuario;
 import br.com.sysdesc.service.login.LoginService;
 import br.com.sysdesc.service.perfil.PerfilService;
 import br.com.sysdesc.service.pesquisa.PesquisaBasicaService;
+import br.com.sysdesc.util.classes.ContadorUtil;
 import br.com.sysdesc.util.classes.ImageUtil;
+import br.com.sysdesc.util.classes.ListUtil;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmCadastroPesquisa extends AbstractInternalFrame {
@@ -47,22 +52,26 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 	private JLabel lblPaginacao;
 	private JLabel lblPesquisa;
 	private JLabel lblDescricao;
+	private JLabel lblNewLabel;
+	private JLabel lblNewLabel_1;
+
+	private JPanel painelContent;
+	private JPanel panel;
+	private JPanel panel_1;
+
+	private JTextFieldMaiusculo txDescricao;
 	private JNumericField txCodigo;
 	private JNumericField txPaginacao;
 	private JComboBox<PesquisaEnum> cbPesquisa;
-	private JPanel painelContent;
-	private JTextFieldMaiusculo txDescricao;
-
-	private PanelActions<Pesquisa> panelActions;
-	private JLabel lblNewLabel;
 	private CampoPesquisaMultiSelect<Usuario> pesquisaUsuario;
-	private JLabel lblNewLabel_1;
 	private CampoPesquisaMultiSelect<Perfil> pesquisaPerfis;
-	private JPanel panel;
-	private JPanel panel_1;
 	private JScrollPane scrollPane;
+	private JTable tabela;
 	private JButton btAdd;
 	private JButton btRemove;
+	private ProjectionsTableModel projectionsTableModel = new ProjectionsTableModel();
+
+	private PanelActions<Pesquisa> panelActions;
 
 	private PesquisaBasicaService pesquisaBasicaService = new PesquisaBasicaService();
 	private LoginService loginService = new LoginService();
@@ -93,6 +102,8 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 		btAdd = new JButton("");
 		btRemove = new JButton("");
 		panel = new JPanel();
+
+		projectionsTableModel = new ProjectionsTableModel();
 
 		painelContent.setLayout(new MigLayout("", "[grow][grow][80.00]", "[][][][][][][grow][]"));
 
@@ -173,10 +184,11 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 		btRemove.setIcon(ImageUtil.resize("minus.png", 15, 15));
 		panel_1.add(btRemove, "cell 0 2,alignx left,aligny top");
 
-		scrollPane = new JScrollPane();
+		tabela = new JTable(projectionsTableModel);
+		scrollPane = new JScrollPane(tabela);
 		panel.add(scrollPane, BorderLayout.CENTER);
 
-		panelActions = new PanelActions<Pesquisa>(this, pesquisaBasicaService, PES_CATEGORIAS) {
+		panelActions = new PanelActions<Pesquisa>(this, pesquisaBasicaService, PES_PESQUISA) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -203,15 +215,84 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 
 				pesquisaPerfis.setValue(perfis);
 				pesquisaUsuario.setValue(usuarios);
+
+				projectionsTableModel.setRows(objeto.getPesquisaCampos());
 			}
 
 			@Override
 			public void preencherObjeto(Pesquisa objetoPesquisa) {
+
 				objetoPesquisa.setIdPesquisa(txCodigo.getValue());
 				objetoPesquisa.setDescricao(txDescricao.getText());
 				objetoPesquisa.setPaginacao(txPaginacao.getValue());
-				objetoPesquisa.setCodigoPesquisa(((PesquisaEnum) cbPesquisa.getSelectedItem()).getCodigoPesquisa());
+
+				if (cbPesquisa.getSelectedIndex() >= 0) {
+
+					objetoPesquisa.setCodigoPesquisa(((PesquisaEnum) cbPesquisa.getSelectedItem()).getCodigoPesquisa());
+
+				}
+
 				objetoPesquisa.setTipo(NORMAL.getCodigo());
+
+				List<PesquisaCampo> pesquisaCampos = projectionsTableModel.getRows();
+
+				ContadorUtil contadorUtil = new ContadorUtil();
+
+				pesquisaCampos.forEach(pesquisaCampo -> {
+
+					pesquisaCampo.setPesquisa(objetoPesquisa);
+
+					pesquisaCampo.setFlagOrdem(contadorUtil.next());
+				});
+
+				objetoPesquisa.setPesquisaCampos(pesquisaCampos);
+
+				List<PermissaoPesquisa> permissaoPesquisas = new ArrayList<>();
+
+				permissaoPesquisas
+						.addAll(criarPermissaoUsuarios(pesquisaUsuario.getObjetosPesquisado(), objetoPesquisa));
+				permissaoPesquisas.addAll(criarPermissaoPerfis(pesquisaPerfis.getObjetosPesquisado(), objetoPesquisa));
+				objetoPesquisa.setPermissaoPesquisas(permissaoPesquisas);
+			}
+
+			private List<PermissaoPesquisa> criarPermissaoPerfis(List<Perfil> objetosPesquisado,
+					Pesquisa objetoPesquisa) {
+
+				List<PermissaoPesquisa> permissaoPesquisas = new ArrayList<>();
+
+				if (!ListUtil.isNullOrEmpty(objetosPesquisado)) {
+
+					objetosPesquisado.forEach(perfil -> {
+
+						PermissaoPesquisa permissaoPesquisa = new PermissaoPesquisa();
+						permissaoPesquisa.setPerfil(perfil);
+						permissaoPesquisa.setPesquisa(objetoPesquisa);
+
+						permissaoPesquisas.add(permissaoPesquisa);
+					});
+				}
+
+				return permissaoPesquisas;
+			}
+
+			private List<PermissaoPesquisa> criarPermissaoUsuarios(List<Usuario> objetosPesquisado,
+					Pesquisa objetoPesquisa) {
+
+				List<PermissaoPesquisa> permissaoPesquisas = new ArrayList<>();
+
+				if (!ListUtil.isNullOrEmpty(objetosPesquisado)) {
+
+					objetosPesquisado.forEach(usuario -> {
+
+						PermissaoPesquisa permissaoPesquisa = new PermissaoPesquisa();
+						permissaoPesquisa.setUsuario(usuario);
+						permissaoPesquisa.setPesquisa(objetoPesquisa);
+
+						permissaoPesquisas.add(permissaoPesquisa);
+					});
+				}
+
+				return permissaoPesquisas;
 			}
 		};
 
@@ -225,6 +306,7 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 			@Override
 			public void newEvent() {
 				txPaginacao.setValue(20L);
+				projectionsTableModel.removeAll();
 			}
 		});
 
@@ -246,6 +328,10 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 				(PesquisaEnum) cbPesquisa.getSelectedItem());
 
 		frmPesquisaBasicaCampo.setVisible(Boolean.TRUE);
+
+		if (frmPesquisaBasicaCampo.getSucesso()) {
+			projectionsTableModel.addProjection(frmPesquisaBasicaCampo.getPesquisaCampo());
+		}
 
 	}
 

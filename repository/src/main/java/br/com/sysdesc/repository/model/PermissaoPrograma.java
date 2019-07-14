@@ -17,7 +17,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "tb_permissaoprograma")
-@SequenceGenerator(name = "GEN_PERMISSAOPROGRAMA", sequenceName = "GEN_PERMISSAOPROGRAMA")
+@SequenceGenerator(name = "GEN_PERMISSAOPROGRAMA", sequenceName = "GEN_PERMISSAOPROGRAMA", allocationSize = 1)
 public class PermissaoPrograma implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -33,6 +33,8 @@ import br.com.sysdesc.repository.model.PesquisaCampo;
 import br.com.sysdesc.service.interfaces.impl.AbstractGenericService;
 import br.com.sysdesc.util.classes.ContadorUtil;
 import br.com.sysdesc.util.classes.ImageUtil;
+import br.com.sysdesc.util.constants.MensagemConstants;
+import br.com.sysdesc.util.exception.SysDescException;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmPesquisa<T> extends JDialog {
@@ -205,7 +207,7 @@ public class FrmPesquisa<T> extends JDialog {
 	private void selecionarPesquisa(List<Pesquisa> pesquisa) {
 
 		if (pesquisa.size() == 0) {
-			throw new RuntimeException("PESQUISA NÃO CONFIGURADA");
+			throw new SysDescException(MensagemConstants.MENSAGEM_PESQUISA_NAO_CONFIGURADA);
 		}
 
 		if (pesquisa.size() == 1) {

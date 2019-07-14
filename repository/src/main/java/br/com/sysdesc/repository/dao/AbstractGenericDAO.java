@@ -19,6 +19,8 @@ import br.com.sysdesc.repository.model.Pesquisa;
 import br.com.sysdesc.repository.util.EntityPathUtil;
 import br.com.sysdesc.util.classes.LongUtil;
 import br.com.sysdesc.util.classes.StringUtil;
+import br.com.sysdesc.util.exception.SysDescException;
+import br.com.sysdesc.util.resources.Resources;
 
 public abstract class AbstractGenericDAO<T> implements GenericDAO<T> {
 
@@ -77,11 +79,16 @@ public abstract class AbstractGenericDAO<T> implements GenericDAO<T> {
 	}
 
 	public void salvar(T perist) {
-		entityManager.getTransaction().begin();
-		entityManager.persist(perist);
-		entityManager.flush();
-		entityManager.getTransaction().commit();
+		try {
+			entityManager.getTransaction().begin();
+			entityManager.persist(perist);
+			entityManager.flush();
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
 
+			throw new SysDescException(Resources.MENSAGEM_CONEXAO_INVALIDA);
+		}
 	}
 
 	public List<T> salvar(List<T> perist) {

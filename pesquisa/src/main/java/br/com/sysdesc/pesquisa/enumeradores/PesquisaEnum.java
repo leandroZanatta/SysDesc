@@ -12,6 +12,7 @@ import br.com.sysdesc.repository.model.QDepartamento;
 import br.com.sysdesc.repository.model.QEstado;
 import br.com.sysdesc.repository.model.QMarca;
 import br.com.sysdesc.repository.model.QPerfil;
+import br.com.sysdesc.repository.model.QPesquisa;
 import br.com.sysdesc.repository.model.QProduto;
 import br.com.sysdesc.repository.model.QSubcategoria;
 import br.com.sysdesc.repository.model.QUnidade;
@@ -35,11 +36,13 @@ public enum PesquisaEnum {
 
 	PES_CIDADES(8L, "Cidades", QCidade.class),
 
-	PES_SUBCATEGORIAS(9L, "Cidades", QSubcategoria.class),
+	PES_SUBCATEGORIAS(9L, "Subcategorias", QSubcategoria.class),
 
 	PES_CLIENTES(10L, "Clientes", QCliente.class),
 
-	PES_PRODUTOS(11L, "Produtos", QProduto.class);
+	PES_PRODUTOS(11L, "Produtos", QProduto.class),
+
+	PES_PESQUISA(12L, "Pesquisa", QPesquisa.class);
 
 	private static Map<Long, PesquisaEnum> map = new HashMap<>();
 

@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
@@ -513,7 +514,7 @@ public abstract class PanelActions<T> extends JPanel {
 				bloquearBotoes(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE);
 			}
 		} catch (SysDescException e) {
-			showMessageDialog(parent, e.getMensagem());
+			showMessageDialog(parent, e.getMensagem(), translate(OPTION_VALIDACAO), JOptionPane.WARNING_MESSAGE);
 		}
 	}
 

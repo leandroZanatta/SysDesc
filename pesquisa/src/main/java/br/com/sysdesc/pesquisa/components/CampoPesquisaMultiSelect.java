@@ -1,11 +1,16 @@
 package br.com.sysdesc.pesquisa.components;
 
+import static br.com.sysdesc.util.resources.Resources.OPTION_VALIDACAO;
+import static br.com.sysdesc.util.resources.Resources.translate;
+import static javax.swing.JOptionPane.showMessageDialog;
+
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -17,6 +22,7 @@ import br.com.sysdesc.pesquisa.ui.FrmPesquisa;
 import br.com.sysdesc.service.interfaces.impl.AbstractGenericService;
 import br.com.sysdesc.util.classes.ImageUtil;
 import br.com.sysdesc.util.classes.ListUtil;
+import br.com.sysdesc.util.exception.SysDescException;
 import net.miginfocom.swing.MigLayout;
 
 public abstract class CampoPesquisaMultiSelect<T> extends JPanel {
@@ -71,22 +77,26 @@ public abstract class CampoPesquisaMultiSelect<T> extends JPanel {
 
 	private void abrirPesquisa() {
 
-		JFrame parent = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
+		try {
+			JFrame parent = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
 
-		FrmPesquisa<T> frmPesquisa = new FrmPesquisa<T>(parent, pesquisaEnum, getPreFilter(), genericService,
-				codigoUsuario, Boolean.TRUE);
+			FrmPesquisa<T> frmPesquisa = new FrmPesquisa<T>(parent, pesquisaEnum, getPreFilter(), genericService,
+					codigoUsuario, Boolean.TRUE);
 
-		frmPesquisa.setVisible(Boolean.TRUE);
+			frmPesquisa.setVisible(Boolean.TRUE);
 
-		this.pesquisaOk = frmPesquisa.getOk();
+			this.pesquisaOk = frmPesquisa.getOk();
 
-		if (frmPesquisa.getOk()) {
+			if (frmPesquisa.getOk()) {
 
-			this.objetosPesquisados = frmPesquisa.getObjetos();
+				this.objetosPesquisados = frmPesquisa.getObjetos();
 
-			this.carregarCampo();
+				this.carregarCampo();
 
-			return;
+				return;
+			}
+		} catch (SysDescException e) {
+			showMessageDialog(null, e.getMensagem(), translate(OPTION_VALIDACAO), JOptionPane.WARNING_MESSAGE);
 		}
 
 		txValorPesquisa.setText("");

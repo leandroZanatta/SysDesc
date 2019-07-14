@@ -28,13 +28,12 @@
 			<column name="nr_paginacao" type="NUMBER(18,0)" remarks="NÚMERO PAGINACAO">
 				<constraints nullable="false" />
 			</column>
-			
+
 			<column name="cd_tipo" type="NUMBER(18,0)" remarks="TIPO DE PESQUISA(0 = NORMAL, 1 = AVANÇADA)">
 				<constraints nullable="false" />
 			</column>
 		</createTable>
 
-		<createSequence sequenceName="gen_pesquisa" />
 	</changeSet>
 
 </databaseChangeLog>

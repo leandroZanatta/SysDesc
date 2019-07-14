@@ -102,6 +102,8 @@ public class FrmPesquisaBasicaCampo extends JDialog {
 		btCancelar.setIcon(ImageUtil.resize("cancel.png", 16, 16));
 		btOk.setIcon(ImageUtil.resize("ok.png", 16, 16));
 
+		cbField.setSelectedIndex(-1);
+
 		contentPanel.add(lbField, "cell 0 0");
 		contentPanel.add(lbFormatacao, "cell 0 4");
 		contentPanel.add(lbDescricao, "cell 0 2");

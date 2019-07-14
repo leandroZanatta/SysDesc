@@ -31,8 +31,6 @@
 
 		</createTable>
 
-		<createSequence sequenceName="gen_permissaopesquisa" />
-
 		<addForeignKeyConstraint baseColumnNames="cd_pesquisa" baseTableName="tb_permissaopesquisa"
 			constraintName="fk_permissao_pesquisa" onDelete="CASCADE" onUpdate="CASCADE" referencedColumnNames="id_pesquisa" referencedTableName="tb_pesquisa" />
 

@@ -19,7 +19,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "tb_usuario")
-@SequenceGenerator(name = "GEN_USUARIO", sequenceName = "GEN_USUARIO")
+@SequenceGenerator(name = "GEN_USUARIO", sequenceName = "GEN_USUARIO", allocationSize = 1)
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 

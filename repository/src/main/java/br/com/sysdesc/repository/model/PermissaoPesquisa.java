@@ -12,17 +12,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "tb_permissaopesquisa")
-@SequenceGenerator(name = "GEN_PERMISSAOPESQUSA", sequenceName = "GEN_PERMISSAOPESQUSA")
+@SequenceGenerator(name = "GEN_PERMISSAOPESQUISA", sequenceName = "GEN_PERMISSAOPESQUISA", allocationSize = 1)
 public class PermissaoPesquisa implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "GEN_PERMISSAOPESQUSA")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "GEN_PERMISSAOPESQUISA")
 	@Column(name = "id_permissaopesquisa")
 	private long idPermissaopesquisa;
 

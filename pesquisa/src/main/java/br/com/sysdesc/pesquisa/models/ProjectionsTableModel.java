@@ -17,6 +17,7 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import br.com.sysdesc.pesquisa.enumeradores.FormatoPesquisaEnum;
+import br.com.sysdesc.repository.enumeradores.TipoFieldEnum;
 import br.com.sysdesc.repository.model.PesquisaCampo;
 
 public class ProjectionsTableModel extends AbstractTableModel {
@@ -49,8 +50,7 @@ public class ProjectionsTableModel extends AbstractTableModel {
 			return get(configuracaoPesquisa.getCampo(), STRING_VAZIA);
 
 		case 2:
-			return get(FormatoPesquisaEnum.formatoForCodigo(configuracaoPesquisa.getFlagFormatacao()),
-					FormatoPesquisaEnum.DEFAULT);
+			return get(TipoFieldEnum.forCodigo(configuracaoPesquisa.getFlagTipoDado()), TipoFieldEnum.STRING);
 
 		case 3:
 			return get(tipoTamanhoForCodigo(configuracaoPesquisa.getFlagTipoTamanho()), FLEX);
@@ -59,7 +59,8 @@ public class ProjectionsTableModel extends AbstractTableModel {
 			return get(configuracaoPesquisa.getNumeroTamanho(), 1L);
 
 		case 5:
-			return get(configuracaoPesquisa.getFormato(), STRING_VAZIA);
+			return get(FormatoPesquisaEnum.formatoForCodigo(configuracaoPesquisa.getFlagFormatacao()),
+					FormatoPesquisaEnum.DEFAULT);
 		}
 		return null;
 	}

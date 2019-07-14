@@ -23,6 +23,7 @@
 	<include file="10000000/changeset/20190630_230800_tb_versao.xml" />
 	<include file="10000000/changeset/20190701_191000_tb_subcategoria.xml" />
 	<include file="10000000/changeset/20190701_204630_tb_produto.xml" />
+	<include file="10000000/changeset/20190714_010500_criar_sequences_pesquisa.xml" />
 
 	<!-- INSERTS PROGRAMAS E PESQUISAS -->
 	<include file="10000000/inserts/20190626_113800_carga_usuario.xml" />
