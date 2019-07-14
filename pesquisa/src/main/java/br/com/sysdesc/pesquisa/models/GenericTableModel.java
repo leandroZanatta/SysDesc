@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import br.com.sysdesc.pesquisa.enumeradores.FormatoPesquisaEnum;
 import br.com.sysdesc.repository.model.PesquisaCampo;
 
 public class GenericTableModel<T> extends AbstractTableModel {
@@ -35,11 +36,10 @@ public class GenericTableModel<T> extends AbstractTableModel {
 
 		Object valorcampo = parseValue(value, pesquisaCampo.getCampo().split("\\."));
 
-		if (valorcampo == null) {
-			return "";
-		}
+		FormatoPesquisaEnum formatoPesquisaEnum = FormatoPesquisaEnum
+				.formatoForCodigo(pesquisaCampo.getFlagFormatacao());
 
-		return valorcampo.toString();
+		return formatoPesquisaEnum.getFormatter().format(valorcampo, pesquisaCampo.getFormato());
 	}
 
 	private <K> Object parseValue(K value, String[] camposObjeto) {

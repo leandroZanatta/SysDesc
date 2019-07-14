@@ -127,8 +127,11 @@ public class FrmPesquisaBasicaCampo extends JDialog {
 
 			validar();
 
+			TipoFieldEnum tipoField = getTipoDado();
+
 			pesquisaCampo.setCampo(((FieldPesquisaVO) cbField.getSelectedItem()).getName());
 			pesquisaCampo.setDescricao(txDescricao.getText());
+			pesquisaCampo.setFlagTipoDado(tipoField.getCodigo());
 			pesquisaCampo.setFlagTipoTamanho(((TipoTamanhoEnum) cbTipoTamanho.getSelectedItem()).getCodigo());
 			pesquisaCampo.setNumeroTamanho(txTamanho.getValue());
 			pesquisaCampo.setFlagFormatacao(((FormatoPesquisaEnum) cbFormatacao.getSelectedItem()).getCodigo());
@@ -194,13 +197,18 @@ public class FrmPesquisaBasicaCampo extends JDialog {
 
 		if (cbField.getSelectedIndex() >= 0) {
 
-			FieldPesquisaVO fieldPesquisaVO = (FieldPesquisaVO) cbField.getSelectedItem();
-
-			TipoFieldEnum tipoField = TipoFieldEnum.getFromPath(fieldPesquisaVO);
+			TipoFieldEnum tipoField = getTipoDado();
 
 			FormatoPesquisaEnum.tipoTamanhoForTipoPesquisa(tipoField).forEach(cbFormatacao::addItem);
 		}
 
+	}
+
+	private TipoFieldEnum getTipoDado() {
+		FieldPesquisaVO fieldPesquisaVO = (FieldPesquisaVO) cbField.getSelectedItem();
+
+		TipoFieldEnum tipoField = TipoFieldEnum.getFromPath(fieldPesquisaVO);
+		return tipoField;
 	}
 
 	public Boolean getSucesso() {

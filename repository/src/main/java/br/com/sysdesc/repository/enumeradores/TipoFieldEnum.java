@@ -23,15 +23,15 @@ public enum TipoFieldEnum {
 
 	LONG(1L, NumberPath.class, Long.class),
 
-	BIGDECIMAL(1L, NumberPath.class, BigDecimal.class),
+	BIGDECIMAL(3L, NumberPath.class, BigDecimal.class),
 
-	DATE(1L, DatePath.class, Date.class),
+	DATE(4L, DatePath.class, Date.class),
 
-	DATETIME(1L, DateTimePath.class, Date.class),
+	DATETIME(5L, DateTimePath.class, Date.class),
 
-	BOOLEAN(1L, BooleanPath.class, Boolean.class),
+	BOOLEAN(6L, BooleanPath.class, Boolean.class),
 
-	STRING(1L, StringPath.class, String.class);
+	STRING(2L, StringPath.class, String.class);
 
 	private static Map<Long, TipoFieldEnum> mapa = new HashMap<>();
 
