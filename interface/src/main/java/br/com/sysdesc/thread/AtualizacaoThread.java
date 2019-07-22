@@ -25,189 +25,195 @@ import br.com.sysdesc.util.constants.MensagemConstants;
 import br.com.sysdesc.util.resources.Configuracoes;
 import br.com.sysdesc.util.resources.Resources;
 import br.com.sysdesc.util.vo.VersaoVO;
+import liquibase.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class AtualizacaoThread extends Thread {
 
-    private JPanel contentVersao;
+	private JPanel contentVersao;
 
-    private JLabel lbVersao;
+	private JLabel lbVersao;
 
-    private Long versaoBase;
+	private Long versaoBase;
 
-    private final String URLVersao = "https://raw.githubusercontent.com/leandroZanatta/SysDesc/develop/versoes/versao.json";
+	private final String URLVersao = "https://raw.githubusercontent.com/leandroZanatta/SysDesc/develop/versoes/versao.json";
 
-    private VersaoDAO versaoDAO = new VersaoDAO();
+	private VersaoDAO versaoDAO = new VersaoDAO();
 
-    public AtualizacaoThread(JPanel contentVersao) {
-        this.contentVersao = contentVersao;
+	public AtualizacaoThread(JPanel contentVersao) {
+		this.contentVersao = contentVersao;
 
-        lbVersao = new JLabel();
-    }
+		lbVersao = new JLabel();
+	}
 
-    @Override
-    public void run() {
+	@Override
+	public void run() {
 
-        this.verificarVersaoBase();
+		this.verificarVersaoBase();
 
-        this.atualizarVersaoTela();
+		contentVersao.add(lbVersao);
 
-        this.verificarVersaoRemota();
-    }
+		lbVersao.setText(String.format("Versão: %s", formatarVersao(this.versaoBase)));
 
-    private void verificarVersaoRemota() {
+		this.verificarVersaoRemota();
+	}
 
-        URL arquivoUrl;
+	private void verificarVersaoRemota() {
 
-        try {
+		URL arquivoUrl;
 
-            arquivoUrl = new URL(this.URLVersao);
+		try {
 
-            URLConnection urlConnection = arquivoUrl.openConnection();
-            urlConnection.setUseCaches(Boolean.FALSE);
+			arquivoUrl = new URL(this.URLVersao);
 
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()))) {
+			URLConnection urlConnection = arquivoUrl.openConnection();
+			urlConnection.setUseCaches(Boolean.FALSE);
 
-                String inputLine;
+			try (BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()))) {
 
-                StringBuilder stringBuilder = new StringBuilder();
+				String inputLine;
 
-                while ((inputLine = in.readLine()) != null) {
+				StringBuilder stringBuilder = new StringBuilder();
 
-                    stringBuilder.append(inputLine);
-                }
+				while ((inputLine = in.readLine()) != null) {
 
-                in.close();
+					stringBuilder.append(inputLine);
+				}
 
-                VersaoVO versaoVO = new Gson().fromJson(stringBuilder.toString(), VersaoVO.class);
+				in.close();
 
-                if (!versaoBase.equals(versaoVO.getVersao())) {
+				VersaoVO versaoVO = new Gson().fromJson(stringBuilder.toString(), VersaoVO.class);
 
-                    efetuarDownloadVersao(versaoVO);
-                }
+				if (!versaoBase.equals(versaoVO.getVersao())) {
 
-            }
+					efetuarDownloadVersao(versaoVO);
+				}
 
-        } catch (IOException e) {
+			}
 
-            try {
-                Thread.sleep(60000);
+		} catch (IOException e) {
 
-                verificarVersaoRemota();
+			try {
+				Thread.sleep(60000);
 
-            } catch (InterruptedException e1) {
+				verificarVersaoRemota();
 
-                log.error(MensagemConstants.MENSAGEM_THREAD_VERSAO_INTEROMPIDA);
-            }
-        }
+			} catch (InterruptedException e1) {
 
-    }
+				log.error(MensagemConstants.MENSAGEM_THREAD_VERSAO_INTEROMPIDA);
+			}
+		}
 
-    private void efetuarDownloadVersao(VersaoVO versaoVO) throws IOException {
+	}
 
-        Integer retornoOpcao = JOptionPane.showConfirmDialog(null,
-                String.format(Resources.translate(MensagemConstants.MENSAGEM_ATUALIZAR_VERSAO), versaoVO.getVersao()), Resources.OPTION_VALIDACAO,
-                JOptionPane.YES_NO_OPTION);
+	private void efetuarDownloadVersao(VersaoVO versaoVO) throws IOException {
 
-        if (retornoOpcao == JOptionPane.YES_OPTION) {
+		Integer retornoOpcao = JOptionPane
+				.showConfirmDialog(null,
+						String.format(Resources.translate(MensagemConstants.MENSAGEM_ATUALIZAR_VERSAO),
+								formatarVersao(versaoVO.getVersao())),
+						Resources.OPTION_VALIDACAO, JOptionPane.YES_NO_OPTION);
 
-            JProgressBar progres = new JProgressBar();
+		if (retornoOpcao == JOptionPane.YES_OPTION) {
 
-            progres.setStringPainted(true);
+			FileUtil.write(new Gson().toJson(versaoVO), new File(Configuracoes.VERSAO));
 
-            contentVersao.removeAll();
+			JProgressBar progres = new JProgressBar();
 
-            contentVersao.add(progres);
+			progres.setStringPainted(true);
 
-            URL arquivoUrl = new URL(versaoVO.getArquivo());
+			contentVersao.removeAll();
 
-            URLConnection urlConnection = arquivoUrl.openConnection();
+			contentVersao.add(progres);
 
-            urlConnection.setUseCaches(Boolean.FALSE);
+			URL arquivoUrl = new URL(versaoVO.getArquivo());
 
-            Long tamanhoArquivo = urlConnection.getContentLengthLong();
+			URLConnection urlConnection = arquivoUrl.openConnection();
 
-            File arquivoVersao = criarArquivoVersao(versaoVO);
+			urlConnection.setUseCaches(Boolean.FALSE);
 
-            try (BufferedInputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                    FileOutputStream fileOutputStream = new FileOutputStream(arquivoVersao)) {
+			Long tamanhoArquivo = urlConnection.getContentLengthLong();
 
-                byte dataBuffer[] = new byte[1024];
+			File arquivoVersao = criarArquivoVersao(versaoVO);
 
-                int bytesRead;
+			try (BufferedInputStream in = new BufferedInputStream(urlConnection.getInputStream());
+					FileOutputStream fileOutputStream = new FileOutputStream(arquivoVersao)) {
 
-                Long bufferTotal = 0L;
+				byte dataBuffer[] = new byte[1024];
 
-                while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+				int bytesRead;
 
-                    bufferTotal += bytesRead;
+				Long bufferTotal = 0L;
 
-                    fileOutputStream.write(dataBuffer, 0, bytesRead);
+				while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
 
-                    progres.setValue(Double.valueOf(bufferTotal.doubleValue() / tamanhoArquivo.doubleValue() * 100).intValue());
+					bufferTotal += bytesRead;
 
-                }
+					fileOutputStream.write(dataBuffer, 0, bytesRead);
 
-            }
+					progres.setValue(
+							Double.valueOf(bufferTotal.doubleValue() / tamanhoArquivo.doubleValue() * 100).intValue());
 
-            contentVersao.removeAll();
+				}
 
-            contentVersao.add(lbVersao);
+			}
 
-        }
+			contentVersao.removeAll();
 
-    }
+			contentVersao.add(lbVersao);
 
-    private File criarArquivoVersao(VersaoVO versaoVO) throws IOException {
+		}
 
-        File folderVersao = new File(Configuracoes.FOLDER_VERSOES);
+	}
 
-        if (!folderVersao.exists()) {
-            folderVersao.mkdir();
-        }
+	private File criarArquivoVersao(VersaoVO versaoVO) throws IOException {
 
-        File arquivoVersao = new File(folderVersao, versaoVO.getVersao().toString() + ".zip");
+		File folderVersao = new File(Configuracoes.FOLDER_VERSOES);
 
-        if (arquivoVersao.exists()) {
-            arquivoVersao.createNewFile();
-        }
+		if (!folderVersao.exists()) {
+			folderVersao.mkdir();
+		}
 
-        return arquivoVersao;
-    }
+		File arquivoVersao = new File(folderVersao, versaoVO.getVersao().toString() + ".zip");
 
-    private void atualizarVersaoTela() {
+		if (arquivoVersao.exists()) {
+			arquivoVersao.createNewFile();
+		}
 
-        contentVersao.add(lbVersao);
+		return arquivoVersao;
+	}
 
-        List<String> versaoSemFormatacao = ListUtil.toList(this.versaoBase.toString().split(""));
+	private String formatarVersao(Long versao) {
 
-        if (versaoSemFormatacao.size() > 3) {
-            versaoSemFormatacao.add(versaoSemFormatacao.size() - 3, ".");
-        }
-        if (versaoSemFormatacao.size() > 6) {
-            versaoSemFormatacao.add(versaoSemFormatacao.size() - 6, ".");
-        }
-        if (versaoSemFormatacao.size() > 9) {
-            versaoSemFormatacao.add(versaoSemFormatacao.size() - 9, ".");
-        }
+		List<String> versaoSemFormatacao = ListUtil.toList(versao.toString().split(""));
 
-        lbVersao.setText(String.format("Versão: %s", versaoSemFormatacao.stream().collect(Collectors.joining())));
+		if (versaoSemFormatacao.size() > 3) {
+			versaoSemFormatacao.add(versaoSemFormatacao.size() - 3, ".");
+		}
+		if (versaoSemFormatacao.size() > 6) {
+			versaoSemFormatacao.add(versaoSemFormatacao.size() - 6, ".");
+		}
+		if (versaoSemFormatacao.size() > 9) {
+			versaoSemFormatacao.add(versaoSemFormatacao.size() - 9, ".");
+		}
 
-    }
+		return versaoSemFormatacao.stream().collect(Collectors.joining());
 
-    private void verificarVersaoBase() {
+	}
 
-        Versao versao = versaoDAO.last();
+	private void verificarVersaoBase() {
 
-        if (versao != null) {
-            this.versaoBase = versao.getVersao();
+		Versao versao = versaoDAO.last();
 
-            return;
-        }
+		if (versao != null) {
+			this.versaoBase = versao.getVersao();
 
-        this.versaoBase = 0L;
+			return;
+		}
 
-    }
+		this.versaoBase = 0L;
+
+	}
 
 }
