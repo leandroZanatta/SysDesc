@@ -20,6 +20,7 @@
 		<class>br.com.sysdesc.repository.model.Unidade</class>
 		<class>br.com.sysdesc.repository.model.Subcategoria</class>
 		<class>br.com.sysdesc.repository.model.Produto</class>
+		<class>br.com.sysdesc.repository.model.Versao</class>
 	</persistence-unit>
 
 </persistence>
