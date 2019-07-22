@@ -42,5 +42,10 @@ public class ProdutoService extends AbstractGenericService<Produto> {
 
 			throw new SysDescException(MensagemConstants.MENSAGEM_VALOR_ESTOQUE_MINIMO_MAIOR_MAXIMO);
 		}
+
+		if (objetoPersistir.getCodigoStatus() == null) {
+
+			throw new SysDescException(MensagemConstants.MENSAGEM_SELECIONE_STATUS);
+		}
 	}
 }
