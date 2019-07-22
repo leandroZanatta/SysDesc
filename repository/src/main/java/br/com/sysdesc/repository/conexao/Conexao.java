@@ -1,6 +1,6 @@
 package br.com.sysdesc.repository.conexao;
 
-import static br.com.sysdesc.util.resources.Resources.MENSAGEM_DRIVER_NAO_ENCONTRADO;
+import static br.com.sysdesc.util.constants.MensagemConstants.MENSAGEM_DRIVER_NAO_ENCONTRADO;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,84 +27,83 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Conexao {
 
-	private static EntityManager entityManager;
+    private static EntityManager entityManager;
 
-	private static SQLTemplates sqlTemplates;
+    private static SQLTemplates sqlTemplates;
 
-	private static Boolean isconfigured() {
-		return new File(Configuracoes.CONEXAO).exists();
-	}
+    private static Boolean isconfigured() {
+        return new File(Configuracoes.CONEXAO).exists();
+    }
 
-	public static File getConfiguracaoBanco() throws ConfigurationException {
+    public static File getConfiguracaoBanco() throws ConfigurationException {
 
-		if (!isconfigured()) {
+        if (!isconfigured()) {
 
-			throw new ConfigurationException("Configuração de banco de dados não encontrada");
-		}
+            throw new ConfigurationException("Configuraï¿½ï¿½o de banco de dados nï¿½o encontrada");
+        }
 
-		return new File(Configuracoes.CONEXAO);
-	}
+        return new File(Configuracoes.CONEXAO);
+    }
 
-	public static void buildEntityManager() throws ConfigurationException {
+    public static void buildEntityManager() throws ConfigurationException {
 
-		Properties propertiesConexao = buscarPropertiesConexao();
+        Properties propertiesConexao = buscarPropertiesConexao();
 
-		entityManager = Persistence.createEntityManagerFactory("SysDesc", propertiesConexao).createEntityManager();
+        entityManager = Persistence.createEntityManagerFactory("SysDesc", propertiesConexao).createEntityManager();
 
-		sqlTemplates = createTemplate(propertiesConexao);
+        sqlTemplates = createTemplate(propertiesConexao);
 
-	}
+    }
 
-	private static SQLTemplates createTemplate(Properties propertiesConexao) {
+    private static SQLTemplates createTemplate(Properties propertiesConexao) {
 
-		String driver = propertiesConexao.getProperty("javax.persistence.jdbc.driver", "");
+        String driver = propertiesConexao.getProperty("javax.persistence.jdbc.driver", "");
 
-		switch (driver) {
-		case "org.postgresql.Driver":
-			return PostgresTemplates.DEFAULT;
-		case "com.mysql.jdbc.Driver":
-			return MySQLTemplates.DEFAULT;
-		case "org.h2.Driver":
-			return H2Templates.DEFAULT;
+        switch (driver) {
+            case "org.postgresql.Driver":
+                return PostgresTemplates.DEFAULT;
+            case "com.mysql.jdbc.Driver":
+                return MySQLTemplates.DEFAULT;
+            case "org.h2.Driver":
+                return H2Templates.DEFAULT;
 
-		default:
-			throw new SysDescException(MENSAGEM_DRIVER_NAO_ENCONTRADO);
-		}
+            default:
+                throw new SysDescException(MENSAGEM_DRIVER_NAO_ENCONTRADO);
+        }
 
-	}
+    }
 
-	public static EntityManager getEntityManager() {
+    public static EntityManager getEntityManager() {
 
-		return entityManager;
-	}
+        return entityManager;
+    }
 
-	public static SQLTemplates getSqlTemplates() {
-		return sqlTemplates;
-	}
+    public static SQLTemplates getSqlTemplates() {
+        return sqlTemplates;
+    }
 
-	private static Properties buscarPropertiesConexao() throws ConfigurationException {
+    private static Properties buscarPropertiesConexao() throws ConfigurationException {
 
-		try {
-			String arquivoConfiguracao = CryptoUtil
-					.fromBlowfish(FileUtils.readFileToString(getConfiguracaoBanco(), Charset.forName("UTF-8")));
+        try {
+            String arquivoConfiguracao = CryptoUtil.fromBlowfish(FileUtils.readFileToString(getConfiguracaoBanco(), Charset.forName("UTF-8")));
 
-			if (arquivoConfiguracao == null) {
-				throw new ConfigurationException("Configuração de conexão inválida");
-			}
+            if (arquivoConfiguracao == null) {
+                throw new ConfigurationException("Configuraï¿½ï¿½o de conexï¿½o invï¿½lida");
+            }
 
-			Properties properties = new Properties();
+            Properties properties = new Properties();
 
-			properties.load(new StringReader(arquivoConfiguracao));
+            properties.load(new StringReader(arquivoConfiguracao));
 
-			return properties;
+            return properties;
 
-		} catch (IOException e) {
+        } catch (IOException e) {
 
-			log.error("");
-			e.printStackTrace();
+            log.error("");
+            e.printStackTrace();
 
-			return null;
-		}
-	}
+            return null;
+        }
+    }
 
 }
