@@ -1,5 +1,6 @@
 package br.com.sysdesc.atualizacao.changelog.core;
 
+import java.io.File;
 import java.sql.Connection;
 import java.util.logging.Logger;
 
@@ -30,6 +31,10 @@ public class Changelog {
 
 			liquibase.update(new Contexts(), new LabelExpression());
 
+			File pastaChangelogs = new File(Configuracoes.UPGRADE);
+
+			deletarChangelogs(pastaChangelogs);
+
 		} catch (LiquibaseException e) {
 
 			log.severe("OCORREU UM ERRO AO ATUALIZAR A BASE DE DADOS");
@@ -37,6 +42,19 @@ public class Changelog {
 			e.printStackTrace();
 
 			System.exit(0);
+		}
+
+	}
+
+	private static void deletarChangelogs(File pastaChangelog) {
+
+		for (File arquivo : pastaChangelog.listFiles()) {
+
+			if (arquivo.isDirectory()) {
+				deletarChangelogs(arquivo);
+			}
+
+			arquivo.delete();
 		}
 
 	}
