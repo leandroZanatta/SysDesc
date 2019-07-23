@@ -10,5 +10,8 @@ public class Configuracoes {
 	public static final String UPGRADE = USER_DIR + SEPARATOR + "upgrade";
 	public static final String CHANGELOG = "db.changelog-master.xml";
 	public static final String CONEXAO = USER_DIR + SEPARATOR + "config" + SEPARATOR + "config.01";
+	public static final String RESOURCES = USER_DIR + SEPARATOR + "config" + SEPARATOR + "resources.01";
+	public static final String PATH_RESOURCES = USER_DIR + SEPARATOR + "resources";
+	public static final String FOLDER_IMAGE = PATH_RESOURCES + SEPARATOR + "image";
 
 }

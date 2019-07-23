@@ -1,4 +1,4 @@
-package br.com.sysdesc.atualizacao.enumeradores;
+package br.com.sysdesc.upgrade.enumeradores;
 
 public enum TipoConexaoEnum {
 

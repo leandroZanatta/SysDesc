@@ -1,5 +1,8 @@
 package br.com.sysdesc.upgrade.changelog.core;
 
+import static br.com.sysdesc.upgrade.util.resources.Resources.MENSAGEM_CONFIGURACOES_INVALIDAS;
+import static br.com.sysdesc.upgrade.util.resources.Resources.MENSAGEM_ERRO_BUSCAR_PROPRIEDADES_CONEXAO;
+import static br.com.sysdesc.upgrade.util.resources.Resources.translate;
 import static java.sql.DriverManager.getConnection;
 
 import java.io.File;
@@ -15,6 +18,7 @@ import javax.naming.ConfigurationException;
 
 import org.apache.commons.io.FileUtils;
 
+import br.com.sysdesc.upgrade.enumeradores.TipoConexaoEnum;
 import br.com.sysdesc.upgrade.util.classes.CryptoUtil;
 import br.com.sysdesc.upgrade.util.resources.Configuracoes;
 
@@ -40,10 +44,10 @@ public class Conexao {
 
 		Properties propertiesConexao = buscarPropertiesConexao();
 
-		String clazz = propertiesConexao.getProperty("javax.persistence.jdbc.driver");
-		String url = propertiesConexao.getProperty("javax.persistence.jdbc.url");
-		String usuario = propertiesConexao.getProperty("javax.persistence.jdbc.user");
-		String senha = propertiesConexao.getProperty("javax.persistence.jdbc.password");
+		String clazz = propertiesConexao.getProperty(TipoConexaoEnum.jdbcDriver);
+		String url = propertiesConexao.getProperty(TipoConexaoEnum.jdbcUrl);
+		String usuario = propertiesConexao.getProperty(TipoConexaoEnum.jdbcUser);
+		String senha = propertiesConexao.getProperty(TipoConexaoEnum.jdbcPassword);
 
 		Class.forName(clazz);
 
@@ -58,7 +62,7 @@ public class Conexao {
 					.fromBlowfish(FileUtils.readFileToString(getConfiguracaoBanco(), Charset.forName("UTF-8")));
 
 			if (arquivoConfiguracao == null) {
-				throw new ConfigurationException("Configurações inválidas");
+				throw new ConfigurationException(translate(MENSAGEM_CONFIGURACOES_INVALIDAS));
 			}
 
 			Properties properties = new Properties();
@@ -69,7 +73,7 @@ public class Conexao {
 
 		} catch (IOException e) {
 
-			log.log(Level.SEVERE, "Erro ao Buscar Configurações", e);
+			log.log(Level.SEVERE, translate(MENSAGEM_ERRO_BUSCAR_PROPRIEDADES_CONEXAO), e);
 
 			return null;
 		}
