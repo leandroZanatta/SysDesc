@@ -1,6 +1,7 @@
 package br.com.sysdesc.atualizacao.changelog.core;
 
 import java.sql.Connection;
+import java.util.logging.Logger;
 
 import br.com.sysdesc.atualizacao.util.resources.Configuracoes;
 import liquibase.Contexts;
@@ -16,6 +17,8 @@ public class Changelog {
 
 	public static void runChangelog(Connection connection) {
 
+		Logger log = Logger.getLogger(Changelog.class.getName());
+
 		Database database;
 
 		try {
@@ -28,6 +31,10 @@ public class Changelog {
 			liquibase.update(new Contexts(), new LabelExpression());
 
 		} catch (LiquibaseException e) {
+
+			log.severe("OCORREU UM ERRO AO ATUALIZAR A BASE DE DADOS");
+
+			e.printStackTrace();
 
 			System.exit(0);
 		}

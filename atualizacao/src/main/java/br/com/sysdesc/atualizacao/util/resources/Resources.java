@@ -36,6 +36,7 @@ public class Resources {
 	public static final String MENSAGEM_CONEXAO_INVALIDA = "MENSAGEM_CONEXAO_INVALIDA";
 	public static final String MENSAGEM_ERRO_BUSCAR_PROPRIEDADES_CONEXAO = "MENSAGEM_ERRO_BUSCAR_PROPRIEDADES_CONEXAO";
 	public static final String MENSAGEM_CONFIGURACOES_INVALIDAS = "MENSAGEM_CONFIGURACOES_INVALIDAS";
+	public static final String APPLICATION_VERSOES = "APPLICATION_VERSOES";
 
 	static {
 		try {
@@ -49,9 +50,9 @@ public class Resources {
 
 			mapaValores = new Properties();
 
-			mapaValores.load(new InputStreamReader(
-					new FileInputStream(Configuracoes.PATH_RESOURCES + Configuracoes.SEPARATOR + arquivoConfig),
-					charset));
+			File file = new File(Configuracoes.PATH_RESOURCES + Configuracoes.SEPARATOR + arquivoConfig);
+
+			mapaValores.load(new InputStreamReader(new FileInputStream(file), charset));
 
 		} catch (IOException e) {
 

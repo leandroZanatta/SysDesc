@@ -14,5 +14,7 @@ public class Configuracoes {
 	public static final String PATH_RESOURCES = USER_DIR + SEPARATOR + "resources";
 	public static final String UPGRADE = USER_DIR + SEPARATOR + "upgrade";
 	public static final String CHANGELOG = "db.changelog-master.xml";
+	public static final String PATH_VERSOES = USER_DIR + SEPARATOR + "versoes";
+	public static final String VERSAO = PATH_VERSOES + SEPARATOR + "versao.json";
 
 }
