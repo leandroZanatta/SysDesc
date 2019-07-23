@@ -52,8 +52,6 @@ public class AtualizacaoThread extends Thread {
 
 		this.verificarVersaoBase();
 
-		this.atualizarVersaoTela();
-
 		this.verificarVersaoRemota();
 	}
 
@@ -107,9 +105,11 @@ public class AtualizacaoThread extends Thread {
 
 	private void efetuarDownloadVersao(VersaoVO versaoVO) throws IOException {
 
-		Integer retornoOpcao = JOptionPane.showConfirmDialog(null,
-				String.format(Resources.translate(MensagemConstants.MENSAGEM_ATUALIZAR_VERSAO), versaoVO.getVersao()),
-				Resources.OPTION_VALIDACAO, JOptionPane.YES_NO_OPTION);
+		Integer retornoOpcao = JOptionPane
+				.showConfirmDialog(null,
+						String.format(Resources.translate(MensagemConstants.MENSAGEM_ATUALIZAR_VERSAO),
+								formatarVersao(versaoVO.getVersao())),
+						Resources.OPTION_VALIDACAO, JOptionPane.YES_NO_OPTION);
 
 		if (retornoOpcao == JOptionPane.YES_OPTION) {
 
@@ -178,11 +178,9 @@ public class AtualizacaoThread extends Thread {
 		return arquivoVersao;
 	}
 
-	private void atualizarVersaoTela() {
+	private String formatarVersao(Long codigoVesao) {
 
-		contentVersao.add(lbVersao);
-
-		List<String> versaoSemFormatacao = ListUtil.toList(this.versaoBase.toString().split(""));
+		List<String> versaoSemFormatacao = ListUtil.toList(codigoVesao.toString().split(""));
 
 		if (versaoSemFormatacao.size() > 3) {
 			versaoSemFormatacao.add(versaoSemFormatacao.size() - 3, ".");
@@ -194,13 +192,15 @@ public class AtualizacaoThread extends Thread {
 			versaoSemFormatacao.add(versaoSemFormatacao.size() - 9, ".");
 		}
 
-		lbVersao.setText(String.format("Versão: %s", versaoSemFormatacao.stream().collect(Collectors.joining())));
+		return versaoSemFormatacao.stream().collect(Collectors.joining());
 
 	}
 
 	private void verificarVersaoBase() {
 
 		Versao versao = versaoDAO.last();
+
+		contentVersao.add(lbVersao);
 
 		if (versao != null) {
 			this.versaoBase = versao.getVersao();
@@ -209,6 +209,8 @@ public class AtualizacaoThread extends Thread {
 		}
 
 		this.versaoBase = 0L;
+
+		lbVersao.setText(String.format("Versão: %s", formatarVersao(this.versaoBase)));
 
 	}
 

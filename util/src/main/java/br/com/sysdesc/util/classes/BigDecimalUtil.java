@@ -11,12 +11,12 @@ public class BigDecimalUtil {
 
 	public static boolean maior(BigDecimal valor1, BigDecimal valor2) {
 
-		return ifNulZero(valor1).compareTo(ifNulZero(valor2)) <= 0;
+		return ifNulZero(valor1).compareTo(ifNulZero(valor2)) > 0;
 	}
 
 	public static boolean maiorOuIgual(BigDecimal valor1, BigDecimal valor2) {
 
-		return ifNulZero(valor1).compareTo(ifNulZero(valor2)) < 0;
+		return ifNulZero(valor1).compareTo(ifNulZero(valor2)) >= 0;
 	}
 
 	public static BigDecimal ifNulZero(BigDecimal value) {
