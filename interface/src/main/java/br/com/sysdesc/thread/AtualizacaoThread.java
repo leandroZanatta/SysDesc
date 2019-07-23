@@ -205,12 +205,12 @@ public class AtualizacaoThread extends Thread {
 		if (versao != null) {
 			this.versaoBase = versao.getVersao();
 
+			lbVersao.setText(String.format("Versão: %s", formatarVersao(this.versaoBase)));
+
 			return;
 		}
 
 		this.versaoBase = 0L;
-
-		lbVersao.setText(String.format("Versão: %s", formatarVersao(this.versaoBase)));
 
 	}
 
