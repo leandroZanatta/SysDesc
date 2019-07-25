@@ -8,11 +8,17 @@ import static javax.swing.JOptionPane.showMessageDialog;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -20,8 +26,10 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JRootPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.EventListenerList;
 
@@ -69,6 +77,30 @@ public abstract class PanelActions<T> extends JPanel {
 
 	private void initComponents() {
 
+		JRootPane rootPane = internalFrame.getRootPane();
+
+		InputMap imap = rootPane.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW);
+
+		String mapNovo = "mapNovo";
+		String mapEditar = "mapEditar";
+		String mapSalvar = "mapSalvar";
+		String mapLocalizar = "mapLocalizar";
+		String mapCancelar = "mapCancelar";
+		String mapNext = "mapNext";
+		String mapPrev = "mapPrev";
+		String mapFirst = "mapFirst";
+		String mapLast = "mapLast";
+
+		imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_MASK), mapNovo);
+		imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_MASK), mapEditar);
+		imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK), mapSalvar);
+		imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_MASK), mapLocalizar);
+		imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_PAGE_UP, KeyEvent.CTRL_MASK), mapFirst);
+		imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_PAGE_DOWN, KeyEvent.CTRL_MASK), mapLast);
+		imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_PAGE_UP, 0), mapNext);
+		imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_PAGE_DOWN, 0), mapPrev);
+		imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), mapCancelar);
+
 		setLayout(new MigLayout("", "[grow][][][][][][][][][][grow]", "[23px,grow,center]"));
 
 		btnFirst = new JButton("");
@@ -103,23 +135,110 @@ public abstract class PanelActions<T> extends JPanel {
 
 		final PanelActions<T> painel = this;
 
-		btnCancel.addActionListener(e -> internalFrame.dispose());
+		Action actionLast = new AbstractAction() {
 
-		btnNext.addActionListener(e -> nextEvent(painel));
+			private static final long serialVersionUID = 1L;
 
-		btnFirst.addActionListener(e -> firstEvent(painel));
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				lastEvent(painel);
+			}
+		};
 
-		btnLast.addActionListener(e -> lastEvent(painel));
+		Action actionFirst = new AbstractAction() {
 
-		btnFowad.addActionListener(e -> fowadEvent(painel));
+			private static final long serialVersionUID = 1L;
 
-		btnNew.addActionListener(e -> newEvent(painel));
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				firstEvent(painel);
+			}
+		};
 
-		btnSave.addActionListener(e -> saveEvent());
+		Action actionNext = new AbstractAction() {
 
-		btnEdit.addActionListener(e -> editEvent());
+			private static final long serialVersionUID = 1L;
 
-		btnSearch.addActionListener(e -> searchEvent());
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				nextEvent(painel);
+			}
+		};
+
+		Action actionPrev = new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fowadEvent(painel);
+			}
+		};
+
+		Action actionCancelar = new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				internalFrame.dispose();
+
+			}
+		};
+
+		Action actionNovo = new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				newEvent(painel);
+
+			}
+		};
+
+		Action actionEditar = new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				editEvent();
+
+			}
+		};
+
+		Action actionSalvar = new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				saveEvent();
+
+			}
+		};
+
+		Action actionLocalizar = new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				searchEvent();
+
+			}
+		};
+
+		btnNext.addActionListener(actionNext);
+		btnFirst.addActionListener(actionFirst);
+		btnLast.addActionListener(actionLast);
+		btnFowad.addActionListener(actionPrev);
+		btnCancel.addActionListener(actionCancelar);
+		btnNew.addActionListener(actionNovo);
+		btnSave.addActionListener(actionSalvar);
+		btnEdit.addActionListener(actionEditar);
+		btnSearch.addActionListener(actionLocalizar);
 
 		Insets margens = new Insets(10, 10, 10, 10);
 		btnFirst.setMargin(margens);
@@ -150,6 +269,20 @@ public abstract class PanelActions<T> extends JPanel {
 
 		bloquearBotoes(Boolean.FALSE, Boolean.FALSE, Boolean.TRUE);
 
+		ActionMap actionMap = new ActionMap();
+
+		actionMap.put(mapFirst, actionFirst);
+		actionMap.put(mapLast, actionLast);
+		actionMap.put(mapNext, actionNext);
+		actionMap.put(mapPrev, actionPrev);
+
+		actionMap.put(mapCancelar, actionCancelar);
+		actionMap.put(mapNovo, actionNovo);
+		actionMap.put(mapEditar, actionEditar);
+		actionMap.put(mapSalvar, actionSalvar);
+		actionMap.put(mapLocalizar, actionLocalizar);
+
+		rootPane.setActionMap(actionMap);
 	}
 
 	private void searchEvent() {
@@ -514,6 +647,7 @@ public abstract class PanelActions<T> extends JPanel {
 				bloquearBotoes(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE);
 			}
 		} catch (SysDescException e) {
+
 			showMessageDialog(parent, e.getMensagem(), translate(OPTION_VALIDACAO), JOptionPane.WARNING_MESSAGE);
 		}
 	}

@@ -35,196 +35,203 @@ import net.miginfocom.swing.MigLayout;
 
 public class FrmApplication extends JFrame {
 
-    private static final String SYS_DESC = "SysDesc";
+	private static final String SYS_DESC = "SysDesc";
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private JPanel contentPane;
-    private static Usuario usuario;
-    private static JLabel lbUsuario;
-    private JMenuBar menuBar;
-    private JDesktopPane desktopPane;
-    private JToolBar toolBar;
-    private JPanel panel;
-    private JPanel panel_3;
-    private JLabel lbHorario;
-    private static FrmApplication frmApplication;
-    private JPanel panel_1;
-    private JPanel panel_2;
-    private JPanel panel_4;
+	private JPanel contentPane;
+	private static Usuario usuario;
+	private static JLabel lbUsuario;
+	private JMenuBar menuBar;
+	private JDesktopPane desktopPane;
+	private JToolBar toolBar;
+	private JPanel panel;
+	private JPanel panel_3;
+	private JLabel lbHorario;
+	private static FrmApplication frmApplication;
+	private JPanel panel_1;
+	private JPanel panel_2;
+	private JPanel panel_4;
 
-    public FrmApplication() {
+	public FrmApplication() {
 
-        initComponents();
+		initComponents();
 
-    }
+	}
 
-    private void initComponents() {
+	private void initComponents() {
 
-        contentPane = new JPanel();
-        menuBar = new JMenuBar();
-        desktopPane = new JDesktopPane();
-        toolBar = new JToolBar();
-        panel = new JPanel();
-        panel_3 = new JPanel();
+		contentPane = new JPanel();
+		menuBar = new JMenuBar();
+		desktopPane = new JDesktopPane();
+		toolBar = new JToolBar();
+		panel = new JPanel();
+		panel_3 = new JPanel();
 
-        contentPane.setLayout(new BorderLayout(0, 0));
-        panel_3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		panel_3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 
-        contentPane.add(panel, BorderLayout.SOUTH);
-        contentPane.add(desktopPane, BorderLayout.CENTER);
-        contentPane.add(toolBar, BorderLayout.NORTH);
-        panel.setLayout(new MigLayout("", "[grow][400px][]", "[]"));
+		contentPane.add(panel, BorderLayout.SOUTH);
+		contentPane.add(desktopPane, BorderLayout.CENTER);
+		contentPane.add(toolBar, BorderLayout.NORTH);
+		panel.setLayout(new MigLayout("", "[grow][400px][]", "[]"));
 
-        panel_1 = new JPanel();
-        panel.add(panel_1, "cell 0 0,alignx left,aligny center");
-        lbUsuario = new JLabel();
-        panel_1.add(lbUsuario);
+		panel_1 = new JPanel();
+		panel.add(panel_1, "cell 0 0,alignx left,aligny center");
+		lbUsuario = new JLabel();
+		panel_1.add(lbUsuario);
 
-        panel_2 = new JPanel();
-        panel.add(panel_2, "cell 1 0,alignx center");
+		panel_2 = new JPanel();
+		panel.add(panel_2, "cell 1 0,alignx center");
 
-        AtualizacaoThread atualizacaoThread = new AtualizacaoThread(panel_2);
+		AtualizacaoThread atualizacaoThread = new AtualizacaoThread(panel_2);
 
-        panel_4 = new JPanel();
-        panel.add(panel_4, "cell 2 0,alignx right");
-        lbHorario = new JLabel();
-        panel_4.add(lbHorario);
+		panel_4 = new JPanel();
+		panel.add(panel_4, "cell 2 0,alignx right");
+		lbHorario = new JLabel();
+		panel_4.add(lbHorario);
 
-        TimerThread timerThread = new TimerThread(lbHorario);
+		TimerThread timerThread = new TimerThread(lbHorario);
 
-        timerThread.start();
-        atualizacaoThread.start();
+		timerThread.start();
+		atualizacaoThread.start();
 
-        setJMenuBar(menuBar);
-        setTitle(SYS_DESC);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1024, 600);
-        setExtendedState(MAXIMIZED_BOTH);
-        setLocationRelativeTo(null);
-        setContentPane(contentPane);
+		setJMenuBar(menuBar);
+		setTitle(SYS_DESC);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(1024, 600);
+		setExtendedState(MAXIMIZED_BOTH);
+		setLocationRelativeTo(null);
+		setContentPane(contentPane);
 
-    }
+	}
 
-    private void getSingleInstance(Class<? extends AbstractInternalFrame> frame, PermissaoPrograma permissaoPrograma) {
+	private void getSingleInstance(Class<? extends AbstractInternalFrame> frame, PermissaoPrograma permissaoPrograma) {
 
-        try {
+		try {
 
-            Constructor<? extends AbstractInternalFrame> constructor = frame.getConstructor(PermissaoPrograma.class, Long.class);
+			Constructor<? extends AbstractInternalFrame> constructor = frame.getConstructor(PermissaoPrograma.class,
+					Long.class);
 
-            AbstractInternalFrame internalFrame = constructor.newInstance(permissaoPrograma, usuario.getIdUsuario());
+			AbstractInternalFrame internalFrame = constructor.newInstance(permissaoPrograma, usuario.getIdUsuario());
 
-            desktopPane.add(internalFrame);
+			desktopPane.add(internalFrame);
 
-            Dimension desktopSize = desktopPane.getSize();
-            Dimension jInternalFrameSize = internalFrame.getSize();
+			Dimension desktopSize = desktopPane.getSize();
+			Dimension jInternalFrameSize = internalFrame.getSize();
 
-            internalFrame.setLocation((desktopSize.width - jInternalFrameSize.width) / 2, (desktopSize.height - jInternalFrameSize.height) / 2);
+			internalFrame.setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
+					(desktopSize.height - jInternalFrameSize.height) / 2);
 
-            internalFrame.setVisible(Boolean.TRUE);
+			internalFrame.setVisible(Boolean.TRUE);
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "ERRO");
-        }
+		} catch (Exception e) {
 
-    }
+			e.printStackTrace();
 
-    public static FrmApplication getInstance() {
+			JOptionPane.showMessageDialog(this, "ERRO");
+		}
 
-        if (frmApplication == null) {
+	}
 
-            frmApplication = new FrmApplication();
+	public static FrmApplication getInstance() {
 
-            frmApplication.setVisible(Boolean.TRUE);
+		if (frmApplication == null) {
 
-            FrmLogin frmLogin = new FrmLogin(frmApplication);
+			frmApplication = new FrmApplication();
 
-            frmLogin.setVisible(Boolean.TRUE);
+			frmApplication.setVisible(Boolean.TRUE);
 
-            usuario = frmLogin.getUsuario();
+			FrmLogin frmLogin = new FrmLogin(frmApplication);
 
-            frmApplication.createMenus();
+			frmLogin.setVisible(Boolean.TRUE);
 
-            String formattedUser = String.format(" %s - %s", usuario.getIdUsuario(), usuario.getCliente().getNome());
+			usuario = frmLogin.getUsuario();
 
-            lbUsuario.setText(translate(FRMAPPLICATION_LB_USUARIO) + formattedUser);
-        }
+			frmApplication.createMenus();
 
-        return frmApplication;
-    }
+			String formattedUser = String.format(" %s - %s", usuario.getIdUsuario(), usuario.getCliente().getNome());
 
-    private void createMenus() {
+			lbUsuario.setText(translate(FRMAPPLICATION_LB_USUARIO) + formattedUser);
+		}
 
-        MainService mainService = new MainService();
+		return frmApplication;
+	}
 
-        List<Programa> permissoes = mainService.buscarPermissaoUsuario(usuario.getIdUsuario());
+	private void createMenus() {
 
-        permissoes.forEach(menu -> {
+		MainService mainService = new MainService();
 
-            if (!ListUtil.isNullOrEmpty(menu.getProgramas())) {
+		List<Programa> permissoes = mainService.buscarPermissaoUsuario(usuario.getIdUsuario());
 
-                JMenu menuToolbar = new JMenu(translate(menu.getDescricao()));
+		permissoes.forEach(menu -> {
 
-                menuBar.add(menuToolbar);
+			if (!ListUtil.isNullOrEmpty(menu.getProgramas())) {
 
-                menu.getProgramas().forEach(programa -> {
+				JMenu menuToolbar = new JMenu(translate(menu.getDescricao()));
 
-                    createSubMenus(menuToolbar, programa);
+				menuBar.add(menuToolbar);
 
-                });
-            }
+				menu.getProgramas().forEach(programa -> {
 
-        });
+					createSubMenus(menuToolbar, programa);
 
-        menuBar.repaint();
-        toolBar.repaint();
-    }
+				});
+			}
 
-    private void createSubMenus(JMenu menuToolbar, Programa menu) {
+		});
 
-        if (!ListUtil.isNullOrEmpty(menu.getProgramas())) {
+		menuBar.repaint();
+		toolBar.repaint();
+	}
 
-            menu.getProgramas().forEach(programa -> {
+	private void createSubMenus(JMenu menuToolbar, Programa menu) {
 
-                JMenu submenu = new JMenu(translate(programa.getDescricao()));
+		if (!ListUtil.isNullOrEmpty(menu.getProgramas())) {
 
-                if (!StringUtil.isNullOrEmpty(programa.getIcone())) {
-                    submenu.setIcon(ImageUtil.resize(programa.getIcone(), 15, 15));
-                }
+			menu.getProgramas().forEach(programa -> {
 
-                menuToolbar.add(submenu);
+				JMenu submenu = new JMenu(translate(programa.getDescricao()));
 
-                createSubMenus(submenu, programa);
-            });
+				if (!StringUtil.isNullOrEmpty(programa.getIcone())) {
+					submenu.setIcon(ImageUtil.resize(programa.getIcone(), 15, 15));
+				}
 
-            return;
-        }
+				menuToolbar.add(submenu);
 
-        JMenuItem menuitem = new JMenuItem(translate(menu.getDescricao()));
+				createSubMenus(submenu, programa);
+			});
 
-        ProgramasEnum programa = ProgramasEnum.findByCodigo(menu.getIdPrograma());
+			return;
+		}
 
-        if (programa != null) {
-            menuitem.addActionListener((e) -> getSingleInstance(programa.getInternalFrame(), menu.getPermissaoProgramas().get(0)));
-        }
+		JMenuItem menuitem = new JMenuItem(translate(menu.getDescricao()));
 
-        if (!StringUtil.isNullOrEmpty(menu.getIcone())) {
+		ProgramasEnum programa = ProgramasEnum.findByCodigo(menu.getIdPrograma());
 
-            menuitem.setIcon(ImageUtil.resize(menu.getIcone(), 15, 15));
+		if (programa != null) {
+			menuitem.addActionListener(
+					(e) -> getSingleInstance(programa.getInternalFrame(), menu.getPermissaoProgramas().get(0)));
+		}
 
-            if (menu.getFlagAcessoRapido()) {
+		if (!StringUtil.isNullOrEmpty(menu.getIcone())) {
 
-                JButton botao = new JButton(ImageUtil.resize(menu.getIcone(), 15, 15));
+			menuitem.setIcon(ImageUtil.resize(menu.getIcone(), 15, 15));
 
-                botao.setToolTipText(translate(menu.getDescricao()));
+			if (menu.getFlagAcessoRapido()) {
 
-                botao.addActionListener((e) -> getSingleInstance(programa.getInternalFrame(), menu.getPermissaoProgramas().get(0)));
+				JButton botao = new JButton(ImageUtil.resize(menu.getIcone(), 15, 15));
 
-                toolBar.add(botao);
-            }
-        }
+				botao.setToolTipText(translate(menu.getDescricao()));
 
-        menuToolbar.add(menuitem);
+				botao.addActionListener(
+						(e) -> getSingleInstance(programa.getInternalFrame(), menu.getPermissaoProgramas().get(0)));
 
-    }
+				toolBar.add(botao);
+			}
+		}
+
+		menuToolbar.add(menuitem);
+
+	}
 }
