@@ -5,7 +5,7 @@ import java.util.Properties;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import com.jtattoo.plaf.mint.MintLookAndFeel;
+//import com.jtattoo.plaf.mint.MintLookAndFeel;
 
 public class LookAndFeelUtil {
 
@@ -38,7 +38,7 @@ public class LookAndFeelUtil {
 		p.setProperty("menuTextFont", FONTE);
 		p.setProperty("windowTitleFont", FONTE);
 		p.setProperty("subTextFont", FONTE);
-		MintLookAndFeel.setCurrentTheme(p);
+		// MintLookAndFeel.setCurrentTheme(p);
 
 		UIManager.setLookAndFeel("com.jtattoo.plaf.mint.MintLookAndFeel");
 	}
