@@ -8,6 +8,21 @@ import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_SUBCATEGORIA
 import static br.com.sysdesc.util.constants.MensagemConstants.MENSAGEM_SELECIONE_CATEGORIA;
 import static br.com.sysdesc.util.constants.MensagemConstants.MENSAGEM_SELECIONE_DEPARTAMENTO;
 import static br.com.sysdesc.util.resources.Resources.FRMLOGIN_MSG_VERIFICACAO;
+import static br.com.sysdesc.util.resources.Resources.FRMPRODUTO_LB_CATEGORIA;
+import static br.com.sysdesc.util.resources.Resources.FRMPRODUTO_LB_CODIGO;
+import static br.com.sysdesc.util.resources.Resources.FRMPRODUTO_LB_DEPARTAMENTO;
+import static br.com.sysdesc.util.resources.Resources.FRMPRODUTO_LB_DESCRICAO;
+import static br.com.sysdesc.util.resources.Resources.FRMPRODUTO_LB_FORNECEDOR;
+import static br.com.sysdesc.util.resources.Resources.FRMPRODUTO_LB_MARCA;
+import static br.com.sysdesc.util.resources.Resources.FRMPRODUTO_LB_MAXIMO;
+import static br.com.sysdesc.util.resources.Resources.FRMPRODUTO_LB_MINIMO;
+import static br.com.sysdesc.util.resources.Resources.FRMPRODUTO_LB_MOVIMENTAESTOQUE;
+import static br.com.sysdesc.util.resources.Resources.FRMPRODUTO_LB_QUANTIDADEFRACIONADA;
+import static br.com.sysdesc.util.resources.Resources.FRMPRODUTO_LB_STATUS;
+import static br.com.sysdesc.util.resources.Resources.FRMPRODUTO_LB_SUBCATEGORIA;
+import static br.com.sysdesc.util.resources.Resources.FRMPRODUTO_LB_TIPO;
+import static br.com.sysdesc.util.resources.Resources.FRMPRODUTO_LB_UNIDADE;
+import static br.com.sysdesc.util.resources.Resources.FRMPRODUTO_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
 import javax.swing.JCheckBox;
@@ -100,36 +115,35 @@ public class FrmProduto extends AbstractInternalFrame {
 
 	public FrmProduto(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
-		setTitle("CADASTRO DE PRODUTOS");
+		setTitle(translate(FRMPRODUTO_TITLE));
 
 		setSize(650, 420);
 		setClosable(Boolean.TRUE);
 
 		painelContent = new JPanel();
 
-		lbCodigo = new JLabel("Código:");
-		lbDescricao = new JLabel("Descrição:");
+		lbCodigo = new JLabel(translate(FRMPRODUTO_LB_CODIGO));
+		lbDescricao = new JLabel(translate(FRMPRODUTO_LB_DESCRICAO));
 		txCodigo = new JNumericField();
 		txDescricao = new JTextFieldMaiusculo();
-		lbDepartamento = new JLabel("Departamento");
-		lbUnidade = new JLabel("Unidade:");
+		lbDepartamento = new JLabel(translate(FRMPRODUTO_LB_DEPARTAMENTO));
+		lbUnidade = new JLabel(translate(FRMPRODUTO_LB_UNIDADE));
 		cbDepartamento = new JComboBox<>();
 		cbUnidade = new JComboBox<>();
-		lbCategoria = new JLabel("Categoria:");
-		panel = new JPanel();
-		lbSubcategoria = new JLabel("Sub-Categoria:");
-		lbFornecedor = new JLabel("Fornecedor:");
-		lbMarca = new JLabel("Marca:");
-		lbMinimo = new JLabel("Mínimo:");
+		lbCategoria = new JLabel(translate(FRMPRODUTO_LB_CATEGORIA));
+		lbSubcategoria = new JLabel(translate(FRMPRODUTO_LB_SUBCATEGORIA));
+		lbFornecedor = new JLabel(translate(FRMPRODUTO_LB_FORNECEDOR));
+		lbMarca = new JLabel(translate(FRMPRODUTO_LB_MARCA));
+		lbMinimo = new JLabel(translate(FRMPRODUTO_LB_MINIMO));
 		txMinimo = new JMoneyField();
-		lbMaximo = new JLabel("Máximo:");
+		lbMaximo = new JLabel(translate(FRMPRODUTO_LB_MAXIMO));
 		txMaximo = new JMoneyField();
-		lbTipo = new JLabel("Tipo:");
-		lbStatus = new JLabel("Status:");
+		lbTipo = new JLabel(translate(FRMPRODUTO_LB_TIPO));
+		lbStatus = new JLabel(translate(FRMPRODUTO_LB_STATUS));
 		cbTipo = new JComboBox<TipoProdutoEnum>(TipoProdutoEnum.values());
 		cbStatus = new JComboBox<TipoStatusEnum>(TipoStatusEnum.values());
-		chQuantidadeFracionada = new JCheckBox("Quantidade Fracionada");
-		chMovimentaEstoque = new JCheckBox("Movimenta Estoque");
+		chQuantidadeFracionada = new JCheckBox(translate(FRMPRODUTO_LB_QUANTIDADEFRACIONADA));
+		chMovimentaEstoque = new JCheckBox(translate(FRMPRODUTO_LB_MOVIMENTAESTOQUE));
 
 		cpCategoria = new CampoPesquisa<Categoria>(categoriaService, PES_CATEGORIAS, codigoUsuario) {
 

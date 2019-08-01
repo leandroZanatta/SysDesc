@@ -1,6 +1,9 @@
 package br.com.sysdesc.ui;
 
 import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_CIDADES;
+import static br.com.sysdesc.util.resources.Resources.FRMCIDADE_LB_CODIGO;
+import static br.com.sysdesc.util.resources.Resources.FRMCIDADE_LB_DESCRICAO;
+import static br.com.sysdesc.util.resources.Resources.FRMCIDADE_LB_ESTADO;
 import static br.com.sysdesc.util.resources.Resources.FRMCIDADE_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
@@ -49,11 +52,11 @@ public class FrmCidade extends AbstractInternalFrame {
 		setTitle(translate(FRMCIDADE_TITLE));
 
 		painelContent = new JPanel();
-		lbCodigo = new JLabel("Código:");
+		lbCodigo = new JLabel(translate(FRMCIDADE_LB_CODIGO));
 		txCodigo = new JNumericField();
-		lbEstado = new JLabel("Estado:");
+		lbEstado = new JLabel(translate(FRMCIDADE_LB_ESTADO));
 		cbEstado = new JComboBox<>();
-		lbDescricao = new JLabel("Descrição:");
+		lbDescricao = new JLabel(translate(FRMCIDADE_LB_DESCRICAO));
 		txDescricao = new JTextFieldMaiusculo();
 
 		estadoService.listarEstados().stream().forEach(cbEstado::addItem);
