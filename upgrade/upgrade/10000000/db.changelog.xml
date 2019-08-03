@@ -27,19 +27,9 @@
 
 	<!-- INSERTS PROGRAMAS E PESQUISAS -->
 	<include file="10000000/inserts/20190626_113800_carga_usuario.xml" />
-	<include file="10000000/inserts/20190626_113900_carga_menu_cadastro.xml" />
-	<include file="10000000/inserts/20190626_114000_carga_programa_clientes.xml" />
+	<include file="10000000/inserts/20190626_113900_carga_menu.xml" />
+	<include file="10000000/inserts/20190626_114000_carga_permissao_programa.xml" />
 	<include file="10000000/inserts/20190626_114100_carga_programa_perfis.xml" />
-	<include file="10000000/inserts/20190626_114200_carga_programa_usuarios.xml" />
-	<include file="10000000/inserts/20190626_114300_carga_programa_marcas.xml" />
-	<include file="10000000/inserts/20190626_114400_carga_programa_departamentos.xml" />
-	<include file="10000000/inserts/20190626_114500_carga_programa_estados.xml" />
-	<include file="10000000/inserts/20190626_114600_carga_programa_categoria.xml" />
-	<include file="10000000/inserts/20190626_114700_carga_programa_cidade.xml" />
-	<include file="10000000/inserts/20190626_114800_carga_programa_unidade.xml" />
-	<include file="10000000/inserts/20190626_114800_carga_programa_unidade.xml" />
-	<include file="10000000/inserts/20190626_114900_carga_menu_pesquisa.xml" />
-	<include file="10000000/inserts/20190626_115000_carga_programa_pesquisa.xml" />
 	<include file="10000000/inserts/20190626_115100_carga_pesquisa_usuario.xml" />
 	<include file="10000000/inserts/20190626_115200_carga_pesquisa_perfil.xml" />
 	<include file="10000000/inserts/20190626_115300_carga_pesquisa_estado.xml" />
