@@ -19,29 +19,29 @@ import br.com.sysdesc.ui.FrmUsuario;
 
 public enum ProgramasEnum {
 
-	CADASTRO_CLIENTES(2L, FrmCliente.class),
+	CADASTRO_CLIENTES(5L, FrmCliente.class),
 
-	CADASTRO_PERFIS(3L, FrmPerfil.class),
+	CADASTRO_PERFIS(2L, FrmPerfil.class),
 
-	CADASTRO_USUARIOS(4L, FrmUsuario.class),
+	CADASTRO_USUARIOS(6L, FrmUsuario.class),
 
-	CADASTRO_MARCAS(5L, FrmMarca.class),
+	CADASTRO_MARCAS(7L, FrmMarca.class),
 
-	CADASTRO_DEPARTAMENTOS(6L, FrmDepartamento.class),
+	CADASTRO_DEPARTAMENTOS(9L, FrmDepartamento.class),
 
-	CADASTRO_ESTADOS(7L, FrmEstado.class),
+	CADASTRO_ESTADOS(3L, FrmEstado.class),
 
-	CADASTRO_CATEGORIA(8L, FrmCategoria.class),
+	CADASTRO_CATEGORIA(10L, FrmCategoria.class),
 
-	CADASTRO_CIDADE(9L, FrmCidade.class),
+	CADASTRO_CIDADE(4L, FrmCidade.class),
 
-	CADASTRO_UNIDADE(10L, FrmUnidade.class),
+	CADASTRO_UNIDADE(8L, FrmUnidade.class),
 
-	CADASTRO_PESQUISA(12L, FrmCadastroPesquisa.class),
+	CADASTRO_PESQUISA(39L, FrmCadastroPesquisa.class),
 
-	CADASTRO_SUBCATEGORIA(13L, FrmSubCategoria.class),
+	CADASTRO_SUBCATEGORIA(11L, FrmSubCategoria.class),
 
-	CADASTRO_PRODUTO(14L, FrmProduto.class);
+	CADASTRO_PRODUTO(12L, FrmProduto.class);
 
 	private static Map<Long, ProgramasEnum> mapa = new HashMap<>();
 

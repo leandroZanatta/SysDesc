@@ -29,7 +29,6 @@
 	<include file="10000000/inserts/20190626_113800_carga_usuario.xml" />
 	<include file="10000000/inserts/20190626_113900_carga_menu.xml" />
 	<include file="10000000/inserts/20190626_114000_carga_permissao_programa.xml" />
-	<include file="10000000/inserts/20190626_114100_carga_programa_perfis.xml" />
 	<include file="10000000/inserts/20190626_115100_carga_pesquisa_usuario.xml" />
 	<include file="10000000/inserts/20190626_115200_carga_pesquisa_perfil.xml" />
 	<include file="10000000/inserts/20190626_115300_carga_pesquisa_estado.xml" />
@@ -39,8 +38,6 @@
 	<include file="10000000/inserts/20190626_115700_carga_pesquisa_categoria.xml" />
 	<include file="10000000/inserts/20190626_115800_carga_pesquisa_cidade.xml" />
 	<include file="10000000/inserts/20190630_231900_carga_versao.xml" />
-	<include file="10000000/inserts/20190701_214800_carga_programa_subcategorias.xml" />
-	<include file="10000000/inserts/20190701_214900_carga_programa_produtos.xml" />
 	<include file="10000000/inserts/20190704_202400_carga_pesquisa_subcategoria.xml" />
 
 </databaseChangeLog>

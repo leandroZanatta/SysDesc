@@ -121,6 +121,7 @@ public class FrmProduto extends AbstractInternalFrame {
 		setClosable(Boolean.TRUE);
 
 		painelContent = new JPanel();
+		panel = new JPanel();
 
 		lbCodigo = new JLabel(translate(FRMPRODUTO_LB_CODIGO));
 		lbDescricao = new JLabel(translate(FRMPRODUTO_LB_DESCRICAO));

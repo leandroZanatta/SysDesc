@@ -6,6 +6,7 @@ import static br.com.sysdesc.util.resources.Resources.translate;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.lang.reflect.Constructor;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -164,6 +165,8 @@ public class FrmApplication extends JFrame {
 
 		List<Programa> permissoes = mainService.buscarPermissaoUsuario(usuario.getIdUsuario());
 
+		permissoes.sort(Comparator.comparing(Programa::getOrdem));
+
 		permissoes.forEach(menu -> {
 
 			if (!ListUtil.isNullOrEmpty(menu.getProgramas())) {
@@ -189,15 +192,17 @@ public class FrmApplication extends JFrame {
 
 		if (!ListUtil.isNullOrEmpty(menu.getProgramas())) {
 
-			menu.getProgramas().forEach(programa -> {
+			JMenu submenu = new JMenu(translate(menu.getDescricao()));
 
-				JMenu submenu = new JMenu(translate(programa.getDescricao()));
+			menuToolbar.add(submenu);
+
+			menu.getProgramas().sort(Comparator.comparing(Programa::getOrdem));
+
+			menu.getProgramas().forEach(programa -> {
 
 				if (!StringUtil.isNullOrEmpty(programa.getIcone())) {
 					submenu.setIcon(ImageUtil.resize(programa.getIcone(), 15, 15));
 				}
-
-				menuToolbar.add(submenu);
 
 				createSubMenus(submenu, programa);
 			});

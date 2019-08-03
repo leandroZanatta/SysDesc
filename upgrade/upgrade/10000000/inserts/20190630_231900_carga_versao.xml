@@ -5,7 +5,7 @@
 	<changeSet id="20190630_231900" author="Leandro Zanatta">
 
 		<insert tableName="tb_versao">
-			<column name="nr_versao" value="0" />
+			<column name="nr_versao" value="10000000" />
 		</insert>
 
 	</changeSet>
