@@ -10,6 +10,7 @@ import static br.com.sysdesc.util.constants.MensagemConstants.MENSAGEM_SELECIONE
 import static br.com.sysdesc.util.resources.Resources.FRMLOGIN_MSG_VERIFICACAO;
 import static br.com.sysdesc.util.resources.Resources.FRMPRODUTO_LB_CATEGORIA;
 import static br.com.sysdesc.util.resources.Resources.FRMPRODUTO_LB_CODIGO;
+import static br.com.sysdesc.util.resources.Resources.FRMPRODUTO_LB_CODIGOBARRA;
 import static br.com.sysdesc.util.resources.Resources.FRMPRODUTO_LB_DEPARTAMENTO;
 import static br.com.sysdesc.util.resources.Resources.FRMPRODUTO_LB_DESCRICAO;
 import static br.com.sysdesc.util.resources.Resources.FRMPRODUTO_LB_FORNECEDOR;
@@ -112,9 +113,16 @@ public class FrmProduto extends AbstractInternalFrame {
 	private ProdutoService produtoService = new ProdutoService();
 
 	private PanelActions<Produto> panelActions;
+	private JLabel lbCodigodebarras;
+	private JNumericField txCodigodeBarras;
 
 	public FrmProduto(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
+
+		initComponents(codigoUsuario);
+	}
+
+	private void initComponents(Long codigoUsuario) {
 		setTitle(translate(FRMPRODUTO_TITLE));
 
 		setSize(650, 420);
@@ -125,6 +133,8 @@ public class FrmProduto extends AbstractInternalFrame {
 
 		lbCodigo = new JLabel(translate(FRMPRODUTO_LB_CODIGO));
 		lbDescricao = new JLabel(translate(FRMPRODUTO_LB_DESCRICAO));
+		lbCodigodebarras = new JLabel(translate(FRMPRODUTO_LB_CODIGOBARRA));
+		txCodigodeBarras = new JNumericField();
 		txCodigo = new JNumericField();
 		txDescricao = new JTextFieldMaiusculo();
 		lbDepartamento = new JLabel(translate(FRMPRODUTO_LB_DEPARTAMENTO));
@@ -237,7 +247,8 @@ public class FrmProduto extends AbstractInternalFrame {
 		departamentoService.listarDepartamentos().forEach(cbDepartamento::addItem);
 		unidadeService.listarUnidades().forEach(cbUnidade::addItem);
 
-		painelContent.setLayout(new MigLayout("", "[grow][200px:n:200px]", "[][][][][][][][][][][][][][][][][grow]"));
+		painelContent
+				.setLayout(new MigLayout("", "[grow][200px:n:200px,grow]", "[][][][][][][][][][][][][][][][][grow]"));
 		panel.setLayout(new MigLayout("", "[][grow]", "[grow][][][][][grow]"));
 		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Estoque",
 				TitledBorder.CENTER, TitledBorder.TOP, null, null));
@@ -245,7 +256,11 @@ public class FrmProduto extends AbstractInternalFrame {
 		getContentPane().add(painelContent);
 
 		painelContent.add(lbCodigo, "cell 0 0");
+
+		painelContent.add(lbCodigodebarras, "cell 1 0");
 		painelContent.add(txCodigo, "cell 0 1,width 50:100:100");
+
+		painelContent.add(txCodigodeBarras, "cell 1 1,growx");
 		painelContent.add(lbDescricao, "cell 0 2");
 		painelContent.add(txDescricao, "cell 0 3 2 1,growx");
 		painelContent.add(lbDepartamento, "cell 0 4");
@@ -281,6 +296,7 @@ public class FrmProduto extends AbstractInternalFrame {
 			public void carregarObjeto(Produto objeto) {
 
 				txCodigo.setValue(objeto.getIdProduto());
+				txCodigodeBarras.setValue(objeto.getCodigoBarras());
 				txDescricao.setText(objeto.getDescricao());
 				cbDepartamento.setSelectedItem(objeto.getSubcategoria().getCategoria().getDepartamento());
 				cpCategoria.setValue(objeto.getSubcategoria().getCategoria());
@@ -311,6 +327,7 @@ public class FrmProduto extends AbstractInternalFrame {
 			public void preencherObjeto(Produto objetoPesquisa) {
 
 				objetoPesquisa.setIdProduto(txCodigo.getValue());
+				objetoPesquisa.setCodigoBarras(txCodigodeBarras.getValue());
 				objetoPesquisa.setDescricao(txDescricao.getText());
 				objetoPesquisa.setSubcategoria(cpSubCategoria.getObjetoPesquisado());
 				objetoPesquisa.setMarca(cpMarca.getObjetoPesquisado());
