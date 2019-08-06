@@ -37,4 +37,5 @@ public class EstadoService extends AbstractGenericService<Estado> {
 
 		return estadoDAO.listar();
 	}
+
 }

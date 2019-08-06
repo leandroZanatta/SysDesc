@@ -1,5 +1,7 @@
 package br.com.sysdesc.service.cidade;
 
+import java.util.List;
+
 import br.com.sysdesc.repository.dao.CidadeDAO;
 import br.com.sysdesc.repository.model.Cidade;
 import br.com.sysdesc.service.interfaces.impl.AbstractGenericService;
@@ -9,8 +11,16 @@ import br.com.sysdesc.util.exception.SysDescException;
 
 public class CidadeService extends AbstractGenericService<Cidade> {
 
+	private CidadeDAO cidadeDAO;
+
 	public CidadeService() {
-		super(new CidadeDAO(), Cidade::getIdCidade);
+		this(new CidadeDAO());
+	}
+
+	public CidadeService(CidadeDAO cidadeDAO) {
+		super(cidadeDAO, Cidade::getIdCidade);
+
+		this.cidadeDAO = cidadeDAO;
 	}
 
 	@Override
@@ -25,5 +35,10 @@ public class CidadeService extends AbstractGenericService<Cidade> {
 
 			throw new SysDescException(MensagemConstants.MENSAGEM_INSIRA_DESCRICAO_VALIDA);
 		}
+	}
+
+	public List<Cidade> buscarCidadesPorEstado(Long idEstado) {
+
+		return cidadeDAO.buscarCidadePorEstado(idEstado);
 	}
 }
