@@ -6,7 +6,15 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
+import br.com.sysdesc.pesquisa.components.PanelActions;
+import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
+import br.com.sysdesc.repository.model.Cidade;
+import br.com.sysdesc.repository.model.Cliente;
+import br.com.sysdesc.repository.model.Estado;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
+import br.com.sysdesc.service.cidade.CidadeService;
+import br.com.sysdesc.service.cliente.ClienteService;
+import br.com.sysdesc.service.estado.EstadoService;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmCliente extends AbstractInternalFrame {
@@ -21,6 +29,12 @@ public class FrmCliente extends AbstractInternalFrame {
 	private JTextField textField_8;
 	private JTextField textField_9;
 	private JTextField textField_10;
+	private ClienteService clienteService = new ClienteService();
+	private EstadoService estadoService = new EstadoService();
+	private CidadeService cidadeService = new CidadeService();
+	private PanelActions<Cliente> painelDeBotoes;
+	private JComboBox<Estado> cbEstado;
+	private JComboBox<Cidade> cbCidade;
 
 	public FrmCliente(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
@@ -77,11 +91,12 @@ public class FrmCliente extends AbstractInternalFrame {
 		JLabel lblCidade = new JLabel("Cidade:");
 		getContentPane().add(lblCidade, "cell 4 6");
 
-		JComboBox comboBox = new JComboBox();
-		getContentPane().add(comboBox, "cell 0 7 4 1,growx");
-
-		JComboBox comboBox_3 = new JComboBox();
-		getContentPane().add(comboBox_3, "cell 4 7 3 1,growx");
+		cbEstado = new JComboBox<Estado>();
+		estadoService.listarEstados().forEach(cbEstado::addItem);
+		getContentPane().add(cbEstado, "cell 0 7 4 1,growx");
+		cbEstado.addActionListener((e) -> carregarCidades());
+		cbCidade = new JComboBox<>();
+		getContentPane().add(cbCidade, "cell 4 7 3 1,growx");
 
 		JLabel lblEndereo = new JLabel("Endereço:");
 		getContentPane().add(lblEndereo, "cell 0 8");
@@ -131,17 +146,41 @@ public class FrmCliente extends AbstractInternalFrame {
 		JLabel lblSexo = new JLabel("Sexo:");
 		getContentPane().add(lblSexo, "cell 2 14");
 
-		JLabel lblSituao = new JLabel("Situação:");
-		getContentPane().add(lblSituao, "cell 5 14");
+		JLabel lblSituacao = new JLabel("Situação:");
+		getContentPane().add(lblSituacao, "cell 5 14");
 
-		JComboBox comboBox_1 = new JComboBox();
-		getContentPane().add(comboBox_1, "cell 0 15 2 1,growx");
+		JComboBox cbEstadoCivil = new JComboBox();
+		getContentPane().add(cbEstadoCivil, "cell 0 15 2 1,growx");
 
-		JComboBox comboBox_2 = new JComboBox();
-		getContentPane().add(comboBox_2, "cell 2 15 3 1,growx");
+		JComboBox cbSexo = new JComboBox();
+		getContentPane().add(cbSexo, "cell 2 15 3 1,growx");
 
-		JComboBox comboBox_4 = new JComboBox();
-		getContentPane().add(comboBox_4, "cell 5 15 2 1,growx");
+		JComboBox cbSituacao = new JComboBox();
+		getContentPane().add(cbSituacao, "cell 5 15 2 1,growx");
+		painelDeBotoes = new PanelActions<Cliente>(this, clienteService, PesquisaEnum.PES_CLIENTES) {
+
+			@Override
+			public void carregarObjeto(Cliente objeto) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void preencherObjeto(Cliente objetoPesquisa) {
+				// TODO Auto-generated method stub
+
+			}
+		};
+		getContentPane().add(painelDeBotoes, "cell 0 16 7 1,grow");
+	}
+
+	private void carregarCidades() {
+		cbCidade.removeAllItems();
+
+		if (cbEstado.getSelectedIndex() >= 0) {
+			cidadeService.buscarCidadesPorEstado(((Estado) cbEstado.getSelectedItem()).getIdEstado())
+					.forEach(cbCidade::addItem);
+		}
 
 	}
 
