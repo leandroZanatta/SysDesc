@@ -1,6 +1,13 @@
+
 package br.com.sysdesc.ui;
 
 import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_SUBCATEGORIAS;
+import static br.com.sysdesc.util.resources.Resources.FRMSUBCATEGORIA_LB_CATEGORIA;
+import static br.com.sysdesc.util.resources.Resources.FRMSUBCATEGORIA_LB_CODIGO;
+import static br.com.sysdesc.util.resources.Resources.FRMSUBCATEGORIA_LB_DEPARTAMENTO;
+import static br.com.sysdesc.util.resources.Resources.FRMSUBCATEGORIA_LB_DESCRICAO;
+import static br.com.sysdesc.util.resources.Resources.FRMSUBCATEGORIA_TITLE;
+import static br.com.sysdesc.util.resources.Resources.translate;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -49,16 +56,18 @@ public class FrmSubCategoria extends AbstractInternalFrame {
 
 		setSize(450, 240);
 		setClosable(Boolean.TRUE);
+		setTitle(translate(FRMSUBCATEGORIA_TITLE));
+
 		getContentPane().setLayout(new MigLayout("", "[grow]", "[][][][][][][][][]"));
 
-		lbCodigo = new JLabel("Código:");
+		lbCodigo = new JLabel(translate(FRMSUBCATEGORIA_LB_CODIGO));
 		txCodigo = new JNumericField();
 		cbCategoria = new JComboBox<>();
-		lbDescricao = new JLabel("Descrição:");
+		lbDescricao = new JLabel(translate(FRMSUBCATEGORIA_LB_DESCRICAO));
 		txDescricao = new JTextFieldMaiusculo();
 		cbDepartamento = new JComboBox<>();
-		lbCategoria = new JLabel("Categoria:");
-		lbDepartamento = new JLabel("Departamento:");
+		lbCategoria = new JLabel(translate(FRMSUBCATEGORIA_LB_CATEGORIA));
+		lbDepartamento = new JLabel(translate(FRMSUBCATEGORIA_LB_DEPARTAMENTO));
 
 		AutoCompleteDecorator.decorate(cbDepartamento);
 		AutoCompleteDecorator.decorate(cbCategoria);

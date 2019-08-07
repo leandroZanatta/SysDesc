@@ -26,6 +26,9 @@ public class Programa implements Serializable {
 	@Column(name = "cd_programa", insertable = false, updatable = false)
 	private Long codigoModulo;
 
+	@Column(name = "nr_ordem")
+	private Long ordem;
+
 	@ManyToOne
 	@JoinColumn(name = "cd_programa")
 	private Programa programa;

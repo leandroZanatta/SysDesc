@@ -17,6 +17,10 @@
 				<constraints nullable="false" />
 			</column>
 
+			<column name="nr_codigobarras" type="NUMBER(18,0)" remarks="CÓDIGO DE BARRAS">
+				<constraints nullable="true"/>
+			</column>
+			
 			<column name="cd_subcategoria" type="NUMBER(18,0)" remarks="CÓDIGO DA SUBCATEGORIA">
 				<constraints nullable="false" foreignKeyName="produto_subcategoria_fk" references="tb_subcategoria(id_subcategoria)" />
 			</column>

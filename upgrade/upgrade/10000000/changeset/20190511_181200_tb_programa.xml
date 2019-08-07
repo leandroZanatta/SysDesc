@@ -28,6 +28,10 @@
 			<column name="tx_icone" type="VARCHAR(100)" remarks="ÍCONE DO MENU">
 				<constraints nullable="true" />
 			</column>
+			
+			<column name="nr_ordem" type="NUMBER(18,0)" remarks="ORDEM DO MENU">
+				<constraints nullable="false" />
+			</column>
 
 			<column name="fl_acessorapido" type="BOOLEAN" remarks="ADICIONA AO ACESSO RÁPIDO">
 				<constraints nullable="false" />

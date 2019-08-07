@@ -31,6 +31,9 @@ public class Cidade implements Serializable {
 	@Column(name = "tx_descricao")
 	private String descricao;
 
+	@Column(name = "cd_estado", insertable = false, updatable = false)
+	private Long codigoEstado;
+
 	@ManyToOne
 	@JoinColumn(name = "cd_estado")
 	private Estado estado;
@@ -38,4 +41,8 @@ public class Cidade implements Serializable {
 	@OneToMany(mappedBy = "cidade")
 	private List<Cliente> clientes;
 
+	@Override
+	public String toString() {
+		return this.descricao;
+	}
 }
