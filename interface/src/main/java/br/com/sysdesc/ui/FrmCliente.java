@@ -1,9 +1,15 @@
 package br.com.sysdesc.ui;
 
+import java.text.ParseException;
+
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
+
+import com.toedter.calendar.JDateChooser;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.pesquisa.components.PanelActions;
@@ -18,17 +24,17 @@ import br.com.sysdesc.service.estado.EstadoService;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmCliente extends AbstractInternalFrame {
-	private JTextField textField;
+	private JTextField txCodigo;
 	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
+	private JTextField txIncricaoEstadual;
+	private JTextField txEndereco;
+	private JTextField txBairro;
+	private JFormattedTextField txCelular;
 	private JTextField textField_1;
-	private JTextField textField_7;
-	private JTextField textField_8;
-	private JTextField textField_9;
-	private JTextField textField_10;
+	private JFormattedTextField txNumero;
+	private JDateChooser txDataDeNascimento;
+	private JFormattedTextField txCep;
+	private JFormattedTextField txCgc;
 	private ClienteService clienteService = new ClienteService();
 	private EstadoService estadoService = new EstadoService();
 	private CidadeService cidadeService = new CidadeService();
@@ -36,7 +42,7 @@ public class FrmCliente extends AbstractInternalFrame {
 	private JComboBox<Estado> cbEstado;
 	private JComboBox<Cidade> cbCidade;
 
-	public FrmCliente(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
+	public FrmCliente(PermissaoPrograma permissaoPrograma, Long codigoUsuario) throws ParseException {
 		super(permissaoPrograma, codigoUsuario);
 
 		setSize(600, 440);
@@ -50,9 +56,9 @@ public class FrmCliente extends AbstractInternalFrame {
 		JLabel lblCpfcnpj = new JLabel("CPF/CNPJ:");
 		getContentPane().add(lblCpfcnpj, "cell 5 0 2 1");
 
-		textField = new JTextField();
-		getContentPane().add(textField, "cell 0 1,growx");
-		textField.setColumns(10);
+		txCodigo = new JTextField();
+		getContentPane().add(txCodigo, "cell 0 1,growx");
+		txCodigo.setColumns(10);
 
 		JRadioButton rdbtnFisca = new JRadioButton("Pessoa Fisíca");
 		getContentPane().add(rdbtnFisca, "flowx,cell 1 1 2 1,alignx right");
@@ -60,9 +66,11 @@ public class FrmCliente extends AbstractInternalFrame {
 		JRadioButton rdbtnJurdica = new JRadioButton("Pessoa Jurídica");
 		getContentPane().add(rdbtnJurdica, "cell 3 1 2 1");
 
-		textField_10 = new JTextField();
-		getContentPane().add(textField_10, "cell 5 1 2 1,growx");
-		textField_10.setColumns(10);
+		MaskFormatter mascaraCgc = new MaskFormatter("###.###.###-##");
+		mascaraCgc.setPlaceholderCharacter('_');
+		txCgc = new JFormattedTextField(mascaraCgc);
+		getContentPane().add(txCgc, "cell 5 1 2 1,growx");
+		txCgc.setColumns(10);
 
 		JLabel lblRazoSocial = new JLabel("Razão Social:");
 		getContentPane().add(lblRazoSocial, "cell 0 2");
@@ -77,13 +85,12 @@ public class FrmCliente extends AbstractInternalFrame {
 		JLabel lblDataNascimento = new JLabel("Data Nascimento:");
 		getContentPane().add(lblDataNascimento, "cell 5 4");
 
-		textField_3 = new JTextField();
-		getContentPane().add(textField_3, "flowy,cell 0 5 5 1,growx");
-		textField_3.setColumns(10);
+		txIncricaoEstadual = new JTextField();
+		getContentPane().add(txIncricaoEstadual, "flowy,cell 0 5 5 1,growx");
+		txIncricaoEstadual.setColumns(10);
 
-		textField_8 = new JTextField();
-		getContentPane().add(textField_8, "cell 5 5 2 1,growx");
-		textField_8.setColumns(10);
+		txDataDeNascimento = new JDateChooser("dd/MM/yyyy", "##/##/#####", '_');
+		getContentPane().add(txDataDeNascimento, "cell 5 5 2 1,growx");
 
 		JLabel lblEstado = new JLabel("Estado:");
 		getContentPane().add(lblEstado, "cell 0 6");
@@ -104,13 +111,15 @@ public class FrmCliente extends AbstractInternalFrame {
 		JLabel lblNmero = new JLabel("Número:");
 		getContentPane().add(lblNmero, "cell 6 8");
 
-		textField_4 = new JTextField();
-		getContentPane().add(textField_4, "cell 0 9 6 1,growx");
-		textField_4.setColumns(10);
+		txEndereco = new JTextField();
+		getContentPane().add(txEndereco, "cell 0 9 6 1,growx");
+		txEndereco.setColumns(10);
 
-		textField_7 = new JTextField();
-		getContentPane().add(textField_7, "cell 6 9,growx");
-		textField_7.setColumns(10);
+		MaskFormatter mascaraNumero = new MaskFormatter("(##) #####-####");
+		mascaraNumero.setPlaceholderCharacter('_');
+		txNumero = new JFormattedTextField();
+		getContentPane().add(txNumero, "cell 6 9,growx");
+		txNumero.setColumns(10);
 
 		JLabel lblNewLabel = new JLabel("Bairro:");
 		getContentPane().add(lblNewLabel, "cell 0 10");
@@ -118,23 +127,27 @@ public class FrmCliente extends AbstractInternalFrame {
 		JLabel lblCep = new JLabel("Cep:");
 		getContentPane().add(lblCep, "cell 5 10");
 
-		textField_5 = new JTextField();
-		getContentPane().add(textField_5, "cell 0 11 5 1,growx");
-		textField_5.setColumns(10);
+		txBairro = new JTextField();
+		getContentPane().add(txBairro, "cell 0 11 5 1,growx");
+		txBairro.setColumns(10);
 
-		textField_9 = new JTextField();
-		getContentPane().add(textField_9, "cell 5 11 2 1,growx");
-		textField_9.setColumns(10);
+		MaskFormatter mascaraCep = new MaskFormatter("#####-###");
+		mascaraCep.setPlaceholderCharacter('_');
+		txCep = new JFormattedTextField(mascaraCep);
+		getContentPane().add(txCep, "cell 5 11 2 1,growx");
+		txCep.setColumns(10);
 
-		JLabel lblNewLabel_1 = new JLabel("Telefone:");
-		getContentPane().add(lblNewLabel_1, "cell 0 12");
+		JLabel lbCelular = new JLabel("Celular:");
+		getContentPane().add(lbCelular, "cell 0 12");
 
 		JLabel lblEmail = new JLabel("Email:");
 		getContentPane().add(lblEmail, "cell 3 12");
 
-		textField_6 = new JTextField();
-		getContentPane().add(textField_6, "cell 0 13 3 1,growx");
-		textField_6.setColumns(10);
+		MaskFormatter mascaraCelular = new MaskFormatter("(##) #####-####");
+		mascaraCelular.setPlaceholderCharacter('_');
+		txCelular = new JFormattedTextField(mascaraCelular);
+		getContentPane().add(txCelular, "cell 0 13 3 1,growx");
+		txCelular.setColumns(10);
 
 		textField_1 = new JTextField();
 		getContentPane().add(textField_1, "cell 3 13 4 1,growx");

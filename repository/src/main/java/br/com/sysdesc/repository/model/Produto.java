@@ -1,3 +1,4 @@
+
 package br.com.sysdesc.repository.model;
 
 import java.io.Serializable;
@@ -29,9 +30,6 @@ public class Produto implements Serializable {
 
 	@Column(name = "tx_descricao")
 	private String descricao;
-
-	@Column(name = "nr_codigobarras")
-	private Long codigoBarras;
 
 	@Column(name = "vl_estoqueminimo")
 	private BigDecimal valorEstoqueMinimo;
