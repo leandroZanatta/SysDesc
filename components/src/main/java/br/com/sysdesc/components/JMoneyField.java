@@ -107,6 +107,13 @@ public class JMoneyField extends JFormattedTextField {
 	}
 
 	public void setValue(BigDecimal value) {
+
+		if (value == null) {
+			setText("");
+
+			return;
+		}
+
 		setText(new DecimalFormat("0.00").format(value.doubleValue()));
 	}
 }

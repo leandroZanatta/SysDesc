@@ -21,6 +21,7 @@
 		<class>br.com.sysdesc.repository.model.Subcategoria</class>
 		<class>br.com.sysdesc.repository.model.Produto</class>
 		<class>br.com.sysdesc.repository.model.Versao</class>
+		<class>br.com.sysdesc.repository.model.FormasPagamento</class>
 	</persistence-unit>
 
 </persistence>
