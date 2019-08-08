@@ -13,9 +13,14 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
+import br.com.sysdesc.components.JNumericField;
+import br.com.sysdesc.pesquisa.components.CampoPesquisa;
 import br.com.sysdesc.pesquisa.components.PanelActions;
+import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
+import br.com.sysdesc.repository.model.Cliente;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Usuario;
+import br.com.sysdesc.service.cliente.ClienteService;
 import br.com.sysdesc.service.login.LoginService;
 import br.com.sysdesc.util.classes.CryptoUtil;
 import br.com.sysdesc.util.classes.StringUtil;
@@ -31,8 +36,11 @@ public class FrmUsuario extends AbstractInternalFrame {
 	private JLabel lblId;
 	private JLabel lblUsurio;
 	private JLabel lblSenha;
+	private JNumericField txCodigo;
 	private PanelActions<Usuario> panelActions;
 	private LoginService loginService = new LoginService();
+	private CampoPesquisa<Cliente> pesquisaCliente;
+	private ClienteService clienteService = new ClienteService();
 
 	public FrmUsuario(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
@@ -53,13 +61,21 @@ public class FrmUsuario extends AbstractInternalFrame {
 
 		passwordField = new JPasswordField();
 		txUsuario = new JTextField();
+		pesquisaCliente = new CampoPesquisa<Cliente>(clienteService, PesquisaEnum.PES_CLIENTES, getCodigoUsuario()) {
 
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String formatarValorCampo(Cliente objeto) {
+				return String.format("%d - %s", objeto.getIdCliente(), objeto.getNome());
+			}
+		};
 		painelContent.setLayout(new MigLayout("", "[grow]", "[][][][][][][grow]"));
 		getContentPane().add(painelContent);
 
 		painelContent.add(lblId, "cell 0 0");
 		painelContent.add(lblUsurio, "cell 0 2");
-		painelContent.add(txUsuario, "cell 0 3,width 50:100:100");
+		painelContent.add(pesquisaCliente, "cell 0 3,width 50:100:100");
 		painelContent.add(lblSenha, "cell 0 4");
 		painelContent.add(passwordField, "cell 0 5,growx");
 
