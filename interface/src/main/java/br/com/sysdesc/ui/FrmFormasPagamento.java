@@ -12,7 +12,7 @@ import br.com.sysdesc.service.cliente.ClienteService;
 import br.com.sysdesc.service.estado.EstadoService;
 import net.miginfocom.swing.MigLayout;
 
-public class FrmFormasdePagamento extends AbstractInternalFrame {
+public class FrmFormasPagamento extends AbstractInternalFrame {
 	private ClienteService clienteService = new ClienteService();
 	private EstadoService estadoService = new EstadoService();
 	private CidadeService cidadeService = new CidadeService();
@@ -20,7 +20,7 @@ public class FrmFormasdePagamento extends AbstractInternalFrame {
 	private JTextField textField;
 	private JTextField textField_1;
 
-	public FrmFormasdePagamento(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
+	public FrmFormasPagamento(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
 		setTitle("Cadastro De Formad DE pagamento");
 

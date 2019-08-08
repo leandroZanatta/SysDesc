@@ -10,6 +10,7 @@ import br.com.sysdesc.ui.FrmCidade;
 import br.com.sysdesc.ui.FrmCliente;
 import br.com.sysdesc.ui.FrmDepartamento;
 import br.com.sysdesc.ui.FrmEstado;
+import br.com.sysdesc.ui.FrmFormasPagamento;
 import br.com.sysdesc.ui.FrmMarca;
 import br.com.sysdesc.ui.FrmPerfil;
 import br.com.sysdesc.ui.FrmProduto;
@@ -41,7 +42,9 @@ public enum ProgramasEnum {
 
 	CADASTRO_SUBCATEGORIA(11L, FrmSubCategoria.class),
 
-	CADASTRO_PRODUTO(12L, FrmProduto.class);
+	CADASTRO_PRODUTO(12L, FrmProduto.class),
+
+	CADASTRO_FORMAS_PAGAMENTO(13L, FrmFormasPagamento.class);
 
 	private static Map<Long, ProgramasEnum> mapa = new HashMap<>();
 
