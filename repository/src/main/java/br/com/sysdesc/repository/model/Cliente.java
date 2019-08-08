@@ -28,12 +28,51 @@ public class Cliente implements Serializable {
 	@Column(name = "id_cliente")
 	private Long idCliente;
 
+	@Column(name = "fl_tipocliente")
+	private String flagTipoCliente;
+
+	@Column(name = "tx_cgc")
+	private String cgc;
+
 	@Column(name = "tx_nome")
 	private String nome;
+
+	@Column(name = "dt_nascimento")
+	private String datadenascimento;
+
+	@Column(name = "tx_rg")
+	private String rgie;
 
 	@ManyToOne
 	@JoinColumn(name = "cd_cidade")
 	private Cidade cidade;
+
+	@Column(name = "tx_endereco")
+	private String endereco;
+
+	@Column(name = "tx_numero")
+	private String numero;
+
+	@Column(name = "tx_bairro")
+	private String bairro;
+
+	@Column(name = "tx_cep")
+	private String cep;
+
+	@Column(name = "tx_telefone")
+	private String telefone;
+
+	@Column(name = "tx_email")
+	private String email;
+
+	@Column(name = "nr_estadocivil")
+	private Long estadocivil;
+
+	@Column(name = "fl_sexo")
+	private String sexo;
+
+	@Column(name = "nr_situacao")
+	private Long situacao;
 
 	@OneToMany(mappedBy = "cliente")
 	private List<Usuario> usuarios;
