@@ -2,6 +2,7 @@ package br.com.sysdesc.ui;
 
 import java.text.ParseException;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -31,7 +32,7 @@ public class FrmCliente extends AbstractInternalFrame {
 	private JTextField txBairro;
 	private JFormattedTextField txCelular;
 	private JTextField textField_1;
-	private JFormattedTextField txNumero;
+	private JTextField txNumero;
 	private JDateChooser txDataDeNascimento;
 	private JFormattedTextField txCep;
 	private JFormattedTextField txCgc;
@@ -41,6 +42,17 @@ public class FrmCliente extends AbstractInternalFrame {
 	private PanelActions<Cliente> painelDeBotoes;
 	private JComboBox<Estado> cbEstado;
 	private JComboBox<Cidade> cbCidade;
+	private ButtonGroup buttonGroup;
+	private JLabel lblCpfcnpj;
+	private JLabel lblRazoSocial;
+	private JLabel lblDataNascimento;
+	private JLabel lblInscrioEstadual;
+	private JLabel lblEstadoCivil;
+	private JLabel lblSexo;
+	private JLabel lblCdigo;
+	private JComboBox cbEstadoCivil;
+	private JComboBox cbSexo;
+	private MaskFormatter mascaraCgc;
 
 	public FrmCliente(PermissaoPrograma permissaoPrograma, Long codigoUsuario) throws ParseException {
 		super(permissaoPrograma, codigoUsuario);
@@ -50,10 +62,10 @@ public class FrmCliente extends AbstractInternalFrame {
 		getContentPane().setLayout(new MigLayout("", "[grow][grow][grow][grow][grow][grow][grow]",
 				"[][][][][][][][][][][][][][][][][grow]"));
 
-		JLabel lblCdigo = new JLabel("Código:");
+		lblCdigo = new JLabel("Código:");
 		getContentPane().add(lblCdigo, "cell 0 0");
 
-		JLabel lblCpfcnpj = new JLabel("CPF/CNPJ:");
+		lblCpfcnpj = new JLabel("CPF/CNPJ:");
 		getContentPane().add(lblCpfcnpj, "cell 5 0 2 1");
 
 		txCodigo = new JTextField();
@@ -66,23 +78,29 @@ public class FrmCliente extends AbstractInternalFrame {
 		JRadioButton rdbtnJurdica = new JRadioButton("Pessoa Jurídica");
 		getContentPane().add(rdbtnJurdica, "cell 3 1 2 1");
 
+		buttonGroup = new ButtonGroup();
+		buttonGroup.add(rdbtnFisca);
+		buttonGroup.add(rdbtnJurdica);
+		rdbtnFisca.addActionListener((e) -> selecionouPessoaFisica());
+		rdbtnJurdica.addActionListener((e) -> selecionouPessoaJuridica());
+
 		MaskFormatter mascaraCgc = new MaskFormatter("###.###.###-##");
 		mascaraCgc.setPlaceholderCharacter('_');
 		txCgc = new JFormattedTextField(mascaraCgc);
 		getContentPane().add(txCgc, "cell 5 1 2 1,growx");
 		txCgc.setColumns(10);
 
-		JLabel lblRazoSocial = new JLabel("Razão Social:");
+		lblRazoSocial = new JLabel("Razão Social:");
 		getContentPane().add(lblRazoSocial, "cell 0 2");
 
 		textField_2 = new JTextField();
 		getContentPane().add(textField_2, "cell 0 3 7 1,growx");
 		textField_2.setColumns(10);
 
-		JLabel lblInscrioEstadual = new JLabel("Inscrição Estadual:");
+		lblInscrioEstadual = new JLabel("Inscrição Estadual:");
 		getContentPane().add(lblInscrioEstadual, "cell 0 4");
 
-		JLabel lblDataNascimento = new JLabel("Data Nascimento:");
+		lblDataNascimento = new JLabel("Data Nascimento:");
 		getContentPane().add(lblDataNascimento, "cell 5 4");
 
 		txIncricaoEstadual = new JTextField();
@@ -115,9 +133,7 @@ public class FrmCliente extends AbstractInternalFrame {
 		getContentPane().add(txEndereco, "cell 0 9 6 1,growx");
 		txEndereco.setColumns(10);
 
-		MaskFormatter mascaraNumero = new MaskFormatter("(##) #####-####");
-		mascaraNumero.setPlaceholderCharacter('_');
-		txNumero = new JFormattedTextField();
+		txNumero = new JTextField();
 		getContentPane().add(txNumero, "cell 6 9,growx");
 		txNumero.setColumns(10);
 
@@ -153,19 +169,19 @@ public class FrmCliente extends AbstractInternalFrame {
 		getContentPane().add(textField_1, "cell 3 13 4 1,growx");
 		textField_1.setColumns(10);
 
-		JLabel lblEstadoCivil = new JLabel("Estado Civil:");
+		lblEstadoCivil = new JLabel("Estado Civil:");
 		getContentPane().add(lblEstadoCivil, "cell 0 14");
 
-		JLabel lblSexo = new JLabel("Sexo:");
+		lblSexo = new JLabel("Sexo:");
 		getContentPane().add(lblSexo, "cell 2 14");
 
 		JLabel lblSituacao = new JLabel("Situação:");
 		getContentPane().add(lblSituacao, "cell 5 14");
 
-		JComboBox cbEstadoCivil = new JComboBox();
+		cbEstadoCivil = new JComboBox();
 		getContentPane().add(cbEstadoCivil, "cell 0 15 2 1,growx");
 
-		JComboBox cbSexo = new JComboBox();
+		cbSexo = new JComboBox();
 		getContentPane().add(cbSexo, "cell 2 15 3 1,growx");
 
 		JComboBox cbSituacao = new JComboBox();
@@ -185,6 +201,43 @@ public class FrmCliente extends AbstractInternalFrame {
 			}
 		};
 		getContentPane().add(painelDeBotoes, "cell 0 16 7 1,grow");
+	}
+
+	private void selecionouPessoaJuridica() {
+		System.out.println("a");
+		lblCpfcnpj.setText("CNPJ:");
+		lblRazoSocial.setText("Razão Social:");
+		lblDataNascimento.setText("Data de Fundação:");
+		lblInscrioEstadual.setText("Inscrição Estadual:");
+		lblEstadoCivil.setEnabled(false);
+		lblSexo.setEnabled(false);
+		cbEstadoCivil.setEnabled(false);
+		cbSexo.setEnabled(false);
+		try {
+			mascaraCgc.setMask("##.###.###/####-##");
+
+		} catch (ParseException e) {
+
+		}
+	}
+
+	private void selecionouPessoaFisica() {
+		System.out.println("b");
+		lblCpfcnpj.setText("CPF:");
+		lblRazoSocial.setText("Nome:");
+		lblDataNascimento.setText("Data de Nascimento:");
+		lblInscrioEstadual.setText("RG:");
+		lblEstadoCivil.setEnabled(true);
+		lblSexo.setEnabled(true);
+		cbEstadoCivil.setEnabled(true);
+		cbSexo.setEnabled(true);
+
+		try {
+			mascaraCgc.setMask("###.###.###-##");
+
+		} catch (ParseException e) {
+
+		}
 	}
 
 	private void carregarCidades() {
