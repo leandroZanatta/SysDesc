@@ -2,14 +2,13 @@ package br.com.sysdesc.ui;
 
 import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_USUARIOS;
 import static br.com.sysdesc.util.resources.Resources.FRMUSUARIO_LB_CODIGO;
-import static br.com.sysdesc.util.resources.Resources.FRMUSUARIO_LB_SENHA;
 import static br.com.sysdesc.util.resources.Resources.FRMUSUARIO_LB_USUARIO;
 import static br.com.sysdesc.util.resources.Resources.FRMUSUARIO_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
@@ -32,10 +31,9 @@ public class FrmUsuario extends AbstractInternalFrame {
 	private JPanel painelContent;
 	// private TextFieldPesquisa<Usuario> txCodigo;
 	private JTextField txUsuario;
-	private JPasswordField passwordField;
-	private JLabel lblId;
-	private JLabel lblUsurio;
-	private JLabel lblSenha;
+	private JLabel lblCliente;
+	private JLabel lblUsuario;
+	private JLabel lblCodigo;
 	private JNumericField txCodigo;
 	private PanelActions<Usuario> panelActions;
 	private LoginService loginService = new LoginService();
@@ -55,11 +53,12 @@ public class FrmUsuario extends AbstractInternalFrame {
 		setTitle(translate(FRMUSUARIO_TITLE));
 
 		painelContent = new JPanel();
-		lblId = new JLabel(translate(FRMUSUARIO_LB_CODIGO));
-		lblUsurio = new JLabel(translate(FRMUSUARIO_LB_USUARIO));
-		lblSenha = new JLabel(translate(FRMUSUARIO_LB_SENHA));
+		lblCodigo = new JLabel(translate(FRMUSUARIO_LB_CODIGO));
+		lblCliente = new JLabel("Cliente:");
+		lblUsuario = new JLabel(translate(FRMUSUARIO_LB_USUARIO));
+		txCodigo = new JNumericField();
 
-		passwordField = new JPasswordField();
+		lblCodigo = new JLabel("Código:");
 		txUsuario = new JTextField();
 		pesquisaCliente = new CampoPesquisa<Cliente>(clienteService, PesquisaEnum.PES_CLIENTES, getCodigoUsuario()) {
 
@@ -73,11 +72,12 @@ public class FrmUsuario extends AbstractInternalFrame {
 		painelContent.setLayout(new MigLayout("", "[grow]", "[][][][][][][grow]"));
 		getContentPane().add(painelContent);
 
-		painelContent.add(lblId, "cell 0 0");
-		painelContent.add(lblUsurio, "cell 0 2");
-		painelContent.add(pesquisaCliente, "cell 0 3,width 50:100:100");
-		painelContent.add(lblSenha, "cell 0 4");
-		painelContent.add(passwordField, "cell 0 5,growx");
+		painelContent.add(lblCodigo, "cell 0 0");
+		painelContent.add(txCodigo, "cell 0 1,width 50:100:100");
+		painelContent.add(lblCliente, "cell 0 2");
+		painelContent.add(pesquisaCliente, "cell 0 3,growx");
+		painelContent.add(lblUsuario, "cell 0 4");
+		painelContent.add(txUsuario, "cell 0 5,growx");
 
 		panelActions = new PanelActions<Usuario>(this, loginService, PES_USUARIOS) {
 
@@ -85,20 +85,24 @@ public class FrmUsuario extends AbstractInternalFrame {
 
 			@Override
 			public void carregarObjeto(Usuario objeto) {
-				// txCodigo.setText(objeto == null ? "" : objeto.getIdUsuario().toString());
-				txUsuario.setText(objeto == null ? "" : objeto.getUsuario());
-				passwordField.setText(objeto == null ? "" : objeto.getSenha());
+
+				txCodigo.setValue(objeto.getIdUsuario());
+				txUsuario.setText(objeto.getUsuario());
+				pesquisaCliente.setValue(objeto.getCliente());
 			}
 
 			@Override
 			public void preencherObjeto(Usuario objetoPesquisa) {
 
+				objetoPesquisa.setIdUsuario(txCodigo.getValue());
 				objetoPesquisa.setUsuario(txUsuario.getText());
+				objetoPesquisa.setCliente(pesquisaCliente.getObjetoPesquisado());
 
-				if (!isEdit) {
-					objetoPesquisa.setSenha(CryptoUtil.toMD5(StringUtil.arrayToString(passwordField.getPassword())));
+				if (StringUtil.isNullOrEmpty(objetoPesquisa.getSenha())) {
+					String senha = JOptionPane.showInputDialog(null, "Insira uma Senha", "Verificaçao");
+
+					objetoPesquisa.setSenha(CryptoUtil.toMD5(senha));
 				}
-
 			}
 		};
 
