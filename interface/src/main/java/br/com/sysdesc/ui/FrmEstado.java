@@ -62,7 +62,7 @@ public class FrmEstado extends AbstractInternalFrame {
 		painelContent.add(lblDescricao, "cell 0 2");
 		painelContent.add(txDescricao, "cell 0 3,growx");
 		painelContent.add(lblUF, "cell 0 4,growx");
-		painelContent.add(txUF, "cell 0 5,growx");
+		painelContent.add(txUF, "cell 0 5,width 50:100:100");
 
 		panelActions = new PanelActions<Estado>(this, estadoService, PES_ESTADOS) {
 

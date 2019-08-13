@@ -13,6 +13,8 @@ import javax.swing.text.MaskFormatter;
 import com.toedter.calendar.JDateChooser;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
+import br.com.sysdesc.components.JNumericField;
+import br.com.sysdesc.enumerator.TipoClienteEnum;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.repository.model.Cidade;
@@ -25,7 +27,7 @@ import br.com.sysdesc.service.estado.EstadoService;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmCliente extends AbstractInternalFrame {
-	private JTextField txCodigo;
+	private JNumericField txCodigo;
 	private JTextField textField_2;
 	private JTextField txIncricaoEstadual;
 	private JTextField txEndereco;
@@ -52,7 +54,8 @@ public class FrmCliente extends AbstractInternalFrame {
 	private JLabel lblCdigo;
 	private JComboBox cbEstadoCivil;
 	private JComboBox cbSexo;
-	private MaskFormatter mascaraCgc;
+	private MaskFormatter mascaraCPF;
+	private MaskFormatter mascaraCNPJ;
 
 	public FrmCliente(PermissaoPrograma permissaoPrograma, Long codigoUsuario) throws ParseException {
 		super(permissaoPrograma, codigoUsuario);
@@ -68,7 +71,7 @@ public class FrmCliente extends AbstractInternalFrame {
 		lblCpfcnpj = new JLabel("CPF/CNPJ:");
 		getContentPane().add(lblCpfcnpj, "cell 5 0 2 1");
 
-		txCodigo = new JTextField();
+		txCodigo = new JNumericField();
 		getContentPane().add(txCodigo, "cell 0 1,growx");
 		txCodigo.setColumns(10);
 
@@ -84,18 +87,14 @@ public class FrmCliente extends AbstractInternalFrame {
 		rdbtnFisca.addActionListener((e) -> selecionouPessoaFisica());
 		rdbtnJurdica.addActionListener((e) -> selecionouPessoaJuridica());
 
-		MaskFormatter mascaraCgc = new MaskFormatter("###.###.###-##");
-		mascaraCgc.setPlaceholderCharacter('_');
-		txCgc = new JFormattedTextField(mascaraCgc);
+		txCgc = new JFormattedTextField();
 		getContentPane().add(txCgc, "cell 5 1 2 1,growx");
-		txCgc.setColumns(10);
 
 		lblRazoSocial = new JLabel("Razão Social:");
 		getContentPane().add(lblRazoSocial, "cell 0 2");
 
 		textField_2 = new JTextField();
 		getContentPane().add(textField_2, "cell 0 3 7 1,growx");
-		textField_2.setColumns(10);
 
 		lblInscrioEstadual = new JLabel("Inscrição Estadual:");
 		getContentPane().add(lblInscrioEstadual, "cell 0 4");
@@ -131,11 +130,9 @@ public class FrmCliente extends AbstractInternalFrame {
 
 		txEndereco = new JTextField();
 		getContentPane().add(txEndereco, "cell 0 9 6 1,growx");
-		txEndereco.setColumns(10);
 
 		txNumero = new JTextField();
 		getContentPane().add(txNumero, "cell 6 9,growx");
-		txNumero.setColumns(10);
 
 		JLabel lblNewLabel = new JLabel("Bairro:");
 		getContentPane().add(lblNewLabel, "cell 0 10");
@@ -145,13 +142,17 @@ public class FrmCliente extends AbstractInternalFrame {
 
 		txBairro = new JTextField();
 		getContentPane().add(txBairro, "cell 0 11 5 1,growx");
-		txBairro.setColumns(10);
 
 		MaskFormatter mascaraCep = new MaskFormatter("#####-###");
+
+		mascaraCNPJ = new MaskFormatter("##.###.###/####-##");
+		mascaraCNPJ.setPlaceholderCharacter('_');
 		mascaraCep.setPlaceholderCharacter('_');
+
+		mascaraCPF = new MaskFormatter("###.###.###-##");
+		mascaraCPF.setPlaceholderCharacter('_');
 		txCep = new JFormattedTextField(mascaraCep);
 		getContentPane().add(txCep, "cell 5 11 2 1,growx");
-		txCep.setColumns(10);
 
 		JLabel lbCelular = new JLabel("Celular:");
 		getContentPane().add(lbCelular, "cell 0 12");
@@ -163,11 +164,9 @@ public class FrmCliente extends AbstractInternalFrame {
 		mascaraCelular.setPlaceholderCharacter('_');
 		txCelular = new JFormattedTextField(mascaraCelular);
 		getContentPane().add(txCelular, "cell 0 13 3 1,growx");
-		txCelular.setColumns(10);
 
 		textField_1 = new JTextField();
 		getContentPane().add(textField_1, "cell 3 13 4 1,growx");
-		textField_1.setColumns(10);
 
 		lblEstadoCivil = new JLabel("Estado Civil:");
 		getContentPane().add(lblEstadoCivil, "cell 0 14");
@@ -190,8 +189,16 @@ public class FrmCliente extends AbstractInternalFrame {
 
 			@Override
 			public void carregarObjeto(Cliente objeto) {
-				// TODO Auto-generated method stub
+				txCodigo.setValue(objeto.getIdCliente());
 
+				if (objeto.getFlagTipoCliente().equals(TipoClienteEnum.PESSOA_FISICA.getCodigo())) {
+					rdbtnFisca.setSelected(Boolean.TRUE);
+				} else {
+					rdbtnJurdica.setSelected(Boolean.TRUE);
+				}
+
+				txCgc.setText(objeto.getCgc());
+				textField_2.setText(objeto.getNome());
 			}
 
 			@Override
@@ -201,10 +208,12 @@ public class FrmCliente extends AbstractInternalFrame {
 			}
 		};
 		getContentPane().add(painelDeBotoes, "cell 0 16 7 1,grow");
+
+		rdbtnFisca.setSelected(Boolean.TRUE);
+		selecionouPessoaFisica();
 	}
 
 	private void selecionouPessoaJuridica() {
-		System.out.println("a");
 		lblCpfcnpj.setText("CNPJ:");
 		lblRazoSocial.setText("Razão Social:");
 		lblDataNascimento.setText("Data de Fundação:");
@@ -213,16 +222,11 @@ public class FrmCliente extends AbstractInternalFrame {
 		lblSexo.setEnabled(false);
 		cbEstadoCivil.setEnabled(false);
 		cbSexo.setEnabled(false);
-		try {
-			mascaraCgc.setMask("##.###.###/####-##");
+		mascaraCNPJ.install(txCgc);
 
-		} catch (ParseException e) {
-
-		}
 	}
 
 	private void selecionouPessoaFisica() {
-		System.out.println("b");
 		lblCpfcnpj.setText("CPF:");
 		lblRazoSocial.setText("Nome:");
 		lblDataNascimento.setText("Data de Nascimento:");
@@ -231,13 +235,8 @@ public class FrmCliente extends AbstractInternalFrame {
 		lblSexo.setEnabled(true);
 		cbEstadoCivil.setEnabled(true);
 		cbSexo.setEnabled(true);
+		mascaraCPF.install(txCgc);
 
-		try {
-			mascaraCgc.setMask("###.###.###-##");
-
-		} catch (ParseException e) {
-
-		}
 	}
 
 	private void carregarCidades() {
