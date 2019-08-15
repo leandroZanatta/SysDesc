@@ -1,6 +1,7 @@
 package br.com.sysdesc.ui;
 
 import java.text.ParseException;
+import java.util.Arrays;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
@@ -14,7 +15,11 @@ import com.toedter.calendar.JDateChooser;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
+import br.com.sysdesc.components.adapters.PanelEventAdapter;
+import br.com.sysdesc.enumerator.EstadoCivilEnum;
+import br.com.sysdesc.enumerator.SexoEnum;
 import br.com.sysdesc.enumerator.TipoClienteEnum;
+import br.com.sysdesc.enumerator.TipoStatusEnum;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.repository.model.Cidade;
@@ -27,6 +32,9 @@ import br.com.sysdesc.service.estado.EstadoService;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmCliente extends AbstractInternalFrame {
+
+	private static final long serialVersionUID = 1L;
+
 	private JNumericField txCodigo;
 	private JTextField textField_2;
 	private JTextField txIncricaoEstadual;
@@ -52,8 +60,8 @@ public class FrmCliente extends AbstractInternalFrame {
 	private JLabel lblEstadoCivil;
 	private JLabel lblSexo;
 	private JLabel lblCdigo;
-	private JComboBox cbEstadoCivil;
-	private JComboBox cbSexo;
+	private JComboBox<EstadoCivilEnum> cbEstadoCivil;
+	private JComboBox<SexoEnum> cbSexo;
 	private MaskFormatter mascaraCPF;
 	private MaskFormatter mascaraCNPJ;
 
@@ -73,7 +81,6 @@ public class FrmCliente extends AbstractInternalFrame {
 
 		txCodigo = new JNumericField();
 		getContentPane().add(txCodigo, "cell 0 1,growx");
-		txCodigo.setColumns(10);
 
 		JRadioButton rdbtnFisca = new JRadioButton("Pessoa Fisíca");
 		getContentPane().add(rdbtnFisca, "flowx,cell 1 1 2 1,alignx right");
@@ -177,15 +184,23 @@ public class FrmCliente extends AbstractInternalFrame {
 		JLabel lblSituacao = new JLabel("Situação:");
 		getContentPane().add(lblSituacao, "cell 5 14");
 
-		cbEstadoCivil = new JComboBox();
+		cbEstadoCivil = new JComboBox<>();
 		getContentPane().add(cbEstadoCivil, "cell 0 15 2 1,growx");
 
-		cbSexo = new JComboBox();
+		cbSexo = new JComboBox<>();
 		getContentPane().add(cbSexo, "cell 2 15 3 1,growx");
 
-		JComboBox cbSituacao = new JComboBox();
+		JComboBox<TipoStatusEnum> cbSituacao = new JComboBox<>();
+
+		Arrays.asList(TipoStatusEnum.values()).forEach(cbSituacao::addItem);
+		Arrays.asList(SexoEnum.values()).forEach(cbSexo::addItem);
+		Arrays.asList(EstadoCivilEnum.values()).forEach(cbEstadoCivil::addItem);
+
 		getContentPane().add(cbSituacao, "cell 5 15 2 1,growx");
+
 		painelDeBotoes = new PanelActions<Cliente>(this, clienteService, PesquisaEnum.PES_CLIENTES) {
+
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void carregarObjeto(Cliente objeto) {
@@ -193,8 +208,10 @@ public class FrmCliente extends AbstractInternalFrame {
 
 				if (objeto.getFlagTipoCliente().equals(TipoClienteEnum.PESSOA_FISICA.getCodigo())) {
 					rdbtnFisca.setSelected(Boolean.TRUE);
+					selecionouPessoaFisica();
 				} else {
 					rdbtnJurdica.setSelected(Boolean.TRUE);
+					selecionouPessoaJuridica();
 				}
 
 				txCgc.setText(objeto.getCgc());
@@ -209,9 +226,9 @@ public class FrmCliente extends AbstractInternalFrame {
 				txCep.setText(objeto.getCep());
 				txCelular.setText(objeto.getTelefone());
 				txEmail.setText(objeto.getEmail());
-				cbEstadoCivil.setSelectedItem(objeto.getEstadocivil());
-				cbSexo.setSelectedItem(objeto.getSexo());
-				cbSituacao.setSelectedItem(objeto.getSituacao());
+				cbEstadoCivil.setSelectedItem(EstadoCivilEnum.findByCodigo(objeto.getEstadocivil()));
+				cbSexo.setSelectedItem(SexoEnum.findByCodigo(objeto.getSexo()));
+				cbSituacao.setSelectedItem(TipoStatusEnum.findByCodigo(objeto.getSituacao()));
 
 			}
 
@@ -220,10 +237,39 @@ public class FrmCliente extends AbstractInternalFrame {
 				objetoPesquisa.setCgc(txCgc.getText());
 				objetoPesquisa.setNome(textField_2.getText());
 				objetoPesquisa.setRgie(txIncricaoEstadual.getText());
-				objetoPesquisa.setDataDeNascimento(txDate.getText());
+				objetoPesquisa.setDatadenascimento(txDataDeNascimento.getDate());
+				objetoPesquisa.setEndereco(txEndereco.getText());
+				objetoPesquisa.setNumero(txNumero.getText());
+				objetoPesquisa.setBairro(txBairro.getText());
+				objetoPesquisa.setCep(txCep.getText());
+				objetoPesquisa.setTelefone(txCelular.getText());
+
+				if (cbCidade.getSelectedIndex() >= 0) {
+					objetoPesquisa.setCidade((Cidade) cbCidade.getSelectedItem());
+				}
+
+				if (cbEstadoCivil.getSelectedIndex() >= 0) {
+					objetoPesquisa.setEstadocivil(((EstadoCivilEnum) cbEstadoCivil.getSelectedItem()).getCodigo());
+				}
+
+				if (cbSexo.getSelectedIndex() >= 0) {
+					objetoPesquisa.setSexo(((SexoEnum) cbSexo.getSelectedItem()).getCodigo());
+				}
+
+				if (cbSituacao.getSelectedIndex() >= 0) {
+					objetoPesquisa.setSituacao(((TipoStatusEnum) cbSituacao.getSelectedItem()).getCodigo());
+				}
 
 			}
 		};
+
+		painelDeBotoes.addEventListener(new PanelEventAdapter<Cliente>() {
+
+			@Override
+			public void saveEvent(Cliente cliente) {
+				txCodigo.setValue(cliente.getIdCliente());
+			}
+		});
 		getContentPane().add(painelDeBotoes, "cell 0 16 7 1,grow");
 
 		rdbtnFisca.setSelected(Boolean.TRUE);
@@ -231,12 +277,11 @@ public class FrmCliente extends AbstractInternalFrame {
 	}
 
 	private void selecionouPessoaJuridica() {
+
 		lblCpfcnpj.setText("CNPJ:");
 		lblRazoSocial.setText("Razão Social:");
 		lblDataNascimento.setText("Data de Fundação:");
 		lblInscrioEstadual.setText("Inscrição Estadual:");
-		lblEstadoCivil.setEnabled(false);
-		lblSexo.setEnabled(false);
 		cbEstadoCivil.setEnabled(false);
 		cbSexo.setEnabled(false);
 		mascaraCNPJ.install(txCgc);
@@ -248,10 +293,8 @@ public class FrmCliente extends AbstractInternalFrame {
 		lblRazoSocial.setText("Nome:");
 		lblDataNascimento.setText("Data de Nascimento:");
 		lblInscrioEstadual.setText("RG:");
-		lblEstadoCivil.setEnabled(true);
-		lblSexo.setEnabled(true);
-		cbEstadoCivil.setEnabled(true);
-		cbSexo.setEnabled(true);
+		cbEstadoCivil.setEnabled(painelDeBotoes.isEditable() && true);
+		cbSexo.setEnabled(painelDeBotoes.isEditable() && true);
 		mascaraCPF.install(txCgc);
 
 	}

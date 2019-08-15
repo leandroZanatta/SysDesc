@@ -65,6 +65,7 @@ public abstract class PanelActions<T> extends JPanel {
 	private Map<Class<? extends Component>, List<Component>> camposTela = new HashMap<>();
 	protected Boolean isEdit = Boolean.FALSE;
 	private final JFrame parent = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
+	private Boolean editable = Boolean.FALSE;
 
 	public PanelActions(AbstractInternalFrame internalFrame, AbstractGenericService<T> genericService,
 			PesquisaEnum pesquisa) {
@@ -502,6 +503,8 @@ public abstract class PanelActions<T> extends JPanel {
 
 	protected void bloquear(Boolean bloquear) {
 
+		this.editable = bloquear;
+
 		if (camposTela.containsKey(JTextField.class)) {
 			camposTela.get(JTextField.class).forEach(x -> ((JTextField) x).setEditable(!bloquear));
 		}
@@ -660,5 +663,10 @@ public abstract class PanelActions<T> extends JPanel {
 	public abstract void carregarObjeto(T objeto);
 
 	public abstract void preencherObjeto(T objetoPesquisa);
+
+	public boolean isEditable() {
+
+		return !this.editable;
+	}
 
 }
