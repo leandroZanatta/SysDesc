@@ -29,4 +29,9 @@ public class StringUtil {
 
 		return true;
 	}
+
+	public static String formatarNumero(String text) {
+
+		return text.replaceAll("[^0-9]", text);
+	}
 }

@@ -36,6 +36,10 @@ public class MensagemConstants {
 	public static final String MENSAGEM_INSIRA_NUMERO_PARCELAS = "MENSAGEM_INSIRA_NUMERO_PARCELAS";
 	public static final String MENSAGEM_INSIRA_VALOR_PARCELAS = "MENSAGEM_INSIRA_VALOR_PARCELAS";
 	public static final String MENSAGEM_INSIRA_NOME = "MENSAGEM_INSIRA_NOME";
-	public static final String MENSAGEM_INSIRA_RGIE = " MENSAGEM_INSIRA_RGIE";
+	public static final String MENSAGEM_SELECIONE_TIPO_CLIENTE = "MENSAGEM_SELECIONE_TIPO_CLIENTE";
+	public static final String MENSAGEM_INSIRA_CPF = "MENSAGEM_INSIRA_CPF";
+	public static final String MENSAGEM_CPF_INVALIDO = "MENSAGEM_CPF_INVALIDO";
+	public static final String MENSAGEM_INSIRA_CNPJ = "MENSAGEM_INSIRA_CNPJ";
+	public static final String MENSAGEM_CNPJ_INVALIDO = "MENSAGEM_CNPJ_INVALIDO";
 
 }
