@@ -1,6 +1,7 @@
 package br.com.sysdesc.repository.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -13,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.Data;
 
@@ -38,7 +41,8 @@ public class Cliente implements Serializable {
 	private String nome;
 
 	@Column(name = "dt_nascimento")
-	private String datadenascimento;
+	@Temporal(TemporalType.DATE)
+	private Date datadenascimento;
 
 	@Column(name = "tx_rg")
 	private String rgie;

@@ -33,7 +33,7 @@
 				<constraints nullable="false" />
 			</column>
 			
-			<column name="dt_nascimento" type="VARCHAR(100)" remarks="DATA DE NASCIMENTO OU DATA DE FUNDAÇÃO">
+			<column name="dt_nascimento" type="DATE" remarks="DATA DE NASCIMENTO OU DATA DE FUNDAÇÃO">
 				<constraints nullable="true" />
 			</column>
 			

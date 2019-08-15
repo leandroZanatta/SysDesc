@@ -199,6 +199,17 @@ public class FrmCliente extends AbstractInternalFrame {
 
 				txCgc.setText(objeto.getCgc());
 				textField_2.setText(objeto.getNome());
+				txIncricaoEstadual.setText(objeto.getRgie());
+				txDataDeNascimento.setDate(objeto.getDatadenascimento());
+				cbEstado.setSelectedItem(objeto.getCidade().getEstado());
+				cbCidade.setSelectedItem(objeto.getCidade());
+				txEndereco.setText(objeto.getEndereco());
+				txNumero.setText(objeto.getNumero());
+				txBairro.setText(objeto.getBairro());
+				txCep.setText(objeto.getCep());
+				txCelular.setText(objeto.getTelefone());
+				textField_1.setText(objeto.getEmail());
+
 			}
 
 			@Override
