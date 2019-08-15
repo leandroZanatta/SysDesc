@@ -130,7 +130,7 @@ public abstract class PanelActions<T> extends JPanel {
 		btnNew.setToolTipText("Novo");
 		btnSearch.setToolTipText("Pesquisar");
 		btnCancel.setToolTipText("Cancelar");
-		btnNext.setToolTipText("Proximo");
+		btnNext.setToolTipText("Próximo");
 		btnLast.setToolTipText("Último");
 
 		final PanelActions<T> painel = this;

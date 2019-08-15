@@ -33,7 +33,7 @@ public class FrmCliente extends AbstractInternalFrame {
 	private JTextField txEndereco;
 	private JTextField txBairro;
 	private JFormattedTextField txCelular;
-	private JTextField textField_1;
+	private JTextField txEmail;
 	private JTextField txNumero;
 	private JDateChooser txDataDeNascimento;
 	private JFormattedTextField txCep;
@@ -165,8 +165,8 @@ public class FrmCliente extends AbstractInternalFrame {
 		txCelular = new JFormattedTextField(mascaraCelular);
 		getContentPane().add(txCelular, "cell 0 13 3 1,growx");
 
-		textField_1 = new JTextField();
-		getContentPane().add(textField_1, "cell 3 13 4 1,growx");
+		txEmail = new JTextField();
+		getContentPane().add(txEmail, "cell 3 13 4 1,growx");
 
 		lblEstadoCivil = new JLabel("Estado Civil:");
 		getContentPane().add(lblEstadoCivil, "cell 0 14");
@@ -208,13 +208,19 @@ public class FrmCliente extends AbstractInternalFrame {
 				txBairro.setText(objeto.getBairro());
 				txCep.setText(objeto.getCep());
 				txCelular.setText(objeto.getTelefone());
-				textField_1.setText(objeto.getEmail());
+				txEmail.setText(objeto.getEmail());
+				cbEstadoCivil.setSelectedItem(objeto.getEstadocivil());
+				cbSexo.setSelectedItem(objeto.getSexo());
+				cbSituacao.setSelectedItem(objeto.getSituacao());
 
 			}
 
 			@Override
 			public void preencherObjeto(Cliente objetoPesquisa) {
-				// TODO Auto-generated method stub
+				objetoPesquisa.setCgc(txCgc.getText());
+				objetoPesquisa.setNome(textField_2.getText());
+				objetoPesquisa.setRgie(txIncricaoEstadual.getText());
+				objetoPesquisa.setDataDeNascimento(txDate.getText());
 
 			}
 		};
