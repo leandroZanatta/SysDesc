@@ -70,7 +70,7 @@
 			</column>
 			
 			<column name="fl_sexo" type="VARCHAR(1)" remarks="SEXO (MASCULINO-M FEMININO-F OUTROS-O))">
-				<constraints nullable="false" />
+				<constraints nullable="true" />
 			</column>
 			
 			<column name="nr_situacao" type="NUMERIC(2,0)" remarks="SITUAÇÕES DO CLIENTE">

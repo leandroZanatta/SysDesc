@@ -35,5 +35,7 @@ public class MensagemConstants {
 	public static final String MENSAGEM_INSIRA_NUMERO_DIAS = "MENSAGEM_INSIRA_NUMERO_DIAS";
 	public static final String MENSAGEM_INSIRA_NUMERO_PARCELAS = "MENSAGEM_INSIRA_NUMERO_PARCELAS";
 	public static final String MENSAGEM_INSIRA_VALOR_PARCELAS = "MENSAGEM_INSIRA_VALOR_PARCELAS";
+	public static final String MENSAGEM_INSIRA_NOME = "MENSAGEM_INSIRA_NOME";
+	public static final String MENSAGEM_INSIRA_RGIE = " MENSAGEM_INSIRA_RGIE";
 
 }
