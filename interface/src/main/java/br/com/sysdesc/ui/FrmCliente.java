@@ -18,10 +18,10 @@ import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.enumerator.EstadoCivilEnum;
 import br.com.sysdesc.enumerator.SexoEnum;
-import br.com.sysdesc.enumerator.TipoClienteEnum;
 import br.com.sysdesc.enumerator.TipoStatusEnum;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
+import br.com.sysdesc.repository.enumeradores.TipoClienteEnum;
 import br.com.sysdesc.repository.model.Cidade;
 import br.com.sysdesc.repository.model.Cliente;
 import br.com.sysdesc.repository.model.Estado;
@@ -243,6 +243,12 @@ public class FrmCliente extends AbstractInternalFrame {
 				objetoPesquisa.setBairro(txBairro.getText());
 				objetoPesquisa.setCep(txCep.getText());
 				objetoPesquisa.setTelefone(txCelular.getText());
+
+				if (rdbtnFisca.isSelected()) {
+					objetoPesquisa.setFlagTipoCliente(TipoClienteEnum.PESSOA_FISICA.getCodigo());
+				} else if (rdbtnJurdica.isSelected()) {
+					objetoPesquisa.setFlagTipoCliente(TipoClienteEnum.PESSOA_JURIDICA.getCodigo());
+				}
 
 				if (cbCidade.getSelectedIndex() >= 0) {
 					objetoPesquisa.setCidade((Cidade) cbCidade.getSelectedItem());
