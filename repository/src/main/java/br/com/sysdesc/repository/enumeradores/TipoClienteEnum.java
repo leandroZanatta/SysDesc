@@ -1,4 +1,4 @@
-package br.com.sysdesc.enumerator;
+package br.com.sysdesc.repository.enumeradores;
 
 import java.util.HashMap;
 import java.util.Map;
