@@ -45,5 +45,7 @@ public class MensagemConstants {
 	public static final String MENSAGEM_INSIRA_USUARIO = "MENSAGEM_INSIRA_USUARIO";
 	public static final String MENSAGEM_SELECIONE_CLIENTE = "MENSAGEM_SELECIONE_CLIENTE";
 	public static final String MENSAGEM_CLIENTE_COM_LOGIN = "MENSAGEM_CLIENTE_COM_LOGIN";
+	public static final String MENSAGEM_SELECIONE_SEXO = "MENSAGEM_SELECIONE_SEXO";
+	public static final String MENSAGEM_SELECIONE_SITUACAO = "MENSAGEM_SELECIONE_SITUACAO";
 
 }
