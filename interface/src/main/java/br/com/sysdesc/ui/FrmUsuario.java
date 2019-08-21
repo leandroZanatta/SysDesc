@@ -7,12 +7,12 @@ import static br.com.sysdesc.util.resources.Resources.FRMUSUARIO_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
+import br.com.sysdesc.components.ValidarSenha;
 import br.com.sysdesc.pesquisa.components.CampoPesquisa;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
@@ -21,7 +21,6 @@ import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Usuario;
 import br.com.sysdesc.service.cliente.ClienteService;
 import br.com.sysdesc.service.login.LoginService;
-import br.com.sysdesc.util.classes.CryptoUtil;
 import br.com.sysdesc.util.classes.StringUtil;
 import net.miginfocom.swing.MigLayout;
 
@@ -99,9 +98,15 @@ public class FrmUsuario extends AbstractInternalFrame {
 				objetoPesquisa.setCliente(pesquisaCliente.getObjetoPesquisado());
 
 				if (StringUtil.isNullOrEmpty(objetoPesquisa.getSenha())) {
-					String senha = JOptionPane.showInputDialog(null, "Insira uma Senha", "Verificaçao");
 
-					objetoPesquisa.setSenha(CryptoUtil.toMD5(senha));
+					ValidarSenha validarSenha = new ValidarSenha();
+					validarSenha.setVisible(Boolean.TRUE); 
+
+					if (!validarSenha.getOk()) {
+						return;
+					}
+
+					objetoPesquisa.setSenha(validarSenha.getSenha());
 				}
 			}
 		};

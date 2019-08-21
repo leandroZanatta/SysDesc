@@ -48,4 +48,34 @@ public class LoginService extends AbstractGenericService<Usuario> {
 		return mdlUsuario;
 	}
 
+	@Override
+	public void validar(Usuario objetoPersistir) {
+
+		if (StringUtil.isNullOrEmpty(objetoPersistir.getUsuario())) {
+ 
+			//throw new 
+			
+		}
+
+		if (StringUtil.isNumeric(objetoPersistir.getSenha())) {
+  
+			//throw new
+			
+		}
+
+		if (objetoPersistir.getCliente() == null) {
+
+			//throw new
+			
+		}
+
+		if (usuarioDAO.verificarUsuarioJaCadastrado(objetoPersistir.getCliente().getIdCliente(),
+				objetoPersistir.getIdUsuario())) {
+
+			//throw new
+			
+		}
+
+	}
+
 }
