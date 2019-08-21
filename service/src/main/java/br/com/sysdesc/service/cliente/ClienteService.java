@@ -34,6 +34,9 @@ public class ClienteService extends AbstractGenericService<Cliente> {
 			if (!CPFUtil.isCPFValido(objetoPersistir.getCgc())) {
 				throw new SysDescException(MensagemConstants.MENSAGEM_CPF_INVALIDO);
 			}
+			if (StringUtil.isNullOrEmpty(objetoPersistir.getSexo())) {
+				throw new SysDescException(MensagemConstants.MENSAGEM_SELECIONE_SEXO);
+			}
 
 		}
 
@@ -51,6 +54,10 @@ public class ClienteService extends AbstractGenericService<Cliente> {
 
 		if (objetoPersistir.getCidade() == null) {
 			throw new SysDescException(MensagemConstants.MENSAGEM_SELECIONE_CIDADE);
+		}
+
+		if (objetoPersistir.getSituacao() == null) {
+			throw new SysDescException(MensagemConstants.MENSAGEM_SELECIONE_SITUACAO);
 		}
 	}
 
