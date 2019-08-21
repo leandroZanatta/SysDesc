@@ -30,7 +30,7 @@ public class FrmUsuario extends AbstractInternalFrame {
 	private JPanel painelContent;
 	// private TextFieldPesquisa<Usuario> txCodigo;
 	private JTextField txUsuario;
-//	private JLabel lblCliente;
+	private JLabel lblCliente;
 	private JLabel lblUsuario;
 	private JLabel lblCodigo;
 	private JNumericField txCodigo;
@@ -99,7 +99,7 @@ public class FrmUsuario extends AbstractInternalFrame {
 
 				if (StringUtil.isNullOrEmpty(objetoPesquisa.getSenha())) {
 
-					ValidarSenha validarSenha = new Validar-Senha();
+					ValidarSenha validarSenha = new ValidarSenha();
 					validarSenha.setVisible(Boolean.TRUE); 
 
 					if (!validarSenha.getOk()) {

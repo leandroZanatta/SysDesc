@@ -53,26 +53,26 @@ public class LoginService extends AbstractGenericService<Usuario> {
 
 		if (StringUtil.isNullOrEmpty(objetoPersistir.getUsuario())) {
  
-			throw new 
+			//throw new 
 			
 		}
 
 		if (StringUtil.isNumeric(objetoPersistir.getSenha())) {
   
-			throw new
+			//throw new
 			
 		}
 
 		if (objetoPersistir.getCliente() == null) {
 
-			throw new
+			//throw new
 			
 		}
 
 		if (usuarioDAO.verificarUsuarioJaCadastrado(objetoPersistir.getCliente().getIdCliente(),
 				objetoPersistir.getIdUsuario())) {
 
-			throw new
+			//throw new
 			
 		}
 
