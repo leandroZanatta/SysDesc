@@ -9,7 +9,7 @@ import com.jtattoo.plaf.mint.MintLookAndFeel;
 
 public class LookAndFeelUtil {
 
-    private final static String FONTE = "Times New Roman plain 12";
+    private final static String FONTE = "Calibri plain 14";
 
     public static void configureLayout()
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {

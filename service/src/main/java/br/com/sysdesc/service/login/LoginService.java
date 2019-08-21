@@ -9,6 +9,7 @@ import br.com.sysdesc.repository.model.Usuario;
 import br.com.sysdesc.service.interfaces.impl.AbstractGenericService;
 import br.com.sysdesc.util.classes.CryptoUtil;
 import br.com.sysdesc.util.classes.StringUtil;
+import br.com.sysdesc.util.constants.MensagemConstants;
 import br.com.sysdesc.util.exception.SysDescException;
 
 public class LoginService extends AbstractGenericService<Usuario> {
@@ -53,26 +54,21 @@ public class LoginService extends AbstractGenericService<Usuario> {
 
 		if (StringUtil.isNullOrEmpty(objetoPersistir.getUsuario())) {
  
-			//throw new 
+			throw new SysDescException(MensagemConstants.MENSAGEM_INSIRA_USUARIO);
 			
 		}
 
-		if (StringUtil.isNumeric(objetoPersistir.getSenha())) {
-  
-			//throw new
-			
-		}
 
 		if (objetoPersistir.getCliente() == null) {
 
-			//throw new
+			throw new SysDescException(MensagemConstants.MENSAGEM_SELECIONE_CLIENTE);
 			
 		}
 
 		if (usuarioDAO.verificarUsuarioJaCadastrado(objetoPersistir.getCliente().getIdCliente(),
 				objetoPersistir.getIdUsuario())) {
 
-			//throw new
+			throw new SysDescException(MensagemConstants.MENSAGEM_CLIENTE_COM_LOGIN);
 			
 		}
 

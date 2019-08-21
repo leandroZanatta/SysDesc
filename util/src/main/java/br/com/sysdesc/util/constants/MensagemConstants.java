@@ -42,5 +42,8 @@ public class MensagemConstants {
 	public static final String MENSAGEM_INSIRA_CNPJ = "MENSAGEM_INSIRA_CNPJ";
 	public static final String MENSAGEM_CNPJ_INVALIDO = "MENSAGEM_CNPJ_INVALIDO";
 	public static final String MENSAGEM_SELECIONE_CIDADE = "MENSAGEM_SELECIONE_CIDADE";
+	public static final String MENSAGEM_INSIRA_USUARIO = "MENSAGEM_INSIRA_USUARIO";
+	public static final String MENSAGEM_SELECIONE_CLIENTE = "MENSAGEM_SELECIONE_CLIENTE";
+	public static final String MENSAGEM_CLIENTE_COM_LOGIN = "MENSAGEM_CLIENTE_COM_LOGIN";
 
 }
