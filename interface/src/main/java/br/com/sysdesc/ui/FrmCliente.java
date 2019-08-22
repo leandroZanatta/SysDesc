@@ -15,6 +15,7 @@ import com.toedter.calendar.JDateChooser;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
+import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.enumerator.EstadoCivilEnum;
 import br.com.sysdesc.enumerator.SexoEnum;
@@ -36,13 +37,13 @@ public class FrmCliente extends AbstractInternalFrame {
 	private static final long serialVersionUID = 1L;
 
 	private JNumericField txCodigo;
-	private JTextField textField_2;
-	private JTextField txIncricaoEstadual;
-	private JTextField txEndereco;
-	private JTextField txBairro;
+	private JTextFieldMaiusculo txNome;
+	private JTextFieldMaiusculo txIncricaoEstadual;
+	private JTextFieldMaiusculo txEndereco;
+	private JTextFieldMaiusculo txBairro;
 	private JFormattedTextField txCelular;
 	private JTextField txEmail;
-	private JTextField txNumero;
+	private JTextFieldMaiusculo txNumero;
 	private JDateChooser txDataDeNascimento;
 	private JFormattedTextField txCep;
 	private JFormattedTextField txCgc;
@@ -64,29 +65,48 @@ public class FrmCliente extends AbstractInternalFrame {
 	private JComboBox<SexoEnum> cbSexo;
 	private MaskFormatter mascaraCPF;
 	private MaskFormatter mascaraCNPJ;
+	private JRadioButton rdbtnFisca;
+	private JRadioButton rdbtnJurdica;
 
 	public FrmCliente(PermissaoPrograma permissaoPrograma, Long codigoUsuario) throws ParseException {
+
 		super(permissaoPrograma, codigoUsuario);
 
-		setSize(600, 440);
+		initComponents();
+	}
+
+	private void initComponents() throws ParseException {
+
+		setTitle("Cadastro de clientes");
+		setSize(600, 460);
 		setClosable(Boolean.TRUE);
 		getContentPane().setLayout(new MigLayout("", "[grow][grow][grow][grow][grow][grow][grow]",
 				"[][][][][][][][][][][][][][][][][grow]"));
 
 		lblCdigo = new JLabel("Código:");
-		getContentPane().add(lblCdigo, "cell 0 0");
-
 		lblCpfcnpj = new JLabel("CPF/CNPJ:");
-		getContentPane().add(lblCpfcnpj, "cell 5 0 2 1");
-
 		txCodigo = new JNumericField();
+		rdbtnFisca = new JRadioButton("Pessoa Fisíca");
+		rdbtnJurdica = new JRadioButton("Pessoa Jurídica");
+		getContentPane().add(lblCpfcnpj, "cell 5 0 2 1");
+		getContentPane().add(lblCdigo, "cell 0 0");
 		getContentPane().add(txCodigo, "cell 0 1,growx");
-
-		JRadioButton rdbtnFisca = new JRadioButton("Pessoa Fisíca");
 		getContentPane().add(rdbtnFisca, "flowx,cell 1 1 2 1,alignx right");
-
-		JRadioButton rdbtnJurdica = new JRadioButton("Pessoa Jurídica");
 		getContentPane().add(rdbtnJurdica, "cell 3 1 2 1");
+		getContentPane().add(txCgc, "cell 5 1 2 1,growx");
+		getContentPane().add(lblRazoSocial, "cell 0 2");
+		getContentPane().add(txNome, "cell 0 3 7 1,growx");
+		getContentPane().add(lblInscrioEstadual, "cell 0 4");
+		getContentPane().add(lblDataNascimento, "cell 5 4");
+		getContentPane().add(txIncricaoEstadual, "flowy,cell 0 5 5 1,growx");
+		getContentPane().add(txDataDeNascimento, "cell 5 5 2 1,growx");
+		getContentPane().add(lblEstado, "cell 0 6");
+		getContentPane().add(cbCidade, "cell 4 7 3 1,growx");
+		getContentPane().add(lblCidade, "cell 4 6");
+		getContentPane().add(cbEstado, "cell 0 7 4 1,growx");
+		getContentPane().add(lblEndereo, "cell 0 8");
+		getContentPane().add(lblNmero, "cell 6 8");
+		getContentPane().add(txEndereco, "cell 0 9 6 1,growx");
 
 		buttonGroup = new ButtonGroup();
 		buttonGroup.add(rdbtnFisca);
@@ -95,50 +115,36 @@ public class FrmCliente extends AbstractInternalFrame {
 		rdbtnJurdica.addActionListener((e) -> selecionouPessoaJuridica());
 
 		txCgc = new JFormattedTextField();
-		getContentPane().add(txCgc, "cell 5 1 2 1,growx");
 
 		lblRazoSocial = new JLabel("Razão Social:");
-		getContentPane().add(lblRazoSocial, "cell 0 2");
 
-		textField_2 = new JTextField();
-		getContentPane().add(textField_2, "cell 0 3 7 1,growx");
+		txNome = new JTextFieldMaiusculo();
 
 		lblInscrioEstadual = new JLabel("Inscrição Estadual:");
-		getContentPane().add(lblInscrioEstadual, "cell 0 4");
 
 		lblDataNascimento = new JLabel("Data Nascimento:");
-		getContentPane().add(lblDataNascimento, "cell 5 4");
 
-		txIncricaoEstadual = new JTextField();
-		getContentPane().add(txIncricaoEstadual, "flowy,cell 0 5 5 1,growx");
+		txIncricaoEstadual = new JTextFieldMaiusculo();
 		txIncricaoEstadual.setColumns(10);
 
 		txDataDeNascimento = new JDateChooser("dd/MM/yyyy", "##/##/#####", '_');
-		getContentPane().add(txDataDeNascimento, "cell 5 5 2 1,growx");
 
 		JLabel lblEstado = new JLabel("Estado:");
-		getContentPane().add(lblEstado, "cell 0 6");
 
 		JLabel lblCidade = new JLabel("Cidade:");
-		getContentPane().add(lblCidade, "cell 4 6");
 
 		cbEstado = new JComboBox<Estado>();
 		estadoService.listarEstados().forEach(cbEstado::addItem);
-		getContentPane().add(cbEstado, "cell 0 7 4 1,growx");
 		cbEstado.addActionListener((e) -> carregarCidades());
 		cbCidade = new JComboBox<>();
-		getContentPane().add(cbCidade, "cell 4 7 3 1,growx");
 
 		JLabel lblEndereo = new JLabel("Endereço:");
-		getContentPane().add(lblEndereo, "cell 0 8");
 
 		JLabel lblNmero = new JLabel("Número:");
-		getContentPane().add(lblNmero, "cell 6 8");
 
-		txEndereco = new JTextField();
-		getContentPane().add(txEndereco, "cell 0 9 6 1,growx");
+		txEndereco = new JTextFieldMaiusculo();
 
-		txNumero = new JTextField();
+		txNumero = new JTextFieldMaiusculo();
 		getContentPane().add(txNumero, "cell 6 9,growx");
 
 		JLabel lblNewLabel = new JLabel("Bairro:");
@@ -147,7 +153,7 @@ public class FrmCliente extends AbstractInternalFrame {
 		JLabel lblCep = new JLabel("Cep:");
 		getContentPane().add(lblCep, "cell 5 10");
 
-		txBairro = new JTextField();
+		txBairro = new JTextFieldMaiusculo();
 		getContentPane().add(txBairro, "cell 0 11 5 1,growx");
 
 		MaskFormatter mascaraCep = new MaskFormatter("#####-###");
@@ -215,7 +221,7 @@ public class FrmCliente extends AbstractInternalFrame {
 				}
 
 				txCgc.setText(objeto.getCgc());
-				textField_2.setText(objeto.getNome());
+				txNome.setText(objeto.getNome());
 				txIncricaoEstadual.setText(objeto.getRgie());
 				txDataDeNascimento.setDate(objeto.getDatadenascimento());
 				cbEstado.setSelectedItem(objeto.getCidade().getEstado());
@@ -235,7 +241,7 @@ public class FrmCliente extends AbstractInternalFrame {
 			@Override
 			public void preencherObjeto(Cliente objetoPesquisa) {
 				objetoPesquisa.setCgc(txCgc.getText());
-				objetoPesquisa.setNome(textField_2.getText());
+				objetoPesquisa.setNome(txNome.getText());
 				objetoPesquisa.setRgie(txIncricaoEstadual.getText());
 				objetoPesquisa.setDatadenascimento(txDataDeNascimento.getDate());
 				objetoPesquisa.setEndereco(txEndereco.getText());
