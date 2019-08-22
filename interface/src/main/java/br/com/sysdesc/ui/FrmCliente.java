@@ -88,6 +88,28 @@ public class FrmCliente extends AbstractInternalFrame {
 		txCodigo = new JNumericField();
 		rdbtnFisca = new JRadioButton("Pessoa Fisíca");
 		rdbtnJurdica = new JRadioButton("Pessoa Jurídica");
+		buttonGroup = new ButtonGroup();
+		txCgc = new JFormattedTextField();
+		lblRazoSocial = new JLabel("Razão Social:");
+		txNome = new JTextFieldMaiusculo();
+		lblInscrioEstadual = new JLabel("Inscrição Estadual:");
+		lblDataNascimento = new JLabel("Data Nascimento:");
+		txIncricaoEstadual = new JTextFieldMaiusculo();
+		txDataDeNascimento = new JDateChooser("dd/MM/yyyy", "##/##/#####", '_');
+		JLabel lblEstado = new JLabel("Estado:");
+		JLabel lblCidade = new JLabel("Cidade:");
+		cbEstado = new JComboBox<Estado>();
+		estadoService.listarEstados().forEach(cbEstado::addItem);
+		cbEstado.addActionListener((e) -> carregarCidades());
+		cbCidade = new JComboBox<>();
+		JLabel lblEndereo = new JLabel("Endereço:");
+		JLabel lblNmero = new JLabel("Número:");
+		txEndereco = new JTextFieldMaiusculo();
+		txNumero = new JTextFieldMaiusculo();
+		JLabel lblNewLabel = new JLabel("Bairro:");
+		JLabel lblCep = new JLabel("Cep:");
+		txBairro = new JTextFieldMaiusculo();
+
 		getContentPane().add(lblCpfcnpj, "cell 5 0 2 1");
 		getContentPane().add(lblCdigo, "cell 0 0");
 		getContentPane().add(txCodigo, "cell 0 1,growx");
@@ -108,52 +130,16 @@ public class FrmCliente extends AbstractInternalFrame {
 		getContentPane().add(lblNmero, "cell 6 8");
 		getContentPane().add(txEndereco, "cell 0 9 6 1,growx");
 
-		buttonGroup = new ButtonGroup();
 		buttonGroup.add(rdbtnFisca);
 		buttonGroup.add(rdbtnJurdica);
 		rdbtnFisca.addActionListener((e) -> selecionouPessoaFisica());
 		rdbtnJurdica.addActionListener((e) -> selecionouPessoaJuridica());
 
-		txCgc = new JFormattedTextField();
-
-		lblRazoSocial = new JLabel("Razão Social:");
-
-		txNome = new JTextFieldMaiusculo();
-
-		lblInscrioEstadual = new JLabel("Inscrição Estadual:");
-
-		lblDataNascimento = new JLabel("Data Nascimento:");
-
-		txIncricaoEstadual = new JTextFieldMaiusculo();
-		txIncricaoEstadual.setColumns(10);
-
-		txDataDeNascimento = new JDateChooser("dd/MM/yyyy", "##/##/#####", '_');
-
-		JLabel lblEstado = new JLabel("Estado:");
-
-		JLabel lblCidade = new JLabel("Cidade:");
-
-		cbEstado = new JComboBox<Estado>();
-		estadoService.listarEstados().forEach(cbEstado::addItem);
-		cbEstado.addActionListener((e) -> carregarCidades());
-		cbCidade = new JComboBox<>();
-
-		JLabel lblEndereo = new JLabel("Endereço:");
-
-		JLabel lblNmero = new JLabel("Número:");
-
-		txEndereco = new JTextFieldMaiusculo();
-
-		txNumero = new JTextFieldMaiusculo();
 		getContentPane().add(txNumero, "cell 6 9,growx");
 
-		JLabel lblNewLabel = new JLabel("Bairro:");
 		getContentPane().add(lblNewLabel, "cell 0 10");
-
-		JLabel lblCep = new JLabel("Cep:");
 		getContentPane().add(lblCep, "cell 5 10");
 
-		txBairro = new JTextFieldMaiusculo();
 		getContentPane().add(txBairro, "cell 0 11 5 1,growx");
 
 		MaskFormatter mascaraCep = new MaskFormatter("#####-###");

@@ -61,7 +61,7 @@ public abstract class PanelActions<T> extends JPanel {
 	private final AbstractInternalFrame internalFrame;
 	private final AbstractGenericService<T> genericService;
 	private final PesquisaEnum pesquisa;
-	private T objetoPesquisa;
+	protected T objetoPesquisa;
 	private Map<Class<? extends Component>, List<Component>> camposTela = new HashMap<>();
 	protected Boolean isEdit = Boolean.FALSE;
 	private final JFrame parent = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);

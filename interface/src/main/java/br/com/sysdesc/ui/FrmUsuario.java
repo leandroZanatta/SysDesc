@@ -14,7 +14,7 @@ import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.ValidarSenha;
 import br.com.sysdesc.pesquisa.components.CampoPesquisa;
-import br.com.sysdesc.pesquisa.components.PanelActions;
+import br.com.sysdesc.pesquisa.components.CrudPanelActions;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.repository.model.Cliente;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
@@ -34,7 +34,7 @@ public class FrmUsuario extends AbstractInternalFrame {
 	private JLabel lblUsuario;
 	private JLabel lblCodigo;
 	private JNumericField txCodigo;
-	private PanelActions<Usuario> panelActions;
+	private CrudPanelActions<Usuario> panelActions;
 	private LoginService loginService = new LoginService();
 	private CampoPesquisa<Cliente> pesquisaCliente;
 	private ClienteService clienteService = new ClienteService();
@@ -78,7 +78,7 @@ public class FrmUsuario extends AbstractInternalFrame {
 		painelContent.add(lblUsuario, "cell 0 4");
 		painelContent.add(txUsuario, "cell 0 5,growx");
 
-		panelActions = new PanelActions<Usuario>(this, loginService, PES_USUARIOS) {
+		panelActions = new CrudPanelActions<Usuario>(this, loginService, PES_USUARIOS) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -92,7 +92,6 @@ public class FrmUsuario extends AbstractInternalFrame {
 
 			@Override
 			public void preencherObjeto(Usuario objetoPesquisa) {
-
 				objetoPesquisa.setIdUsuario(txCodigo.getValue());
 				objetoPesquisa.setUsuario(txUsuario.getText());
 				objetoPesquisa.setCliente(pesquisaCliente.getObjetoPesquisado());
@@ -100,7 +99,7 @@ public class FrmUsuario extends AbstractInternalFrame {
 				if (StringUtil.isNullOrEmpty(objetoPesquisa.getSenha())) {
 
 					ValidarSenha validarSenha = new ValidarSenha();
-					validarSenha.setVisible(Boolean.TRUE); 
+					validarSenha.setVisible(Boolean.TRUE);
 
 					if (!validarSenha.getOk()) {
 						return;
@@ -108,6 +107,7 @@ public class FrmUsuario extends AbstractInternalFrame {
 
 					objetoPesquisa.setSenha(validarSenha.getSenha());
 				}
+
 			}
 		};
 
