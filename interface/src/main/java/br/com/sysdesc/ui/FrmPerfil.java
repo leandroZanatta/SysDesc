@@ -42,7 +42,7 @@ public class FrmPerfil extends AbstractInternalFrame {
 
 	private void initComponents() {
 
-		setSize(450, 160);
+		setSize(450, 180);
 		setClosable(Boolean.TRUE);
 		setTitle(translate(FRMPERFIL_TITLE));
 

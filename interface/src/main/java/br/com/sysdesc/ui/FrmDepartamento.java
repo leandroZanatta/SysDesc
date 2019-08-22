@@ -41,7 +41,7 @@ public class FrmDepartamento extends AbstractInternalFrame {
 
 	private void initComponents() {
 
-		setSize(450, 170);
+		setSize(450, 180);
 		setClosable(Boolean.TRUE);
 		setTitle(translate(FRMDEPARTAMENTO_TITLE));
 

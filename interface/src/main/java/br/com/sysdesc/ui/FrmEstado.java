@@ -42,7 +42,7 @@ public class FrmEstado extends AbstractInternalFrame {
 
 	private void initComponents() {
 
-		setSize(450, 210);
+		setSize(450, 230);
 		setClosable(Boolean.TRUE);
 		setTitle(translate(FRMESTADO_TITLE));
 

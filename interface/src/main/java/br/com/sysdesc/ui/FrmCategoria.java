@@ -51,7 +51,7 @@ public class FrmCategoria extends AbstractInternalFrame {
 
 	private void initComponents() {
 
-		setSize(450, 200);
+		setSize(450, 230);
 		setClosable(Boolean.TRUE);
 		setTitle(translate(FRMCATEGORIA_TITLE));
 

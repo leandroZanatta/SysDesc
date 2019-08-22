@@ -39,7 +39,7 @@ public class FrmMarca extends AbstractInternalFrame {
 
 	private void initComponents() {
 
-		setSize(450, 170);
+		setSize(450, 190);
 		setClosable(Boolean.TRUE);
 		setTitle(translate(FRMMARCA_TITLE));
 

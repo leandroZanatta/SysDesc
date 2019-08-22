@@ -9,6 +9,8 @@ import javax.swing.JPasswordField;
 import br.com.sysdesc.util.classes.CryptoUtil;
 import br.com.sysdesc.util.classes.ImageUtil;
 import br.com.sysdesc.util.classes.StringUtil;
+import br.com.sysdesc.util.resources.Resources;
+
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
@@ -38,14 +40,15 @@ public class ValidarSenha extends JDialog {
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
 		panel = new JPanel();
-		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Verificação de Senha",
+		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null),
+				Resources.translate(Resources.FRMVALIDARSENHA_TITLE) ,
 				TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(new MigLayout("", "[75px,grow][79px]", "[][][][][grow]"));
 
-		lbSenha = new JLabel("Senha:");
+		lbSenha = new JLabel(Resources.translate(Resources.FRMVALIDARSENHA_LB_SENHA));
 		txRepSenha = new JPasswordField();
-		lbRepSenha = new JLabel("Confirmar Senha:");
+		lbRepSenha = new JLabel(Resources.translate(Resources.FRMVALIDARSENHA_LB_CONFIRMAR_SENHA));
 		txSenha = new JPasswordField();
 		panelBotoes = new JPanel();
 		btConfirmar = new JButton("Confirmar");

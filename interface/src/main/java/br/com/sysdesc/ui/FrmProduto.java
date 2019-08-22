@@ -125,7 +125,7 @@ public class FrmProduto extends AbstractInternalFrame {
 	private void initComponents(Long codigoUsuario) {
 		setTitle(translate(FRMPRODUTO_TITLE));
 
-		setSize(650, 420);
+		setSize(650, 460);
 		setClosable(Boolean.TRUE);
 
 		painelContent = new JPanel();

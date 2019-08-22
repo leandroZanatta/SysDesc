@@ -50,9 +50,9 @@ public class FrmFormasPagamento extends AbstractInternalFrame {
 
 	public FrmFormasPagamento(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
-		setTitle("Cadastro De Formad DE pagamento");
+		setTitle("Cadastro De Formas De Pagamento");
 
-		setSize(460, 400);
+		setSize(460, 440);
 		setClosable(Boolean.TRUE);
 		getContentPane().setLayout(new MigLayout("", "[280.00px,grow]", "[1px][][][][][][][][][grow]"));
 		getContentPane().add(label, "cell 0 0,growx,aligny top");
