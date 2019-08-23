@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
-import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Unidade;
@@ -77,20 +76,17 @@ public class FrmUnidade extends AbstractInternalFrame {
 			}
 
 			@Override
-			public void preencherObjeto(Unidade objetoPesquisa) {
+			public Boolean preencherObjeto(Unidade objetoPesquisa) {
+
 				objetoPesquisa.setIdUnidade(txCodigo.getValue());
 				objetoPesquisa.setDescricao(txDescricao.getText());
 				objetoPesquisa.setDescricaoReduzida(textField.getText());
+
+				return Boolean.TRUE;
 			}
 		};
 
-		panelActions.addEventListener(new PanelEventAdapter<Unidade>() {
-
-			@Override
-			public void saveEvent(Unidade cidade) {
-				txCodigo.setValue(cidade.getIdUnidade());
-			}
-		});
+		panelActions.addSaveListener((unidade) -> txCodigo.setValue(unidade.getIdUnidade()));
 
 		painelContent.add(panelActions, "cell 0 4 2 1,grow");
 	}

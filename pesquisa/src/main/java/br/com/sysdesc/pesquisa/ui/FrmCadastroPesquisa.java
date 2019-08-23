@@ -25,7 +25,6 @@ import javax.swing.JTable;
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
-import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.pesquisa.components.CampoPesquisaMultiSelect;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
@@ -220,7 +219,7 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 			}
 
 			@Override
-			public void preencherObjeto(Pesquisa objetoPesquisa) {
+			public Boolean preencherObjeto(Pesquisa objetoPesquisa) {
 
 				objetoPesquisa.setIdPesquisa(txCodigo.getValue());
 				objetoPesquisa.setDescricao(txDescricao.getText());
@@ -253,6 +252,8 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 						.addAll(criarPermissaoUsuarios(pesquisaUsuario.getObjetosPesquisado(), objetoPesquisa));
 				permissaoPesquisas.addAll(criarPermissaoPerfis(pesquisaPerfis.getObjetosPesquisado(), objetoPesquisa));
 				objetoPesquisa.setPermissaoPesquisas(permissaoPesquisas);
+
+				return Boolean.TRUE;
 			}
 
 			private List<PermissaoPesquisa> criarPermissaoPerfis(List<Perfil> objetosPesquisado,
@@ -296,18 +297,11 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 			}
 		};
 
-		panelActions.addEventListener(new PanelEventAdapter<Pesquisa>() {
+		panelActions.addSaveListener((objeto) -> txCodigo.setValue(objeto.getIdPesquisa()));
 
-			@Override
-			public void saveEvent(Pesquisa objeto) {
-				txCodigo.setValue(objeto.getIdPesquisa());
-			}
-
-			@Override
-			public void newEvent() {
-				txPaginacao.setValue(20L);
-				projectionsTableModel.removeAll();
-			}
+		panelActions.addNewListener(() -> {
+			txPaginacao.setValue(20L);
+			projectionsTableModel.removeAll();
 		});
 
 		painelContent.add(panelActions, "cell 0 7 3 1,alignx center");

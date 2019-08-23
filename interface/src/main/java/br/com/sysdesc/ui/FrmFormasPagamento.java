@@ -13,7 +13,6 @@ import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JMoneyField;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
-import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.repository.enumeradores.FormaPagamentoEnum;
@@ -129,7 +128,7 @@ public class FrmFormasPagamento extends AbstractInternalFrame {
 			}
 
 			@Override
-			public void preencherObjeto(FormasPagamento objetoPesquisa) {
+			public Boolean preencherObjeto(FormasPagamento objetoPesquisa) {
 
 				objetoPesquisa.setIdFormaPagamento(txCodigo.getValue());
 				objetoPesquisa.setDescricao(txDescricao.getText());
@@ -150,16 +149,12 @@ public class FrmFormasPagamento extends AbstractInternalFrame {
 					objetoPesquisa.setValorMinimoParcelas(txValorMinimoPagamento.getValue());
 					objetoPesquisa.setNumeroMaximoParcelas(txNumeroMaximoParcelas.getValue());
 				}
+
+				return Boolean.TRUE;
 			}
 		};
 
-		panelActions.addEventListener(new PanelEventAdapter<FormasPagamento>() {
-
-			public void saveEvent(FormasPagamento objeto) {
-
-				txCodigo.setValue(objeto.getIdFormaPagamento());
-			};
-		});
+		panelActions.addSaveListener((objeto) -> txCodigo.setValue(objeto.getIdFormaPagamento()));
 
 		getContentPane().add(panelActions, "cell 0 9,grow");
 	}

@@ -14,20 +14,18 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.event.EventListenerList;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
 
 public abstract class AbstractButtonAction extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	protected EventListenerList listenerList = new EventListenerList();
 	protected final AbstractInternalFrame internalFrame;
 	private Map<Class<? extends Component>, List<Component>> camposTela = new HashMap<>();
+	protected Boolean editable = Boolean.FALSE;
 
 	public AbstractButtonAction(AbstractInternalFrame internalFrame) {
 		this.internalFrame = internalFrame;
-
 	}
 
 	protected void registrarCampos() {
@@ -76,34 +74,40 @@ public abstract class AbstractButtonAction extends JPanel {
 		camposTela.get(classe).add(component);
 	}
 
-	protected void bloquear(Boolean bloquear) {
+	protected void bloquear() {
 
 		if (camposTela.containsKey(JTextField.class)) {
-			camposTela.get(JTextField.class).forEach(x -> ((JTextField) x).setEditable(!bloquear));
+			camposTela.get(JTextField.class).forEach(x -> ((JTextField) x).setEditable(editable));
 		}
 
 		if (camposTela.containsKey(JComboBox.class)) {
-			camposTela.get(JComboBox.class).forEach(x -> ((JComboBox<?>) x).setEnabled(!bloquear));
+			camposTela.get(JComboBox.class).forEach(x -> ((JComboBox<?>) x).setEnabled(editable));
 		}
 
 		if (camposTela.containsKey(JCheckBox.class)) {
-			camposTela.get(JCheckBox.class).forEach(x -> ((JCheckBox) x).setEnabled(!bloquear));
+			camposTela.get(JCheckBox.class).forEach(x -> ((JCheckBox) x).setEnabled(editable));
 		}
 
 		if (camposTela.containsKey(JRadioButton.class)) {
-			camposTela.get(JRadioButton.class).forEach(x -> ((JRadioButton) x).setEnabled(!bloquear));
+			camposTela.get(JRadioButton.class).forEach(x -> ((JRadioButton) x).setEnabled(editable));
 		}
 
 		if (camposTela.containsKey(JTable.class)) {
-			camposTela.get(JTable.class).forEach(x -> ((JTable) x).setEnabled(!bloquear));
+			camposTela.get(JTable.class).forEach(x -> ((JTable) x).setEnabled(editable));
 		}
 
 		if (camposTela.containsKey(JButton.class)) {
-			camposTela.get(JButton.class).forEach(x -> ((JButton) x).setEnabled(!bloquear));
+			camposTela.get(JButton.class).forEach(x -> ((JButton) x).setEnabled(editable));
 		}
 
-		fireChangeStateEvent(bloquear);
+	}
 
+	public Boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(Boolean editable) {
+		this.editable = editable;
 	}
 
 	protected void limpar() {
@@ -132,7 +136,5 @@ public abstract class AbstractButtonAction extends JPanel {
 	}
 
 	protected abstract void fireClearEvent();
-
-	protected abstract void fireChangeStateEvent(Boolean bloquear);
 
 }

@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
-import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.model.Marca;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
@@ -69,21 +68,17 @@ public class FrmMarca extends AbstractInternalFrame {
 			}
 
 			@Override
-			public void preencherObjeto(Marca objetoPesquisa) {
+			public Boolean preencherObjeto(Marca objetoPesquisa) {
 
 				objetoPesquisa.setIdMarca(txCodigo.getValue());
 				objetoPesquisa.setDescricao(txDescricao.getText());
+
+				return Boolean.TRUE;
 			}
 
 		};
 
-		panelActions.addEventListener(new PanelEventAdapter<Marca>() {
-
-			@Override
-			public void saveEvent(Marca objeto) {
-				txCodigo.setValue(objeto.getIdMarca());
-			}
-		});
+		panelActions.addSaveListener((objeto) -> txCodigo.setValue(objeto.getIdMarca()));
 
 		painelContent.add(panelActions, "cell 0 4,grow");
 	}

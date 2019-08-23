@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
-import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.model.Perfil;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
@@ -73,19 +72,17 @@ public class FrmPerfil extends AbstractInternalFrame {
 			}
 
 			@Override
-			public void preencherObjeto(Perfil objetoPesquisa) {
+			public Boolean preencherObjeto(Perfil objetoPesquisa) {
+
 				objetoPesquisa.setIdPerfil(txCodigo.getValue());
 				objetoPesquisa.setDescricao(txDescricao.getText());
+
+				return Boolean.TRUE;
 			}
 		};
 
-		panelActions.addEventListener(new PanelEventAdapter<Perfil>() {
+		panelActions.addSaveListener((objeto) -> txCodigo.setValue(objeto.getIdPerfil()));
 
-			@Override
-			public void saveEvent(Perfil perfil) {
-				txCodigo.setValue(perfil.getIdPerfil());
-			}
-		});
 		painelContent.add(panelActions, "cell 0 4,grow");
 	}
 

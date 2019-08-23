@@ -16,7 +16,6 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
-import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.model.Categoria;
 import br.com.sysdesc.repository.model.Departamento;
@@ -91,23 +90,20 @@ public class FrmCategoria extends AbstractInternalFrame {
 			}
 
 			@Override
-			public void preencherObjeto(Categoria objetoPesquisa) {
+			public Boolean preencherObjeto(Categoria objetoPesquisa) {
 				objetoPesquisa.setIdCategoria(txCodigo.getValue());
 
 				if (cbDepartamento.getSelectedIndex() >= 0) {
 					objetoPesquisa.setDepartamento((Departamento) cbDepartamento.getSelectedItem());
 				}
 				objetoPesquisa.setDescricao(txDescricao.getText());
+
+				return Boolean.TRUE;
 			}
 		};
 
-		panelActions.addEventListener(new PanelEventAdapter<Categoria>() {
+		panelActions.addSaveListener((categoria) -> txCodigo.setValue(categoria.getIdCategoria()));
 
-			@Override
-			public void saveEvent(Categoria categoria) {
-				txCodigo.setValue(categoria.getIdCategoria());
-			}
-		});
 		painelContent.add(panelActions, "cell 0 6,grow");
 	}
 

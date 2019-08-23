@@ -16,7 +16,6 @@ import com.toedter.calendar.JDateChooser;
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
-import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.enumerator.EstadoCivilEnum;
 import br.com.sysdesc.enumerator.SexoEnum;
 import br.com.sysdesc.enumerator.TipoStatusEnum;
@@ -225,7 +224,7 @@ public class FrmCliente extends AbstractInternalFrame {
 			}
 
 			@Override
-			public void preencherObjeto(Cliente objetoPesquisa) {
+			public Boolean preencherObjeto(Cliente objetoPesquisa) {
 				objetoPesquisa.setCgc(txCgc.getText());
 				objetoPesquisa.setNome(txNome.getText());
 				objetoPesquisa.setRgie(txIncricaoEstadual.getText());
@@ -258,16 +257,12 @@ public class FrmCliente extends AbstractInternalFrame {
 					objetoPesquisa.setSituacao(((TipoStatusEnum) cbSituacao.getSelectedItem()).getCodigo());
 				}
 
+				return Boolean.TRUE;
 			}
 		};
 
-		painelDeBotoes.addEventListener(new PanelEventAdapter<Cliente>() {
+		painelDeBotoes.addSaveListener((cliente) -> txCodigo.setValue(cliente.getIdCliente()));
 
-			@Override
-			public void saveEvent(Cliente cliente) {
-				txCodigo.setValue(cliente.getIdCliente());
-			}
-		});
 		getContentPane().add(painelDeBotoes, "cell 0 16 7 1,grow");
 
 		rdbtnFisca.setSelected(Boolean.TRUE);

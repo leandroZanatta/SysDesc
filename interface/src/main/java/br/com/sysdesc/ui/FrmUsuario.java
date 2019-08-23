@@ -14,7 +14,7 @@ import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.ValidarSenha;
 import br.com.sysdesc.pesquisa.components.CampoPesquisa;
-import br.com.sysdesc.pesquisa.components.CrudPanelActions;
+import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.repository.model.Cliente;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
@@ -28,13 +28,12 @@ public class FrmUsuario extends AbstractInternalFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel painelContent;
-	// private TextFieldPesquisa<Usuario> txCodigo;
 	private JTextField txUsuario;
 	private JLabel lblCliente;
 	private JLabel lblUsuario;
 	private JLabel lblCodigo;
 	private JNumericField txCodigo;
-	private CrudPanelActions<Usuario> panelActions;
+	private PanelActions<Usuario> panelActions;
 	private LoginService loginService = new LoginService();
 	private CampoPesquisa<Cliente> pesquisaCliente;
 	private ClienteService clienteService = new ClienteService();
@@ -78,7 +77,7 @@ public class FrmUsuario extends AbstractInternalFrame {
 		painelContent.add(lblUsuario, "cell 0 4");
 		painelContent.add(txUsuario, "cell 0 5,growx");
 
-		panelActions = new CrudPanelActions<Usuario>(this, loginService, PES_USUARIOS) {
+		panelActions = new PanelActions<Usuario>(this, loginService, PES_USUARIOS, Boolean.FALSE) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -91,7 +90,7 @@ public class FrmUsuario extends AbstractInternalFrame {
 			}
 
 			@Override
-			public void preencherObjeto(Usuario objetoPesquisa) {
+			public Boolean preencherObjeto(Usuario objetoPesquisa) {
 				objetoPesquisa.setIdUsuario(txCodigo.getValue());
 				objetoPesquisa.setUsuario(txUsuario.getText());
 				objetoPesquisa.setCliente(pesquisaCliente.getObjetoPesquisado());
@@ -102,25 +101,18 @@ public class FrmUsuario extends AbstractInternalFrame {
 					validarSenha.setVisible(Boolean.TRUE);
 
 					if (!validarSenha.getOk()) {
-						return;
+						return Boolean.FALSE;
 					}
 
 					objetoPesquisa.setSenha(validarSenha.getSenha());
 				}
 
+				return Boolean.TRUE;
 			}
-		};
 
-		/*
-		 * txCodigo = new TextFieldPesquisa<Usuario>(panelActions) {
-		 * 
-		 * private static final long serialVersionUID = 1L;
-		 * 
-		 * @Override public String preencherCampoId(Usuario login) {
-		 * 
-		 * return login.getIdUsuario().toString(); } }; painelContent.add(txCodigo,
-		 * "cell 0 1,alignx left");
-		 */
+		};
+		panelActions.addSaveListener((usuario) -> txCodigo.setValue(usuario.getIdUsuario()));
+
 		painelContent.add(panelActions, "cell 0 6,grow");
 	}
 

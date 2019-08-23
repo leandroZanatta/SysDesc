@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
-import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.model.Departamento;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
@@ -74,20 +73,17 @@ public class FrmDepartamento extends AbstractInternalFrame {
 			}
 
 			@Override
-			public void preencherObjeto(Departamento objetoPesquisa) {
+			public Boolean preencherObjeto(Departamento objetoPesquisa) {
+
 				objetoPesquisa.setIdDepartamento(txCodigo.getValue());
 				objetoPesquisa.setDescricao(txDescricao.getText());
+
+				return Boolean.TRUE;
 			}
 
 		};
 
-		panelActions.addEventListener(new PanelEventAdapter<Departamento>() {
-
-			@Override
-			public void saveEvent(Departamento departamento) {
-				txCodigo.setValue(departamento.getIdDepartamento());
-			}
-		});
+		panelActions.addSaveListener((departamento) -> txCodigo.setValue(departamento.getIdDepartamento()));
 
 		painelContent.add(panelActions, "cell 0 4,grow");
 	}

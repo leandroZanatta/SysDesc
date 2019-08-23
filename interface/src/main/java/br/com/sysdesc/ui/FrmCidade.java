@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
-import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.model.Cidade;
 import br.com.sysdesc.repository.model.Estado;
@@ -83,7 +82,7 @@ public class FrmCidade extends AbstractInternalFrame {
 			}
 
 			@Override
-			public void preencherObjeto(Cidade objetoPesquisa) {
+			public Boolean preencherObjeto(Cidade objetoPesquisa) {
 				objetoPesquisa.setIdCidade(txCodigo.getValue());
 
 				if (cbEstado.getSelectedIndex() >= 0) {
@@ -91,15 +90,12 @@ public class FrmCidade extends AbstractInternalFrame {
 				}
 
 				objetoPesquisa.setDescricao(txDescricao.getText());
+
+				return Boolean.TRUE;
 			}
 		};
-		painelBotoes.addEventListener(new PanelEventAdapter<Cidade>() {
 
-			@Override
-			public void saveEvent(Cidade cidade) {
-				txCodigo.setValue(cidade.getIdCidade());
-			}
-		});
+		painelBotoes.addSaveListener((cidade) -> txCodigo.setValue(cidade.getIdCidade()));
 
 		painelContent.add(painelBotoes, "cell 0 6,grow");
 	}

@@ -40,7 +40,6 @@ import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JMoneyField;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
-import br.com.sysdesc.components.adapters.PanelEventAdapter;
 import br.com.sysdesc.enumerator.TipoProdutoEnum;
 import br.com.sysdesc.enumerator.TipoStatusEnum;
 import br.com.sysdesc.pesquisa.components.CampoPesquisa;
@@ -324,7 +323,7 @@ public class FrmProduto extends AbstractInternalFrame {
 			}
 
 			@Override
-			public void preencherObjeto(Produto objetoPesquisa) {
+			public Boolean preencherObjeto(Produto objetoPesquisa) {
 
 				objetoPesquisa.setIdProduto(txCodigo.getValue());
 				objetoPesquisa.setCodigoBarras(txCodigodeBarras.getValue());
@@ -349,16 +348,13 @@ public class FrmProduto extends AbstractInternalFrame {
 				if (cbTipo.getSelectedIndex() >= 0) {
 					objetoPesquisa.setCodigoTipo(((TipoProdutoEnum) cbTipo.getSelectedItem()).getCodigo());
 				}
+
+				return Boolean.TRUE;
 			}
+
 		};
 
-		panelActions.addEventListener(new PanelEventAdapter<Produto>() {
-
-			@Override
-			public void saveEvent(Produto produto) {
-				txCodigo.setValue(produto.getIdProduto());
-			}
-		});
+		panelActions.addSaveListener((produto) -> txCodigo.setValue(produto.getIdProduto()));
 
 		painelContent.add(panelActions, "cell 0 16 2 1,grow");
 	}
