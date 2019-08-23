@@ -6,7 +6,12 @@ import static br.com.sysdesc.util.resources.Resources.FRMUSUARIO_LB_USUARIO;
 import static br.com.sysdesc.util.resources.Resources.FRMUSUARIO_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -21,6 +26,8 @@ import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Usuario;
 import br.com.sysdesc.service.cliente.ClienteService;
 import br.com.sysdesc.service.login.LoginService;
+import br.com.sysdesc.ui.buttonactions.ButtonActionAlterarSenha;
+import br.com.sysdesc.util.classes.ContadorUtil;
 import br.com.sysdesc.util.classes.StringUtil;
 import net.miginfocom.swing.MigLayout;
 
@@ -37,6 +44,7 @@ public class FrmUsuario extends AbstractInternalFrame {
 	private LoginService loginService = new LoginService();
 	private CampoPesquisa<Cliente> pesquisaCliente;
 	private ClienteService clienteService = new ClienteService();
+	private ButtonActionAlterarSenha alterarSenha;
 
 	public FrmUsuario(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
@@ -58,6 +66,8 @@ public class FrmUsuario extends AbstractInternalFrame {
 
 		lblCodigo = new JLabel("Código:");
 		txUsuario = new JTextField();
+		alterarSenha = new ButtonActionAlterarSenha();
+
 		pesquisaCliente = new CampoPesquisa<Cliente>(clienteService, PesquisaEnum.PES_CLIENTES, getCodigoUsuario()) {
 
 			private static final long serialVersionUID = 1L;
@@ -77,9 +87,52 @@ public class FrmUsuario extends AbstractInternalFrame {
 		painelContent.add(lblUsuario, "cell 0 4");
 		painelContent.add(txUsuario, "cell 0 5,growx");
 
-		panelActions = new PanelActions<Usuario>(this, loginService, PES_USUARIOS, Boolean.FALSE) {
+		Action actionAlterarSenha = new AbstractAction() {
 
 			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				ValidarSenha validarSenha = new ValidarSenha();
+				validarSenha.setVisible(Boolean.TRUE);
+
+				if (!validarSenha.getOk()) {
+					return;
+				}
+
+				Usuario usuario = panelActions.getObjetoPesquisa();
+
+				usuario.setSenha(validarSenha.getSenha());
+
+				loginService.salvar(usuario);
+
+				JOptionPane.showMessageDialog(null, "SENHA ALTERADA COM SUCESSO.", "Verificação",
+						JOptionPane.PLAIN_MESSAGE);
+			}
+		};
+
+		panelActions = new PanelActions<Usuario>(this, loginService, PES_USUARIOS, Boolean.FALSE, alterarSenha) {
+
+			private static final long serialVersionUID = 1L;
+
+			protected void posicionarBotoes() {
+
+				ContadorUtil contadorUtil = new ContadorUtil();
+
+				posicionarBotao(contadorUtil, alterarSenha, Boolean.TRUE);
+				posicionarBotao(contadorUtil, btSalvar, Boolean.TRUE);
+				posicionarBotao(contadorUtil, btEditar, Boolean.TRUE);
+				posicionarBotao(contadorUtil, btNovo, Boolean.TRUE);
+				posicionarBotao(contadorUtil, btBuscar, Boolean.TRUE);
+				posicionarBotao(contadorUtil, btCancelar, Boolean.TRUE);
+
+			}
+
+			@Override
+			protected void registrarEventosBotoesPagina() {
+				registrarEvento(alterarSenha, actionAlterarSenha);
+			}
 
 			@Override
 			public void carregarObjeto(Usuario objeto) {

@@ -1,21 +1,21 @@
 package br.com.sysdesc.components;
 
+import java.awt.BorderLayout;
+
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 import br.com.sysdesc.util.classes.CryptoUtil;
 import br.com.sysdesc.util.classes.ImageUtil;
 import br.com.sysdesc.util.classes.StringUtil;
 import br.com.sysdesc.util.resources.Resources;
-
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
-import javax.swing.border.TitledBorder;
-import javax.swing.border.EtchedBorder;
 
 public class ValidarSenha extends JDialog {
 
@@ -35,14 +35,14 @@ public class ValidarSenha extends JDialog {
 
 		setModal(true);
 		setUndecorated(true);
-		setSize(320, 156);
+		setSize(320, 160);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
 		panel = new JPanel();
 		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null),
-				Resources.translate(Resources.FRMVALIDARSENHA_TITLE) ,
-				TitledBorder.CENTER, TitledBorder.TOP, null, null));
+				Resources.translate(Resources.FRMVALIDARSENHA_TITLE), TitledBorder.CENTER, TitledBorder.TOP, null,
+				null));
 		getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(new MigLayout("", "[75px,grow][79px]", "[][][][][grow]"));
 
@@ -54,8 +54,8 @@ public class ValidarSenha extends JDialog {
 		btConfirmar = new JButton("Confirmar");
 		btCancelar = new JButton("Cancelar");
 
-		btConfirmar.setIcon(ImageUtil.resize("ok.png", 22, 22));
-		btCancelar.setIcon(ImageUtil.resize("cancel.png", 22, 22));
+		btConfirmar.setIcon(ImageUtil.resize("ok.png", 15, 15));
+		btCancelar.setIcon(ImageUtil.resize("cancel.png", 15, 15));
 
 		btConfirmar.addActionListener((e) -> validarSenha());
 		btCancelar.addActionListener((e) -> cancelar());
@@ -68,6 +68,8 @@ public class ValidarSenha extends JDialog {
 
 		panelBotoes.add(btConfirmar);
 		panelBotoes.add(btCancelar);
+
+		this.getRootPane().setDefaultButton(btConfirmar);
 
 	}
 

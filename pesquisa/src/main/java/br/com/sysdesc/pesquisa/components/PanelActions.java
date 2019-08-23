@@ -53,16 +53,16 @@ public abstract class PanelActions<T> extends AbstractButtonAction {
 
 	private AbstractGenericService<T> genericService;
 	private PesquisaEnum pesquisa;
-	private ButtonActionSalvar btSalvar;
-	private ButtonActionEditar btEditar;
-	private ButtonActionNovo btNovo;
-	private ButtonActionBuscar btBuscar;
-	private ButtonActionCancelar btCancelar;
+	protected ButtonActionSalvar btSalvar;
+	protected ButtonActionEditar btEditar;
+	protected ButtonActionNovo btNovo;
+	protected ButtonActionBuscar btBuscar;
+	protected ButtonActionCancelar btCancelar;
 
-	private ButtonActionAvancar btAvancar;
-	private ButtonActionRetroceder btRetroceder;
-	private ButtonActionPrimeiro btPrimeiro;
-	private ButtonActionUltimo btUltimo;
+	protected ButtonActionAvancar btAvancar;
+	protected ButtonActionRetroceder btRetroceder;
+	protected ButtonActionPrimeiro btPrimeiro;
+	protected ButtonActionUltimo btUltimo;
 
 	private final JFrame parent = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
 	private final Boolean pageable;
@@ -209,6 +209,7 @@ public abstract class PanelActions<T> extends AbstractButtonAction {
 			registrarEvento(btPrimeiro, actionPrimeiro);
 
 		}
+		registrarEventosBotoesPagina();
 
 		registrarEvento(btSalvar, actionSalvar);
 		registrarEvento(btEditar, actionEditar);
@@ -228,6 +229,9 @@ public abstract class PanelActions<T> extends AbstractButtonAction {
 		bloquear();
 
 		fireButtonListener(ButtonActionListener::startEvent);
+	}
+
+	protected void registrarEventosBotoesPagina() {
 	}
 
 	protected void registrarEvento(ButtonAction buttonAction, Action action) {
@@ -547,6 +551,10 @@ public abstract class PanelActions<T> extends AbstractButtonAction {
 				((NewListener) listeners[i + 1]).newEvent();
 			}
 		}
+	}
+
+	public T getObjetoPesquisa() {
+		return objetoPesquisa;
 	}
 
 	protected abstract void carregarObjeto(T objetoPesquisa);
