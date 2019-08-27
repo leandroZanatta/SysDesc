@@ -29,6 +29,7 @@ import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.service.cidade.CidadeService;
 import br.com.sysdesc.service.cliente.ClienteService;
 import br.com.sysdesc.service.estado.EstadoService;
+import br.com.sysdesc.util.resources.Resources;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmCliente extends AbstractInternalFrame {
@@ -36,23 +37,25 @@ public class FrmCliente extends AbstractInternalFrame {
 	private static final long serialVersionUID = 1L;
 
 	private JNumericField txCodigo;
+	private JTextField txEmail;
 	private JTextFieldMaiusculo txNome;
 	private JTextFieldMaiusculo txIncricaoEstadual;
 	private JTextFieldMaiusculo txEndereco;
 	private JTextFieldMaiusculo txBairro;
-	private JFormattedTextField txCelular;
-	private JTextField txEmail;
 	private JTextFieldMaiusculo txNumero;
-	private JDateChooser txDataDeNascimento;
+	private JFormattedTextField txCelular;
 	private JFormattedTextField txCep;
 	private JFormattedTextField txCgc;
+	private JDateChooser txDataDeNascimento;
 	private ClienteService clienteService = new ClienteService();
 	private EstadoService estadoService = new EstadoService();
 	private CidadeService cidadeService = new CidadeService();
 	private PanelActions<Cliente> painelDeBotoes;
 	private JComboBox<Estado> cbEstado;
 	private JComboBox<Cidade> cbCidade;
-	private ButtonGroup buttonGroup;
+	private JComboBox<EstadoCivilEnum> cbEstadoCivil;
+	private JComboBox<TipoStatusEnum> cbSituacao;
+	private JComboBox<SexoEnum> cbSexo;
 	private JLabel lblCpfcnpj;
 	private JLabel lblRazoSocial;
 	private JLabel lblDataNascimento;
@@ -60,10 +63,20 @@ public class FrmCliente extends AbstractInternalFrame {
 	private JLabel lblEstadoCivil;
 	private JLabel lblSexo;
 	private JLabel lblCdigo;
-	private JComboBox<EstadoCivilEnum> cbEstadoCivil;
-	private JComboBox<SexoEnum> cbSexo;
+	private JLabel lblCidade;
+	private JLabel lblEstado;
+	private JLabel lblEndereo;
+	private JLabel lblNmero;
+	private JLabel lblNewLabel;
+	private JLabel lblCep;
+	private JLabel lbCelular;
+	private JLabel lblEmail;
+	private JLabel lblSituacao;
 	private MaskFormatter mascaraCPF;
 	private MaskFormatter mascaraCNPJ;
+	private MaskFormatter mascaraCelular;
+	private MaskFormatter mascaraCep;
+	private ButtonGroup buttonGroup;
 	private JRadioButton rdbtnFisca;
 	private JRadioButton rdbtnJurdica;
 
@@ -76,38 +89,49 @@ public class FrmCliente extends AbstractInternalFrame {
 
 	private void initComponents() throws ParseException {
 
-		setTitle("Cadastro de clientes");
+		setTitle(Resources.translate(Resources.FRMCLIENTE_TITLE));
 		setSize(600, 460);
 		setClosable(Boolean.TRUE);
 		getContentPane().setLayout(new MigLayout("", "[grow][grow][grow][grow][grow][grow][grow]",
 				"[][][][][][][][][][][][][][][][][grow]"));
 
-		lblCdigo = new JLabel("Código:");
-		lblCpfcnpj = new JLabel("CPF/CNPJ:");
-		txCodigo = new JNumericField();
-		rdbtnFisca = new JRadioButton("Pessoa Fisíca");
-		rdbtnJurdica = new JRadioButton("Pessoa Jurídica");
+		lblCdigo = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_CODIGO));
+		lblCpfcnpj = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_CPF_CNPJ));
+		lblRazoSocial = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_RAZAO_SOCIAL));
+		lblInscrioEstadual = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_INSCRICAO_ESTADUAL));
+		lblDataNascimento = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_DATA_DE_NASCIMENTO));
+		lblEstado = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_ESTADO));
+		lblCidade = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_CIDADE));
+		lblEndereo = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_ENDERECO));
+		lblNmero = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_NUMERO));
+		lblNewLabel = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_BAIRRO));
+		lblCep = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_CEP));
+		lbCelular = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_CELULAR));
+		lblEmail = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_EMAIL));
+		lblSituacao = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_SITUACAO));
+		lblEstadoCivil = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_ESTADO_CIVIL));
+		lblSexo = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_SEXO));
+		rdbtnFisca = new JRadioButton(Resources.translate(Resources.FRMCLIENTE_RB_PESSOA_FISICA));
+		rdbtnJurdica = new JRadioButton(Resources.translate(Resources.FRMCLIENTE_RB_PESSOA_JURIDICA));
 		buttonGroup = new ButtonGroup();
-		txCgc = new JFormattedTextField();
-		lblRazoSocial = new JLabel("Razão Social:");
-		txNome = new JTextFieldMaiusculo();
-		lblInscrioEstadual = new JLabel("Inscrição Estadual:");
-		lblDataNascimento = new JLabel("Data Nascimento:");
-		txIncricaoEstadual = new JTextFieldMaiusculo();
 		txDataDeNascimento = new JDateChooser("dd/MM/yyyy", "##/##/#####", '_');
-		JLabel lblEstado = new JLabel("Estado:");
-		JLabel lblCidade = new JLabel("Cidade:");
-		cbEstado = new JComboBox<Estado>();
-		estadoService.listarEstados().forEach(cbEstado::addItem);
-		cbEstado.addActionListener((e) -> carregarCidades());
-		cbCidade = new JComboBox<>();
-		JLabel lblEndereo = new JLabel("Endereço:");
-		JLabel lblNmero = new JLabel("Número:");
+		txCodigo = new JNumericField();
+		txIncricaoEstadual = new JTextFieldMaiusculo();
+		txCgc = new JFormattedTextField();
+		txNome = new JTextFieldMaiusculo();
 		txEndereco = new JTextFieldMaiusculo();
 		txNumero = new JTextFieldMaiusculo();
-		JLabel lblNewLabel = new JLabel("Bairro:");
-		JLabel lblCep = new JLabel("Cep:");
 		txBairro = new JTextFieldMaiusculo();
+		mascaraCep = new MaskFormatter("#####-###");
+		mascaraCNPJ = new MaskFormatter("##.###.###/####-##");
+		mascaraCPF = new MaskFormatter("###.###.###-##");
+		mascaraCelular = new MaskFormatter("(##) #####-####");
+		cbEstado = new JComboBox<Estado>();
+		cbEstadoCivil = new JComboBox<>();
+		cbSexo = new JComboBox<>();
+		cbSituacao = new JComboBox<>();
+
+		estadoService.listarEstados().forEach(cbEstado::addItem);
 
 		getContentPane().add(lblCpfcnpj, "cell 5 0 2 1");
 		getContentPane().add(lblCdigo, "cell 0 0");
@@ -128,60 +152,30 @@ public class FrmCliente extends AbstractInternalFrame {
 		getContentPane().add(lblEndereo, "cell 0 8");
 		getContentPane().add(lblNmero, "cell 6 8");
 		getContentPane().add(txEndereco, "cell 0 9 6 1,growx");
+		getContentPane().add(txNumero, "cell 6 9,growx");
+		getContentPane().add(lblNewLabel, "cell 0 10");
+		getContentPane().add(lblCep, "cell 5 10");
+		getContentPane().add(txBairro, "cell 0 11 5 1,growx");
+		getContentPane().add(txCep, "cell 5 11 2 1,growx");
+		getContentPane().add(lbCelular, "cell 0 12");
+		getContentPane().add(lblEmail, "cell 3 12");
+		getContentPane().add(txCelular, "cell 0 13 3 1,growx");
+		getContentPane().add(txEmail, "cell 3 13 4 1,growx");
+		getContentPane().add(lblEstadoCivil, "cell 0 14");
+		getContentPane().add(lblSexo, "cell 2 14");
+		getContentPane().add(lblSituacao, "cell 5 14");
+		getContentPane().add(cbEstadoCivil, "cell 0 15 2 1,growx");
+		getContentPane().add(cbSexo, "cell 2 15 3 1,growx");
 
 		buttonGroup.add(rdbtnFisca);
 		buttonGroup.add(rdbtnJurdica);
 		rdbtnFisca.addActionListener((e) -> selecionouPessoaFisica());
 		rdbtnJurdica.addActionListener((e) -> selecionouPessoaJuridica());
 
-		getContentPane().add(txNumero, "cell 6 9,growx");
-
-		getContentPane().add(lblNewLabel, "cell 0 10");
-		getContentPane().add(lblCep, "cell 5 10");
-
-		getContentPane().add(txBairro, "cell 0 11 5 1,growx");
-
-		MaskFormatter mascaraCep = new MaskFormatter("#####-###");
-
-		mascaraCNPJ = new MaskFormatter("##.###.###/####-##");
+		mascaraCelular.setPlaceholderCharacter('_');
 		mascaraCNPJ.setPlaceholderCharacter('_');
 		mascaraCep.setPlaceholderCharacter('_');
-
-		mascaraCPF = new MaskFormatter("###.###.###-##");
 		mascaraCPF.setPlaceholderCharacter('_');
-		txCep = new JFormattedTextField(mascaraCep);
-		getContentPane().add(txCep, "cell 5 11 2 1,growx");
-
-		JLabel lbCelular = new JLabel("Celular:");
-		getContentPane().add(lbCelular, "cell 0 12");
-
-		JLabel lblEmail = new JLabel("Email:");
-		getContentPane().add(lblEmail, "cell 3 12");
-
-		MaskFormatter mascaraCelular = new MaskFormatter("(##) #####-####");
-		mascaraCelular.setPlaceholderCharacter('_');
-		txCelular = new JFormattedTextField(mascaraCelular);
-		getContentPane().add(txCelular, "cell 0 13 3 1,growx");
-
-		txEmail = new JTextField();
-		getContentPane().add(txEmail, "cell 3 13 4 1,growx");
-
-		lblEstadoCivil = new JLabel("Estado Civil:");
-		getContentPane().add(lblEstadoCivil, "cell 0 14");
-
-		lblSexo = new JLabel("Sexo:");
-		getContentPane().add(lblSexo, "cell 2 14");
-
-		JLabel lblSituacao = new JLabel("Situação:");
-		getContentPane().add(lblSituacao, "cell 5 14");
-
-		cbEstadoCivil = new JComboBox<>();
-		getContentPane().add(cbEstadoCivil, "cell 0 15 2 1,growx");
-
-		cbSexo = new JComboBox<>();
-		getContentPane().add(cbSexo, "cell 2 15 3 1,growx");
-
-		JComboBox<TipoStatusEnum> cbSituacao = new JComboBox<>();
 
 		Arrays.asList(TipoStatusEnum.values()).forEach(cbSituacao::addItem);
 		Arrays.asList(SexoEnum.values()).forEach(cbSexo::addItem);
@@ -232,6 +226,7 @@ public class FrmCliente extends AbstractInternalFrame {
 				objetoPesquisa.setEndereco(txEndereco.getText());
 				objetoPesquisa.setNumero(txNumero.getText());
 				objetoPesquisa.setBairro(txBairro.getText());
+
 				objetoPesquisa.setCep(txCep.getText());
 				objetoPesquisa.setTelefone(txCelular.getText());
 

@@ -64,7 +64,6 @@ public class FrmUsuario extends AbstractInternalFrame {
 		lblUsuario = new JLabel(translate(FRMUSUARIO_LB_USUARIO));
 		txCodigo = new JNumericField();
 
-		lblCodigo = new JLabel("Código:");
 		txUsuario = new JTextField();
 		alterarSenha = new ButtonActionAlterarSenha();
 
