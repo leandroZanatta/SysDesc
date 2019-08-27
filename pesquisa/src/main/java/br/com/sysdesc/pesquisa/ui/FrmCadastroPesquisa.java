@@ -98,6 +98,7 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 		txPaginacao = new JNumericField();
 
 		panel_1 = new JPanel();
+
 		btAdd = new JButton("");
 		btRemove = new JButton("");
 		panel = new JPanel();
