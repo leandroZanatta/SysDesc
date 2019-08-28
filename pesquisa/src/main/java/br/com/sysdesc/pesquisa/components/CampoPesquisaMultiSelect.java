@@ -151,4 +151,8 @@ public abstract class CampoPesquisaMultiSelect<T> extends JPanel {
 
 		return new BooleanBuilder();
 	}
+
+	public void bloquear(Boolean editable) {
+		btPesquisa.setEnabled(editable);
+	}
 }

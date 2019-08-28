@@ -43,6 +43,7 @@ import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.enumerator.TipoProdutoEnum;
 import br.com.sysdesc.enumerator.TipoStatusEnum;
 import br.com.sysdesc.pesquisa.components.CampoPesquisa;
+import br.com.sysdesc.pesquisa.components.JTextFieldId;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.model.Categoria;
 import br.com.sysdesc.repository.model.Cliente;
@@ -83,7 +84,7 @@ public class FrmProduto extends AbstractInternalFrame {
 
 	private JPanel panel;
 
-	private JNumericField txCodigo;
+	private JTextFieldId txCodigo;
 
 	private JTextFieldMaiusculo txDescricao;
 
@@ -134,7 +135,7 @@ public class FrmProduto extends AbstractInternalFrame {
 		lbDescricao = new JLabel(translate(FRMPRODUTO_LB_DESCRICAO));
 		lbCodigodebarras = new JLabel(translate(FRMPRODUTO_LB_CODIGOBARRA));
 		txCodigodeBarras = new JNumericField();
-		txCodigo = new JNumericField();
+		txCodigo = new JTextFieldId();
 		txDescricao = new JTextFieldMaiusculo();
 		lbDepartamento = new JLabel(translate(FRMPRODUTO_LB_DEPARTAMENTO));
 		lbUnidade = new JLabel(translate(FRMPRODUTO_LB_UNIDADE));

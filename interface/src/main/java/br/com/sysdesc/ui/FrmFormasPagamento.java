@@ -13,6 +13,7 @@ import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JMoneyField;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
+import br.com.sysdesc.pesquisa.components.JTextFieldId;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.repository.enumeradores.FormaPagamentoEnum;
@@ -26,7 +27,7 @@ public class FrmFormasPagamento extends AbstractInternalFrame {
 	private static final long serialVersionUID = 1L;
 
 	private final JLabel label = new JLabel("");
-	private JNumericField txCodigo;
+	private JTextFieldId txCodigo;
 	private JTextFieldMaiusculo txDescricao;
 	private JNumericField txNumeroMaximoParcelas;
 	private JMoneyField txValorMinimoPagamento;
@@ -63,7 +64,7 @@ public class FrmFormasPagamento extends AbstractInternalFrame {
 		lblDiasPagamento = new JLabel("Dias pagamento:");
 		lblValorMnimoPagamento = new JLabel("Valor mínimo pagamento:");
 
-		txCodigo = new JNumericField();
+		txCodigo = new JTextFieldId();
 		txDescricao = new JTextFieldMaiusculo();
 		cbFormaPagamento = new JComboBox<>();
 		chPermiteTroco = new JCheckBox("Permite Troco");

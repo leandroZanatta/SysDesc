@@ -12,8 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
-import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
+import br.com.sysdesc.pesquisa.components.JTextFieldId;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.model.Cidade;
 import br.com.sysdesc.repository.model.Estado;
@@ -29,7 +29,7 @@ public class FrmCidade extends AbstractInternalFrame {
 	private JPanel painelContent;
 
 	private JLabel lbCodigo;
-	private JNumericField txCodigo;
+	private JTextFieldId txCodigo;
 	private JTextFieldMaiusculo txDescricao;
 	private JLabel lbEstado;
 	private JComboBox<Estado> cbEstado;
@@ -52,7 +52,7 @@ public class FrmCidade extends AbstractInternalFrame {
 
 		painelContent = new JPanel();
 		lbCodigo = new JLabel(translate(FRMCIDADE_LB_CODIGO));
-		txCodigo = new JNumericField();
+		txCodigo = new JTextFieldId();
 		lbEstado = new JLabel(translate(FRMCIDADE_LB_ESTADO));
 		cbEstado = new JComboBox<>();
 		lbDescricao = new JLabel(translate(FRMCIDADE_LB_DESCRICAO));

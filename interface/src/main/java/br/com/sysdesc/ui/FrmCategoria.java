@@ -14,8 +14,8 @@ import javax.swing.JPanel;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
-import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
+import br.com.sysdesc.pesquisa.components.JTextFieldId;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.model.Categoria;
 import br.com.sysdesc.repository.model.Departamento;
@@ -34,7 +34,7 @@ public class FrmCategoria extends AbstractInternalFrame {
 	private JLabel lblCodigo;
 	private JLabel lblDescricao;
 
-	private JNumericField txCodigo;
+	private JTextFieldId txCodigo;
 	private JComboBox<Departamento> cbDepartamento;
 	private JTextFieldMaiusculo txDescricao;
 	private PanelActions<Categoria> panelActions;
@@ -60,7 +60,7 @@ public class FrmCategoria extends AbstractInternalFrame {
 		lbDepartamento = new JLabel(translate(FRMCATEGORIA_LB_DEPARTAMENTO));
 		lblDescricao = new JLabel(translate(FRMCATEGORIA_LB_DESCRICAO));
 
-		txCodigo = new JNumericField();
+		txCodigo = new JTextFieldId();
 		cbDepartamento = new JComboBox<>();
 		txDescricao = new JTextFieldMaiusculo();
 

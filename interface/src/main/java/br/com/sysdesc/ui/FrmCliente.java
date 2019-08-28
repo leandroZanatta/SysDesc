@@ -14,11 +14,11 @@ import javax.swing.text.MaskFormatter;
 import com.toedter.calendar.JDateChooser;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
-import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.enumerator.EstadoCivilEnum;
 import br.com.sysdesc.enumerator.SexoEnum;
 import br.com.sysdesc.enumerator.TipoStatusEnum;
+import br.com.sysdesc.pesquisa.components.JTextFieldId;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.repository.enumeradores.TipoClienteEnum;
@@ -36,7 +36,7 @@ public class FrmCliente extends AbstractInternalFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	private JNumericField txCodigo;
+	private JTextFieldId txCodigo;
 	private JTextField txEmail;
 	private JTextFieldMaiusculo txNome;
 	private JTextFieldMaiusculo txIncricaoEstadual;
@@ -115,7 +115,7 @@ public class FrmCliente extends AbstractInternalFrame {
 		rdbtnJurdica = new JRadioButton(Resources.translate(Resources.FRMCLIENTE_RB_PESSOA_JURIDICA));
 		buttonGroup = new ButtonGroup();
 		txDataDeNascimento = new JDateChooser("dd/MM/yyyy", "##/##/#####", '_');
-		txCodigo = new JNumericField();
+		txCodigo = new JTextFieldId();
 		txIncricaoEstadual = new JTextFieldMaiusculo();
 		txCgc = new JFormattedTextField();
 		txCep = new JFormattedTextField();

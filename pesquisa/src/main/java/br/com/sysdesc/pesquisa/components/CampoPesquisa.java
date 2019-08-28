@@ -136,4 +136,8 @@ public abstract class CampoPesquisa<T> extends JPanel {
 		return new BooleanBuilder();
 	}
 
+	public void bloquear(Boolean editable) {
+		btPesquisa.setEnabled(editable);
+	}
+
 }

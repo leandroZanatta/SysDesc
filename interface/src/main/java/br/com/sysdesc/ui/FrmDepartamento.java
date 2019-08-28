@@ -10,8 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
-import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
+import br.com.sysdesc.pesquisa.components.JTextFieldId;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.model.Departamento;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
@@ -27,7 +27,7 @@ public class FrmDepartamento extends AbstractInternalFrame {
 	private JLabel lblCodigo;
 	private JLabel lblDescricao;
 
-	private JNumericField txCodigo;
+	private JTextFieldId txCodigo;
 	private JTextFieldMaiusculo txDescricao;
 	private PanelActions<Departamento> panelActions;
 	private DepartamentoService departamentoService = new DepartamentoService();
@@ -46,7 +46,7 @@ public class FrmDepartamento extends AbstractInternalFrame {
 
 		painelContent = new JPanel();
 
-		txCodigo = new JNumericField();
+		txCodigo = new JTextFieldId();
 
 		lblCodigo = new JLabel(translate(FRMDEPARTAMENTO_LB_CODIGO));
 

@@ -16,10 +16,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
-import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.ValidarSenha;
 import br.com.sysdesc.pesquisa.components.CampoPesquisa;
 import br.com.sysdesc.pesquisa.components.CampoPesquisaMultiSelect;
+import br.com.sysdesc.pesquisa.components.JTextFieldId;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.repository.model.Cliente;
@@ -43,7 +43,7 @@ public class FrmUsuario extends AbstractInternalFrame {
 	private JLabel lblCliente;
 	private JLabel lbPerfil;
 	private JLabel lblCodigo;
-	private JNumericField txCodigo;
+	private JTextFieldId txCodigo;
 	private PerfilService perfilService = new PerfilService();
 	private PanelActions<Usuario> panelActions;
 	private CampoPesquisaMultiSelect<Perfil> pesquisaPerfis;
@@ -69,7 +69,7 @@ public class FrmUsuario extends AbstractInternalFrame {
 		lblCodigo = new JLabel(translate(FRMUSUARIO_LB_CODIGO));
 		lblCliente = new JLabel("Cliente:");
 		lbPerfil = new JLabel("Perfil:");
-		txCodigo = new JNumericField();
+		txCodigo = new JTextFieldId();
 
 		txUsuario = new JTextField();
 		alterarSenha = new ButtonActionAlterarSenha();

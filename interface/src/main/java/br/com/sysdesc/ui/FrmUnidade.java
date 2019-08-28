@@ -11,8 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
-import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
+import br.com.sysdesc.pesquisa.components.JTextFieldId;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Unidade;
@@ -24,7 +24,7 @@ public class FrmUnidade extends AbstractInternalFrame {
 	private static final long serialVersionUID = 1L;
 
 	private JPanel painelContent;
-	private JNumericField txCodigo;
+	private JTextFieldId txCodigo;
 	private JLabel lblCodigo;
 	private JLabel lblDescricao;
 	private JLabel lblDescricaoReduzida;
@@ -46,7 +46,7 @@ public class FrmUnidade extends AbstractInternalFrame {
 		setTitle(translate(FRMUNIDADE_TITLE));
 
 		painelContent = new JPanel();
-		txCodigo = new JNumericField();
+		txCodigo = new JTextFieldId();
 		lblCodigo = new JLabel(translate(FRMUNIDADE_LB_CODIGO));
 		lblDescricao = new JLabel(translate(FRMUNIDADE_LB_DESCRICAO));
 		lblDescricaoReduzida = new JLabel(translate(FRMUNIDADE_LB_DESCRICAO_REDUZIDA));

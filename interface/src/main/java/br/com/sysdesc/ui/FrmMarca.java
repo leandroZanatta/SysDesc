@@ -10,8 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
-import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
+import br.com.sysdesc.pesquisa.components.JTextFieldId;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.model.Marca;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
@@ -23,7 +23,7 @@ public class FrmMarca extends AbstractInternalFrame {
 	private static final long serialVersionUID = 1L;
 
 	private JTextFieldMaiusculo txDescricao;
-	private JNumericField txCodigo;
+	private JTextFieldId txCodigo;
 	private JLabel lblCodigo;
 	private JLabel lblDescricao;
 	private JPanel painelContent;
@@ -44,7 +44,7 @@ public class FrmMarca extends AbstractInternalFrame {
 
 		painelContent = new JPanel();
 		lblCodigo = new JLabel(translate(FRMMARCA_LB_CODIGO));
-		txCodigo = new JNumericField();
+		txCodigo = new JTextFieldId();
 		lblDescricao = new JLabel(translate(FRMMARCA_LB_DESCRICAO));
 		txDescricao = new JTextFieldMaiusculo();
 

@@ -16,6 +16,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
+import br.com.sysdesc.pesquisa.components.CampoPesquisa;
+import br.com.sysdesc.pesquisa.components.CampoPesquisaMultiSelect;
+import br.com.sysdesc.pesquisa.components.JTextFieldId;
 
 public abstract class AbstractButtonAction extends JPanel {
 
@@ -37,30 +40,36 @@ public abstract class AbstractButtonAction extends JPanel {
 
 		for (Component component : container.getComponents()) {
 
-			if (component instanceof Container) {
+			if (component instanceof CampoPesquisa<?>) {
+				addCampo(component, CampoPesquisa.class);
+			} else if (component instanceof JTextFieldId) {
+				return;
+			} else if (component instanceof CampoPesquisaMultiSelect<?>) {
+				addCampo(component, CampoPesquisaMultiSelect.class);
+			} else if (component instanceof Container) {
 				findComponents((Container) component);
+			} else {
+
+				if (component instanceof JTextField) {
+
+					addCampo(component, JTextField.class);
+				} else if (component instanceof JComboBox) {
+
+					addCampo(component, JComboBox.class);
+				} else if (component instanceof JCheckBox) {
+
+					addCampo(component, JCheckBox.class);
+				} else if (component instanceof JRadioButton) {
+
+					addCampo(component, JRadioButton.class);
+				} else if (component instanceof JTable) {
+
+					addCampo(component, JTable.class);
+				} else if (component instanceof JButton) {
+
+					addCampo(component, JButton.class);
+				}
 			}
-
-			if (component instanceof JTextField) {
-
-				addCampo(component, JTextField.class);
-			} else if (component instanceof JComboBox) {
-
-				addCampo(component, JComboBox.class);
-			} else if (component instanceof JCheckBox) {
-
-				addCampo(component, JCheckBox.class);
-			} else if (component instanceof JRadioButton) {
-
-				addCampo(component, JRadioButton.class);
-			} else if (component instanceof JTable) {
-
-				addCampo(component, JTable.class);
-			} else if (component instanceof JButton) {
-
-				addCampo(component, JButton.class);
-			}
-
 		}
 
 	}
@@ -75,6 +84,15 @@ public abstract class AbstractButtonAction extends JPanel {
 	}
 
 	protected void bloquear() {
+
+		if (camposTela.containsKey(CampoPesquisa.class)) {
+			camposTela.get(CampoPesquisa.class).forEach(x -> ((CampoPesquisa<?>) x).bloquear(editable));
+		}
+
+		if (camposTela.containsKey(CampoPesquisaMultiSelect.class)) {
+			camposTela.get(CampoPesquisaMultiSelect.class)
+					.forEach(x -> ((CampoPesquisaMultiSelect<?>) x).bloquear(editable));
+		}
 
 		if (camposTela.containsKey(JTextField.class)) {
 			camposTela.get(JTextField.class).forEach(x -> ((JTextField) x).setEditable(editable));

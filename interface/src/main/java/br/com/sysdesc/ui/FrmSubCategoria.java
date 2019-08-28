@@ -15,8 +15,8 @@ import javax.swing.JLabel;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
-import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
+import br.com.sysdesc.pesquisa.components.JTextFieldId;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.model.Categoria;
 import br.com.sysdesc.repository.model.Departamento;
@@ -30,7 +30,7 @@ import net.miginfocom.swing.MigLayout;
 public class FrmSubCategoria extends AbstractInternalFrame {
 	private static final long serialVersionUID = 1L;
 
-	private JNumericField txCodigo;
+	private JTextFieldId txCodigo;
 	private JTextFieldMaiusculo txDescricao;
 	private JLabel lbCodigo;
 	private JLabel lbCategoria;
@@ -60,7 +60,7 @@ public class FrmSubCategoria extends AbstractInternalFrame {
 		getContentPane().setLayout(new MigLayout("", "[grow]", "[][][][][][][][][]"));
 
 		lbCodigo = new JLabel(translate(FRMSUBCATEGORIA_LB_CODIGO));
-		txCodigo = new JNumericField();
+		txCodigo = new JTextFieldId();
 		cbCategoria = new JComboBox<>();
 		lbDescricao = new JLabel(translate(FRMSUBCATEGORIA_LB_DESCRICAO));
 		txDescricao = new JTextFieldMaiusculo();
