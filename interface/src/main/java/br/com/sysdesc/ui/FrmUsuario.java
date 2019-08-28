@@ -1,7 +1,6 @@
 package br.com.sysdesc.ui;
 
 import static br.com.sysdesc.util.resources.Resources.FRMUSUARIO_LB_CODIGO;
-import static br.com.sysdesc.util.resources.Resources.FRMUSUARIO_LB_USUARIO;
 import static br.com.sysdesc.util.resources.Resources.FRMUSUARIO_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
@@ -25,6 +24,7 @@ import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.repository.model.Cliente;
 import br.com.sysdesc.repository.model.Perfil;
+import br.com.sysdesc.repository.model.PerfilUsuario;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Usuario;
 import br.com.sysdesc.service.cliente.ClienteService;
@@ -41,7 +41,7 @@ public class FrmUsuario extends AbstractInternalFrame {
 	private JPanel painelContent;
 	private JTextField txUsuario;
 	private JLabel lblCliente;
-	private JLabel lblUsuario;
+	private JLabel lbPerfil;
 	private JLabel lblCodigo;
 	private JNumericField txCodigo;
 	private PerfilService perfilService = new PerfilService();
@@ -51,6 +51,7 @@ public class FrmUsuario extends AbstractInternalFrame {
 	private CampoPesquisa<Cliente> pesquisaCliente;
 	private ClienteService clienteService = new ClienteService();
 	private ButtonActionAlterarSenha alterarSenha;
+	private JLabel lblUsuario;
 
 	public FrmUsuario(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
@@ -60,14 +61,14 @@ public class FrmUsuario extends AbstractInternalFrame {
 
 	private void initComponents() {
 
-		setSize(450, 230);
+		setSize(450, 275);
 		setClosable(Boolean.TRUE);
 		setTitle(translate(FRMUSUARIO_TITLE));
 
 		painelContent = new JPanel();
 		lblCodigo = new JLabel(translate(FRMUSUARIO_LB_CODIGO));
 		lblCliente = new JLabel("Cliente:");
-		lblUsuario = new JLabel(translate(FRMUSUARIO_LB_USUARIO));
+		lbPerfil = new JLabel("Perfil:");
 		txCodigo = new JNumericField();
 
 		txUsuario = new JTextField();
@@ -82,6 +83,15 @@ public class FrmUsuario extends AbstractInternalFrame {
 				return String.format("%d - %s", objeto.getIdCliente(), objeto.getNome());
 			}
 		};
+
+		painelContent.setLayout(new MigLayout("", "[grow]", "[][][][][][][][][grow]"));
+		getContentPane().add(painelContent);
+
+		painelContent.add(lblCodigo, "cell 0 0");
+		painelContent.add(txCodigo, "cell 0 1,width 50:100:100");
+		painelContent.add(lblCliente, "cell 0 2");
+		painelContent.add(pesquisaCliente, "cell 0 3,growx");
+		painelContent.add(lbPerfil, "cell 0 4");
 
 		pesquisaPerfis = new CampoPesquisaMultiSelect<Perfil>(perfilService, PesquisaEnum.PES_PERFIL,
 				getCodigoUsuario()) {
@@ -102,17 +112,11 @@ public class FrmUsuario extends AbstractInternalFrame {
 			}
 
 		};
-
-		painelContent.setLayout(new MigLayout("", "[grow]", "[][][][][][][grow]"));
-		getContentPane().add(painelContent);
-
-		painelContent.add(lblCodigo, "cell 0 0");
-		painelContent.add(txCodigo, "cell 0 1,width 50:100:100");
-		painelContent.add(lblCliente, "cell 0 2");
-		painelContent.add(pesquisaCliente, "cell 0 3,growx");
-		painelContent.add(lblUsuario, "cell 0 4");
 		painelContent.add(pesquisaPerfis, "cell 0 5,growx");
-		painelContent.add(txUsuario, "cell 0 5,growx");
+
+		lblUsuario = new JLabel("Usuário:");
+		painelContent.add(lblUsuario, "cell 0 6");
+		painelContent.add(txUsuario, "cell 0 7,growx");
 
 		Action actionAlterarSenha = new AbstractAction() {
 
@@ -169,6 +173,9 @@ public class FrmUsuario extends AbstractInternalFrame {
 				txCodigo.setValue(objeto.getIdUsuario());
 				txUsuario.setText(objeto.getUsuario());
 				pesquisaCliente.setValue(objeto.getCliente());
+
+				pesquisaPerfis.setValue(
+						objeto.getPerfilUsuarios().stream().map(PerfilUsuario::getPerfil).collect(Collectors.toList()));
 			}
 
 			@Override
@@ -176,6 +183,8 @@ public class FrmUsuario extends AbstractInternalFrame {
 				objetoPesquisa.setIdUsuario(txCodigo.getValue());
 				objetoPesquisa.setUsuario(txUsuario.getText());
 				objetoPesquisa.setCliente(pesquisaCliente.getObjetoPesquisado());
+
+				pesquisaPerfis.getObjetosPesquisado().forEach(objetoPesquisa::addPerfilUsuario);
 
 				if (StringUtil.isNullOrEmpty(objetoPesquisa.getSenha())) {
 
@@ -195,7 +204,7 @@ public class FrmUsuario extends AbstractInternalFrame {
 		};
 		panelActions.addSaveListener((usuario) -> txCodigo.setValue(usuario.getIdUsuario()));
 
-		painelContent.add(panelActions, "cell 0 6,grow");
+		painelContent.add(panelActions, "cell 0 8,grow");
 	}
 
 }

@@ -31,7 +31,7 @@
 		
 		</createTable>
 		
-		<createSequence sequenceName="gen_usuario" />
+		<createSequence sequenceName="gen_usuario" startValue="2"/>
 	</changeSet>
 
 

@@ -17,10 +17,10 @@ public class PerfilUsuarioPk implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "cd_usuario")
+	@Column(name = "cd_usuario", insertable = false, updatable = false)
 	private Long codigoUsuario;
 
-	@Column(name = "cd_perfil")
+	@Column(name = "cd_perfil", insertable = false, updatable = false)
 	private Long codigoPerfil;
 
 }

@@ -79,7 +79,7 @@
 		
 		</createTable>
 		
-		<createSequence sequenceName="gen_cliente" />
+		<createSequence sequenceName="gen_cliente" startValue="2" />
 	</changeSet>
 
 

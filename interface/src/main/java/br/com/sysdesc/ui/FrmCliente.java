@@ -118,6 +118,8 @@ public class FrmCliente extends AbstractInternalFrame {
 		txCodigo = new JNumericField();
 		txIncricaoEstadual = new JTextFieldMaiusculo();
 		txCgc = new JFormattedTextField();
+		txCep = new JFormattedTextField();
+		txCelular = new JFormattedTextField();
 		txNome = new JTextFieldMaiusculo();
 		txEndereco = new JTextFieldMaiusculo();
 		txNumero = new JTextFieldMaiusculo();
@@ -130,8 +132,10 @@ public class FrmCliente extends AbstractInternalFrame {
 		cbEstadoCivil = new JComboBox<>();
 		cbSexo = new JComboBox<>();
 		cbSituacao = new JComboBox<>();
-
+		cbCidade = new JComboBox<>();
+		txEmail = new JTextField();
 		estadoService.listarEstados().forEach(cbEstado::addItem);
+		cbEstado.addActionListener((e) -> carregarCidades());
 
 		getContentPane().add(lblCpfcnpj, "cell 5 0 2 1");
 		getContentPane().add(lblCdigo, "cell 0 0");

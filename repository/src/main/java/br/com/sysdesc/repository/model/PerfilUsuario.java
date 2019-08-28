@@ -10,9 +10,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.com.sysdesc.repository.model.pk.PerfilUsuarioPk;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "tb_perfilusuario")
 public class PerfilUsuario implements Serializable {
@@ -29,11 +31,11 @@ public class PerfilUsuario implements Serializable {
 	private Long codigoPerfil;
 
 	@ManyToOne
-	@JoinColumn(name = "cd_usuario", insertable = false, updatable = false)
+	@JoinColumn(name = "cd_usuario")
 	private Usuario usuario;
 
 	@ManyToOne
-	@JoinColumn(name = "cd_perfil", insertable = false, updatable = false)
+	@JoinColumn(name = "cd_perfil")
 	private Perfil perfil;
 
 }

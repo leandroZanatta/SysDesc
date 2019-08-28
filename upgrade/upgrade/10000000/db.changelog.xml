@@ -40,5 +40,6 @@
 	<include file="10000000/inserts/20190626_115800_carga_pesquisa_cidade.xml" />
 	<include file="10000000/inserts/20190630_231900_carga_versao.xml" />
 	<include file="10000000/inserts/20190704_202400_carga_pesquisa_subcategoria.xml" />
+	<include file="10000000/inserts/20190827_202300_carga_pesquisa_cliente.xml" />
 
 </databaseChangeLog>

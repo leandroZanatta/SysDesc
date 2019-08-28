@@ -1,8 +1,10 @@
 package br.com.sysdesc.repository.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,10 +43,20 @@ public class Usuario implements Serializable {
 	@OneToMany(mappedBy = "usuario")
 	private List<PermissaoPrograma> permissaoProgramas;
 
-	@OneToMany(mappedBy = "usuario")
-	private List<PerfilUsuario> perfilUsuarios;
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.PERSIST)
+	private List<PerfilUsuario> perfilUsuarios = new ArrayList<>();
 
 	@OneToMany(mappedBy = "usuario")
 	private List<PermissaoPesquisa> permissaoPesquisas;
+
+	public void addPerfilUsuario(Perfil perfil) {
+
+		PerfilUsuario perfilUsuario = new PerfilUsuario();
+
+		perfilUsuario.setPerfil(perfil);
+		perfilUsuario.setUsuario(this);
+
+		perfilUsuarios.add(perfilUsuario);
+	}
 
 }

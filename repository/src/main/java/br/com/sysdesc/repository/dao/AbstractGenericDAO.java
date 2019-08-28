@@ -85,6 +85,7 @@ public abstract class AbstractGenericDAO<T> implements GenericDAO<T> {
 			entityManager.flush();
 			entityManager.getTransaction().commit();
 		} catch (Exception e) {
+			e.printStackTrace();
 			entityManager.getTransaction().rollback();
 
 			throw new SysDescException(MensagemConstants.MENSAGEM_CONEXAO_INVALIDA);
