@@ -43,7 +43,7 @@ public class Usuario implements Serializable {
 	@OneToMany(mappedBy = "usuario")
 	private List<PermissaoPrograma> permissaoProgramas;
 
-	@OneToMany(mappedBy = "usuario", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<PerfilUsuario> perfilUsuarios = new ArrayList<>();
 
 	@OneToMany(mappedBy = "usuario")
