@@ -145,6 +145,14 @@ public class Resources {
 	public static final String FRMCLIENTE_LBL_SEXO = "FRMCLIENTE_LBL_SEXO";
 	public static final String FRMCLIENTE_LBL_SITUACAO = "FRMCLIENTE_LBL_SITUACAO";
 	public static final String FRMCLIENTE_LBL_EMAIL = "FRMCLIENTE_LBL_EMAIL";
+	public static final String TBLENTRADA_PESQUISA = "TBLENTRADA_PESQUISA";
+	public static final String TBLENTRADA_CODIGO = "TBLENTRADA_CODIGO";
+	public static final String TBLENTRADA_BARRAS = "TBLENTRADA_BARRAS";
+	public static final String TBLENTRADA_PRODUTO = "TBLENTRADA_PRODUTO";
+	public static final String TBLENTRADA_UNIDADE = "TBLENTRADA_UNIDADE";
+	public static final String TBLENTRADA_QUANTIDADE = "TBLENTRADA_QUANTIDADE";
+	public static final String TBLENTRADA_VALOR_UNITARIO = "TBLENTRADA_VALOR_UNITARIO";
+	public static final String TBLENTRADA_VALOR_TOTAL = "TBLENTRADA_VALOR_TOTAL";
 
 	static {
 		try {

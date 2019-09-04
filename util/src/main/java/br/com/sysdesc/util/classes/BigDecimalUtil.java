@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 public class BigDecimalUtil {
 
+	public static final BigDecimal ZERO = BigDecimal.valueOf(0);
+
 	public static boolean isNullOrZero(BigDecimal value) {
 
 		return value == null || value.doubleValue() == 0.0;

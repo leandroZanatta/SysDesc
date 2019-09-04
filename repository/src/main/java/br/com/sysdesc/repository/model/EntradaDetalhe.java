@@ -34,7 +34,7 @@ public class EntradaDetalhe implements Serializable {
 	@Column(name = "cd_entradacabecalho", insertable = false, updatable = false)
 	private Long codigoEntradaCabecalho;
 
-	@Column(name = "cd_produto")
+	@Column(name = "cd_produto", insertable = false, updatable = false)
 	private Long codigoProduto;
 
 	@Column(name = "nr_quantidade")
@@ -45,5 +45,9 @@ public class EntradaDetalhe implements Serializable {
 
 	@Column(name = "vl_total")
 	private BigDecimal valorTotal;
+
+	@ManyToOne
+	@JoinColumn(name = "cd_produto")
+	private Produto produto;
 
 }
