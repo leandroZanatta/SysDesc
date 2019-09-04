@@ -3,7 +3,6 @@ package br.com.sysdesc.components;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 import javax.swing.JFormattedTextField;
@@ -121,6 +120,6 @@ public class JMoneyField extends JFormattedTextField {
 			return;
 		}
 
-		setText(new DecimalFormat("0.00").format(value.doubleValue()));
+		setText(numberFormat.format(value.doubleValue()));
 	}
 }
