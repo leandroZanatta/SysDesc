@@ -10,9 +10,15 @@
 		</preConditions>
 
 		<createTable tableName="tb_versao">
+			<column name="id_versao" type="NUMBER(18,0)" remarks="CÓDIGO INDENTIFICADOR">
+				<constraints primaryKey="true" primaryKeyName="versao_pk" nullable="false" />
+			</column>
+
 			<column name="nr_versao" type="VARCHAR(20)" remarks="VERSÃO DO SISTEMA" />
+
+			<column name="dt_atualizacao" type="TIMESTAMP" remarks="DATA DE ATUALIZACAO" />
 		</createTable>
 
-
+		<createSequence sequenceName="gen_versao" />
 	</changeSet>
 </databaseChangeLog>

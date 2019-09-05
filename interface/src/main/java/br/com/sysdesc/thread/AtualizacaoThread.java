@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -20,7 +18,6 @@ import com.google.gson.Gson;
 
 import br.com.sysdesc.repository.dao.VersaoDAO;
 import br.com.sysdesc.repository.model.Versao;
-import br.com.sysdesc.util.classes.ListUtil;
 import br.com.sysdesc.util.constants.MensagemConstants;
 import br.com.sysdesc.util.resources.Configuracoes;
 import br.com.sysdesc.util.resources.Resources;
@@ -35,7 +32,7 @@ public class AtualizacaoThread extends Thread {
 
 	private JLabel lbVersao;
 
-	private Long versaoBase;
+	private String versaoBase;
 
 	private final String URLVersao = "https://raw.githubusercontent.com/leandroZanatta/SysDesc/develop/versoes/versao.json";
 
@@ -105,11 +102,9 @@ public class AtualizacaoThread extends Thread {
 
 	private void efetuarDownloadVersao(VersaoVO versaoVO) throws IOException {
 
-		Integer retornoOpcao = JOptionPane
-				.showConfirmDialog(null,
-						String.format(Resources.translate(MensagemConstants.MENSAGEM_ATUALIZAR_VERSAO),
-								formatarVersao(versaoVO.getVersao())),
-						Resources.OPTION_VALIDACAO, JOptionPane.YES_NO_OPTION);
+		Integer retornoOpcao = JOptionPane.showConfirmDialog(null,
+				String.format(Resources.translate(MensagemConstants.MENSAGEM_ATUALIZAR_VERSAO), versaoVO.getVersao()),
+				Resources.OPTION_VALIDACAO, JOptionPane.YES_NO_OPTION);
 
 		if (retornoOpcao == JOptionPane.YES_OPTION) {
 
@@ -178,24 +173,6 @@ public class AtualizacaoThread extends Thread {
 		return arquivoVersao;
 	}
 
-	private String formatarVersao(Long codigoVesao) {
-
-		List<String> versaoSemFormatacao = ListUtil.toList(codigoVesao.toString().split(""));
-
-		if (versaoSemFormatacao.size() > 3) {
-			versaoSemFormatacao.add(versaoSemFormatacao.size() - 3, ".");
-		}
-		if (versaoSemFormatacao.size() > 6) {
-			versaoSemFormatacao.add(versaoSemFormatacao.size() - 6, ".");
-		}
-		if (versaoSemFormatacao.size() > 9) {
-			versaoSemFormatacao.add(versaoSemFormatacao.size() - 9, ".");
-		}
-
-		return versaoSemFormatacao.stream().collect(Collectors.joining());
-
-	}
-
 	private void verificarVersaoBase() {
 
 		Versao versao = versaoDAO.last();
@@ -205,12 +182,12 @@ public class AtualizacaoThread extends Thread {
 		if (versao != null) {
 			this.versaoBase = versao.getVersao();
 
-			lbVersao.setText(String.format("Versão: %s", formatarVersao(this.versaoBase)));
+			lbVersao.setText(this.versaoBase);
 
 			return;
 		}
 
-		this.versaoBase = 0L;
+		this.versaoBase = "0.0.0";
 
 	}
 

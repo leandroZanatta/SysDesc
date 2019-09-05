@@ -6,8 +6,8 @@ import br.com.sysdesc.repository.model.Versao;
 
 public class VersaoDAO extends AbstractGenericDAO<Versao> {
 
-    public VersaoDAO() {
-        super(versao1, versao1.versao);
-    }
+	public VersaoDAO() {
+		super(versao1, versao1.idVersao);
+	}
 
 }
