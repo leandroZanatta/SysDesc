@@ -164,7 +164,7 @@ public class AtualizacaoThread extends Thread {
 			folderVersao.mkdir();
 		}
 
-		File arquivoVersao = new File(FilenameUtils.getName(new URL(versaoVO.getArquivo()).getPath()));
+		File arquivoVersao = new File(folderVersao, FilenameUtils.getName(new URL(versaoVO.getArquivo()).getPath()));
 
 		if (arquivoVersao.exists()) {
 			arquivoVersao.createNewFile();
