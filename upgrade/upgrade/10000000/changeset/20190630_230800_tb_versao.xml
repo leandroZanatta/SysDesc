@@ -10,7 +10,7 @@
 		</preConditions>
 
 		<createTable tableName="tb_versao">
-			<column name="nr_versao" type="NUMBER(18,0)" remarks="VERSÃO DO SISTEMA" />
+			<column name="nr_versao" type="VARCHAR(20)" remarks="VERSÃO DO SISTEMA" />
 		</createTable>
 
 

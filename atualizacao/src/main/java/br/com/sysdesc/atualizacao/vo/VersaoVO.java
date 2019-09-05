@@ -2,15 +2,15 @@ package br.com.sysdesc.atualizacao.vo;
 
 public class VersaoVO {
 
-	private Long versao;
+	private String versao;
 
 	private String arquivo;
 
-	public Long getVersao() {
+	public String getVersao() {
 		return versao;
 	}
 
-	public void setVersao(Long versao) {
+	public void setVersao(String versao) {
 		this.versao = versao;
 	}
 

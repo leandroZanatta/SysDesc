@@ -39,7 +39,7 @@ public class StartUp {
 
 		VersaoVO versaoVO = versaoInternet.obterVersaoVO(arquivoVersao);
 
-		Long versaoBanco = versaoBancoDados.buscarVersaoBanco();
+		String versaoBanco = versaoBancoDados.buscarVersaoBanco();
 
 		if (!versaoBanco.equals(versaoVO.getVersao())) {
 

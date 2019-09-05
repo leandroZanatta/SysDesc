@@ -4,12 +4,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com</groupId>
 	<artifactId>sysdesc</artifactId>
-	<version>1.00.00.000</version>
+	<version>0.0.1</version>
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>atualizacao</module>
-		<module>upgrade</module>
 		<module>libraries</module>
 		<module>util</module>
 		<module>repository</module>

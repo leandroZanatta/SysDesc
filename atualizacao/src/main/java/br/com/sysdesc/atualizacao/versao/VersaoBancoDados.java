@@ -17,7 +17,7 @@ public class VersaoBancoDados {
 
 	private final Logger logger = Logger.getLogger(VersaoBancoDados.class.getName());
 
-	public Long buscarVersaoBanco() {
+	public String buscarVersaoBanco() {
 
 		String sqlQuery = "select nr_versao from tb_versao";
 
@@ -26,7 +26,7 @@ public class VersaoBancoDados {
 				ResultSet rs = preparedStatement.executeQuery()) {
 
 			if (rs.next()) {
-				return rs.getLong(1);
+				return rs.getString(1);
 			}
 
 		} catch (Exception e) {
@@ -34,10 +34,10 @@ public class VersaoBancoDados {
 			logger.log(Level.SEVERE, "Erro ao buscar versão no banco de dados", e);
 		}
 
-		return 0L;
+		return "0.0.0";
 	}
 
-	public void atualizarVersao(Long versao) {
+	public void atualizarVersao(String versao) {
 
 		String sqlQuery = "update tb_versao set nr_versao=?";
 
@@ -46,7 +46,7 @@ public class VersaoBancoDados {
 
 			connection.setAutoCommit(false);
 
-			preparedStatement.setLong(1, versao);
+			preparedStatement.setString(1, versao);
 
 			preparedStatement.executeUpdate();
 
@@ -58,7 +58,7 @@ public class VersaoBancoDados {
 		}
 	}
 
-	public void upgradeDatabase(Long versao) {
+	public void upgradeDatabase(String versao) {
 
 		try (Connection connection = criarConnection()) {
 
