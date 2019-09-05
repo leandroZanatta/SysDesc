@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>br.com</groupId>
 		<artifactId>sysdesc</artifactId>
-		<version>0.0.2</version>
+		<version>0.0.3</version>
 	</parent>
 	<artifactId>atualizacao</artifactId>
 

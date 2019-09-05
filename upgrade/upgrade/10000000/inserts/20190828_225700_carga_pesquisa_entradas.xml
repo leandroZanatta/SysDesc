@@ -33,7 +33,7 @@
 			<column name="fl_ordem" value="2" />
 			<column name="nr_tamanho" value="1" />
 			<column name="tx_campo" value="dataEmissao" />
-			<column name="tx_campo" value="dataEmissao" />
+			<column name="tx_descricao" value="Data Emissão" />
 			<column name="tx_formato" value="1" />
 		</insert>
 		
