@@ -17,6 +17,5 @@
 		<module>service</module>
 		<module>pesquisa</module>
 		<module>interface</module>
-		<module>sysdesc-rest</module>
 	</modules>
 </project>
