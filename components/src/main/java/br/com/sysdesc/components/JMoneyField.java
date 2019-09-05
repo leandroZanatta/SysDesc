@@ -13,113 +13,113 @@ import javax.swing.text.PlainDocument;
 import javax.swing.text.SimpleAttributeSet;
 
 public class JMoneyField extends JFormattedTextField {
-	private static final long serialVersionUID = -5712106034509737967L;
-	private static final SimpleAttributeSet nullAttribute = new SimpleAttributeSet();
-	private NumberFormat numberFormat = NumberFormat.getNumberInstance();
-	private int casasDecimais;
+    private static final long serialVersionUID = -5712106034509737967L;
+    private static final SimpleAttributeSet nullAttribute = new SimpleAttributeSet();
+    private NumberFormat numberFormat = NumberFormat.getNumberInstance();
+    private int casasDecimais;
 
-	public JMoneyField() {
-		this(2);
-	}
+    public JMoneyField() {
+        this(2);
+    }
 
-	public JMoneyField(int casasDecimais) {
-		this.casasDecimais = casasDecimais;
+    public JMoneyField(int casasDecimais) {
+        this.casasDecimais = casasDecimais;
 
-		numberFormat.setMaximumFractionDigits(casasDecimais);
-		numberFormat.setMinimumFractionDigits(casasDecimais);
+        numberFormat.setMaximumFractionDigits(casasDecimais);
+        numberFormat.setMinimumFractionDigits(casasDecimais);
 
-		this.setHorizontalAlignment(JTextField.LEFT);
+        this.setHorizontalAlignment(JTextField.LEFT);
 
-		this.setDocument(new MoneyFieldDocument());
-		this.addFocusListener(new MoneyFieldFocusListener());
-		this.setText("0");
+        this.setDocument(new MoneyFieldDocument());
+        this.addFocusListener(new MoneyFieldFocusListener());
+        this.setText("0");
 
-		this.addCaretListener(e -> {
-			if (e.getDot() != getText().length()) {
-				getCaret().setDot(getText().length());
-			}
-		});
+        this.addCaretListener(e -> {
+            if (e.getDot() != getText().length()) {
+                getCaret().setDot(getText().length());
+            }
+        });
 
-	}
+    }
 
-	public void setCasasDecimais(int casasDecimais) {
-		this.casasDecimais = casasDecimais;
+    public void setCasasDecimais(int casasDecimais) {
+        this.casasDecimais = casasDecimais;
 
-		numberFormat.setMaximumFractionDigits(casasDecimais);
-		numberFormat.setMinimumFractionDigits(casasDecimais);
-	}
+        numberFormat.setMaximumFractionDigits(casasDecimais);
+        numberFormat.setMinimumFractionDigits(casasDecimais);
+    }
 
-	private String formatar(String str) {
+    private String formatar(String str) {
 
-		StringBuilder valor = new StringBuilder(str);
+        StringBuilder valor = new StringBuilder(str);
 
-		while (valor.length() <= casasDecimais) {
-			valor.insert(0, "0");
-		}
+        while (valor.length() <= casasDecimais) {
+            valor.insert(0, "0");
+        }
 
-		if (casasDecimais > 0) {
+        if (casasDecimais > 0) {
 
-			valor.insert(valor.length() - casasDecimais, ".");
+            valor.insert(valor.length() - casasDecimais, ".");
 
-		}
+        }
 
-		return numberFormat.format(Double.valueOf(valor.toString()));
-	}
+        return numberFormat.format(Double.valueOf(valor.toString()));
+    }
 
-	private final class MoneyFieldFocusListener extends FocusAdapter {
+    private final class MoneyFieldFocusListener extends FocusAdapter {
 
-		@Override
-		public void focusGained(FocusEvent e) {
-			selectAll();
-		}
-	}
+        @Override
+        public void focusGained(FocusEvent e) {
+            selectAll();
+        }
+    }
 
-	private final class MoneyFieldDocument extends PlainDocument {
+    private final class MoneyFieldDocument extends PlainDocument {
 
-		private static final long serialVersionUID = -3802846632709128803L;
+        private static final long serialVersionUID = -3802846632709128803L;
 
-		@Override
-		public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+        @Override
+        public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
 
-			String original = getText(0, getLength());
+            String original = getText(0, getLength());
 
-			if (original.length() < 16) {
+            if (original.length() < 16) {
 
-				super.remove(0, getLength());
+                super.remove(0, getLength());
 
-				super.insertString(0, formatar((original + str).replaceAll("[^0-9]", "")), null);
-			}
+                super.insertString(0, formatar((original + str).replaceAll("[^0-9]", "")), null);
+            }
 
-		}
+        }
 
-		@Override
-		public void remove(int offs, int len) throws BadLocationException {
-			if (len == getLength()) {
-				super.remove(0, len);
-				if (offs != -1) {
-					insertString(0, "", nullAttribute);
-				}
-			} else {
-				String original = getText(0, getLength()).substring(0, offs)
-						+ getText(0, getLength()).substring(offs + len);
-				super.remove(0, getLength());
-				insertString(0, original, null);
-			}
-		}
-	}
+        @Override
+        public void remove(int offs, int len) throws BadLocationException {
+            if (len == getLength()) {
+                super.remove(0, len);
+                if (offs != -1) {
+                    insertString(0, "", nullAttribute);
+                }
+            } else {
+                String original = getText(0, getLength()).substring(0, offs) + getText(0, getLength()).substring(offs + len);
+                super.remove(0, getLength());
+                insertString(0, original, null);
+            }
+        }
+    }
 
-	public BigDecimal getValue() {
-		return BigDecimal.valueOf(Double.valueOf(super.getText().replace(".", "").replace(",", ".")));
-	}
+    public BigDecimal getValue() {
 
-	public void setValue(BigDecimal value) {
+        return BigDecimal.valueOf(Double.valueOf(super.getText().replace(".", "").replace(",", ".")));
+    }
 
-		if (value == null) {
-			setText("");
+    public void setValue(BigDecimal value) {
 
-			return;
-		}
+        if (value == null) {
+            setText("");
 
-		setText(numberFormat.format(value.doubleValue()));
-	}
+            return;
+        }
+
+        setText(numberFormat.format(value.doubleValue()));
+    }
 }
