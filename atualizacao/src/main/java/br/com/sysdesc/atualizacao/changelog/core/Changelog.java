@@ -57,5 +57,7 @@ public class Changelog {
 			arquivo.delete();
 		}
 
+		pastaChangelog.delete();
+
 	}
 }

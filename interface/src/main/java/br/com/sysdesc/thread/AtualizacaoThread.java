@@ -8,11 +8,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+
+import org.apache.commons.io.FileUtils;
 
 import com.google.gson.Gson;
 
@@ -152,21 +155,27 @@ public class AtualizacaoThread extends Thread {
 
 			contentVersao.add(lbVersao);
 
+			FileUtils.writeStringToFile(new File(Configuracoes.VERSAO), new Gson().toJson(versaoVO),
+					Charset.defaultCharset());
+
 		}
 
 	}
 
 	private File criarArquivoVersao(VersaoVO versaoVO) throws IOException {
+		log.info("criando arquivo Versão");
 
 		File folderVersao = new File(Configuracoes.FOLDER_VERSOES);
 
 		if (!folderVersao.exists()) {
+			log.info("gerando arquivo:" + folderVersao.getName());
 			folderVersao.mkdir();
 		}
 
 		File arquivoVersao = new File(folderVersao, FilenameUtils.getName(new URL(versaoVO.getArquivo()).getPath()));
 
-		if (arquivoVersao.exists()) {
+		if (!arquivoVersao.exists()) {
+			log.info("gerando arquivo:" + arquivoVersao.getName());
 			arquivoVersao.createNewFile();
 		}
 
