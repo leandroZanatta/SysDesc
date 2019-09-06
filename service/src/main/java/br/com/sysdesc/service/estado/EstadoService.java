@@ -31,6 +31,11 @@ public class EstadoService extends AbstractGenericService<Estado> {
 			throw new SysDescException(MensagemConstants.MENSAGEM_INSIRA_DESCRICAO_VALIDA);
 		}
 
+		if (StringUtil.isNullOrEmpty(objetoPersistir.getUf())) {
+
+			throw new SysDescException(MensagemConstants.MENSAGEM_INSIRA_UF_VALIDA);
+		}
+
 	}
 
 	public List<Estado> listarEstados() {

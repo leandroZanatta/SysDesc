@@ -23,7 +23,6 @@
 	<include file="10000000/changeset/20190630_230800_tb_versao.xml" />
 	<include file="10000000/changeset/20190701_191000_tb_subcategoria.xml" />
 	<include file="10000000/changeset/20190701_204630_tb_produto.xml" />
-	<include file="10000000/changeset/20190714_010500_criar_sequences_pesquisa.xml" />
 	<include file="10000000/changeset/20190807_215530_tb_formapagamento.xml" />
 	<include file="10000000/changeset/20190828_211700_tb_entradacabecalho.xml" />
 	<include file="10000000/changeset/20190828_213300_tb_entradadetalhe.xml" />
@@ -32,17 +31,9 @@
 	<include file="10000000/inserts/20190626_113800_carga_usuario.xml" />
 	<include file="10000000/inserts/20190626_113900_carga_menu.xml" />
 	<include file="10000000/inserts/20190626_114000_carga_permissao_programa.xml" />
-	<include file="10000000/inserts/20190626_115100_carga_pesquisa_usuario.xml" />
-	<include file="10000000/inserts/20190626_115200_carga_pesquisa_perfil.xml" />
-	<include file="10000000/inserts/20190626_115300_carga_pesquisa_estado.xml" />
-	<include file="10000000/inserts/20190626_115400_carga_pesquisa_marca.xml" />
-	<include file="10000000/inserts/20190626_115500_carga_pesquisa_departamento.xml" />
-	<include file="10000000/inserts/20190626_115600_carga_pesquisa_unidade.xml" />
-	<include file="10000000/inserts/20190626_115700_carga_pesquisa_categoria.xml" />
-	<include file="10000000/inserts/20190626_115800_carga_pesquisa_cidade.xml" />
+	<include file="10000000/inserts/20190626_115100_carga_pesquisa.xml" />
+	<include file="10000000/inserts/20190626_115101_carga_pesquisacampo.xml" />
+	<include file="10000000/inserts/20190626_115102_carga_permissaopesquisa.xml" />
 	<include file="10000000/inserts/20190630_231900_carga_versao.xml" />
-	<include file="10000000/inserts/20190704_202400_carga_pesquisa_subcategoria.xml" />
-	<include file="10000000/inserts/20190827_202300_carga_pesquisa_cliente.xml" />
-	<include file="10000000/inserts/20190828_225700_carga_pesquisa_entradas.xml" />
 
 </databaseChangeLog>

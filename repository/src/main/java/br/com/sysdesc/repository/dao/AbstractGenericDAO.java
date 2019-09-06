@@ -19,7 +19,6 @@ import br.com.sysdesc.repository.model.Pesquisa;
 import br.com.sysdesc.repository.util.EntityPathUtil;
 import br.com.sysdesc.util.classes.LongUtil;
 import br.com.sysdesc.util.classes.StringUtil;
-import br.com.sysdesc.util.constants.MensagemConstants;
 import br.com.sysdesc.util.exception.SysDescException;
 
 public abstract class AbstractGenericDAO<T> implements GenericDAO<T> {
@@ -88,7 +87,7 @@ public abstract class AbstractGenericDAO<T> implements GenericDAO<T> {
 			e.printStackTrace();
 			entityManager.getTransaction().rollback();
 
-			throw new SysDescException(MensagemConstants.MENSAGEM_CONEXAO_INVALIDA);
+			throw new SysDescException(e.getMessage());
 		}
 	}
 

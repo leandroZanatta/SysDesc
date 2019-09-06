@@ -29,15 +29,7 @@
 			<column name="tx_cep" value="89910-000" />
 			<column name="tx_telefone" value="(49) 99103-7809" />
 			<column name="fl_sexo" value="M" />
-			<column name="nr_situacao" value="0" />
-
-
-
-
-
-
-
-
+			<column name="nr_situacao" value="1" />
 		</insert>
 
 		<insert tableName="tb_usuario">

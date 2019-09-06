@@ -21,11 +21,14 @@ public class ClienteService extends AbstractGenericService<Cliente> {
 		if (StringUtil.isNullOrEmpty(objetoPersistir.getNome())) {
 			throw new SysDescException(MensagemConstants.MENSAGEM_INSIRA_NOME);
 		}
+
 		if (StringUtil.isNullOrEmpty(objetoPersistir.getFlagTipoCliente())) {
 			throw new SysDescException(MensagemConstants.MENSAGEM_SELECIONE_TIPO_CLIENTE);
 		}
 
-		if (objetoPersistir.getFlagTipoCliente().equals(TipoClienteEnum.PESSOA_FISICA.getCodigo())) {
+		Boolean pessoaFisica = objetoPersistir.getFlagTipoCliente().equals(TipoClienteEnum.PESSOA_FISICA.getCodigo());
+
+		if (pessoaFisica) {
 
 			if (StringUtil.isNullOrEmpty(StringUtil.formatarNumero(objetoPersistir.getCgc()))) {
 				throw new SysDescException(MensagemConstants.MENSAGEM_INSIRA_CPF);
@@ -33,9 +36,6 @@ public class ClienteService extends AbstractGenericService<Cliente> {
 
 			if (!CPFUtil.isCPFValido(objetoPersistir.getCgc())) {
 				throw new SysDescException(MensagemConstants.MENSAGEM_CPF_INVALIDO);
-			}
-			if (StringUtil.isNullOrEmpty(objetoPersistir.getSexo())) {
-				throw new SysDescException(MensagemConstants.MENSAGEM_SELECIONE_SEXO);
 			}
 
 		}
@@ -52,8 +52,28 @@ public class ClienteService extends AbstractGenericService<Cliente> {
 
 		}
 
+		if (StringUtil.isNullOrEmpty(objetoPersistir.getEndereco())) {
+			throw new SysDescException(MensagemConstants.MENSAGEM_INSIRA_ENDERECO);
+		}
+
+		if (StringUtil.isNullOrEmpty(objetoPersistir.getNumero())) {
+			throw new SysDescException(MensagemConstants.MENSAGEM_INSIRA_NUMERO);
+		}
+
+		if (StringUtil.isNullOrEmpty(objetoPersistir.getBairro())) {
+			throw new SysDescException(MensagemConstants.MENSAGEM_INSIRA_BAIRRO);
+		}
+
+		if (StringUtil.isNullOrEmpty(objetoPersistir.getCep())) {
+			throw new SysDescException(MensagemConstants.MENSAGEM_INSIRA_CEP);
+		}
+
 		if (objetoPersistir.getCidade() == null) {
 			throw new SysDescException(MensagemConstants.MENSAGEM_SELECIONE_CIDADE);
+		}
+
+		if (pessoaFisica && StringUtil.isNullOrEmpty(objetoPersistir.getSexo())) {
+			throw new SysDescException(MensagemConstants.MENSAGEM_SELECIONE_SEXO);
 		}
 
 		if (objetoPersistir.getSituacao() == null) {

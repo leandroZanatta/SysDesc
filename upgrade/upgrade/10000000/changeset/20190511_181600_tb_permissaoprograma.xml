@@ -51,7 +51,7 @@
 		<addForeignKeyConstraint baseColumnNames="cd_programa" baseTableName="tb_permissaoprograma"
 			constraintName="fk_permissao_programa" onDelete="CASCADE" onUpdate="CASCADE" referencedColumnNames="id_programa" referencedTableName="tb_programa" />
 
-	<addForeignKeyConstraint baseColumnNames="cd_perfil" baseTableName="tb_permissaoprograma"
+		<addForeignKeyConstraint baseColumnNames="cd_perfil" baseTableName="tb_permissaoprograma"
 			constraintName="fk_permissao_perfil" onDelete="CASCADE" onUpdate="CASCADE" referencedColumnNames="id_perfil" referencedTableName="tb_perfil" />
 
 	</changeSet>

@@ -29,6 +29,7 @@ import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.service.cidade.CidadeService;
 import br.com.sysdesc.service.cliente.ClienteService;
 import br.com.sysdesc.service.estado.EstadoService;
+import br.com.sysdesc.util.classes.IfNull;
 import br.com.sysdesc.util.resources.Resources;
 import net.miginfocom.swing.MigLayout;
 
@@ -95,6 +96,11 @@ public class FrmCliente extends AbstractInternalFrame {
 		getContentPane().setLayout(new MigLayout("", "[grow][grow][grow][grow][grow][grow][grow]",
 				"[][][][][][][][][][][][][][][][][grow]"));
 
+		mascaraCep = new MaskFormatter("#####-###");
+		mascaraCNPJ = new MaskFormatter("##.###.###/####-##");
+		mascaraCPF = new MaskFormatter("###.###.###-##");
+		mascaraCelular = new MaskFormatter("(##) #####-####");
+
 		lblCdigo = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_CODIGO));
 		lblCpfcnpj = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_CPF_CNPJ));
 		lblRazoSocial = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_RAZAO_SOCIAL));
@@ -124,10 +130,6 @@ public class FrmCliente extends AbstractInternalFrame {
 		txEndereco = new JTextFieldMaiusculo();
 		txNumero = new JTextFieldMaiusculo();
 		txBairro = new JTextFieldMaiusculo();
-		mascaraCep = new MaskFormatter("#####-###");
-		mascaraCNPJ = new MaskFormatter("##.###.###/####-##");
-		mascaraCPF = new MaskFormatter("###.###.###-##");
-		mascaraCelular = new MaskFormatter("(##) #####-####");
 		cbEstado = new JComboBox<Estado>();
 		cbEstadoCivil = new JComboBox<>();
 		cbSexo = new JComboBox<>();
@@ -223,16 +225,17 @@ public class FrmCliente extends AbstractInternalFrame {
 
 			@Override
 			public Boolean preencherObjeto(Cliente objetoPesquisa) {
+
 				objetoPesquisa.setCgc(txCgc.getText());
 				objetoPesquisa.setNome(txNome.getText());
-				objetoPesquisa.setRgie(txIncricaoEstadual.getText());
 				objetoPesquisa.setDatadenascimento(txDataDeNascimento.getDate());
-				objetoPesquisa.setEndereco(txEndereco.getText());
-				objetoPesquisa.setNumero(txNumero.getText());
-				objetoPesquisa.setBairro(txBairro.getText());
-
-				objetoPesquisa.setCep(txCep.getText());
-				objetoPesquisa.setTelefone(txCelular.getText());
+				objetoPesquisa.setRgie(IfNull.getStringEmpty(txIncricaoEstadual.getText()));
+				objetoPesquisa.setEndereco(IfNull.getStringEmpty(txEndereco.getText()));
+				objetoPesquisa.setNumero(IfNull.getStringEmpty(txNumero.getText()));
+				objetoPesquisa.setBairro(IfNull.getStringEmpty(txBairro.getText()));
+				objetoPesquisa.setEmail(IfNull.getStringEmpty(txEmail.getText()));
+				objetoPesquisa.setCep(IfNull.getStringChar(txCep.getText(), "_"));
+				objetoPesquisa.setTelefone(IfNull.getStringChar(txCelular.getText(), "_"));
 
 				if (rdbtnFisca.isSelected()) {
 					objetoPesquisa.setFlagTipoCliente(TipoClienteEnum.PESSOA_FISICA.getCodigo());
@@ -265,6 +268,9 @@ public class FrmCliente extends AbstractInternalFrame {
 		getContentPane().add(painelDeBotoes, "cell 0 16 7 1,grow");
 
 		rdbtnFisca.setSelected(Boolean.TRUE);
+
+		mascaraCep.install(txCep);
+
 		selecionouPessoaFisica();
 	}
 

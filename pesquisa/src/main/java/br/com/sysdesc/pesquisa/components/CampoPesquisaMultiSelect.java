@@ -35,7 +35,7 @@ public abstract class CampoPesquisaMultiSelect<T> extends JPanel {
 
 	private JButton btPesquisa;
 	private JTextField txValorPesquisa;
-	private List<T> objetosPesquisados;
+	private List<T> objetosPesquisados = new ArrayList<>();
 	private Boolean pesquisaOk = Boolean.FALSE;
 
 	public CampoPesquisaMultiSelect(AbstractGenericService<T> genericService, PesquisaEnum pesquisaEnum,

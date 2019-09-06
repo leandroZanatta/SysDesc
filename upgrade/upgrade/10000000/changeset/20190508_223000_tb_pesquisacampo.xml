@@ -62,6 +62,7 @@
 		<addForeignKeyConstraint baseColumnNames="cd_pesquisa" baseTableName="tb_pesquisacampo" constraintName="fk_campo_pesquisa"
 			onDelete="CASCADE" onUpdate="CASCADE" referencedColumnNames="id_pesquisa" referencedTableName="tb_pesquisa" />
 
+		<createSequence sequenceName="gen_pesquisacampo" />
 	</changeSet>
 
 </databaseChangeLog>

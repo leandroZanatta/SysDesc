@@ -40,7 +40,7 @@
 		<addForeignKeyConstraint baseColumnNames="cd_usuario" baseTableName="tb_permissaopesquisa"
 			constraintName="fk_pesquisa_usuario" onDelete="CASCADE" onUpdate="CASCADE" referencedColumnNames="id_usuario" referencedTableName="tb_usuario" />
 
-
+		<createSequence sequenceName="gen_permissaopesquisa" />
 	</changeSet>
 
 

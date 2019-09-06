@@ -24,7 +24,7 @@
 
 		</createTable>
 
-		<createSequence sequenceName="gen_cidade" />
+		<createSequence sequenceName="gen_cidade" startValue="2" />
 
 		<addForeignKeyConstraint baseColumnNames="cd_estado" baseTableName="tb_cidade" constraintName="fk_cidade_estado"
 			onDelete="CASCADE" onUpdate="CASCADE" referencedColumnNames="id_estado" referencedTableName="tb_estado" />

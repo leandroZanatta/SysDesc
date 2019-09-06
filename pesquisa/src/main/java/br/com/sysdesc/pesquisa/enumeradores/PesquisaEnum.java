@@ -48,7 +48,7 @@ public enum PesquisaEnum {
 
 	PES_FORMAS_PAGAMENTO(13L, "Formas de Pagamento", QFormasPagamento.class),
 
-	PES_ENTRADAS(11L, "Notas de Entrada", QEntradaCabecalho.class);
+	PES_ENTRADAS(14L, "Notas de Entrada", QEntradaCabecalho.class);
 
 	private static Map<Long, PesquisaEnum> map = new HashMap<>();
 

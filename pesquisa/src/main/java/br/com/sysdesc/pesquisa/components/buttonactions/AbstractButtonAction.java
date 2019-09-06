@@ -24,144 +24,155 @@ import br.com.sysdesc.pesquisa.components.JTextFieldId;
 
 public abstract class AbstractButtonAction extends JPanel {
 
-    private static final long serialVersionUID = 1L;
-    protected final AbstractInternalFrame internalFrame;
-    private Map<Class<? extends Component>, List<Component>> camposTela = new HashMap<>();
-    protected Boolean editable = Boolean.FALSE;
+	private static final long serialVersionUID = 1L;
+	protected final AbstractInternalFrame internalFrame;
+	private Map<Class<? extends Component>, List<Component>> camposTela = new HashMap<>();
+	protected Boolean editable = Boolean.FALSE;
 
-    public AbstractButtonAction(AbstractInternalFrame internalFrame) {
-        this.internalFrame = internalFrame;
-    }
+	public AbstractButtonAction(AbstractInternalFrame internalFrame) {
+		this.internalFrame = internalFrame;
+	}
 
-    protected void registrarCampos() {
+	protected void registrarCampos() {
 
-        findComponents(internalFrame.getContentPane());
-    }
+		findComponents(internalFrame.getContentPane());
+	}
 
-    private void findComponents(Container container) {
+	private void findComponents(Container container) {
 
-        for (Component component : container.getComponents()) {
+		for (Component component : container.getComponents()) {
 
-            if (component instanceof CampoPesquisa<?>) {
-                addCampo(component, CampoPesquisa.class);
-            } else if (component instanceof CampoPesquisaMultiSelect<?>) {
-                addCampo(component, CampoPesquisaMultiSelect.class);
-            } else if (component instanceof JScrollPane) {
-                findComponents(((JScrollPane) component).getViewport());
-            } else if (component instanceof JPanel) {
-                findComponents((Container) component);
-            } else {
+			if (component instanceof CampoPesquisa<?>) {
+				addCampo(component, CampoPesquisa.class);
+			} else if (component instanceof CampoPesquisaMultiSelect<?>) {
+				addCampo(component, CampoPesquisaMultiSelect.class);
+			} else if (component instanceof JScrollPane) {
+				findComponents(((JScrollPane) component).getViewport());
+			} else if (component instanceof JPanel) {
+				findComponents((Container) component);
+			} else {
 
-                if (component instanceof JTextField) {
+				if (component instanceof JTextField) {
 
-                    if (component instanceof JTextFieldId) {
-                        continue;
-                    }
+					if (component instanceof JTextFieldId) {
 
-                    addCampo(component, JTextField.class);
+						addCampo(component, JTextFieldId.class);
 
-                } else if (component instanceof JComboBox) {
+						continue;
+					}
 
-                    addCampo(component, JComboBox.class);
-                } else if (component instanceof JCheckBox) {
+					addCampo(component, JTextField.class);
 
-                    addCampo(component, JCheckBox.class);
-                } else if (component instanceof JRadioButton) {
+				} else if (component instanceof JComboBox) {
 
-                    addCampo(component, JRadioButton.class);
-                } else if (component instanceof JTable) {
+					addCampo(component, JComboBox.class);
+				} else if (component instanceof JCheckBox) {
 
-                    addCampo(component, JTable.class);
-                } else if (component instanceof JButton) {
+					addCampo(component, JCheckBox.class);
+				} else if (component instanceof JRadioButton) {
 
-                    addCampo(component, JButton.class);
-                }
-            }
-        }
+					addCampo(component, JRadioButton.class);
+				} else if (component instanceof JTable) {
 
-    }
+					addCampo(component, JTable.class);
+				} else if (component instanceof JButton) {
 
-    private void addCampo(Component component, Class<? extends Component> classe) {
+					addCampo(component, JButton.class);
+				}
+			}
+		}
 
-        if (!camposTela.containsKey(classe)) {
-            camposTela.put(classe, new ArrayList<>());
-        }
+	}
 
-        camposTela.get(classe).add(component);
-    }
+	private void addCampo(Component component, Class<? extends Component> classe) {
 
-    protected void bloquear() {
+		if (!camposTela.containsKey(classe)) {
+			camposTela.put(classe, new ArrayList<>());
+		}
 
-        if (camposTela.containsKey(CampoPesquisa.class)) {
-            camposTela.get(CampoPesquisa.class).forEach(x -> ((CampoPesquisa<?>) x).bloquear(editable));
-        }
+		camposTela.get(classe).add(component);
+	}
 
-        if (camposTela.containsKey(CampoPesquisaMultiSelect.class)) {
-            camposTela.get(CampoPesquisaMultiSelect.class).forEach(x -> ((CampoPesquisaMultiSelect<?>) x).bloquear(editable));
-        }
+	protected void bloquear() {
 
-        if (camposTela.containsKey(JTextField.class)) {
-            camposTela.get(JTextField.class).forEach(x -> ((JTextField) x).setEditable(editable));
-        }
+		if (camposTela.containsKey(CampoPesquisa.class)) {
+			camposTela.get(CampoPesquisa.class).forEach(x -> ((CampoPesquisa<?>) x).bloquear(editable));
+		}
 
-        if (camposTela.containsKey(JComboBox.class)) {
-            camposTela.get(JComboBox.class).forEach(x -> ((JComboBox<?>) x).setEnabled(editable));
-        }
+		if (camposTela.containsKey(CampoPesquisaMultiSelect.class)) {
+			camposTela.get(CampoPesquisaMultiSelect.class)
+					.forEach(x -> ((CampoPesquisaMultiSelect<?>) x).bloquear(editable));
+		}
 
-        if (camposTela.containsKey(JCheckBox.class)) {
-            camposTela.get(JCheckBox.class).forEach(x -> ((JCheckBox) x).setEnabled(editable));
-        }
+		if (camposTela.containsKey(JTextFieldId.class)) {
+			camposTela.get(JTextFieldId.class).forEach(x -> ((JTextFieldId) x).setEditable(false));
+		}
 
-        if (camposTela.containsKey(JRadioButton.class)) {
-            camposTela.get(JRadioButton.class).forEach(x -> ((JRadioButton) x).setEnabled(editable));
-        }
+		if (camposTela.containsKey(JTextField.class)) {
+			camposTela.get(JTextField.class).forEach(x -> ((JTextField) x).setEditable(editable));
+		}
 
-        if (camposTela.containsKey(JTable.class)) {
+		if (camposTela.containsKey(JComboBox.class)) {
+			camposTela.get(JComboBox.class).forEach(x -> ((JComboBox<?>) x).setEnabled(editable));
+		}
 
-            camposTela.get(JTable.class).forEach(x -> ((AbstractInternalFrameTable) ((JTable) x).getModel()).setEnabled(editable));
-        }
+		if (camposTela.containsKey(JCheckBox.class)) {
+			camposTela.get(JCheckBox.class).forEach(x -> ((JCheckBox) x).setEnabled(editable));
+		}
 
-        if (camposTela.containsKey(JButton.class))
+		if (camposTela.containsKey(JRadioButton.class)) {
+			camposTela.get(JRadioButton.class).forEach(x -> ((JRadioButton) x).setEnabled(editable));
+		}
 
-        {
-            camposTela.get(JButton.class).forEach(x -> ((JButton) x).setEnabled(editable));
-        }
+		if (camposTela.containsKey(JTable.class)) {
 
-    }
+			camposTela.get(JTable.class)
+					.forEach(x -> ((AbstractInternalFrameTable) ((JTable) x).getModel()).setEnabled(editable));
+		}
 
-    public Boolean isEditable() {
-        return editable;
-    }
+		if (camposTela.containsKey(JButton.class)) {
+			camposTela.get(JButton.class).forEach(x -> ((JButton) x).setEnabled(editable));
+		}
 
-    public void setEditable(Boolean editable) {
-        this.editable = editable;
-    }
+	}
 
-    protected void limpar() {
+	public Boolean isEditable() {
+		return editable;
+	}
 
-        if (camposTela.containsKey(JTextField.class)) {
-            camposTela.get(JTextField.class).forEach(x -> ((JTextField) x).setText(""));
-        }
+	public void setEditable(Boolean editable) {
+		this.editable = editable;
+	}
 
-        if (camposTela.containsKey(JComboBox.class)) {
-            camposTela.get(JComboBox.class).forEach(x -> ((JComboBox<?>) x).setSelectedIndex(-1));
-        }
+	protected void limpar() {
 
-        if (camposTela.containsKey(JCheckBox.class)) {
-            camposTela.get(JCheckBox.class).forEach(x -> ((JCheckBox) x).setSelected(Boolean.FALSE));
-        }
+		if (camposTela.containsKey(JTextFieldId.class)) {
+			camposTela.get(JTextFieldId.class).forEach(x -> ((JTextFieldId) x).setText(""));
+		}
 
-        if (camposTela.containsKey(JRadioButton.class)) {
-            camposTela.get(JRadioButton.class).forEach(x -> ((JRadioButton) x).setSelected(Boolean.FALSE));
-        }
+		if (camposTela.containsKey(JTextField.class)) {
+			camposTela.get(JTextField.class).forEach(x -> ((JTextField) x).setText(""));
+		}
 
-        if (camposTela.containsKey(JTable.class)) {
-            camposTela.get(JTable.class).forEach(x -> ((AbstractInternalFrameTable) ((JTable) x).getModel()).clear());
-        }
+		if (camposTela.containsKey(JComboBox.class)) {
+			camposTela.get(JComboBox.class).forEach(x -> ((JComboBox<?>) x).setSelectedIndex(-1));
+		}
 
-        this.fireClearEvent();
-    }
+		if (camposTela.containsKey(JCheckBox.class)) {
+			camposTela.get(JCheckBox.class).forEach(x -> ((JCheckBox) x).setSelected(Boolean.FALSE));
+		}
 
-    protected abstract void fireClearEvent();
+		if (camposTela.containsKey(JRadioButton.class)) {
+			camposTela.get(JRadioButton.class).forEach(x -> ((JRadioButton) x).setSelected(Boolean.FALSE));
+		}
+
+		if (camposTela.containsKey(JTable.class)) {
+			camposTela.get(JTable.class).forEach(x -> ((AbstractInternalFrameTable) ((JTable) x).getModel()).clear());
+		}
+
+		this.fireClearEvent();
+	}
+
+	protected abstract void fireClearEvent();
 
 }

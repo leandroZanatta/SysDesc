@@ -16,11 +16,11 @@
 			<column name="id_cliente" type="NUMBER(18,0)" remarks="CÓDIGO INDENTIFICADOR">
 				<constraints primaryKey="true" primaryKeyName="cliente_pk" nullable="false" />
 			</column>
-			
+
 			<column name="fl_tipocliente" type="VARCHAR(1)" remarks="TIPO DE CLIENTE (FÍSICA-F OU JURÍDICA-J)">
 				<constraints nullable="false" />
 			</column>
-			
+
 			<column name="tx_cgc" type="VARCHAR(18)" remarks="DOCUMENTO DO CLIENTE(CPF OU CNPJ)">
 				<constraints nullable="false" />
 			</column>
@@ -28,57 +28,53 @@
 			<column name="tx_nome" type="VARCHAR(100)" remarks="NOME DO CLIENTE OU RAZÃO SOCIAL">
 				<constraints nullable="false" />
 			</column>
-			
-			<column name="tx_rg" type="VARCHAR(30)" remarks="REGISTRO GERAL DO CLIENTE OU INSCRIÇÃO ESTADUAL">
-				<constraints nullable="false" />
-			</column>
-			
+
+			<column name="tx_rg" type="VARCHAR(30)" remarks="REGISTRO GERAL DO CLIENTE OU INSCRIÇÃO ESTADUAL" />
+
 			<column name="dt_nascimento" type="DATE" remarks="DATA DE NASCIMENTO OU DATA DE FUNDAÇÃO">
 				<constraints nullable="true" />
 			</column>
-			
+
 			<column name="cd_cidade" type="NUMBER(18,0)" remarks="CÓDIGO DA CIDADE">
 				<constraints nullable="false" foreignKeyName="cliente_cidade_fk" references="tb_cidade(id_cidade)" />
 			</column>
-			
+
 			<column name="tx_endereco" type="VARCHAR(255)" remarks="ENDEREÇO">
 				<constraints nullable="false" />
 			</column>
-			
+
 			<column name="tx_numero" type="VARCHAR(5)" remarks="NÚMERO">
 				<constraints nullable="false" />
 			</column>
-			
+
 			<column name="tx_bairro" type="VARCHAR(255)" remarks="BAIRRO">
 				<constraints nullable="false" />
 			</column>
-			
+
 			<column name="tx_cep" type="VARCHAR(9)" remarks="CEP">
 				<constraints nullable="false" />
 			</column>
-			
-			<column name="tx_telefone" type="VARCHAR(20)" remarks="TELEFONE">
-				<constraints nullable="false" />
-			</column>
-			
+
+			<column name="tx_telefone" type="VARCHAR(20)" remarks="TELEFONE" />
+
 			<column name="tx_email" type="VARCHAR(100)" remarks="E-MAIL">
 				<constraints nullable="true" />
 			</column>
-			
+
 			<column name="nr_estadocivil" type="NUMERIC(2,0)" remarks="ESTADO CIVIL">
 				<constraints nullable="true" />
 			</column>
-			
+
 			<column name="fl_sexo" type="VARCHAR(1)" remarks="SEXO (MASCULINO-M FEMININO-F OUTROS-O))">
 				<constraints nullable="true" />
 			</column>
-			
+
 			<column name="nr_situacao" type="NUMERIC(2,0)" remarks="SITUAÇÕES DO CLIENTE">
 				<constraints nullable="false" />
 			</column>
-		
+
 		</createTable>
-		
+
 		<createSequence sequenceName="gen_cliente" startValue="2" />
 	</changeSet>
 

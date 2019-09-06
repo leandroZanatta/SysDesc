@@ -17,14 +17,14 @@ public class ProdutoService extends AbstractGenericService<Produto> {
 	@Override
 	public void validar(Produto objetoPersistir) {
 
-		if (objetoPersistir.getSubcategoria() == null) {
-
-			throw new SysDescException(MensagemConstants.MENSAGEM_SELECIONE_SUBCATEGORIA);
-		}
-
 		if (StringUtil.isNullOrEmpty(objetoPersistir.getDescricao())) {
 
 			throw new SysDescException(MensagemConstants.MENSAGEM_INSIRA_DESCRICAO_VALIDA);
+		}
+
+		if (objetoPersistir.getSubcategoria() == null) {
+
+			throw new SysDescException(MensagemConstants.MENSAGEM_SELECIONE_SUBCATEGORIA);
 		}
 
 		if (objetoPersistir.getMarca() == null) {
@@ -37,12 +37,15 @@ public class ProdutoService extends AbstractGenericService<Produto> {
 			throw new SysDescException(MensagemConstants.MENSAGEM_SELECIONE_UNIDADE);
 		}
 
-		if (BigDecimalUtil.maiorOuIgual(objetoPersistir.getValorEstoqueMinimo(),
-				objetoPersistir.getValorEstoqueMaximo())) {
+		if (BigDecimalUtil.maior(objetoPersistir.getValorEstoqueMinimo(), objetoPersistir.getValorEstoqueMaximo())) {
 
 			throw new SysDescException(MensagemConstants.MENSAGEM_VALOR_ESTOQUE_MINIMO_MAIOR_MAXIMO);
 		}
 
+		if (objetoPersistir.getCodigoTipo() == null) {
+
+			throw new SysDescException(MensagemConstants.MENSAGEM_SELECIONE_TIPO);
+		}
 		if (objetoPersistir.getCodigoStatus() == null) {
 
 			throw new SysDescException(MensagemConstants.MENSAGEM_SELECIONE_STATUS);

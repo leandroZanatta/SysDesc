@@ -11,6 +11,10 @@ public class StringUtil {
 		return valor == null || valor.equals(STRING_VAZIA);
 	}
 
+	public static Boolean isNullOrEmptyTrim(String valor) {
+		return valor == null || valor.trim().equals(STRING_VAZIA);
+	}
+
 	public static String arrayToString(char[] password) {
 		StringBuilder sb = new StringBuilder();
 
