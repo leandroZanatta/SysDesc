@@ -11,8 +11,10 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 
+import lombok.extern.slf4j.Slf4j;
 import net.miginfocom.swing.MigLayout;
 
+@Slf4j
 public class FrmDownloader extends JDialog {
 
 	private static final long serialVersionUID = 1L;
@@ -38,6 +40,7 @@ public class FrmDownloader extends JDialog {
 			URL arquivoUrl;
 
 			try {
+				log.info("fazendo download do arquivo: " + this.url);
 
 				arquivoUrl = new URL(this.url);
 
@@ -61,19 +64,27 @@ public class FrmDownloader extends JDialog {
 
 						fileOutputStream.write(dataBuffer, 0, bytesRead);
 
-						progressBar.setValue(Double
-								.valueOf(bufferTotal.doubleValue() / tamanhoArquivo.doubleValue() * 100).intValue());
+						Integer progresso = Double
+								.valueOf(bufferTotal.doubleValue() / tamanhoArquivo.doubleValue() * 100).intValue();
+
+						log.info("progresso: " + progresso);
+
+						progressBar.setValue(progresso);
 
 					}
 
 					sucesso = Boolean.TRUE;
 				} catch (IOException e) {
+					log.error("OCORREU UM ERRO AO EFETUAR O DOWNLOAD", e);
+
 					JOptionPane.showMessageDialog(this, "OCORREU UM ERRO AO EFETUAR O DOWNLOAD:\n" + e.getMessage());
 				}
 
 				dispose();
 
-			} catch (IOException e) {
+			} catch (Exception e) {
+				log.error("OCORREU UM ERRO AO EFETUAR O DOWNLOAD", e);
+
 				JOptionPane.showMessageDialog(this, "OCORREU UM ERRO AO EFETUAR O DOWNLOAD:\n" + e.getMessage());
 
 				dispose();
