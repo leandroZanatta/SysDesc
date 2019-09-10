@@ -26,6 +26,7 @@
 	<include file="10000000/changeset/20190807_215530_tb_formapagamento.xml" />
 	<include file="10000000/changeset/20190828_211700_tb_entradacabecalho.xml" />
 	<include file="10000000/changeset/20190828_213300_tb_entradadetalhe.xml" />
+	<include file="10000000/changeset/20190909_194200_tb_fornecedor.xml" />
 
 	<!-- INSERTS PROGRAMAS E PESQUISAS -->
 	<include file="10000000/inserts/20190626_113800_carga_usuario.xml" />
