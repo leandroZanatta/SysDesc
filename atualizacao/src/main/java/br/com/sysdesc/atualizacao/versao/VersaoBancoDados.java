@@ -39,7 +39,7 @@ public class VersaoBancoDados {
 
 	public void atualizarVersao(String versao) {
 
-		String sqlQuery = "update tb_versao set nr_versao=?";
+		String sqlQuery = "insert into tb_versao values(nextval('gen_versao'), ?, current_timestamp)";
 
 		try (Connection connection = criarConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {

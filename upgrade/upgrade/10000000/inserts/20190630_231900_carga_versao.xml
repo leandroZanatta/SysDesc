@@ -5,7 +5,7 @@
 	<changeSet id="20190630_231900" author="Leandro Zanatta">
 
 		<insert tableName="tb_versao">
-			<column name="id_versao" value="1" />
+			<column name="id_versao" valueComputed="nextval('gen_versao')" />
 			<column name="nr_versao" value="0.0.1" />
 			<column name="dt_atualizacao" valueDate="current_timestamp" />
 		</insert>
