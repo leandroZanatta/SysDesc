@@ -27,6 +27,10 @@
 	<include file="10000000/changeset/20190828_211700_tb_entradacabecalho.xml" />
 	<include file="10000000/changeset/20190828_213300_tb_entradadetalhe.xml" />
 	<include file="10000000/changeset/20190909_194200_tb_fornecedor.xml" />
+	<include file="10000000/changeset/20190911_191100_tb_planocontas.xml" />
+	<include file="10000000/changeset/20190911_203000_tb_limite.xml" />
+	<include file="10000000/changeset/20190911_203800_tb_operacoesestoque.xml" />
+	<include file="10000000/changeset/20190911_205200_tb_limiteextra.xml" />
 
 	<!-- INSERTS PROGRAMAS E PESQUISAS -->
 	<include file="10000000/inserts/20190626_113800_carga_usuario.xml" />

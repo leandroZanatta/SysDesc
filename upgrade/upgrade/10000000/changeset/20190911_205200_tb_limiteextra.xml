@@ -2,28 +2,35 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd  http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-	<changeSet id="20190911_203000" author="Matheus Bueno">
+	<changeSet id="20190911_205200" author="Matheus Bueno">
 
 		<preConditions onFail="CONTINUE">
 			<not>
-				<tableExists tableName="tb_limite" />
+				<tableExists tableName="tb_limiteextra" />
 			</not>
 		</preConditions>
 
-		<createTable tableName="tb_limite">
+		<createTable tableName="tb_limiteextra">
 
-			<column name="cd_cliente" type="NUMBER(18,0)" remarks="CODIGO DO CLIENTE">
-				<constraints primaryKey="true" primaryKeyName="limite_pk" foreignKeyName="limite_cliente_fk" references="tb_cliente(id_cliente)"
-					nullable="false" />
+			<column name="cd_tipolimite" type="NUMBER(1,0)" remarks="CODIGO DO TIPO DE LIMITE">
+				<constraints nullable="false" />
 			</column>
 
-			<column name="vl_limitecheque" type="NUMBER(10,2)" remarks="VALOR LIMITE DO CHEQUE" />
+			<column name="cd_cliente" type="NUMBER(18,0)" remarks="CODIGO DO CLIENTE">
+				<constraints foreignKeyName="limite_cliente_fk" references="tb_cliente(id_cliente)" nullable="false" />
+			</column>
 
-			<column name="vl_limiteconvenio" type="NUMBER(10,2)" remarks="LIMITE DE CONVÊNIO" />
+			<column name="vl_limite" type="NUMBER(10,2)" remarks="VALOR LIMITE">
+				<constraints nullable="false" />
+			</column>
 
-			<column name="VL_limitecrediario" type="NUMBER(18,2)" remarks="LIMITE DE CREDIARIO" />
+			<column name="dt_vencimento" type="DATE" remarks="DATA DE VENCIMENTO DO LIMITE EXTRA">
+				<constraints nullable="false" />
+			</column>
 
 		</createTable>
+
+		<addPrimaryKey columnNames="cd_tipolimite, cd_cliente" constraintName="limiteextra_pk" tableName="tb_limiteextra" />
 
 	</changeSet>
 </databaseChangeLog>
