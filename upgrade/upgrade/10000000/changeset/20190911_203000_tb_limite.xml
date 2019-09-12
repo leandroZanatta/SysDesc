@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd  http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+	<changeSet id="20190911_205200" author="Matheus Bueno">
+
+		<preConditions onFail="CONTINUE">
+			<not>
+				<tableExists tableName="tb_limite" />
+			</not>
+		</preConditions>
+
+		<createTable tableName="tb_limite">
+
+			<column name="cd_cliente" type="NUMBER(18,0)" remarks="CODIGO DO CLIENTE">
+				<constraints primaryKey="true" primaryKeyName="limite_pk" foreignKeyName="limite_cliente_fk" references="tb_cliente(id_cliente)"
+					nullable="false" />
+			</column>
+
+			<column name="vl_limitecheque" type="NUMBER(10,2)" remarks="VALOR LIMITE DO CHEQUE" />
+
+			<column name="vl_limiteconvenio" type="NUMBER(10,2)" remarks="LIMITE DE CONVÊNIO" />
+
+			<column name="VL_limitecrediario" type="NUMBER(18,2)" remarks="LIMITE DE CREDIARIO" />
+
+		</createTable>
+
+	</changeSet>
+</databaseChangeLog>
