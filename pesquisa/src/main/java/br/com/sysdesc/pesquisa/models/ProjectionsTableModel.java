@@ -14,13 +14,12 @@ import static br.com.sysdesc.util.resources.Resources.translate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.table.AbstractTableModel;
-
+import br.com.sysdesc.components.AbstractInternalFrameTable;
 import br.com.sysdesc.pesquisa.enumeradores.FormatoPesquisaEnum;
 import br.com.sysdesc.repository.enumeradores.TipoFieldEnum;
 import br.com.sysdesc.repository.model.PesquisaCampo;
 
-public class ProjectionsTableModel extends AbstractTableModel {
+public class ProjectionsTableModel extends AbstractInternalFrameTable {
 
 	private static final String STRING_VAZIA = "";
 	private static final long serialVersionUID = 1L;
@@ -119,6 +118,16 @@ public class ProjectionsTableModel extends AbstractTableModel {
 		this.rows.add(configuracaoPesquisa);
 
 		fireTableDataChanged();
+
+	}
+
+	@Override
+	public void clear() {
+
+	}
+
+	@Override
+	public void setEnabled(Boolean enabled) {
 
 	}
 
