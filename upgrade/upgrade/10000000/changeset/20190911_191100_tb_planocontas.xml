@@ -1,0 +1,73 @@
+
+-<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd  http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+	<changeSet id="2019011_191100" author="Gustavo Cardozo">
+
+		<preConditions onFail="CONTINUE">
+			<not>
+				<tableExists tableName="tb_planocontas" />
+			</not>
+		</preConditions>
+
+		<createTable tableName="tb_planocontas">
+
+			<column name="id_planocontas" type="NUMBER(18,0)" remarks="CÓDIGO IDENTIFICADOR">
+				<constraints primaryKey="true" primaryKeyName="planocontas_pk" nullable="false" />
+			</column>
+
+			<column name="tx_descricao" type="VARCHAR(100)" remarks="DESCRIÇÃO DA CONTA">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="tx_identificador" type="VARCHAR(100)" remarks="IDENTIFICADOR DA CONTA">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="cd_contaprincipal" type="VARCHAR(100)" remarks="CONTA PRINCIPAL">
+				<constraints foreignKeyName="conta_principal_fk" references="tb_planocontas(id_planocontas)" />
+			</column>
+
+			<column name="nr_situacao" type="NUMERIC (3,0)" remarks="CÓDIGO DA SITUAÇÃO">
+				<constraints nullable="false" />
+
+				<column name="fl_saldo" type="VARCHAR (1)" remarks="TIPO DE SALDO SITUAÇÃO">
+					<constraints nullable="false" />
+
+					<column name="dt_cadastro" type="TIMESTAMP" remarks="DATA DE CADASTRO">
+						<constraints nullable="false" />
+
+						<column name="dt_manutencao" type="TIMESTAMP" remarks="DATA DE MANUTENÇÃO">
+							<constraints nullable="false" />
+
+
+
+
+
+							<column name="cd_cliente" type="NUMBER(18,0)" remarks="CÓDIGO DO CLIENTE">
+								<constraints nullable="false" foreignKeyName="fornecedor_cliente_fk" references="tb_cliente(id_cliente)" />
+							</column>
+
+							<column name="nr_banco" type="NUMBER(3,0)" remarks="DESCRIÇÃO DO BANCO" />
+
+							<column name="nr_agencia" type="NUMBER(18,0)" remarks="NÚMERO DA AGENCIA" />
+
+							<column name="nr_conta" type="NUMBER(18,0)" remarks="NÚMERO DA CONTA" />
+
+							<column name="nr_tipoconta" type="NUMBER(1,0)" remarks="TIPO DA CONTA(1-CORRENTE,2-POUPANÇA)" />
+
+
+						</column>
+
+						<column name="cd_status" type="NUMBER(1,0)" remarks="STATUS SOCIAL">
+							<constraints nullable="false" />
+						</column>
+
+						<column name="tx_observacao" type="VARCHAR(255)" remarks="OBSERVAÇÃO">
+
+		</createTable>
+
+		<createSequence sequenceName="gen_fornecedor" />
+	</changeSet>
+</databaseChangeLog>

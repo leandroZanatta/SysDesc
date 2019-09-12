@@ -30,6 +30,7 @@ import br.com.sysdesc.repository.model.Usuario;
 import br.com.sysdesc.service.cliente.ClienteService;
 import br.com.sysdesc.service.login.LoginService;
 import br.com.sysdesc.service.perfil.PerfilService;
+import br.com.sysdesc.ui.buttonactions.ButtonActionAlterarPermissoes;
 import br.com.sysdesc.ui.buttonactions.ButtonActionAlterarSenha;
 import br.com.sysdesc.util.classes.ContadorUtil;
 import br.com.sysdesc.util.classes.StringUtil;
@@ -51,6 +52,7 @@ public class FrmUsuario extends AbstractInternalFrame {
 	private CampoPesquisa<Cliente> pesquisaCliente;
 	private ClienteService clienteService = new ClienteService();
 	private ButtonActionAlterarSenha alterarSenha;
+	private ButtonActionAlterarPermissoes alterarPermissoes;
 	private JLabel lblUsuario;
 
 	public FrmUsuario(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
@@ -73,6 +75,7 @@ public class FrmUsuario extends AbstractInternalFrame {
 
 		txUsuario = new JTextField();
 		alterarSenha = new ButtonActionAlterarSenha();
+		alterarPermissoes = new ButtonActionAlterarPermissoes();
 
 		pesquisaCliente = new CampoPesquisa<Cliente>(clienteService, PesquisaEnum.PES_CLIENTES, getCodigoUsuario()) {
 
@@ -144,8 +147,19 @@ public class FrmUsuario extends AbstractInternalFrame {
 
 		};
 
+		Action actionConfigurarPermissao = new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+			}
+
+		};
+
 		panelActions = new PanelActions<Usuario>(this, loginService, PesquisaEnum.PES_USUARIOS, Boolean.FALSE,
-				alterarSenha) {
+				alterarSenha, alterarPermissoes) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -154,6 +168,7 @@ public class FrmUsuario extends AbstractInternalFrame {
 				ContadorUtil contadorUtil = new ContadorUtil();
 
 				posicionarBotao(contadorUtil, alterarSenha, Boolean.TRUE);
+				posicionarBotao(contadorUtil, alterarPermissoes, Boolean.TRUE);
 				posicionarBotao(contadorUtil, btSalvar, Boolean.TRUE);
 				posicionarBotao(contadorUtil, btEditar, Boolean.TRUE);
 				posicionarBotao(contadorUtil, btNovo, Boolean.TRUE);
@@ -165,6 +180,7 @@ public class FrmUsuario extends AbstractInternalFrame {
 			@Override
 			protected void registrarEventosBotoesPagina() {
 				registrarEvento(alterarSenha, actionAlterarSenha);
+				registrarEvento(alterarPermissoes, actionConfigurarPermissao);
 			}
 
 			@Override
