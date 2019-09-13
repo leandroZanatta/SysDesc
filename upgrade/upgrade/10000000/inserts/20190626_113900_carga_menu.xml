@@ -49,10 +49,9 @@
 
 		<insert tableName="tb_programa">
 			<column name="id_programa" value="6" />
-			<column name="nr_ordem" value="5" />
 			<column name="cd_programa" value="1" />
+			<column name="nr_ordem" value="5" />
 			<column name="tx_descricao" value="FRMAPPLICATION_MI_USUARIOS" />
-			<column name="tx_icone" value="usuario.png" />
 			<column name="fl_acessorapido" valueBoolean="false" />
 		</insert>
 
@@ -332,6 +331,24 @@
 			<column name="cd_programa" value="38" />
 			<column name="tx_descricao" value="FRMAPPLICATION_MI_PESQUISA_BASICA" />
 			<column name="tx_icone" value="pesquisa.png" />
+			<column name="fl_acessorapido" valueBoolean="false" />
+		</insert>
+
+		<insert tableName="tb_programa">
+			<column name="id_programa" value="40" />
+			<column name="nr_ordem" value="1" />
+			<column name="cd_programa" value="6" />
+			<column name="tx_descricao" value="FRMAPPLICATION_MI_CADASTRO_USUARIOS" />
+			<column name="tx_icone" value="usuario.png" />
+			<column name="fl_acessorapido" valueBoolean="false" />
+		</insert>
+
+		<insert tableName="tb_programa">
+			<column name="id_programa" value="41" />
+			<column name="nr_ordem" value="2" />
+			<column name="cd_programa" value="6" />
+			<column name="tx_descricao" value="FRMAPPLICATION_MI_PERMISSAO_MENUS" />
+			<column name="tx_icone" value="usuario.png" />
 			<column name="fl_acessorapido" valueBoolean="false" />
 		</insert>
 
