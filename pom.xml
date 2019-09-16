@@ -16,5 +16,6 @@
 		<module>service</module>
 		<module>pesquisa</module>
 		<module>interface</module>
+		<module>upgrade</module>
 	</modules>
 </project>

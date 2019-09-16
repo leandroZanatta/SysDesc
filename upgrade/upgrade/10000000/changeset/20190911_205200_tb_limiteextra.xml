@@ -17,7 +17,7 @@
 			</column>
 
 			<column name="cd_cliente" type="NUMBER(18,0)" remarks="CODIGO DO CLIENTE">
-				<constraints foreignKeyName="limite_cliente_fk" references="tb_cliente(id_cliente)" nullable="false" />
+				<constraints foreignKeyName="limiteextra_cliente_fk" references="tb_cliente(id_cliente)" nullable="false" />
 			</column>
 
 			<column name="vl_limite" type="NUMBER(10,2)" remarks="VALOR LIMITE">
