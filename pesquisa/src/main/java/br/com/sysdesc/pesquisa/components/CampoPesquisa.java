@@ -12,9 +12,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.event.EventListenerList;
 
 import com.mysema.query.BooleanBuilder;
 
+import br.com.sysdesc.components.listeners.ChangeListener;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.pesquisa.ui.FrmPesquisa;
 import br.com.sysdesc.service.interfaces.impl.AbstractGenericService;
@@ -34,6 +36,7 @@ public abstract class CampoPesquisa<T> extends JPanel {
 	private JTextField txValorPesquisa;
 	private T objetoPesquisado;
 	private Boolean pesquisaOk = Boolean.FALSE;
+	protected EventListenerList listener = new EventListenerList();
 
 	public CampoPesquisa(AbstractGenericService<T> genericService, PesquisaEnum pesquisaEnum, Long codigoUsuario) {
 
@@ -86,6 +89,8 @@ public abstract class CampoPesquisa<T> extends JPanel {
 
 			if (frmPesquisa.getOk()) {
 
+				fireChangeEvent(frmPesquisa.getObjeto(), this.objetoPesquisado);
+
 				this.objetoPesquisado = frmPesquisa.getObjeto();
 
 				carregarCampo();
@@ -119,6 +124,31 @@ public abstract class CampoPesquisa<T> extends JPanel {
 		this.objetoPesquisado = objeto;
 
 		carregarCampo();
+	}
+
+	@SuppressWarnings("unchecked")
+	public void fireChangeEvent(T newValue, T oldValue) {
+		Object[] listeners = listener.getListenerList();
+
+		for (int i = 0; i < listeners.length; i = i + 2) {
+
+			if (listeners[i] == ChangeListener.class) {
+
+				((ChangeListener<T>) listeners[i + 1]).valueChanged(newValue, oldValue);
+			}
+		}
+	}
+
+	public void limpar() {
+
+		this.objetoPesquisado = null;
+
+		this.txValorPesquisa.setText("");
+	}
+
+	public void addChangeListener(ChangeListener<T> changeListener) {
+
+		listener.add(ChangeListener.class, changeListener);
 	}
 
 	public abstract String formatarValorCampo(T objeto);

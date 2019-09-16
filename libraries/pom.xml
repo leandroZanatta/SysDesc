@@ -24,18 +24,25 @@
 
 	<dependencyManagement>
 		<dependencies>
+
+			<dependency>
+				<groupId>org.swinglabs</groupId>
+				<artifactId>swingx</artifactId>
+				<version>1.6.1</version>
+			</dependency>
+
 			<dependency>
 				<groupId>com.jtattoo</groupId>
 				<artifactId>JTattoo</artifactId>
 				<version>1.6.7</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>com.toedter</groupId>
 				<artifactId>jcalendar</artifactId>
 				<version>1.4</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>com.miglayout</groupId>
 				<artifactId>miglayout</artifactId>
