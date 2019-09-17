@@ -246,7 +246,7 @@
 
 		<insert tableName="tb_programa">
 			<column name="id_programa" value="29" />
-			<column name="nr_ordem" value="1" />
+			<column name="nr_ordem" value="2" />
 			<column name="cd_programa" value="28" />
 			<column name="tx_descricao" value="FRMAPPLICATION_MI_CONSULTA_KARDEX" />
 			<column name="tx_icone" value="kardex.png" />
@@ -352,5 +352,13 @@
 			<column name="fl_acessorapido" valueBoolean="false" />
 		</insert>
 
+		<insert tableName="tb_programa">
+			<column name="id_programa" value="42" />
+			<column name="nr_ordem" value="2" />
+			<column name="cd_programa" value="28" />
+			<column name="tx_descricao" value="FRMAPPLICATION_MI_OPERACOES_ESTOQUE" />
+			<column name="tx_icone" value="estoque.png" />
+			<column name="fl_acessorapido" valueBoolean="false" />
+		</insert>
 	</changeSet>
 </databaseChangeLog>

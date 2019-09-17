@@ -1,5 +1,7 @@
 package br.com.sysdesc.ui;
 
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.text.ParseException;
 import java.util.Arrays;
 
@@ -7,6 +9,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
@@ -29,6 +32,8 @@ import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.service.cidade.CidadeService;
 import br.com.sysdesc.service.cliente.ClienteService;
 import br.com.sysdesc.service.estado.EstadoService;
+import br.com.sysdesc.util.classes.CNPJUtil;
+import br.com.sysdesc.util.classes.CPFUtil;
 import br.com.sysdesc.util.classes.IfNull;
 import br.com.sysdesc.util.resources.Resources;
 import net.miginfocom.swing.MigLayout;
@@ -177,7 +182,47 @@ public class FrmCliente extends AbstractInternalFrame {
 		buttonGroup.add(rdbtnJurdica);
 		rdbtnFisca.addActionListener((e) -> selecionouPessoaFisica());
 		rdbtnJurdica.addActionListener((e) -> selecionouPessoaJuridica());
+		txCgc.addFocusListener(new FocusAdapter() {
 
+			@Override
+			public void focusLost(FocusEvent e) {
+
+				Boolean documentoValido = Boolean.FALSE;
+
+				String documento;
+
+				if (rdbtnFisca.isSelected()) {
+					documento = "CPF";
+					documentoValido = CPFUtil.isCPFValido(txCgc.getText());
+				} else {
+					documento = "CNPJ";
+					documentoValido = CNPJUtil.isCNPJValido(txCgc.getText());
+				}
+
+				if (!documentoValido) {
+					JOptionPane.showMessageDialog(null, "O " + documento + " informado é inválido.");
+
+					txCgc.setText("");
+
+					return;
+				}
+
+				Cliente cliente = clienteService.buscarClientePorCpf(txCgc.getText(), txCodigo.getValue());
+
+				if (cliente != null) {
+
+					Integer confirmacao = JOptionPane.showConfirmDialog(null,
+							"O " + documento + " informado já está cadastrado.\n Deseja Carrega-lo?", "Verificação",
+							JOptionPane.YES_NO_OPTION);
+
+					if (confirmacao == JOptionPane.YES_OPTION) {
+
+						painelDeBotoes.carregarObjetoPesquisado(cliente);
+					}
+				}
+
+			}
+		});
 		mascaraCelular.setPlaceholderCharacter('_');
 		mascaraCNPJ.setPlaceholderCharacter('_');
 		mascaraCep.setPlaceholderCharacter('_');

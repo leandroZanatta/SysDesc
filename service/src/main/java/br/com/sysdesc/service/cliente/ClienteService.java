@@ -11,8 +11,16 @@ import br.com.sysdesc.util.exception.SysDescException;
 
 public class ClienteService extends AbstractGenericService<Cliente> {
 
+	private ClienteDAO clienteDAO;
+
 	public ClienteService() {
-		super(new ClienteDAO(), Cliente::getIdCliente);
+		this(new ClienteDAO());
+	}
+
+	public ClienteService(ClienteDAO clienteDAO) {
+		super(clienteDAO, Cliente::getIdCliente);
+
+		this.clienteDAO = clienteDAO;
 	}
 
 	@Override
@@ -79,6 +87,11 @@ public class ClienteService extends AbstractGenericService<Cliente> {
 		if (objetoPersistir.getSituacao() == null) {
 			throw new SysDescException(MensagemConstants.MENSAGEM_SELECIONE_SITUACAO);
 		}
+	}
+
+	public Cliente buscarClientePorCpf(String cgc, Long idCliente) {
+
+		return clienteDAO.buscarClientePorCpf(cgc, idCliente);
 	}
 
 }
