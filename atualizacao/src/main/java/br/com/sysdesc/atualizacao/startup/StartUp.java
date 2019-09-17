@@ -5,14 +5,17 @@ import static br.com.sysdesc.atualizacao.util.resources.Resources.translate;
 
 import java.awt.Desktop;
 import java.io.File;
-import java.io.IOException;
+
+import javax.swing.JOptionPane;
 
 import br.com.sysdesc.atualizacao.util.resources.Configuracoes;
 import br.com.sysdesc.atualizacao.versao.ExtratorZip;
 import br.com.sysdesc.atualizacao.versao.VersaoBancoDados;
 import br.com.sysdesc.atualizacao.versao.VersaoInternet;
 import br.com.sysdesc.atualizacao.vo.VersaoVO;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class StartUp {
 
 	private final VersaoBancoDados versaoBancoDados = new VersaoBancoDados();
@@ -56,9 +59,18 @@ public class StartUp {
 
 	}
 
-	private void iniciarAplicacao() throws IOException, InterruptedException {
+	private void iniciarAplicacao() {
 
-		Desktop.getDesktop().open(new File(translate(APPLICATION_JAR, "interface.jar")));
+		try {
+
+			Desktop.getDesktop().open(new File(translate(APPLICATION_JAR, "interface.jar")));
+
+		} catch (Exception e) {
+
+			JOptionPane.showMessageDialog(null, "ERRO AO INICIALIZAR APLICAÇÃO");
+
+			log.error("ERRO AO INICIALIZAR APLICAÇÃO", e);
+		}
 	}
 
 }

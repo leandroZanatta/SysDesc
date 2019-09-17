@@ -19,7 +19,7 @@ public class VersaoBancoDados {
 
 	public String buscarVersaoBanco() {
 
-		String sqlQuery = "select nr_versao from tb_versao";
+		String sqlQuery = "select nr_versao from tb_versao order by id_versao desc limit 1";
 
 		try (Connection connection = criarConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery);
