@@ -24,6 +24,7 @@
 		<class>br.com.sysdesc.repository.model.FormasPagamento</class>
 		<class>br.com.sysdesc.repository.model.EntradaCabecalho</class>
 		<class>br.com.sysdesc.repository.model.EntradaDetalhe</class>
+		<class>br.com.sysdesc.repository.model.Limite</class>
 	</persistence-unit>
 
 </persistence>

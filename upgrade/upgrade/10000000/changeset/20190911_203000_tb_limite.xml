@@ -17,9 +17,9 @@
 					nullable="false" />
 			</column>
 
-			<column name="vl_limitecheque" type="NUMBER(10,2)" remarks="VALOR LIMITE DO CHEQUE" />
+			<column name="vl_limitecheque" type="NUMBER(18,2)" remarks="VALOR LIMITE DO CHEQUE" />
 
-			<column name="vl_limiteconvenio" type="NUMBER(10,2)" remarks="LIMITE DE CONVÊNIO" />
+			<column name="vl_limiteconvenio" type="NUMBER(18,2)" remarks="LIMITE DE CONVÊNIO" />
 
 			<column name="VL_limitecrediario" type="NUMBER(18,2)" remarks="LIMITE DE CREDIARIO" />
 
