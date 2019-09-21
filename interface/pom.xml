@@ -93,7 +93,10 @@
 			<artifactId>swingx</artifactId>
 		</dependency>
 
-
+		<dependency>
+			<groupId>ar.com.fdvs</groupId>
+			<artifactId>DynamicJasper</artifactId>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>

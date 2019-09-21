@@ -24,6 +24,7 @@ import javax.swing.JTable;
 import com.mysema.query.BooleanBuilder;
 
 import br.com.sysdesc.components.JTextFieldMaiusculo;
+import br.com.sysdesc.pesquisa.components.ReportBuilder;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.pesquisa.enumeradores.TipoTamanhoEnum;
 import br.com.sysdesc.pesquisa.models.GenericTableModel;
@@ -36,6 +37,8 @@ import br.com.sysdesc.util.classes.ImageUtil;
 import br.com.sysdesc.util.constants.MensagemConstants;
 import br.com.sysdesc.util.exception.SysDescException;
 import net.miginfocom.swing.MigLayout;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class FrmPesquisa<T> extends JDialog {
 
@@ -108,6 +111,7 @@ public class FrmPesquisa<T> extends JDialog {
 		btImprimir = new JButton("");
 		panel.add(btImprimir, "cell 2 0,grow");
 		btImprimir.setIcon(ImageUtil.resize("print.png", 20, 20));
+		btImprimir.addActionListener((e) -> imprimir());
 		panel_1 = new JPanel();
 		getContentPane().add(panel_1, BorderLayout.NORTH);
 		panel_1.setLayout(new MigLayout("", "[63px,left][86px,grow][79px][81px]", "[23px]"));
@@ -141,6 +145,25 @@ public class FrmPesquisa<T> extends JDialog {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 
+	}
+
+	private void imprimir() {
+
+		try {
+
+			List<T> data = genericService.pesquisarTodos(chckbxContm.isSelected(), textField.getText(), this.preFilter,
+					pesquisaExibir);
+
+			ReportBuilder<T> reportBuilder = new ReportBuilder<>(this.pesquisaExibir, data);
+
+			JasperPrint jasperPrint = reportBuilder.build();
+
+			JasperViewer.viewReport(jasperPrint, Boolean.FALSE);
+
+		} catch (Exception e) {
+
+			JOptionPane.showMessageDialog(null, "OCORREU UM ERRO AO GERAR RELATÓRIO\n" + e.getMessage());
+		}
 	}
 
 	private void selecionarRegistro() {

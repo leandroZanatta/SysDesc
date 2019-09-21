@@ -175,6 +175,20 @@ public abstract class AbstractGenericDAO<T> implements GenericDAO<T> {
 				.list(entityPath);
 	}
 
+	public List<T> pesquisarTodos(boolean selected, String pesquisa, BooleanBuilder preFilter,
+			Pesquisa pesquisaExibir) {
+
+		JPAQuery query = from();
+
+		BooleanBuilder booleanBuilder = getClausule(selected, pesquisa, preFilter, pesquisaExibir);
+
+		if (booleanBuilder.hasValue()) {
+			query.where(booleanBuilder);
+		}
+
+		return query.orderBy(campoId.asc()).list(entityPath);
+	}
+
 	@Override
 	public Long count(boolean selected, String pesquisa, BooleanBuilder preFilter, Pesquisa pesquisaExibir) {
 

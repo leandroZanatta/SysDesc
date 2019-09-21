@@ -75,4 +75,10 @@ public abstract class AbstractGenericService<T> implements GenericService<T> {
 
 		return objetoPesquisa;
 	}
+
+	public List<T> pesquisarTodos(boolean selected, String pesquisa, BooleanBuilder preFilter,
+			Pesquisa pesquisaExibir) {
+
+		return abstractGenericDAO.pesquisarTodos(selected, pesquisa, preFilter, pesquisaExibir);
+	}
 }
