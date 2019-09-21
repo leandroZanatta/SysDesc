@@ -16,23 +16,14 @@ public class FrmFornecedor extends AbstractInternalFrame {
 	}
 
 	private void initComponents() {
-            setSize(450,20);			
-			setClosable(Boolean.TRUE);
-			setTitle("Cadastro de Fornecedores");
-			painelContent = new JPanel();
-			getContentPane().add(painelContent);
-			
-			painelContent.setLayout (new MigLayout("","","",));
-		
+		setSize(450, 20);
+		setClosable(Boolean.TRUE);
+		setTitle("Cadastro de Fornecedores");
+		painelContent = new JPanel();
+		getContentPane().add(painelContent);
 
-			
-			
-			
-			
-			
-			
-			
-			
-		}
+		painelContent.setLayout(new MigLayout("", "", ""));
+
+	}
 
 }

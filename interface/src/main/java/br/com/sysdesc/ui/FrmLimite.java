@@ -16,21 +16,16 @@ public class FrmLimite extends AbstractInternalFrame {
 		initComponentes();
 	}
 
-	private void initComponentes() 
-	{
+	private void initComponentes() {
 		setSize(450, 230);
-		
+
 		setClosable(Boolean.TRUE);
-		
+
 		setTitle("Cadastro de Limite");
-		
-		panelContent=new JPanel();
-		panelContent.setLayout(new MigLayout("","","");
-				getContentPane().add(panelContent);
-		
-			
-		
-	
+
+		panelContent = new JPanel();
+		panelContent.setLayout(new MigLayout("", "", ""));
+		getContentPane().add(panelContent);
 
 	}
 
