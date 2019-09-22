@@ -13,6 +13,7 @@ import static br.com.sysdesc.util.resources.Resources.translate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import br.com.sysdesc.components.AbstractInternalFrameTable;
 import br.com.sysdesc.pesquisa.enumeradores.FormatoPesquisaEnum;
@@ -115,6 +116,14 @@ public class ProjectionsTableModel extends AbstractInternalFrameTable {
 	}
 
 	public void addProjection(PesquisaCampo configuracaoPesquisa) {
+
+		Optional<PesquisaCampo> optional = this.rows.stream()
+				.filter(x -> configuracaoPesquisa.getCampo().equals(x.getCampo())).findFirst();
+
+		if (optional.isPresent()) {
+			this.rows.remove(optional.get());
+		}
+
 		this.rows.add(configuracaoPesquisa);
 
 		fireTableDataChanged();
@@ -123,7 +132,9 @@ public class ProjectionsTableModel extends AbstractInternalFrameTable {
 
 	@Override
 	public void clear() {
+		this.rows.clear();
 
+		fireTableDataChanged();
 	}
 
 	@Override

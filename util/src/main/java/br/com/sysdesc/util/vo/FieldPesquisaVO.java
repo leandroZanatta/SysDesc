@@ -26,4 +26,15 @@ public class FieldPesquisaVO {
 
 		return name;
 	}
+
+	@Override
+	public int hashCode() {
+		return name.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj != null && this.hashCode() == obj.hashCode();
+	}
+
 }

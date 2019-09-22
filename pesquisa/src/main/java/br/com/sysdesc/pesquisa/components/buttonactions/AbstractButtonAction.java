@@ -166,6 +166,15 @@ public abstract class AbstractButtonAction extends JPanel {
 			camposTela.get(JRadioButton.class).forEach(x -> ((JRadioButton) x).setSelected(Boolean.FALSE));
 		}
 
+		if (camposTela.containsKey(CampoPesquisa.class)) {
+			camposTela.get(CampoPesquisa.class).forEach(x -> ((CampoPesquisa<?>) x).setValue(null));
+		}
+
+		if (camposTela.containsKey(CampoPesquisaMultiSelect.class)) {
+			camposTela.get(CampoPesquisaMultiSelect.class)
+					.forEach(x -> ((CampoPesquisaMultiSelect<?>) x).setValue(null));
+		}
+
 		if (camposTela.containsKey(JTable.class)) {
 			camposTela.get(JTable.class).forEach(x -> ((AbstractInternalFrameTable) ((JTable) x).getModel()).clear());
 		}

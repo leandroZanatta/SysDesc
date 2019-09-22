@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -42,6 +43,9 @@ public class Pesquisa implements Serializable {
 
 	@Column(name = "cd_tipo")
 	private Long tipo;
+
+	@OneToOne(mappedBy = "pesquisa")
+	private PesquisaPadrao pesquisaPadrao;
 
 	@OneToMany(mappedBy = "pesquisa", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<PermissaoPesquisa> permissaoPesquisas = new ArrayList<>();

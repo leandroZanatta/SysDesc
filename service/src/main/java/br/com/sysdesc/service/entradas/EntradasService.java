@@ -6,17 +6,9 @@ import br.com.sysdesc.service.interfaces.impl.AbstractGenericService;
 
 public class EntradasService extends AbstractGenericService<EntradaCabecalho> {
 
-	private final EntradaCabecalhoDAO entradaCabecalhoDAO;
-
 	public EntradasService() {
 
-		this(new EntradaCabecalhoDAO());
-	}
-
-	public EntradasService(EntradaCabecalhoDAO entradaCabecalhoDAO) {
-		super(entradaCabecalhoDAO, EntradaCabecalho::getIdEntradaCabecalho);
-
-		this.entradaCabecalhoDAO = entradaCabecalhoDAO;
+		super(new EntradaCabecalhoDAO(), EntradaCabecalho::getIdEntradaCabecalho);
 	}
 
 	@Override

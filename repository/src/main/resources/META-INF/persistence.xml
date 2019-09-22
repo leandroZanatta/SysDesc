@@ -28,6 +28,7 @@
 		<class>br.com.sysdesc.repository.model.PlanoContas</class>
 		<class>br.com.sysdesc.repository.model.OperacaoEstoque</class>
 		<class>br.com.sysdesc.repository.model.Fornecedor</class>
+		<class>br.com.sysdesc.repository.model.PesquisaPadrao</class>
 	</persistence-unit>
 
 </persistence>

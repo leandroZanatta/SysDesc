@@ -22,9 +22,10 @@ public class ReportBuilder<T> {
 	private Pesquisa pesquisa;
 	private List<T> data;
 	private Long size;
+	private Double tamanhoPaginaRetrato = 530.0;
 
 	public ReportBuilder(Pesquisa pesquisa, List<T> data) {
-		this(pesquisa, data, 950L);
+		this(pesquisa, data, 800L);
 	}
 
 	public ReportBuilder(Pesquisa pesquisa, List<T> data, Long size) {
@@ -43,11 +44,15 @@ public class ReportBuilder<T> {
 				.filter(x -> x.getFlagTipoTamanho().equals(TipoTamanhoEnum.FLEX.getCodigo()))
 				.mapToLong(x -> x.getNumeroTamanho()).sum();
 
+		Long tamanhoFixo = pesquisa.getPesquisaCampos().stream()
+				.filter(x -> x.getFlagTipoTamanho().equals(TipoTamanhoEnum.PIXELS.getCodigo()))
+				.mapToLong(x -> x.getNumeroTamanho()).sum();
+
 		pesquisa.getPesquisaCampos().stream().sorted(Comparator.comparing(PesquisaCampo::getFlagOrdem));
 
 		for (PesquisaCampo pesquisa : pesquisa.getPesquisaCampos()) {
 
-			Integer tamanho = getTamanhoCampo(pesquisa, tamanhoVariavel);
+			Integer tamanho = getTamanhoCampo(pesquisa, tamanhoFixo, tamanhoVariavel);
 
 			fastReportBuilder.addColumn(pesquisa.getDescricao(), pesquisa.getCampo(),
 					TipoFieldEnum.forCodigo(pesquisa.getFlagTipoDado()).getType().getName(), tamanho);
@@ -58,15 +63,21 @@ public class ReportBuilder<T> {
 		return DynamicJasperHelper.generateJasperPrint(fastReportBuilder.build(), new ClassicLayoutManager(), ds);
 	}
 
-	private int getTamanhoCampo(PesquisaCampo pesquisa, Long tamanhoVariavel) {
+	private int getTamanhoCampo(PesquisaCampo pesquisa, Long tamanhoFixo, Long tamanhoVariavel) {
+
+		Double fatorMultiplicador = 1 + ((tamanhoPaginaRetrato - size) / size);
+
+		return getTamanhoComponentePorTipo(pesquisa, tamanhoFixo, tamanhoVariavel, fatorMultiplicador).intValue();
+	}
+
+	private Double getTamanhoComponentePorTipo(PesquisaCampo pesquisa, Long tamanhoFixo, Long tamanhoVariavel,
+			Double fatorMultiplicador) {
 
 		if (pesquisa.getFlagTipoTamanho().equals(TipoTamanhoEnum.PIXELS.getCodigo())) {
-			return pesquisa.getNumeroTamanho().intValue() / 2;
+			return pesquisa.getNumeroTamanho().intValue() * fatorMultiplicador;
 		}
 
-		Long tamanho = size / tamanhoVariavel * pesquisa.getNumeroTamanho() / 2;
-
-		return tamanho.intValue();
+		return (size - tamanhoFixo) / tamanhoVariavel * pesquisa.getNumeroTamanho() * fatorMultiplicador;
 	}
 
 }

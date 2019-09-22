@@ -9,6 +9,7 @@ import static br.com.sysdesc.util.resources.Resources.translate;
 
 import java.awt.BorderLayout;
 import java.util.Arrays;
+import java.util.Optional;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -23,7 +24,7 @@ import br.com.sysdesc.pesquisa.enumeradores.FormatoPesquisaEnum;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.pesquisa.enumeradores.TipoTamanhoEnum;
 import br.com.sysdesc.pesquisa.formatters.Formatter;
-import br.com.sysdesc.pesquisa.formatters.impl.StringFormatter;
+import br.com.sysdesc.pesquisa.formatters.impl.LongFormatter;
 import br.com.sysdesc.repository.enumeradores.TipoFieldEnum;
 import br.com.sysdesc.repository.model.PesquisaCampo;
 import br.com.sysdesc.repository.util.EntityPathUtil;
@@ -71,6 +72,7 @@ public class FrmPesquisaBasicaCampo extends JDialog {
 		setSize(450, 250);
 		setModal(Boolean.TRUE);
 		setLocationRelativeTo(null);
+		setTitle("CADASTRO DE CAMPOS");
 
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new MigLayout("", "[grow][120][]", "[][][][][][][][grow,bottom]"));
@@ -89,7 +91,7 @@ public class FrmPesquisaBasicaCampo extends JDialog {
 		panel = new JPanel();
 		btOk = new JButton("Ok");
 		btCancelar = new JButton("Cancelar");
-		componentFormatacao = new StringFormatter();
+		componentFormatacao = new LongFormatter();
 
 		EntityPathUtil.getAllFieldsFromEntity(this.pesquisaEnum.getEntityPath()).forEach(cbField::addItem);
 		Arrays.asList(TipoTamanhoEnum.values()).forEach(cbTipoTamanho::addItem);
@@ -121,6 +123,41 @@ public class FrmPesquisaBasicaCampo extends JDialog {
 
 		panel.add(btOk);
 		panel.add(btCancelar);
+
+		carregarCampos();
+	}
+
+	private void carregarCampos() {
+
+		if (!StringUtil.isNullOrEmpty(pesquisaCampo.getCampo())) {
+
+			Optional<FieldPesquisaVO> fieldPesquisaVO = EntityPathUtil
+					.getAllFieldsFromEntity(this.pesquisaEnum.getEntityPath()).stream()
+					.filter(x -> x.getName().equals(pesquisaCampo.getCampo())).findFirst();
+
+			if (fieldPesquisaVO.isPresent()) {
+				cbField.setSelectedItem(fieldPesquisaVO.get());
+			}
+		}
+
+		if (!StringUtil.isNullOrEmpty(pesquisaCampo.getDescricao())) {
+			txDescricao.setText(pesquisaCampo.getDescricao());
+		}
+
+		if (pesquisaCampo.getFlagTipoTamanho() != null) {
+			cbTipoTamanho.setSelectedItem(TipoTamanhoEnum.tipoTamanhoForCodigo(pesquisaCampo.getFlagTipoTamanho()));
+		}
+
+		if (pesquisaCampo.getNumeroTamanho() != null) {
+			txTamanho.setValue(pesquisaCampo.getNumeroTamanho());
+		}
+
+		if (pesquisaCampo.getFlagFormatacao() != null) {
+
+			cbFormatacao.setSelectedItem(FormatoPesquisaEnum.formatoForCodigo(pesquisaCampo.getFlagFormatacao()));
+
+			processarTipoPesquisa();
+		}
 	}
 
 	private void selecionarCampoPesquisa() {
@@ -154,7 +191,6 @@ public class FrmPesquisaBasicaCampo extends JDialog {
 		if (cbField.getSelectedIndex() < 0) {
 
 			throw new SysDescException(MENSAGEM_SELECIONE_FIELD);
-
 		}
 
 		if (StringUtil.isNullOrEmpty(txDescricao.getText())) {
@@ -190,7 +226,9 @@ public class FrmPesquisaBasicaCampo extends JDialog {
 
 		contentPanel.add(componentFormatacao.getComponent(), "cell 1 5 2 1,growx,aligny top");
 
-		componentFormatacao.getComponent().repaint();
+		contentPanel.revalidate();
+
+		contentPanel.repaint();
 	}
 
 	private void procesarTipoCampo() {

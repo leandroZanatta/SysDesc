@@ -521,6 +521,8 @@ public abstract class PanelActions<T> extends AbstractButtonAction {
 
 			bloquear();
 
+			fireClearEvent();
+
 			fireButtonListener(ButtonActionListener::newEvent);
 
 		} catch (IllegalAccessException | InstantiationException e1) {
@@ -562,7 +564,7 @@ public abstract class PanelActions<T> extends AbstractButtonAction {
 
 		for (int i = 0; i < listeners.length; i = i + 2) {
 
-			if (listeners[i] == SaveListener.class) {
+			if (listeners[i] == NewListener.class) {
 
 				((NewListener) listeners[i + 1]).newEvent();
 			}

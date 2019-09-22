@@ -6,6 +6,8 @@ import static br.com.sysdesc.util.resources.Resources.FRMLOGIN_MSG_VERIFICACAO;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -16,8 +18,10 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
@@ -25,12 +29,15 @@ import com.mysema.query.BooleanBuilder;
 
 import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.pesquisa.components.ReportBuilder;
+import br.com.sysdesc.pesquisa.components.ReportViewer;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.pesquisa.enumeradores.TipoTamanhoEnum;
 import br.com.sysdesc.pesquisa.models.GenericTableModel;
 import br.com.sysdesc.repository.dao.PesquisaDAO;
+import br.com.sysdesc.repository.dao.PesquisaPadraoDAO;
 import br.com.sysdesc.repository.model.Pesquisa;
 import br.com.sysdesc.repository.model.PesquisaCampo;
+import br.com.sysdesc.repository.model.PesquisaPadrao;
 import br.com.sysdesc.service.interfaces.impl.AbstractGenericService;
 import br.com.sysdesc.util.classes.ContadorUtil;
 import br.com.sysdesc.util.classes.ImageUtil;
@@ -38,7 +45,6 @@ import br.com.sysdesc.util.constants.MensagemConstants;
 import br.com.sysdesc.util.exception.SysDescException;
 import net.miginfocom.swing.MigLayout;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.view.JasperViewer;
 
 public class FrmPesquisa<T> extends JDialog {
 
@@ -61,6 +67,7 @@ public class FrmPesquisa<T> extends JDialog {
 	private final PesquisaEnum pesquisaEnum;
 	private final Long codigoUsuario;
 	private PesquisaDAO pesquisaDAO = new PesquisaDAO();
+	private PesquisaPadraoDAO pesquisaPadraoDAO = new PesquisaPadraoDAO();
 	private Pesquisa pesquisaExibir;
 	private GenericTableModel<T> genericTableModel;
 	private final AbstractGenericService<T> genericService;
@@ -158,7 +165,7 @@ public class FrmPesquisa<T> extends JDialog {
 
 			JasperPrint jasperPrint = reportBuilder.build();
 
-			JasperViewer.viewReport(jasperPrint, Boolean.FALSE);
+			new ReportViewer(this, jasperPrint).setVisible(Boolean.TRUE);
 
 		} catch (Exception e) {
 
@@ -239,8 +246,53 @@ public class FrmPesquisa<T> extends JDialog {
 			return;
 		}
 
-		this.pesquisaExibir = pesquisa.get(0);
+		JPopupMenu popup = new JPopupMenu();
 
+		ContadorUtil contadorUtil = new ContadorUtil();
+
+		pesquisa.forEach(p -> {
+
+			contadorUtil.next();
+
+			JMenuItem jMenuItem = new JMenuItem(p.getDescricao());
+
+			jMenuItem.addActionListener((l) -> salvarPesquisaPadrao(p));
+
+			popup.add(jMenuItem);
+		});
+
+		Integer height = contadorUtil.getValue().intValue() * 25;
+
+		popup.setPreferredSize(new Dimension(200, height));
+
+		btConfigurar.addActionListener((l) -> {
+
+			Point p = btConfigurar.getLocationOnScreen();
+
+			popup.show(this, 0, 0);
+
+			popup.setLocation(p.x - 190, p.y - 50);
+
+		});
+
+		this.pesquisaExibir = pesquisa.stream().filter(x -> x.getPesquisaPadrao() != null).findFirst()
+				.orElse(pesquisa.get(0));
+	}
+
+	private void salvarPesquisaPadrao(Pesquisa pesquisa) {
+
+		pesquisaPadraoDAO.excluirPesquisaUsuario(pesquisa.getCodigoPesquisa(), codigoUsuario);
+
+		PesquisaPadrao pesquisaPadrao = new PesquisaPadrao();
+		pesquisaPadrao.setCodigoPesquisa(pesquisa.getIdPesquisa());
+		pesquisaPadrao.setCodigoUsuario(codigoUsuario);
+
+		pesquisaPadraoDAO.salvar(pesquisaPadrao);
+
+		this.pesquisaExibir = pesquisa;
+
+		this.carregarCampos();
+		this.iniciarPesquisa();
 	}
 
 	private void carregarCampos() {

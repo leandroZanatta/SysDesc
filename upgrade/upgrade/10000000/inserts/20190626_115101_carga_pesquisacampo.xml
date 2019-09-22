@@ -313,7 +313,19 @@
 			<column name="fl_ordem" value="2" />
 			<column name="nr_tamanho" value="1" />
 			<column name="tx_campo" value="nome" />
-			<column name="tx_descricao" value="Estado" />
+			<column name="tx_descricao" value="Descricao" />
+		</insert>
+		
+		<insert tableName="tb_pesquisacampo">
+			<column name="id_pesquisacampo" valueComputed="nextval('gen_pesquisacampo')" />
+			<column name="cd_pesquisa" valueComputed="(select id_pesquisa from tb_pesquisa where cd_pesquisa=10)" />
+			<column name="fl_formatacao" value="0" />
+			<column name="fl_tipodado" value="2" />
+			<column name="fl_tipotamanho" value="1" />
+			<column name="fl_ordem" value="3" />
+			<column name="nr_tamanho" value="120" />
+			<column name="tx_campo" value="cgc" />
+			<column name="tx_descricao" value="CPF/CNPJ" />
 		</insert>
 
 		<insert tableName="tb_pesquisacampo">

@@ -2,13 +2,23 @@ package br.com.sysdesc.pesquisa.ui;
 
 import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_PESQUISA;
 import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.forValue;
+import static br.com.sysdesc.util.constants.MensagemConstants.MENSAGEM_SELECIONE_APENAS_UM_REGISTRO;
 import static br.com.sysdesc.util.constants.MensagemConstants.MENSAGEM_SELECIONE_PESQUISA;
 import static br.com.sysdesc.util.enumeradores.TipoPesquisaEnum.NORMAL;
 import static br.com.sysdesc.util.resources.Resources.FRMLOGIN_MSG_VERIFICACAO;
+import static br.com.sysdesc.util.resources.Resources.FRMPESQUISA_LB_CODIGO;
+import static br.com.sysdesc.util.resources.Resources.FRMPESQUISA_LB_DESCRICAO;
+import static br.com.sysdesc.util.resources.Resources.FRMPESQUISA_LB_PAGINACAO;
+import static br.com.sysdesc.util.resources.Resources.FRMPESQUISA_LB_PERFIL;
+import static br.com.sysdesc.util.resources.Resources.FRMPESQUISA_LB_PESQUISA;
+import static br.com.sysdesc.util.resources.Resources.FRMPESQUISA_LB_USUARIO;
 import static br.com.sysdesc.util.resources.Resources.FRMPESQUISA_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
 import java.awt.BorderLayout;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -51,12 +61,12 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 	private JLabel lblPaginacao;
 	private JLabel lblPesquisa;
 	private JLabel lblDescricao;
-	private JLabel lblNewLabel;
-	private JLabel lblNewLabel_1;
+	private JLabel lbUsuario;
+	private JLabel lbPerfil;
 
 	private JPanel painelContent;
-	private JPanel panel;
-	private JPanel panel_1;
+	private JPanel painelCampos;
+	private JPanel painelActionCampos;
 
 	private JTextFieldMaiusculo txDescricao;
 	private JNumericField txCodigo;
@@ -89,43 +99,28 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 
 		painelContent = new JPanel();
 
-		lblCodigo = new JLabel("Código:");
-		lblPaginacao = new JLabel("Paginacao:");
-		lblDescricao = new JLabel("Descrição:");
+		lblCodigo = new JLabel(translate(FRMPESQUISA_LB_CODIGO));
+		lblPaginacao = new JLabel(translate(FRMPESQUISA_LB_PAGINACAO));
+		lblDescricao = new JLabel(translate(FRMPESQUISA_LB_DESCRICAO));
+		lblPesquisa = new JLabel(translate(FRMPESQUISA_LB_PESQUISA));
+		lbPerfil = new JLabel(translate(FRMPESQUISA_LB_PERFIL));
+		lbUsuario = new JLabel(translate(FRMPESQUISA_LB_USUARIO));
 
 		txCodigo = new JNumericField();
 		txDescricao = new JTextFieldMaiusculo();
 		txPaginacao = new JNumericField();
+		cbPesquisa = new JComboBox<PesquisaEnum>();
 
-		panel_1 = new JPanel();
+		painelActionCampos = new JPanel();
+		painelCampos = new JPanel();
 
 		btAdd = new JButton("");
 		btRemove = new JButton("");
-		panel = new JPanel();
 
 		projectionsTableModel = new ProjectionsTableModel();
 
-		painelContent.setLayout(new MigLayout("", "[grow][grow][80.00]", "[][][][][][][grow][]"));
-
-		painelContent.add(lblCodigo, "cell 0 0");
-		painelContent.add(txCodigo, "cell 0 1, width 50:100:100");
-
-		painelContent.add(lblDescricao, "cell 0 2");
-		lblPesquisa = new JLabel("Pesquisa:");
-
-		painelContent.add(lblPesquisa, "cell 1 2");
-		painelContent.add(txDescricao, "cell 0 3,growx");
-
-		painelContent.add(lblPaginacao, "cell 2 2");
-		cbPesquisa = new JComboBox<PesquisaEnum>();
-		painelContent.add(cbPesquisa, "cell 1 3,growx");
-		painelContent.add(txPaginacao, "cell 2 3,growx");
-
-		lblNewLabel_1 = new JLabel("Perfis:");
-		painelContent.add(lblNewLabel_1, "cell 0 4");
-
-		lblNewLabel = new JLabel("Usuário:");
-		painelContent.add(lblNewLabel, "cell 1 4");
+		tabela = new JTable(projectionsTableModel);
+		scrollPane = new JScrollPane(tabela);
 
 		Arrays.asList(PesquisaEnum.values()).forEach(cbPesquisa::addItem);
 
@@ -148,8 +143,6 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 
 		};
 
-		painelContent.add(pesquisaPerfis, "cell 0 5,growx");
-
 		pesquisaUsuario = new CampoPesquisaMultiSelect<Usuario>(loginService, PesquisaEnum.PES_USUARIOS,
 				codigoUsuario) {
 
@@ -169,24 +162,54 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 
 		};
 
-		painelContent.add(pesquisaUsuario, "cell 1 5 2 1,growx");
+		tabela.addMouseListener(new MouseAdapter() {
 
-		getContentPane().add(painelContent);
+			public void mousePressed(MouseEvent mouseEvent) {
 
-		painelContent.add(panel, "cell 0 6 3 1,grow");
-		panel.setLayout(new BorderLayout(0, 0));
+				JTable table = (JTable) mouseEvent.getSource();
+
+				Point point = mouseEvent.getPoint();
+
+				int row = table.rowAtPoint(point);
+
+				if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
+
+					abrirPesquisaCampo(projectionsTableModel.getRow(row));
+				}
+			}
+		});
+
+		btAdd.setIcon(ImageUtil.resize("add.png", 15, 15));
+		btRemove.setIcon(ImageUtil.resize("minus.png", 15, 15));
 
 		btAdd.addActionListener((l) -> abrirPesquisaCampo());
-		panel.add(panel_1, BorderLayout.EAST);
-		panel_1.setLayout(new MigLayout("", "[]", "[23px,grow][][][grow]"));
-		btAdd.setIcon(ImageUtil.resize("add.png", 15, 15));
-		panel_1.add(btAdd, "cell 0 1,alignx left,aligny top");
-		btRemove.setIcon(ImageUtil.resize("minus.png", 15, 15));
-		panel_1.add(btRemove, "cell 0 2,alignx left,aligny top");
+		btRemove.addActionListener((l) -> removerPesquisaCampo());
 
-		tabela = new JTable(projectionsTableModel);
-		scrollPane = new JScrollPane(tabela);
-		panel.add(scrollPane, BorderLayout.CENTER);
+		painelContent.setLayout(new MigLayout("", "[grow][grow][80.00]", "[][][][][][][grow][]"));
+		painelCampos.setLayout(new BorderLayout(0, 0));
+		painelActionCampos.setLayout(new MigLayout("", "[]", "[23px,grow][][][grow]"));
+
+		painelContent.add(lblCodigo, "cell 0 0");
+		painelContent.add(txCodigo, "cell 0 1, width 50:100:100");
+		painelContent.add(lblDescricao, "cell 0 2");
+		painelContent.add(lblPesquisa, "cell 1 2");
+		painelContent.add(txDescricao, "cell 0 3,growx");
+		painelContent.add(lblPaginacao, "cell 2 2");
+		painelContent.add(cbPesquisa, "cell 1 3,growx");
+		painelContent.add(txPaginacao, "cell 2 3,growx");
+		painelContent.add(lbPerfil, "cell 0 4");
+		painelContent.add(lbUsuario, "cell 1 4");
+		painelContent.add(pesquisaPerfis, "cell 0 5,growx");
+		painelContent.add(pesquisaUsuario, "cell 1 5 2 1,growx");
+		painelContent.add(painelCampos, "cell 0 6 3 1,grow");
+
+		painelActionCampos.add(btAdd, "cell 0 1,alignx left,aligny top");
+		painelActionCampos.add(btRemove, "cell 0 2,alignx left,aligny top");
+
+		painelCampos.add(painelActionCampos, BorderLayout.EAST);
+		painelCampos.add(scrollPane, BorderLayout.CENTER);
+
+		getContentPane().add(painelContent);
 
 		panelActions = new PanelActions<Pesquisa>(this, pesquisaBasicaService, PES_PESQUISA) {
 
@@ -216,7 +239,7 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 				pesquisaPerfis.setValue(perfis);
 				pesquisaUsuario.setValue(usuarios);
 
-				projectionsTableModel.setRows(objeto.getPesquisaCampos());
+				projectionsTableModel.setRows(new ArrayList<>(objeto.getPesquisaCampos()));
 			}
 
 			@Override
@@ -299,17 +322,29 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 		};
 
 		panelActions.addSaveListener((objeto) -> txCodigo.setValue(objeto.getIdPesquisa()));
-
-		panelActions.addNewListener(() -> {
-			txPaginacao.setValue(20L);
-			projectionsTableModel.removeAll();
-		});
+		panelActions.addNewListener(() -> txPaginacao.setValue(20L));
 
 		painelContent.add(panelActions, "cell 0 7 3 1,alignx center");
 
 	}
 
+	private void removerPesquisaCampo() {
+
+		if (tabela.getSelectedRow() < 0) {
+			JOptionPane.showMessageDialog(null, translate(MENSAGEM_SELECIONE_APENAS_UM_REGISTRO));
+
+			return;
+		}
+
+		projectionsTableModel.remove(tabela.getSelectedRow());
+	}
+
 	private void abrirPesquisaCampo() {
+
+		abrirPesquisaCampo(null);
+	}
+
+	private void abrirPesquisaCampo(PesquisaCampo pesquisaCampoEdicao) {
 
 		if (cbPesquisa.getSelectedIndex() < 0) {
 
@@ -319,7 +354,13 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 			return;
 		}
 
-		FrmPesquisaBasicaCampo frmPesquisaBasicaCampo = new FrmPesquisaBasicaCampo(new PesquisaCampo(),
+		PesquisaCampo pesquisaCampo = new PesquisaCampo();
+
+		if (pesquisaCampoEdicao != null) {
+			pesquisaCampo = pesquisaCampoEdicao;
+		}
+
+		FrmPesquisaBasicaCampo frmPesquisaBasicaCampo = new FrmPesquisaBasicaCampo(pesquisaCampo,
 				(PesquisaEnum) cbPesquisa.getSelectedItem());
 
 		frmPesquisaBasicaCampo.setVisible(Boolean.TRUE);
@@ -327,7 +368,6 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 		if (frmPesquisaBasicaCampo.getSucesso()) {
 			projectionsTableModel.addProjection(frmPesquisaBasicaCampo.getPesquisaCampo());
 		}
-
 	}
 
 }
