@@ -1,0 +1,21 @@
+Código do Programa: 15
+
+Código: Campo de texto desabilitado serve para informar ao usuário qual o código identificador do fornecedor. tb_fornecedor.id_fornecedor
+
+Cliente: Campo de seleção única. 
+		-Um cliente pode ser registrado apenas uma vez como fornecedor.
+		- Campo tb_fornecedor.cd_cliente
+Dados Bancários: Campos opcionais
+	Banco: Combobox com enumerador de bancos? opção cadastro de bancos
+		- Campo tb_fornecedor.nr_banco
+	Agência:Campo numérico
+		- Campo tb_fornecedor.nr_agencia
+	Conta: Campo numérico
+		- Campo tb_fornecedor.nr_conta
+	Tipo de Conta:Combobox
+		- Campo tb_fornecedor.nr_tipoconta {CORRENTE , POUPANÇA}
+Conta contábil: Campo de seleção unica informa uma conta de fornecedor. do tipo Passivo.
+
+Situação: {Ativo , Inativo}
+
+Observações: Campo opcional

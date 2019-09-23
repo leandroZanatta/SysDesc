@@ -1,0 +1,41 @@
+Código do Programa: 32
+
+Código: Campo de texto desabilitado serve para informar ao usuário qual o código identificador do plano de contas. tb_planocontas.id_planocontas
+Conta Principal: Campo de pesquisa de seleção única.
+				- Pode não ser selecionado uma conta principal caso a conta a ser editada/inserida for a principal.
+				- Somente contas sintéticas com státus ativo podem ser selecionadas.
+				- Regras para exibição - {identificador da conta } - {descrição da conta}
+				- campo tb_planocontas.cd_contaprincipal
+Conta analítica: Campo checkbox que informa se a conta em edição/cadastro é sintética ou analítica.
+				- Esta conta altera o campo identificador da tela.
+				- Campo tb_planocontas.fl_contaanalitica
+Identificador: Campo de texto com a numeração de ordem da conta.
+				-Campo desabilitado.
+				-Cadastro:
+					- Caso não tenha sido selecionado uma conta principal (contar o numero de contas sem conta principal +1);
+					- Caso tenha sido selecionado conta principal (contar o numero de contas pelo codigo da conta +1);
+					-Formatação do campo:
+						- Caso tenha conta principal
+							-(identificador da conta principal}+"."+{caso for conta analitica formatar o numero encontrado anteriormente com 000 caso contrário apenas o número};
+						- Caso não tenha conta principal
+							- {caso for conta analitica formatar o numero encontrado anteriormente com 000 caso contrário apenas o número}
+				- Edição:
+					- Não alterar o identificador.
+				-Campo tb_planocontas.tx_identificador
+Descrição: Campo de texto maiúsculo.
+				- Não pode ter nomes iguais em dois registros, não pode ser vazio.
+				- Campo tb_planocontas.tx_descricao
+Tipo de saldo: ComboBox informa o tipo de saldo da conta.
+				-{A - Ativo, P - Passivo, C - Credor, D - Devedor} - Enumerador;
+				-Caso a conta principal for selecionada este campo deve ser desabilitado e igual a conta principal.
+				- Campo tb_planocontas.fl_saldo
+Situação: {Ativo , Inativo}
+				- Obrigatório
+				-Campo tb_planocontas.nr_situacao
+Data de Cadastro: Campo Data desabilitado.
+				- Ao cadastrar setar a data atual e não alterar mais.
+				-Campo 	tb_planocontas.dt_cadastro
+Data de Manutenção: Campo Data desabilitado.
+				- Sempre setar a data atual.
+				-Campo 	tb_planocontas.dt_manutencao		
+				

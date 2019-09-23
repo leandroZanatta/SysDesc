@@ -2,12 +2,14 @@ package br.com.sysdesc.repository.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -32,24 +34,30 @@ public class PlanoContas implements Serializable {
 
 	@Column(name = "tx_identificador")
 	private String identificador;
-	
+
 	@Column(name = "tx_descricao")
 	private String descricao;
-	
+
 	@Column(name = "fl_contaanalitica")
 	private Boolean contaAnalitica;
-	
+
 	@Column(name = "fl_saldo")
 	private Boolean saldo;
-	
+
 	@Column(name = "dt_cadastro")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date cadastro;
-	
+
 	@Column(name = "dt_manutencao")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date manutencao;
-	
+
 	@Column(name = "nr_situacao")
 	private Long situacao;
+
+	@OneToMany(mappedBy = "planoContas")
+	private List<OperacaoEstoque> operacaoEstoques;
+
+	@OneToMany(mappedBy = "planoContas")
+	private List<Fornecedor> fornecedores;
 }

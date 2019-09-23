@@ -30,6 +30,13 @@ public class Fornecedor implements Serializable {
 	@JoinColumn(name = "cd_cliente", referencedColumnName = "id_cliente")
 	private Cliente cliente;
 
+	@Column(name = "cd_planoconta", insertable = false, updatable = false)
+	private Long codigoConta;
+
+	@ManyToOne
+	@JoinColumn(name = "cd_planoconta")
+	private PlanoContas planoContas;
+
 	@Column(name = "nr_banco")
 	private Long numeroBanco;
 
@@ -41,9 +48,6 @@ public class Fornecedor implements Serializable {
 
 	@Column(name = "nr_tipoconta")
 	private Long tipoConta;
-
-	@Column(name = "cd_planoconta")
-	private Long codigoPlanoConta;
 
 	@Column(name = "cd_status")
 	private Long codigoStatsus;

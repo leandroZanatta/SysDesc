@@ -2,7 +2,7 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd  http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-	<changeSet id="20190909_194500" author="Leandro Zanatta">
+	<changeSet id="20190911_194500" author="Leandro Zanatta">
 
 		<preConditions onFail="CONTINUE">
 			<not>
@@ -20,6 +20,10 @@
 				<constraints nullable="false" foreignKeyName="fornecedor_cliente_fk" references="tb_cliente(id_cliente)" />
 			</column>
 
+			<column name="cd_planoconta" type="NUMBER(18,0)" remarks="CÓDIGO DO CLIENTE">
+				<constraints nullable="false" foreignKeyName="fornecedor_conta_fk" references="tb_planocontas(id_planocontas)" />
+			</column>
+
 			<column name="nr_banco" type="NUMBER(3,0)" remarks="DESCRIÇÃO DO BANCO" />
 
 			<column name="nr_agencia" type="NUMBER(18,0)" remarks="NÚMERO DA AGENCIA" />
@@ -28,15 +32,11 @@
 
 			<column name="nr_tipoconta" type="NUMBER(1,0)" remarks="TIPO DA CONTA(1-CORRENTE,2-POUPANÇA)" />
 
-			<column name="cd_planoconta" type="NUMBER(18,0)" remarks="CÓDIGO DO CLIENTE">
-				<constraints nullable="false" />
-			</column>
-
 			<column name="cd_status" type="NUMBER(1,0)" remarks="STATUS SOCIAL">
 				<constraints nullable="false" />
 			</column>
 
-			<column name="tx_observacao" type="VARCHAR(255)" remarks="OBSERVAÇÃO"/>
+			<column name="tx_observacao" type="VARCHAR(255)" remarks="OBSERVAÇÃO" />
 
 		</createTable>
 
