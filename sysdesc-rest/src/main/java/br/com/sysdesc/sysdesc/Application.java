@@ -8,8 +8,8 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:sysdesc-db-${spring.profiles.active}.properties")
 public class Application {
 
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(Application.class, args);
+	}
 
 }
