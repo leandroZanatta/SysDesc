@@ -315,7 +315,7 @@
 			<column name="tx_campo" value="nome" />
 			<column name="tx_descricao" value="Descricao" />
 		</insert>
-		
+
 		<insert tableName="tb_pesquisacampo">
 			<column name="id_pesquisacampo" valueComputed="nextval('gen_pesquisacampo')" />
 			<column name="cd_pesquisa" valueComputed="(select id_pesquisa from tb_pesquisa where cd_pesquisa=10)" />
@@ -462,6 +462,112 @@
 			<column name="tx_formato" value="2" />
 		</insert>
 
+		<insert tableName="tb_pesquisacampo">
+			<column name="id_pesquisacampo" valueComputed="nextval('gen_pesquisacampo')" />
+			<column name="cd_pesquisa" valueComputed="(select id_pesquisa from tb_pesquisa where cd_pesquisa=15)" />
+			<column name="fl_formatacao" value="0" />
+			<column name="fl_tipodado" value="1" />
+			<column name="fl_tipotamanho" value="1" />
+			<column name="fl_ordem" value="1" />
+			<column name="nr_tamanho" value="120" />
+			<column name="tx_campo" value="idPlanoContas" />
+			<column name="tx_descricao" value="Código" />
+		</insert>
 
+		<insert tableName="tb_pesquisacampo">
+			<column name="id_pesquisacampo" valueComputed="nextval('gen_pesquisacampo')" />
+			<column name="cd_pesquisa" valueComputed="(select id_pesquisa from tb_pesquisa where cd_pesquisa=15)" />
+			<column name="fl_formatacao" value="0" />
+			<column name="fl_tipodado" value="2" />
+			<column name="fl_tipotamanho" value="1" />
+			<column name="fl_ordem" value="2" />
+			<column name="nr_tamanho" value="120" />
+			<column name="tx_campo" value="identificador" />
+			<column name="tx_descricao" value="Identificador" />
+		</insert>
+
+		<insert tableName="tb_pesquisacampo">
+			<column name="id_pesquisacampo" valueComputed="nextval('gen_pesquisacampo')" />
+			<column name="cd_pesquisa" valueComputed="(select id_pesquisa from tb_pesquisa where cd_pesquisa=15)" />
+			<column name="fl_formatacao" value="0" />
+			<column name="fl_tipodado" value="2" />
+			<column name="fl_tipotamanho" value="2" />
+			<column name="fl_ordem" value="3" />
+			<column name="nr_tamanho" value="1" />
+			<column name="tx_campo" value="descricao" />
+			<column name="tx_descricao" value="Descrição" />
+		</insert>
+
+		<insert tableName="tb_pesquisacampo">
+			<column name="id_pesquisacampo" valueComputed="nextval('gen_pesquisacampo')" />
+			<column name="cd_pesquisa" valueComputed="(select id_pesquisa from tb_pesquisa where cd_pesquisa=16)" />
+			<column name="fl_formatacao" value="0" />
+			<column name="fl_tipodado" value="1" />
+			<column name="fl_tipotamanho" value="1" />
+			<column name="fl_ordem" value="1" />
+			<column name="nr_tamanho" value="120" />
+			<column name="tx_campo" value="idfornecedor" />
+			<column name="tx_descricao" value="Código" />
+		</insert>
+
+		<insert tableName="tb_pesquisacampo">
+			<column name="id_pesquisacampo" valueComputed="nextval('gen_pesquisacampo')" />
+			<column name="cd_pesquisa" valueComputed="(select id_pesquisa from tb_pesquisa where cd_pesquisa=16)" />
+			<column name="fl_formatacao" value="0" />
+			<column name="fl_tipodado" value="2" />
+			<column name="fl_tipotamanho" value="2" />
+			<column name="fl_ordem" value="2" />
+			<column name="nr_tamanho" value="1" />
+			<column name="tx_campo" value="cliente.nome" />
+			<column name="tx_descricao" value="Nome" />
+		</insert>
+
+		<insert tableName="tb_pesquisacampo">
+			<column name="id_pesquisacampo" valueComputed="nextval('gen_pesquisacampo')" />
+			<column name="cd_pesquisa" valueComputed="(select id_pesquisa from tb_pesquisa where cd_pesquisa=17)" />
+			<column name="fl_formatacao" value="0" />
+			<column name="fl_tipodado" value="1" />
+			<column name="fl_tipotamanho" value="1" />
+			<column name="fl_ordem" value="1" />
+			<column name="nr_tamanho" value="120" />
+			<column name="tx_campo" value="codigoCliente" />
+			<column name="tx_descricao" value="Código" />
+		</insert>
+
+		<insert tableName="tb_pesquisacampo">
+			<column name="id_pesquisacampo" valueComputed="nextval('gen_pesquisacampo')" />
+			<column name="cd_pesquisa" valueComputed="(select id_pesquisa from tb_pesquisa where cd_pesquisa=17)" />
+			<column name="fl_formatacao" value="0" />
+			<column name="fl_tipodado" value="2" />
+			<column name="fl_tipotamanho" value="2" />
+			<column name="fl_ordem" value="2" />
+			<column name="nr_tamanho" value="1" />
+			<column name="tx_campo" value="cliente.nome" />
+			<column name="tx_descricao" value="Nome" />
+		</insert>
+
+		<insert tableName="tb_pesquisacampo">
+			<column name="id_pesquisacampo" valueComputed="nextval('gen_pesquisacampo')" />
+			<column name="cd_pesquisa" valueComputed="(select id_pesquisa from tb_pesquisa where cd_pesquisa=18)" />
+			<column name="fl_formatacao" value="0" />
+			<column name="fl_tipodado" value="1" />
+			<column name="fl_tipotamanho" value="1" />
+			<column name="fl_ordem" value="1" />
+			<column name="nr_tamanho" value="120" />
+			<column name="tx_campo" value="idOperacoesEstoque" />
+			<column name="tx_descricao" value="Código" />
+		</insert>
+
+		<insert tableName="tb_pesquisacampo">
+			<column name="id_pesquisacampo" valueComputed="nextval('gen_pesquisacampo')" />
+			<column name="cd_pesquisa" valueComputed="(select id_pesquisa from tb_pesquisa where cd_pesquisa=18)" />
+			<column name="fl_formatacao" value="0" />
+			<column name="fl_tipodado" value="2" />
+			<column name="fl_tipotamanho" value="2" />
+			<column name="fl_ordem" value="2" />
+			<column name="nr_tamanho" value="1" />
+			<column name="tx_campo" value="descricao" />
+			<column name="tx_descricao" value="Descrição" />
+		</insert>
 	</changeSet>
 </databaseChangeLog>

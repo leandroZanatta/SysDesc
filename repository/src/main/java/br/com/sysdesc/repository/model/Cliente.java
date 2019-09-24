@@ -79,6 +79,9 @@ public class Cliente implements Serializable {
 	private Long situacao;
 
 	@OneToMany(mappedBy = "cliente")
+	private List<Limite> limites;
+
+	@OneToMany(mappedBy = "cliente")
 	private List<Usuario> usuarios;
 
 	@OneToMany(mappedBy = "fornecedor")

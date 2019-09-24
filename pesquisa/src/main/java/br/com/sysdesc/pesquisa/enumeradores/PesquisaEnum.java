@@ -12,7 +12,10 @@ import br.com.sysdesc.repository.model.QDepartamento;
 import br.com.sysdesc.repository.model.QEntradaCabecalho;
 import br.com.sysdesc.repository.model.QEstado;
 import br.com.sysdesc.repository.model.QFormasPagamento;
+import br.com.sysdesc.repository.model.QFornecedor;
+import br.com.sysdesc.repository.model.QLimite;
 import br.com.sysdesc.repository.model.QMarca;
+import br.com.sysdesc.repository.model.QOperacaoEstoque;
 import br.com.sysdesc.repository.model.QPerfil;
 import br.com.sysdesc.repository.model.QPesquisa;
 import br.com.sysdesc.repository.model.QPlanoContas;
@@ -51,7 +54,13 @@ public enum PesquisaEnum {
 
 	PES_ENTRADAS(14L, "Notas de Entrada", QEntradaCabecalho.class),
 
-	PES_PLANOCONTAS(15L, "Plano de Contas", QPlanoContas.class);
+	PES_PLANOCONTAS(15L, "Plano de Contas", QPlanoContas.class),
+
+	PES_FORNECEDORES(16L, "Fornecedores", QFornecedor.class),
+
+	PES_LIMITES(17L, "Limites", QLimite.class),
+
+	PES_OPERACOES_ESTOQUE(18L, "Operações de Estoque", QOperacaoEstoque.class);
 
 	private static Map<Long, PesquisaEnum> map = new HashMap<>();
 

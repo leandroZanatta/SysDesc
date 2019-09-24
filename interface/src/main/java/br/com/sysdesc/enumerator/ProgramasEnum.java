@@ -13,6 +13,7 @@ import br.com.sysdesc.ui.FrmEntradaNota;
 import br.com.sysdesc.ui.FrmEstado;
 import br.com.sysdesc.ui.FrmFormasPagamento;
 import br.com.sysdesc.ui.FrmFornecedor;
+import br.com.sysdesc.ui.FrmLimite;
 import br.com.sysdesc.ui.FrmMarca;
 import br.com.sysdesc.ui.FrmOperacaoEstoque;
 import br.com.sysdesc.ui.FrmPerfil;
@@ -59,7 +60,9 @@ public enum ProgramasEnum {
 
 	CADASTRO_PLANOCONTAS(32L, FrmPlanoContas.class),
 
-	CADASTRO_FORNECEDOR(15L, FrmFornecedor.class);
+	CADASTRO_FORNECEDOR(15L, FrmFornecedor.class),
+
+	CADASTRO_LIMITES(24L, FrmLimite.class);
 
 	private static Map<Long, ProgramasEnum> mapa = new HashMap<>();
 

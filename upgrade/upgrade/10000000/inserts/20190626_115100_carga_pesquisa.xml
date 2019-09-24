@@ -91,7 +91,7 @@
 			<column name="nr_paginacao" value="20" />
 			<column name="cd_tipo" value="0" />
 		</insert>
-		
+
 		<insert tableName="tb_pesquisa">
 			<column name="id_pesquisa" valueComputed="nextval('gen_pesquisa')" />
 			<column name="cd_pesquisa" value="12" />
@@ -99,7 +99,7 @@
 			<column name="nr_paginacao" value="20" />
 			<column name="cd_tipo" value="0" />
 		</insert>
-		
+
 		<insert tableName="tb_pesquisa">
 			<column name="id_pesquisa" valueComputed="nextval('gen_pesquisa')" />
 			<column name="cd_pesquisa" value="13" />
@@ -107,11 +107,43 @@
 			<column name="nr_paginacao" value="20" />
 			<column name="cd_tipo" value="0" />
 		</insert>
-		
+
 		<insert tableName="tb_pesquisa">
 			<column name="id_pesquisa" valueComputed="nextval('gen_pesquisa')" />
 			<column name="cd_pesquisa" value="14" />
 			<column name="tx_descricao" value="NOTAS DE ENTRADA GERAL" />
+			<column name="nr_paginacao" value="20" />
+			<column name="cd_tipo" value="0" />
+		</insert>
+
+		<insert tableName="tb_pesquisa">
+			<column name="id_pesquisa" valueComputed="nextval('gen_pesquisa')" />
+			<column name="cd_pesquisa" value="15" />
+			<column name="tx_descricao" value="PLANO DE CONTAS GERAL" />
+			<column name="nr_paginacao" value="20" />
+			<column name="cd_tipo" value="0" />
+		</insert>
+
+		<insert tableName="tb_pesquisa">
+			<column name="id_pesquisa" valueComputed="nextval('gen_pesquisa')" />
+			<column name="cd_pesquisa" value="16" />
+			<column name="tx_descricao" value="FORNECEDORES GERAL" />
+			<column name="nr_paginacao" value="20" />
+			<column name="cd_tipo" value="0" />
+		</insert>
+
+		<insert tableName="tb_pesquisa">
+			<column name="id_pesquisa" valueComputed="nextval('gen_pesquisa')" />
+			<column name="cd_pesquisa" value="17" />
+			<column name="tx_descricao" value="LIMITES GERAL" />
+			<column name="nr_paginacao" value="20" />
+			<column name="cd_tipo" value="0" />
+		</insert>
+
+		<insert tableName="tb_pesquisa">
+			<column name="id_pesquisa" valueComputed="nextval('gen_pesquisa')" />
+			<column name="cd_pesquisa" value="18" />
+			<column name="tx_descricao" value="OPERAÇÕES DE ESTOQUE GERAL" />
 			<column name="nr_paginacao" value="20" />
 			<column name="cd_tipo" value="0" />
 		</insert>
