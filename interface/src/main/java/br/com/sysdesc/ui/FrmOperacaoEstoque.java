@@ -1,13 +1,42 @@
 package br.com.sysdesc.ui;
 
+import java.awt.BorderLayout;
+
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.toedter.calendar.JDateChooser;
+
 import br.com.sysdesc.components.AbstractInternalFrame;
+import br.com.sysdesc.components.JTextFieldMaiusculo;
+import br.com.sysdesc.enumerator.OperacaoEnum;
+import br.com.sysdesc.pesquisa.components.JTextFieldId;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
+import net.miginfocom.swing.MigLayout;
 
 public class FrmOperacaoEstoque extends AbstractInternalFrame {
 
-	private JPanel painelCotent;
+	private static final long serialVersionUID = 1L;
+
+	private JLabel lbCodigo;
+	private JLabel lbDescricao;
+	private JLabel lbPlanoDeContas;
+	private JLabel lbOperacao;
+	private JLabel lbManutencao;
+	private JLabel lbCadastro;
+
+	private JPanel panelContent;
+	private JPanel panel;
+
+	private JTextFieldMaiusculo txDescricao;
+	private JTextFieldMaiusculo txPanoDeContas;
+	private JDateChooser txCadastro;
+	private JDateChooser txManutencao;
+	private JComboBox<OperacaoEnum> cbOperacao;
+	private JCheckBox chAtualizaCusto;
+	private JTextFieldId txCodigo;
 
 	public FrmOperacaoEstoque(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
@@ -18,15 +47,49 @@ public class FrmOperacaoEstoque extends AbstractInternalFrame {
 
 	private void initComponents() {
 
-		setSize(450, 230);
+		setSize(450, 261);
 		setClosable(Boolean.TRUE);
-		setTitle("Cadastro DE Operação De Estoque");
+		setTitle(" Operação De Estoque");
 
-		painelCotent = new JPanel();
+		lbCodigo = new JLabel("código:");
+		lbDescricao = new JLabel("Descrição:");
+		lbPlanoDeContas = new JLabel("Plano de contas:");
+		lbOperacao = new JLabel("Operação:");
+		lbCadastro = new JLabel("Cadastro:");
+		lbManutencao = new JLabel("Matutenção:");
 
-		painelCotent.setLayout(new net.miginfocom.swing.MigLayout("", "[grow][grow]", "[][][][][][grow]"));
+		txCodigo = new JTextFieldId();
+		txDescricao = new JTextFieldMaiusculo();
+		txPanoDeContas = new JTextFieldMaiusculo();
+		txManutencao = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
+		txCadastro = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
 
-		getContentPane().add(painelCotent);
+		cbOperacao = new JComboBox<>(OperacaoEnum.values());
+
+		panelContent = new JPanel();
+
+		chAtualizaCusto = new JCheckBox("Atualiza custo");
+
+		panelContent.setLayout(new MigLayout("", "[grow][][grow][grow]", "[][][][][][][][][grow]"));
+
+		panelContent.add(lbCodigo, "cell 0 0");
+		panelContent.add(txCodigo, "cell 0 1,width 50:100:100");
+		panelContent.add(lbDescricao, "cell 0 2");
+		panelContent.add(txDescricao, "cell 0 3 4 1,growx");
+		panelContent.add(lbPlanoDeContas, "cell 0 4");
+		panelContent.add(txPanoDeContas, "cell 0 5 4 1,growx");
+		panelContent.add(lbOperacao, "cell 0 6");
+		panelContent.add(lbCadastro, "cell 2 6");
+		panelContent.add(lbManutencao, "cell 3 6");
+		panelContent.add(cbOperacao, "cell 0 7,growx");
+		panelContent.add(chAtualizaCusto, "cell 1 7");
+		panelContent.add(txCadastro, "cell 2 7,growx");
+		panelContent.add(txManutencao, "cell 3 7,growx");
+
+		getContentPane().add(panelContent, BorderLayout.CENTER);
+
+		panel = new JPanel();
+		panelContent.add(panel, "cell 0 8 4 1,grow");
 
 	}
 
