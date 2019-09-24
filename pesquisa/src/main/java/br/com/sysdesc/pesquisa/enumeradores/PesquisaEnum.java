@@ -15,6 +15,7 @@ import br.com.sysdesc.repository.model.QFormasPagamento;
 import br.com.sysdesc.repository.model.QMarca;
 import br.com.sysdesc.repository.model.QPerfil;
 import br.com.sysdesc.repository.model.QPesquisa;
+import br.com.sysdesc.repository.model.QPlanoContas;
 import br.com.sysdesc.repository.model.QProduto;
 import br.com.sysdesc.repository.model.QSubcategoria;
 import br.com.sysdesc.repository.model.QUnidade;
@@ -48,7 +49,9 @@ public enum PesquisaEnum {
 
 	PES_FORMAS_PAGAMENTO(13L, "Formas de Pagamento", QFormasPagamento.class),
 
-	PES_ENTRADAS(14L, "Notas de Entrada", QEntradaCabecalho.class);
+	PES_ENTRADAS(14L, "Notas de Entrada", QEntradaCabecalho.class),
+
+	PES_PLANOCONTAS(15L, "Plano de Contas", QPlanoContas.class);
 
 	private static Map<Long, PesquisaEnum> map = new HashMap<>();
 
