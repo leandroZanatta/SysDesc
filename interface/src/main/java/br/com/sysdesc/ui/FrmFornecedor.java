@@ -10,8 +10,16 @@ import javax.swing.border.TitledBorder;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.enumerator.BancoEnum;
+import br.com.sysdesc.enumerator.TipoStatusEnum;
+import br.com.sysdesc.pesquisa.components.CampoPesquisa;
 import br.com.sysdesc.pesquisa.components.JTextFieldId;
+import br.com.sysdesc.pesquisa.components.PanelActions;
+import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
+import br.com.sysdesc.repository.model.Cliente;
+import br.com.sysdesc.repository.model.Fornecedor;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
+import br.com.sysdesc.service.cliente.ClienteService;
+import br.com.sysdesc.service.fornecedor.FornecedorService;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmFornecedor extends AbstractInternalFrame {
@@ -29,20 +37,24 @@ public class FrmFornecedor extends AbstractInternalFrame {
 	private JLabel lblTipoDeConta;
 
 	private JTextFieldId txCodigo;
-	private JTextField txCliente;
+	private CampoPesquisa<Cliente> txCliente;
 	private JTextField txAgencia;
 	private JTextField txConta;
 	private JTextField txContaContabil;
 
 	private JPanel pnlDadosBancarios;
 	private JPanel painelContent;
-	private JPanel panel_1;
+	private PanelActions<Fornecedor> panelActions;
 
 	private JComboBox<BancoEnum> cbBanco;
 	private JComboBox cbTipoConta;
-	private JComboBox cbStatus;
+	private JComboBox<TipoStatusEnum> cbStatus;
 
 	private JTextArea taObservacoes;
+
+	private ClienteService cliente = new ClienteService();
+
+	private FornecedorService fornecedorService = new FornecedorService();
 
 	public FrmFornecedor(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 
@@ -67,7 +79,16 @@ public class FrmFornecedor extends AbstractInternalFrame {
 		lblObservacoes = new JLabel("Observações:");
 
 		txCodigo = new JTextFieldId();
-		txCliente = new JTextField();
+		txCliente = new CampoPesquisa<Cliente>(cliente, PesquisaEnum.PES_CLIENTES, getCodigoUsuario()) {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String formatarValorCampo(Cliente objeto) {
+
+				return String.format("%d - %s", objeto.getIdCliente(), objeto.getNome());
+			}
+		};
 		txAgencia = new JTextField();
 		txConta = new JTextField();
 		txContaContabil = new JTextField();
@@ -77,7 +98,7 @@ public class FrmFornecedor extends AbstractInternalFrame {
 
 		cbBanco = new JComboBox<>(BancoEnum.values());
 		cbTipoConta = new JComboBox();
-		cbStatus = new JComboBox();
+		cbStatus = new JComboBox<>(TipoStatusEnum.values());
 
 		taObservacoes = new JTextArea();
 
@@ -113,8 +134,24 @@ public class FrmFornecedor extends AbstractInternalFrame {
 
 		getContentPane().add(painelContent);
 
-		panel_1 = new JPanel();
-		painelContent.add(panel_1, "cell 0 9 2 1,grow");
+		panelActions = new PanelActions<Fornecedor>(this, fornecedorService, PesquisaEnum.PES_FORNECEDORES) {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void carregarObjeto(Fornecedor objeto) {
+
+			}
+
+			@Override
+			public Boolean preencherObjeto(Fornecedor objetoPesquisa) {
+
+				return Boolean.TRUE;
+			}
+
+		};
+
+		painelContent.add(panelActions, "cell 0 9 2 1,grow");
 	}
 
 }
