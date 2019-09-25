@@ -12,8 +12,15 @@ import com.toedter.calendar.JDateChooser;
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.enumerator.OperacaoEnum;
+import br.com.sysdesc.pesquisa.components.CampoPesquisa;
 import br.com.sysdesc.pesquisa.components.JTextFieldId;
+import br.com.sysdesc.pesquisa.components.PanelActions;
+import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
+import br.com.sysdesc.repository.model.OperacaoEstoque;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
+import br.com.sysdesc.repository.model.PlanoContas;
+import br.com.sysdesc.service.operacaoestoque.OperacaoEstoqueService;
+import br.com.sysdesc.service.planocontas.PlanoContasService;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmOperacaoEstoque extends AbstractInternalFrame {
@@ -28,15 +35,18 @@ public class FrmOperacaoEstoque extends AbstractInternalFrame {
 	private JLabel lbCadastro;
 
 	private JPanel panelContent;
-	private JPanel panel;
+	private PanelActions<OperacaoEstoque> panelActions;
 
 	private JTextFieldMaiusculo txDescricao;
-	private JTextFieldMaiusculo txPanoDeContas;
+	private CampoPesquisa<PlanoContas> txPanoDeContas;
 	private JDateChooser txCadastro;
 	private JDateChooser txManutencao;
 	private JComboBox<OperacaoEnum> cbOperacao;
 	private JCheckBox chAtualizaCusto;
 	private JTextFieldId txCodigo;
+
+	private OperacaoEstoqueService operacaoEstoqueService = new OperacaoEstoqueService();
+	private PlanoContasService planoContasService = new PlanoContasService();
 
 	public FrmOperacaoEstoque(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
@@ -47,7 +57,7 @@ public class FrmOperacaoEstoque extends AbstractInternalFrame {
 
 	private void initComponents() {
 
-		setSize(450, 261);
+		setSize(450, 270);
 		setClosable(Boolean.TRUE);
 		setTitle(" Operação De Estoque");
 
@@ -60,7 +70,17 @@ public class FrmOperacaoEstoque extends AbstractInternalFrame {
 
 		txCodigo = new JTextFieldId();
 		txDescricao = new JTextFieldMaiusculo();
-		txPanoDeContas = new JTextFieldMaiusculo();
+		txPanoDeContas = new CampoPesquisa<PlanoContas>(planoContasService, PesquisaEnum.PES_PLANOCONTAS,
+				getCodigoUsuario()) {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String formatarValorCampo(PlanoContas objeto) {
+				return String.format("%d - %s", objeto.getIdPlanoContas(), objeto.getDescricao());
+			}
+
+		};
 		txManutencao = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
 		txCadastro = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
 
@@ -88,8 +108,25 @@ public class FrmOperacaoEstoque extends AbstractInternalFrame {
 
 		getContentPane().add(panelContent, BorderLayout.CENTER);
 
-		panel = new JPanel();
-		panelContent.add(panel, "cell 0 8 4 1,grow");
+		panelActions = new PanelActions<OperacaoEstoque>(this, operacaoEstoqueService,
+				PesquisaEnum.PES_OPERACOES_ESTOQUE) {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void carregarObjeto(OperacaoEstoque objeto) {
+
+			}
+
+			@Override
+			public Boolean preencherObjeto(OperacaoEstoque objetoPesquisa) {
+
+				return Boolean.TRUE;
+			}
+
+		};
+
+		panelContent.add(panelActions, "cell 0 8 4 1,grow");
 
 	}
 
