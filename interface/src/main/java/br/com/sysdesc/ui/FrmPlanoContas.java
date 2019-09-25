@@ -11,8 +11,14 @@ import com.toedter.calendar.JDateChooser;
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.enumerator.TipoSaldoEnum;
+import br.com.sysdesc.enumerator.TipoStatusEnum;
+import br.com.sysdesc.pesquisa.components.CampoPesquisa;
 import br.com.sysdesc.pesquisa.components.JTextFieldId;
+import br.com.sysdesc.pesquisa.components.PanelActions;
+import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
+import br.com.sysdesc.repository.model.PlanoContas;
+import br.com.sysdesc.service.planocontas.PlanoContasService;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmPlanoContas extends AbstractInternalFrame {
@@ -29,21 +35,21 @@ public class FrmPlanoContas extends AbstractInternalFrame {
 	private JLabel lbManutencao;
 
 	private JPanel painelContent;
-	private JPanel panel;
+	private PanelActions<PlanoContas> panelActions;
 
-	private JTextField txContaPrincipal;
-	private JTextField contaPrincipal;
+	private CampoPesquisa<PlanoContas> txContaPrincipal;
 	private JTextField txIdentificador;
 	private JTextFieldMaiusculo txDescricao;
 	private JDateChooser txCadastro;
 	private JDateChooser txManutencao;
-	private JTextField textField;
 	private JTextFieldId txCodigo;
 
 	private JComboBox<TipoSaldoEnum> cbTipoSaldo;
-	private JComboBox cbSituacao;
+	private JComboBox<TipoStatusEnum> cbSituacao;
 
 	private JCheckBox chContaAnalitica;
+
+	private PlanoContasService planoContasService = new PlanoContasService();
 
 	public FrmPlanoContas(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
@@ -53,7 +59,7 @@ public class FrmPlanoContas extends AbstractInternalFrame {
 
 	private void initComponents() {
 
-		setSize(450, 250);
+		setSize(450, 270);
 		setClosable(Boolean.TRUE);
 		setTitle("Cadastro de plano de contas");
 
@@ -67,14 +73,24 @@ public class FrmPlanoContas extends AbstractInternalFrame {
 		lbManutencao = new JLabel("Manutenção:");
 
 		txCodigo = new JTextFieldId();
-		txContaPrincipal = new JTextField();
+		txContaPrincipal = new CampoPesquisa<PlanoContas>(planoContasService, PesquisaEnum.PES_PLANOCONTAS,
+				getCodigoUsuario()) {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String formatarValorCampo(PlanoContas objeto) {
+				return String.format("%d - %s", objeto.getIdPlanoContas(), objeto.getDescricao());
+			}
+
+		};
 		txIdentificador = new JTextField();
 		txDescricao = new JTextFieldMaiusculo();
 		txCadastro = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
 		txManutencao = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
 
 		cbTipoSaldo = new JComboBox<>(TipoSaldoEnum.values());
-		cbSituacao = new JComboBox();
+		cbSituacao = new JComboBox<>(TipoStatusEnum.values());
 
 		chContaAnalitica = new JCheckBox("Conta Analítica");
 
@@ -101,8 +117,25 @@ public class FrmPlanoContas extends AbstractInternalFrame {
 		painelContent.add(txManutencao, "cell 3 7,growx");
 
 		getContentPane().add(painelContent);
-		panel = new JPanel();
-		painelContent.add(panel, "cell 0 8 4 1,grow");
+
+		panelActions = new PanelActions<PlanoContas>(this, planoContasService, PesquisaEnum.PES_PLANOCONTAS) {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void carregarObjeto(PlanoContas objeto) {
+
+			}
+
+			@Override
+			public Boolean preencherObjeto(PlanoContas objetoPesquisa) {
+
+				return Boolean.TRUE;
+			}
+
+		};
+
+		painelContent.add(panelActions, "cell 0 8 4 1,grow");
 
 	}
 
