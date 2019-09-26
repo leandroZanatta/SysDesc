@@ -6,7 +6,6 @@ import static javax.swing.border.TitledBorder.TOP;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
@@ -14,7 +13,14 @@ import com.toedter.calendar.JDateChooser;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JMoneyField;
+import br.com.sysdesc.pesquisa.components.CampoPesquisa;
+import br.com.sysdesc.pesquisa.components.PanelActions;
+import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
+import br.com.sysdesc.repository.model.Cliente;
+import br.com.sysdesc.repository.model.Limite;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
+import br.com.sysdesc.service.cliente.ClienteService;
+import br.com.sysdesc.service.limite.LimiteService;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmLimite extends AbstractInternalFrame {
@@ -32,7 +38,7 @@ public class FrmLimite extends AbstractInternalFrame {
 	private JLabel lbValorExtraCrediario;
 	private JLabel lbVencimentoCrediario;
 
-	private JTextField pesCliente;
+	private CampoPesquisa<Cliente> pesCliente;
 
 	private JDateChooser txVencimentoCrediario;
 	private JDateChooser txVencimentoConvenio;
@@ -56,7 +62,11 @@ public class FrmLimite extends AbstractInternalFrame {
 	private JPanel pnlLimites;
 	private JPanel panelLimiteExtraCheque;
 
-	private JPanel panel_2;
+	private PanelActions<Limite> panelActions;
+
+	private ClienteService clientePesquisa = new ClienteService();
+
+	private LimiteService limitePesquisa = new LimiteService();
 
 	public FrmLimite(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
@@ -65,7 +75,7 @@ public class FrmLimite extends AbstractInternalFrame {
 	}
 
 	private void initComponentes() {
-		setSize(450, 481);
+		setSize(450, 450);
 		setClosable(Boolean.TRUE);
 		setTitle("Cadastro de Limite");
 
@@ -97,7 +107,16 @@ public class FrmLimite extends AbstractInternalFrame {
 		chUsaLimiteCheque = new JCheckBox("Utiliza Limite");
 		chUsaLimiteConvenio = new JCheckBox("Utiliza Limite");
 
-		pesCliente = new JTextField();
+		pesCliente = new CampoPesquisa<Cliente>(clientePesquisa, PesquisaEnum.PES_CLIENTES, getCodigoUsuario()) {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String formatarValorCampo(Cliente objeto) {
+
+				return String.format("%d - %s", objeto.getIdCliente(), objeto.getNome());
+			}
+		};
 
 		txLimiteCheque = new JMoneyField();
 		txLimiteConvenio = new JMoneyField();
@@ -155,8 +174,23 @@ public class FrmLimite extends AbstractInternalFrame {
 
 		getContentPane().add(panelContent);
 
-		panel_2 = new JPanel();
-		panelContent.add(panel_2, "cell 0 6,grow");
+		panelActions = new PanelActions<Limite>(this, limitePesquisa, PesquisaEnum.PES_LIMITES) {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void carregarObjeto(Limite objeto) {
+
+			}
+
+			@Override
+			public Boolean preencherObjeto(Limite objetoPesquisa) {
+
+				return Boolean.TRUE;
+			}
+
+		};
+		panelContent.add(panelActions, "cell 0 6,grow");
 
 	}
 
