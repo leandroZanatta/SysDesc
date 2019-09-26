@@ -15,14 +15,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @Api(tags = { API_TAGVENDAPDV }, protocols = PROTOCOLO_HTTP)
-@RequestMapping(value = PATH_VENDAPDV, consumes = { MediaType.APPLICATION_JSON_VALUE,
-		MediaType.APPLICATION_XML_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE,
-				MediaType.APPLICATION_XML_VALUE })
+@RequestMapping(value = PATH_VENDAPDV, consumes = { MediaType.APPLICATION_JSON_VALUE, }, produces = { MediaType.APPLICATION_JSON_VALUE })
 public interface VendaPDV {
 
-	@ApiOperation(value = PATH_ADQUIRIR_VENDA_ABERTA, response = Boolean.class)
-	@PDVResponses
-	@GetMapping(PATH_ADQUIRIR_VENDA_ABERTA)
-	public abstract ResponseEntity<Boolean> adquirirVendaAberta();
+    @ApiOperation(value = PATH_ADQUIRIR_VENDA_ABERTA, response = Boolean.class)
+    @PDVResponses
+    @GetMapping(PATH_ADQUIRIR_VENDA_ABERTA)
+    public abstract ResponseEntity<Boolean> adquirirVendaAberta();
 
 }
