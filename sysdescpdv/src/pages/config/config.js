@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactLoading from 'react-loading';
-import config from './config.css';
 import api from '../../services/api';
 import axiosRetry from 'axios-retry';
-
+import config from  './config.css';
 export default class Config extends React.Component {
 
     constructor(props) {
@@ -29,11 +28,10 @@ export default class Config extends React.Component {
 
         api.get('vendaPDV/adquirirVendaAberta', { data: {} }).then(result => {
             if (result.data) {
-                me.setState({ mensagem: "Venda encontrada... carregando" })
+
+                me.props.history.push('vendaPDV')
             }
         });
-
-
 
         this.setState({ mensagem: "Verificando venda aberta" });
     }
