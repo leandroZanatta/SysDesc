@@ -115,12 +115,25 @@ public class FrmOperacaoEstoque extends AbstractInternalFrame {
 
 			@Override
 			public void carregarObjeto(OperacaoEstoque objeto) {
-
+				txCodigo.setValue(objeto.getIdOperacoesEstoque());
+				txDescricao.setText(objeto.getDescricao());
+				cbOperacao.setSelectedItem(objeto.getOperacao());
+				txCadastro.setDate(objeto.getCadastro());
+				txManutencao.setDate(objeto.getManutencao());
+				chAtualizaCusto.setSelected(objeto.getAtualizacusto());
 			}
 
 			@Override
 			public Boolean preencherObjeto(OperacaoEstoque objetoPesquisa) {
+				objetoPesquisa.setIdOperacoesEstoque(txCodigo.getValue());
+				objetoPesquisa.setDescricao(txDescricao.getText());
 
+				OperacaoEnum operacao = (OperacaoEnum) cbOperacao.getSelectedItem();
+				objetoPesquisa.setOperacao(operacao.getCodigo());
+
+				objetoPesquisa.setCadastro(txCadastro.getDate());
+				objetoPesquisa.setManutencao(txManutencao.getDate());
+				objetoPesquisa.setAtualizacusto(chAtualizaCusto.isSelected());
 				return Boolean.TRUE;
 			}
 

@@ -43,7 +43,7 @@ public class OperacaoEstoque implements Serializable {
 	private String operacao;
 
 	@Column(name = "fl_atualizacusto")
-	private Boolean atualizacusta;
+	private Boolean atualizacusto;
 
 	@Column(name = "dt_cadastro")
 	@Temporal(TemporalType.TIMESTAMP)
