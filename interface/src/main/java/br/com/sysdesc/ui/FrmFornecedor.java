@@ -10,6 +10,7 @@ import javax.swing.border.TitledBorder;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.enumerator.BancoEnum;
+import br.com.sysdesc.enumerator.TipoContaEnum;
 import br.com.sysdesc.enumerator.TipoStatusEnum;
 import br.com.sysdesc.pesquisa.components.CampoPesquisa;
 import br.com.sysdesc.pesquisa.components.JTextFieldId;
@@ -47,7 +48,7 @@ public class FrmFornecedor extends AbstractInternalFrame {
 	private PanelActions<Fornecedor> panelActions;
 
 	private JComboBox<BancoEnum> cbBanco;
-	private JComboBox cbTipoConta;
+	private JComboBox<TipoContaEnum> cbTipoConta;
 	private JComboBox<TipoStatusEnum> cbStatus;
 
 	private JTextArea taObservacoes;
@@ -97,7 +98,7 @@ public class FrmFornecedor extends AbstractInternalFrame {
 		pnlDadosBancarios = new JPanel();
 
 		cbBanco = new JComboBox<>(BancoEnum.values());
-		cbTipoConta = new JComboBox();
+		cbTipoConta = new JComboBox<>(TipoContaEnum.values());
 		cbStatus = new JComboBox<>(TipoStatusEnum.values());
 
 		taObservacoes = new JTextArea();
@@ -141,10 +142,29 @@ public class FrmFornecedor extends AbstractInternalFrame {
 			@Override
 			public void carregarObjeto(Fornecedor objeto) {
 
+				txCodigo.setValue(objeto.getIdfornecedor());
+				txCliente.setValue(objeto.getCliente());
+				cbBanco.setSelectedItem(BancoEnum.findByCodigo(objeto.getNumeroBanco()));
+				txAgencia.setText(objeto.getAgencia());
+				txConta.setText(objeto.getConta());
+				cbTipoConta.setSelectedItem(TipoContaEnum.findByCodigo(objeto.getTipoConta()));
+				cbStatus.setSelectedItem(TipoStatusEnum.findByCodigo(objeto.getCodigoStatsus()));
+
 			}
 
 			@Override
 			public Boolean preencherObjeto(Fornecedor objetoPesquisa) {
+
+				objetoPesquisa.setIdfornecedor(txCodigo.getValue());
+				objetoPesquisa.setCliente(txCliente.getObjetoPesquisado());
+
+				BancoEnum bancoEnum = (BancoEnum) cbBanco.getSelectedItem();
+				TipoStatusEnum tipoStatusEnum = (TipoStatusEnum) cbStatus.getSelectedItem();
+
+				objetoPesquisa.setNumeroBanco(bancoEnum.getCodigo());
+				objetoPesquisa.setCodigoStatsus(tipoStatusEnum.getCodigo());
+				objetoPesquisa.setAgencia(txAgencia.getText());
+				objetoPesquisa.setConta(txConta.getText());
 
 				return Boolean.TRUE;
 			}

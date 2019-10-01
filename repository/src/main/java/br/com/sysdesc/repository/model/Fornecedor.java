@@ -40,11 +40,11 @@ public class Fornecedor implements Serializable {
 	@Column(name = "nr_banco")
 	private Long numeroBanco;
 
-	@Column(name = "nr_agencia")
-	private Long numeroAgencia;
+	@Column(name = "tx_agencia")
+	private String Agencia;
 
-	@Column(name = "nr_conta")
-	private Long numeroConta;
+	@Column(name = "tx_conta")
+	private String Conta;
 
 	@Column(name = "nr_tipoconta")
 	private Long tipoConta;
