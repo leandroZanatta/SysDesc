@@ -124,11 +124,33 @@ public class FrmPlanoContas extends AbstractInternalFrame {
 
 			@Override
 			public void carregarObjeto(PlanoContas objeto) {
-
+				txCodigo.setValue(objeto.getIdPlanoContas());
+				txIdentificador.setText(objeto.getIdentificador());
+				txDescricao.setText(objeto.getDescricao());
+				cbTipoSaldo.setSelectedItem(TipoSaldoEnum.findByCodigo(objeto.getSaldo()));
+				txContaPrincipal.setValue(objeto.getPlanoContas());
+				cbSituacao.setSelectedItem(TipoStatusEnum.findByCodigo(objeto.getSituacao()));
+				txCadastro.setDate(objeto.getCadastro());
+				txManutencao.setDate(objeto.getCadastro());
+				chContaAnalitica.setSelected(objeto.getContaAnalitica());
 			}
 
 			@Override
 			public Boolean preencherObjeto(PlanoContas objetoPesquisa) {
+				objetoPesquisa.setIdPlanoContas(txCodigo.getValue());
+				objetoPesquisa.setIdentificador(txIdentificador.getText());
+				objetoPesquisa.setDescricao(txDescricao.getText());
+				objetoPesquisa.setPlanoContas(txContaPrincipal.getObjetoPesquisado());
+
+				TipoSaldoEnum tipoSaldo = (TipoSaldoEnum) cbTipoSaldo.getSelectedItem();
+				objetoPesquisa.setSaldo(tipoSaldo.getCodigo());
+
+				TipoStatusEnum tipoStatus = (TipoStatusEnum) cbSituacao.getSelectedItem();
+				objetoPesquisa.setSituacao(tipoStatus.getCodigo());
+
+				objetoPesquisa.setCadastro(txCadastro.getDate());
+				objetoPesquisa.setManutencao(txManutencao.getDate());
+				objetoPesquisa.setContaAnalitica(chContaAnalitica.isSelected());
 
 				return Boolean.TRUE;
 			}
