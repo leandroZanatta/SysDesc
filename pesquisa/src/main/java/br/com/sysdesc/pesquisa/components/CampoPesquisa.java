@@ -36,13 +36,21 @@ public abstract class CampoPesquisa<T> extends JPanel {
 	private JTextField txValorPesquisa;
 	private T objetoPesquisado;
 	private Boolean pesquisaOk = Boolean.FALSE;
+	private BooleanBuilder preFilter;
 	protected EventListenerList listener = new EventListenerList();
 
 	public CampoPesquisa(AbstractGenericService<T> genericService, PesquisaEnum pesquisaEnum, Long codigoUsuario) {
 
+		this(genericService, pesquisaEnum, codigoUsuario, new BooleanBuilder());
+	}
+
+	public CampoPesquisa(AbstractGenericService<T> genericService, PesquisaEnum pesquisaEnum, Long codigoUsuario,
+			BooleanBuilder preFilter) {
+
 		this.genericService = genericService;
 		this.pesquisaEnum = pesquisaEnum;
 		this.codigoUsuario = codigoUsuario;
+		this.preFilter = preFilter;
 
 		initComponents();
 	}
@@ -163,7 +171,7 @@ public abstract class CampoPesquisa<T> extends JPanel {
 
 	public BooleanBuilder getPreFilter() {
 
-		return new BooleanBuilder();
+		return this.preFilter;
 	}
 
 	public void bloquear(Boolean editable) {

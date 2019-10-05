@@ -10,6 +10,7 @@ import com.toedter.calendar.JDateChooser;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
+import br.com.sysdesc.components.listeners.ChangeListener;
 import br.com.sysdesc.enumerator.TipoSaldoEnum;
 import br.com.sysdesc.enumerator.TipoStatusEnum;
 import br.com.sysdesc.pesquisa.components.CampoPesquisa;
@@ -59,7 +60,7 @@ public class FrmPlanoContas extends AbstractInternalFrame {
 
 	private void initComponents() {
 
-		setSize(450, 270);
+		setSize(550, 270);
 		setClosable(Boolean.TRUE);
 		setTitle("Cadastro de plano de contas");
 
@@ -73,8 +74,9 @@ public class FrmPlanoContas extends AbstractInternalFrame {
 		lbManutencao = new JLabel("Manutenção:");
 
 		txCodigo = new JTextFieldId();
+
 		txContaPrincipal = new CampoPesquisa<PlanoContas>(planoContasService, PesquisaEnum.PES_PLANOCONTAS,
-				getCodigoUsuario()) {
+				getCodigoUsuario(), planoContasService.getContasAnaliticas()) {
 
 			private static final long serialVersionUID = 1L;
 
@@ -84,6 +86,20 @@ public class FrmPlanoContas extends AbstractInternalFrame {
 			}
 
 		};
+
+		txContaPrincipal.addChangeListener(new ChangeListener<PlanoContas>() {
+
+			@Override
+			public void valueChanged(PlanoContas newValue, PlanoContas oldValue) {
+
+				criarIdentificador(newValue);
+
+				cbTipoSaldo.setSelectedItem(TipoSaldoEnum.findByCodigo(newValue.getSaldo()));
+				cbTipoSaldo.setEnabled(false);
+			}
+
+		});
+
 		txIdentificador = new JTextField();
 		txDescricao = new JTextFieldMaiusculo();
 		txCadastro = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
@@ -95,6 +111,8 @@ public class FrmPlanoContas extends AbstractInternalFrame {
 		chContaAnalitica = new JCheckBox("Conta Analítica");
 
 		painelContent = new JPanel();
+
+		chContaAnalitica.addActionListener((e) -> changeTipoContaAnalitica());
 
 		painelContent.setLayout(new MigLayout("", "[grow][grow][grow][]", "[][][][][][][][][grow]"));
 
@@ -161,4 +179,24 @@ public class FrmPlanoContas extends AbstractInternalFrame {
 
 	}
 
+	private void changeTipoContaAnalitica() {
+
+		if (txContaPrincipal.getObjetoPesquisado() != null) {
+
+			criarIdentificador(txContaPrincipal.getObjetoPesquisado());
+		}
+	}
+
+	private void criarIdentificador(PlanoContas newValue) {
+
+		StringBuilder stringBuilder = new StringBuilder(newValue.getIdentificador());
+		stringBuilder.append(".");
+
+		String identificador = String.format(chContaAnalitica.isSelected() ? "%03d" : "%d",
+				planoContasService.getNextIdentifier(newValue.getIdPlanoContas()));
+
+		stringBuilder.append(identificador);
+
+		txIdentificador.setText(stringBuilder.toString());
+	}
 }
