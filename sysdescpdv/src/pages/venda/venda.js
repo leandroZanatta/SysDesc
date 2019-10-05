@@ -11,27 +11,39 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 export default class Venda extends React.Component {
 
+
+
     constructor(props) {
         super(props);
+
+        this.currency = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
         this.state = {
             columnDefs: [{
-                headerName: "SEQ", field: "sequencial", width: 60
+                headerName: "SEQ", field: "sequencial", minWidth: 60, maxWidth: 60
             }, {
-                headerName: "DESCRIÇÃO", field: "descricao", width: 448
+                headerName: "DESCRIÇÃO", field: "descricao"
             }, {
-                headerName: "PREÇO UNITÁRIO", field: "precoUnitario", width: 120
+                headerName: "PREÇO UNITÁRIO", field: "precoUnitario", minWidth: 120, maxWidth: 120, valueFormatter: this.currencyFormatter
             }, {
-                headerName: "QUANTIDADE", field: "quantidade", width: 120
+                headerName: "QUANTIDADE", field: "quantidade", minWidth: 120, maxWidth: 120, valueFormatter: this.quantidadeFormatter
             }, {
-                headerName: "VALOR TOTAL", field: "valorTotal", width: 120
+                headerName: "VALOR TOTAL", field: "valorTotal", minWidth: 120, maxWidth: 120, valueFormatter: this.currencyFormatter
             }],
             rowData: [{
-                sequencial: 1, descricao: "PRODUTO 01", precoUnitario: 3.56, quantidade: 1, valorTotal: 3.5
+                sequencial: 1, descricao: "PRODUTO 01", precoUnitario: 34053.56, quantidade: { valor: 1, casasDecimais: 0 }, valorTotal: 3.5
             }],
             quantidade: 1
         }
     }
 
+    quantidadeFormatter = (campo) => {
+        return new Intl.NumberFormat('pt-BR', { minimumFractionDigits: campo.value.casasDecimais, maximumFractionDigits: campo.value.casasDecimais }).format(campo.value.valor);
+    }
+
+    currencyFormatter = (campo) => {
+        return this.currency.format(campo.value);
+    }
 
     keyDownBarras = (event) => {
 
@@ -43,61 +55,50 @@ export default class Venda extends React.Component {
             event.preventDefault();
         }
 
-        if (!((event.keyCode > 96 && event.keyCode < 105) || (event.keyCode > 48 && event.keyCode < 57))) {
+        if (!((event.keyCode > 95 && event.keyCode < 106) || (event.keyCode > 47 && event.keyCode < 58))) {
             event.preventDefault();
         }
     }
 
     render() {
         return (
-            <Container>
-                <Row>
-                    <Col>
-                        <InputGroup className="mb-3" style={{ marginTop: 50 }}>
-                            <InputGroup.Prepend>
-                                <InputGroup.Text id="inputGroup-sizing-lg" style={{ width: 80 }}>{this.state.quantidade}</InputGroup.Text>
-                            </InputGroup.Prepend>
-                            <FormControl
-                                placeholder="Código de Barras"
-                                aria-label="Username"
-                                aria-describedby="basic-addon1"
-                                onKeyDown={this.keyDownBarras}
-                            />
-                        </InputGroup>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <div
-                            className="ag-theme-balham"
-                            style={{
-                                marginTop: 20,
-                                height: '300px',
-                                flex: 1
-                            }}
-                        >
-                            <AgGridReact
-                                columnDefs={this.state.columnDefs}
-                                rowData={this.state.rowData}
-                            >
 
-                            </AgGridReact>
-                        </div>
-                    </Col>
-                </Row>
+            <div class="container">
+                <div class="box">
 
-                <Row>
-                    <Col>
-                        CAMPO 1
-                    </Col>
-                    <Col>
-                        CAMPO 2
-                    </Col>
-                    <Col>
-                        CAMPO 3
-                    </Col>
-                </Row>
-            </Container>
+                    <InputGroup className="mb-3" style={{ paddingTop: 50 }}>
+                        <InputGroup.Prepend>
+                            <InputGroup.Text id="inputGroup-sizing-lg" style={{ width: 80 }}>{this.state.quantidade}</InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <FormControl
+                            placeholder="Código de Barras"
+                            aria-label="Username"
+                            aria-describedby="basic-addon1"
+                            onKeyDown={this.keyDownBarras}
+                        />
+                    </InputGroup>
+
+                </div>
+                <div class="box grid-venda ag-theme-balham"
+                    style={{
+                        marginTop: 20
+                    }}>
+
+                    <AgGridReact
+                        columnDefs={this.state.columnDefs}
+                        rowData={this.state.rowData}
+                        enableRangeSelection={true}
+                        animateRows={true}
+                        onGridReady={(params) => {
+
+                            params.api.sizeColumnsToFit();
+                        }}
+                    >
+
+                    </AgGridReact>
+                </div>
+                <div class="box footer-venda">box 3</div>
+            </div>
         )
     }
 }
