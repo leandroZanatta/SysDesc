@@ -32,6 +32,9 @@
 	<include file="10000000/changeset/20190911_203800_tb_operacoesestoque.xml" />
 	<include file="10000000/changeset/20190911_205200_tb_limiteextra.xml" />
 	<include file="10000000/changeset/20190921_211600_tb_pesquisapadrao.xml" />
+	<include file="10000000/changeset/20191006_141600_tb_pdv.xml" />
+	<include file="10000000/changeset/20191006_141601_tb_modulo.xml" />
+	<include file="10000000/changeset/20191006_141602_tb_modulopdv.xml" />
 
 	<!-- INSERTS PROGRAMAS E PESQUISAS -->
 	<include file="10000000/inserts/20190626_113800_carga_usuario.xml" />
@@ -41,5 +44,6 @@
 	<include file="10000000/inserts/20190626_115101_carga_pesquisacampo.xml" />
 	<include file="10000000/inserts/20190626_115102_carga_permissaopesquisa.xml" />
 	<include file="10000000/inserts/20190630_231900_carga_versao.xml" />
+	<include file="10000000/inserts/20191006_143400_carga_modulo.xml" />
 
 </databaseChangeLog>

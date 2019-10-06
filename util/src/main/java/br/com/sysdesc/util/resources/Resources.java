@@ -120,6 +120,11 @@ public class Resources {
 	public static final String FRMPRODUTO_LB_MOVIMENTAESTOQUE = "FRMPRODUTO_LB_MOVIMENTAESTOQUE";
 	public static final String FRMPRODUTO_LB_CODIGOBARRA = "FRMPRODUTO_LB_CODIGOBARRA";
 
+	public static final String FRMPDV_LB_CODIGO = "FRMPDV_LB_CODIGO";
+	public static final String FRMPDV_LB_NUMEROPDV = "FRMPDV_LB_NUMEROPDV";
+	public static final String FRMPDV_LB_IPPDV = "FRMPDV_LB_IPPDV";
+	public static final String FRMPDV_LB_SITUACAO = "FRMPDV_LB_SITUACAO";
+
 	public static final String FRMSUBCATEGORIA_TITLE = "FRMSUBCATEGORIA_TITLE";
 	public static final String FRMSUBCATEGORIA_LB_CODIGO = "FRMSUBCATEGORIA_LB_CODIGO";
 	public static final String FRMSUBCATEGORIA_LB_DESCRICAO = "FRMSUBCATEGORIA_LB_DESCRICAO";

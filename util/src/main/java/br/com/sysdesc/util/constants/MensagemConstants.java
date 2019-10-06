@@ -55,5 +55,11 @@ public class MensagemConstants {
 	public static final String MENSAGEM_INSIRA_BAIRRO = "MENSAGEM_INSIRA_BAIRRO";
 	public static final String MENSAGEM_INSIRA_CEP = "MENSAGEM_INSIRA_CEP";
 	public static final String MENSAGEM_SELECIONE_TIPO = "MENSAGEM_SELECIONE_TIPO";
+	public static final String MENSAGEM_INFORME_NUMERO_PDV = "MENSAGEM_INFORME_NUMERO_PDV";
+	public static final String MENSAGEM_INFORME_IP_PDV = "MENSAGEM_INFORME_IP_PDV";
+	public static final String MENSAGEM_PDV_JA_CADASTRADO = "MENSAGEM_PDV_JA_CADASTRADO";
+	public static final String MENSAGEM_IP_JA_CADASTRADO = "MENSAGEM_IP_JA_CADASTRADO";
+	public static final String MENSAGEM_IP_PDV_INVALIDO = "MENSAGEM_IP_PDV_INVALIDO";
+	public static final String MENSAGEM_IP_PDV_FORA_REDE = "MENSAGEM_IP_PDV_FORA_REDE";
 
 }

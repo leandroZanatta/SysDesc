@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd  http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+	<changeSet id="20191006_141601" author="Leandro Zanatta">
+
+		<preConditions onFail="CONTINUE">
+			<not>
+				<tableExists tableName="tb_modulopdv" />
+			</not>
+		</preConditions>
+
+		<createTable tableName="tb_modulopdv">
+
+			<column name="id_modulopdv" type="NUMBER(18,0)" remarks="CÓDIGO INDENTIFICADOR">
+				<constraints primaryKey="true" primaryKeyName="modulopdv_pk" nullable="false" />
+			</column>
+
+			<column name="cd_pdv" type="NUMBER(18,0)" remarks="CÓDIGO DO PDV">
+				<constraints nullable="false" foreignKeyName="modulopdv_pdv_fk" references="tb_pdv(id_pdv)" />
+			</column>
+
+			<column name="cd_modulo" type="NUMBER(18,0)" remarks="CÓDIGO DO MÓDULO">
+				<constraints nullable="false" foreignKeyName="modulopdv_modulo_fk" references="tb_modulo(id_modulo)" />
+			</column>
+
+			<column name="tx_ip" type="VARCHAR(16)" remarks="IP DO MÓDULO">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<createSequence sequenceName="gen_modulopdv" />
+	</changeSet>
+</databaseChangeLog>

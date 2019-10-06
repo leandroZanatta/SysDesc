@@ -5,6 +5,7 @@ import java.util.Map;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.pesquisa.ui.FrmCadastroPesquisa;
+import br.com.sysdesc.ui.FrmCadastroPDVS;
 import br.com.sysdesc.ui.FrmCategoria;
 import br.com.sysdesc.ui.FrmCidade;
 import br.com.sysdesc.ui.FrmCliente;
@@ -62,7 +63,9 @@ public enum ProgramasEnum {
 
 	CADASTRO_FORNECEDOR(15L, FrmFornecedor.class),
 
-	CADASTRO_LIMITES(24L, FrmLimite.class);
+	CADASTRO_LIMITES(24L, FrmLimite.class),
+
+	CADASTRO_PDVS(20L, FrmCadastroPDVS.class);
 
 	private static Map<Long, ProgramasEnum> mapa = new HashMap<>();
 

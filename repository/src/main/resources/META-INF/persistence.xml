@@ -29,6 +29,9 @@
 		<class>br.com.sysdesc.repository.model.OperacaoEstoque</class>
 		<class>br.com.sysdesc.repository.model.Fornecedor</class>
 		<class>br.com.sysdesc.repository.model.PesquisaPadrao</class>
+		<class>br.com.sysdesc.repository.model.Pdv</class>
+		<class>br.com.sysdesc.repository.model.Modulo</class>
+		<class>br.com.sysdesc.repository.model.ModuloPDV</class>
 	</persistence-unit>
 
 </persistence>
