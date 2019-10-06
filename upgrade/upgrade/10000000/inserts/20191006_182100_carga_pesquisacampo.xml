@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd  http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+	<changeSet id="20191006_182100" author="Leandro Zanatta">
+
+		<insert tableName="tb_pesquisacampo">
+			<column name="id_pesquisacampo" valueComputed="nextval('gen_pesquisacampo')" />
+			<column name="cd_pesquisa" valueComputed="(select id_pesquisa from tb_pesquisa where cd_pesquisa=19)" />
+			<column name="fl_formatacao" value="0" />
+			<column name="fl_tipodado" value="1" />
+			<column name="fl_tipotamanho" value="1" />
+			<column name="fl_ordem" value="1" />
+			<column name="nr_tamanho" value="120" />
+			<column name="tx_campo" value="idPdv" />
+			<column name="tx_descricao" value="Código" />
+		</insert>
+
+		<insert tableName="tb_pesquisacampo">
+			<column name="id_pesquisacampo" valueComputed="nextval('gen_pesquisacampo')" />
+			<column name="cd_pesquisa" valueComputed="(select id_pesquisa from tb_pesquisa where cd_pesquisa=19)" />
+			<column name="fl_formatacao" value="0" />
+			<column name="fl_tipodado" value="1" />
+			<column name="fl_tipotamanho" value="1" />
+			<column name="fl_ordem" value="2" />
+			<column name="nr_tamanho" value="120" />
+			<column name="tx_campo" value="numeroPDV" />
+			<column name="tx_descricao" value="PDV" />
+		</insert>
+
+		<insert tableName="tb_pesquisacampo">
+			<column name="id_pesquisacampo" valueComputed="nextval('gen_pesquisacampo')" />
+			<column name="cd_pesquisa" valueComputed="(select id_pesquisa from tb_pesquisa where cd_pesquisa=19)" />
+			<column name="fl_formatacao" value="0" />
+			<column name="fl_tipodado" value="2" />
+			<column name="fl_tipotamanho" value="2" />
+			<column name="fl_ordem" value="3" />
+			<column name="nr_tamanho" value="1" />
+			<column name="tx_campo" value="ipPDV" />
+			<column name="tx_descricao" value="Ip" />
+		</insert>
+	</changeSet>
+</databaseChangeLog>

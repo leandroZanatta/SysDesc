@@ -45,5 +45,9 @@
 	<include file="10000000/inserts/20190626_115102_carga_permissaopesquisa.xml" />
 	<include file="10000000/inserts/20190630_231900_carga_versao.xml" />
 	<include file="10000000/inserts/20191006_143400_carga_modulo.xml" />
+	<include file="10000000/inserts/20191006_182000_carga_pesquisa.xml" />
+	<include file="10000000/inserts/20191006_182100_carga_pesquisacampo.xml" />
+	<include file="10000000/inserts/20191006_182500_carga_permissaopesquisa.xml" />
+	<include file="10000000/inserts/20191006_184100_carga_versao.xml" />
 
 </databaseChangeLog>
