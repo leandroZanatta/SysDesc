@@ -7,6 +7,10 @@ import static br.com.sysdesc.util.resources.Resources.FRMPDV_LB_NUMEROPDV;
 import static br.com.sysdesc.util.resources.Resources.FRMPDV_LB_SITUACAO;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,6 +24,8 @@ import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.model.Pdv;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.service.pdv.PDVService;
+import br.com.sysdesc.ui.buttonactions.ButtonActionModulos;
+import br.com.sysdesc.util.classes.ContadorUtil;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmCadastroPDVS extends AbstractInternalFrame {
@@ -31,16 +37,17 @@ public class FrmCadastroPDVS extends AbstractInternalFrame {
 	private JLabel lblCodigo;
 	private JLabel lblNumeroDoPdv;
 	private JLabel lblIpDoPdv;
+	private JLabel lblSitucao;
 
 	private JTextFieldId txCodigo;
 	private JNumericField txNumeroPDV;
 	private JTextField txIPPDV;
+	private JComboBox<TipoStatusEnum> cbSituacao;
 
 	private PanelActions<Pdv> panelActions;
+	private ButtonActionModulos actionModulos;
 
 	private PDVService pdvService = new PDVService();
-	private JLabel lblSitucao;
-	private JComboBox<TipoStatusEnum> cbSituacao;
 
 	public FrmCadastroPDVS(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
@@ -49,7 +56,7 @@ public class FrmCadastroPDVS extends AbstractInternalFrame {
 	}
 
 	private void initComponentes() {
-		setSize(450, 170);
+		setSize(500, 170);
 		setClosable(Boolean.TRUE);
 		setTitle("Cadastro de PDVS");
 
@@ -64,8 +71,20 @@ public class FrmCadastroPDVS extends AbstractInternalFrame {
 		txCodigo = new JTextFieldId();
 		txNumeroPDV = new JNumericField();
 		cbSituacao = new JComboBox<>(TipoStatusEnum.values());
+		actionModulos = new ButtonActionModulos();
 
 		painelContent.setLayout(new MigLayout("", "[][grow][grow]", "[][][][][grow]"));
+
+		Action actionEditarModulos = new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+			}
+
+		};
 
 		painelContent.add(lblCodigo, "cell 0 0");
 		painelContent.add(lblNumeroDoPdv, "cell 0 2");
@@ -79,9 +98,31 @@ public class FrmCadastroPDVS extends AbstractInternalFrame {
 
 		getContentPane().add(painelContent);
 
-		panelActions = new PanelActions<Pdv>(this, pdvService, PES_PDVS, Boolean.TRUE) {
+		panelActions = new PanelActions<Pdv>(this, pdvService, PES_PDVS, Boolean.TRUE, actionModulos) {
 
 			private static final long serialVersionUID = 1L;
+
+			protected void posicionarBotoes() {
+
+				ContadorUtil contadorUtil = new ContadorUtil();
+
+				posicionarBotao(contadorUtil, btPrimeiro, Boolean.TRUE);
+				posicionarBotao(contadorUtil, btRetroceder, Boolean.TRUE);
+				posicionarBotao(contadorUtil, actionModulos, Boolean.TRUE);
+				posicionarBotao(contadorUtil, btSalvar, Boolean.TRUE);
+				posicionarBotao(contadorUtil, btEditar, Boolean.TRUE);
+				posicionarBotao(contadorUtil, btNovo, Boolean.TRUE);
+				posicionarBotao(contadorUtil, btBuscar, Boolean.TRUE);
+				posicionarBotao(contadorUtil, btCancelar, Boolean.TRUE);
+				posicionarBotao(contadorUtil, btAvancar, Boolean.TRUE);
+				posicionarBotao(contadorUtil, btUltimo, Boolean.TRUE);
+
+			}
+
+			@Override
+			protected void registrarEventosBotoesPagina() {
+				registrarEvento(actionModulos, actionEditarModulos);
+			}
 
 			@Override
 			public void carregarObjeto(Pdv objeto) {
