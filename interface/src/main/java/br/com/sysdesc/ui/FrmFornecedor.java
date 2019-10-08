@@ -19,8 +19,10 @@ import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.repository.model.Cliente;
 import br.com.sysdesc.repository.model.Fornecedor;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
+import br.com.sysdesc.repository.model.PlanoContas;
 import br.com.sysdesc.service.cliente.ClienteService;
 import br.com.sysdesc.service.fornecedor.FornecedorService;
+import br.com.sysdesc.service.planocontas.PlanoContasService;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmFornecedor extends AbstractInternalFrame {
@@ -41,7 +43,7 @@ public class FrmFornecedor extends AbstractInternalFrame {
 	private CampoPesquisa<Cliente> txCliente;
 	private JTextField txAgencia;
 	private JTextField txConta;
-	private JTextField txContaContabil;
+	private CampoPesquisa<PlanoContas> txContaContabil;
 
 	private JPanel pnlDadosBancarios;
 	private JPanel painelContent;
@@ -56,6 +58,8 @@ public class FrmFornecedor extends AbstractInternalFrame {
 	private ClienteService cliente = new ClienteService();
 
 	private FornecedorService fornecedorService = new FornecedorService();
+
+	private PlanoContasService planoContasService = new PlanoContasService();
 
 	public FrmFornecedor(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 
@@ -92,7 +96,17 @@ public class FrmFornecedor extends AbstractInternalFrame {
 		};
 		txAgencia = new JTextField();
 		txConta = new JTextField();
-		txContaContabil = new JTextField();
+		txContaContabil = new CampoPesquisa<PlanoContas>(planoContasService, PesquisaEnum.PES_PLANOCONTAS,
+				getCodigoUsuario()) {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String formatarValorCampo(PlanoContas objeto) {
+
+				return String.format("%s - %s", objeto.getIdentificador(), objeto.getDescricao());
+			}
+		};
 
 		painelContent = new JPanel();
 		pnlDadosBancarios = new JPanel();
@@ -148,7 +162,7 @@ public class FrmFornecedor extends AbstractInternalFrame {
 				txAgencia.setText(objeto.getAgencia());
 				txConta.setText(objeto.getConta());
 				cbTipoConta.setSelectedItem(TipoContaEnum.findByCodigo(objeto.getTipoConta()));
-				cbStatus.setSelectedItem(TipoStatusEnum.findByCodigo(objeto.getCodigoStatsus()));
+				cbStatus.setSelectedItem(TipoStatusEnum.findByCodigo(objeto.getCodigoStatus()));
 
 			}
 
@@ -158,11 +172,28 @@ public class FrmFornecedor extends AbstractInternalFrame {
 				objetoPesquisa.setIdfornecedor(txCodigo.getValue());
 				objetoPesquisa.setCliente(txCliente.getObjetoPesquisado());
 
+				Long codigoStatus = null;
+				Long numeroBanco = null;
+				Long tipoConta = null;
 				BancoEnum bancoEnum = (BancoEnum) cbBanco.getSelectedItem();
 				TipoStatusEnum tipoStatusEnum = (TipoStatusEnum) cbStatus.getSelectedItem();
+				TipoContaEnum tipoContaEnum = (TipoContaEnum) cbTipoConta.getSelectedItem();
 
-				objetoPesquisa.setNumeroBanco(bancoEnum.getCodigo());
-				objetoPesquisa.setCodigoStatsus(tipoStatusEnum.getCodigo());
+				if (bancoEnum != null) {
+					numeroBanco = bancoEnum.getCodigo();
+				}
+
+				if (tipoStatusEnum != null) {
+					codigoStatus = tipoStatusEnum.getCodigo();
+				}
+
+				if (tipoContaEnum != null) {
+					tipoConta = tipoContaEnum.getCodigo();
+				}
+
+				objetoPesquisa.setNumeroBanco(numeroBanco);
+				objetoPesquisa.setCodigoStatus(codigoStatus);
+				objetoPesquisa.setTipoConta(tipoConta);
 				objetoPesquisa.setAgencia(txAgencia.getText());
 				objetoPesquisa.setConta(txConta.getText());
 
