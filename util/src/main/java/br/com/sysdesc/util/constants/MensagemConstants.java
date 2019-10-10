@@ -61,5 +61,6 @@ public class MensagemConstants {
 	public static final String MENSAGEM_IP_JA_CADASTRADO = "MENSAGEM_IP_JA_CADASTRADO";
 	public static final String MENSAGEM_IP_PDV_INVALIDO = "MENSAGEM_IP_PDV_INVALIDO";
 	public static final String MENSAGEM_IP_PDV_FORA_REDE = "MENSAGEM_IP_PDV_FORA_REDE";
+	public static final String MENSAGEM_SELECIONE_SALDO = "MENSAGEM_SELECIONE_SALDO";
 
 }

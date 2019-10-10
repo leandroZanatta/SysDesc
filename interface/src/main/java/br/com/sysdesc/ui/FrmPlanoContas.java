@@ -142,6 +142,7 @@ public class FrmPlanoContas extends AbstractInternalFrame {
 
 			@Override
 			public void carregarObjeto(PlanoContas objeto) {
+
 				txCodigo.setValue(objeto.getIdPlanoContas());
 				txIdentificador.setText(objeto.getIdentificador());
 				txDescricao.setText(objeto.getDescricao());
@@ -149,22 +150,34 @@ public class FrmPlanoContas extends AbstractInternalFrame {
 				txContaPrincipal.setValue(objeto.getPlanoContas());
 				cbSituacao.setSelectedItem(TipoStatusEnum.findByCodigo(objeto.getSituacao()));
 				txCadastro.setDate(objeto.getCadastro());
-				txManutencao.setDate(objeto.getCadastro());
+				txManutencao.setDate(objeto.getManutencao());
 				chContaAnalitica.setSelected(objeto.getContaAnalitica());
 			}
 
 			@Override
 			public Boolean preencherObjeto(PlanoContas objetoPesquisa) {
+
 				objetoPesquisa.setIdPlanoContas(txCodigo.getValue());
 				objetoPesquisa.setIdentificador(txIdentificador.getText());
 				objetoPesquisa.setDescricao(txDescricao.getText());
 				objetoPesquisa.setPlanoContas(txContaPrincipal.getObjetoPesquisado());
 
-				TipoSaldoEnum tipoSaldo = (TipoSaldoEnum) cbTipoSaldo.getSelectedItem();
-				objetoPesquisa.setSaldo(tipoSaldo.getCodigo());
+				String codigoSaldo = null;
+				Long codigoStatus = null;
 
+				TipoSaldoEnum tipoSaldo = (TipoSaldoEnum) cbTipoSaldo.getSelectedItem();
 				TipoStatusEnum tipoStatus = (TipoStatusEnum) cbSituacao.getSelectedItem();
-				objetoPesquisa.setSituacao(tipoStatus.getCodigo());
+
+				if (tipoSaldo != null) {
+					codigoSaldo = tipoSaldo.getCodigo();
+				}
+
+				if (tipoStatus != null) {
+					codigoStatus = tipoStatus.getCodigo();
+				}
+
+				objetoPesquisa.setSaldo(codigoSaldo);
+				objetoPesquisa.setSituacao(codigoStatus);
 
 				objetoPesquisa.setCadastro(txCadastro.getDate());
 				objetoPesquisa.setManutencao(txManutencao.getDate());
@@ -174,7 +187,14 @@ public class FrmPlanoContas extends AbstractInternalFrame {
 			}
 
 		};
+		panelActions.addSaveListener(planoContas -> {
 
+			txCodigo.setValue(planoContas.getIdPlanoContas());
+			txCadastro.setDate(planoContas.getCadastro());
+			txManutencao.setDate(planoContas.getManutencao());
+
+		});
+		panelActions.addNewListener(() -> this.criarIdentificador(null));
 		painelContent.add(panelActions, "cell 0 8 4 1,grow");
 
 	}
@@ -189,11 +209,21 @@ public class FrmPlanoContas extends AbstractInternalFrame {
 
 	private void criarIdentificador(PlanoContas newValue) {
 
-		StringBuilder stringBuilder = new StringBuilder(newValue.getIdentificador());
-		stringBuilder.append(".");
+		Long codigoContaPrincipal = null;
+		String codigoIdentificador = "";
+		String separador = "";
+
+		if (newValue != null) {
+			codigoContaPrincipal = newValue.getIdPlanoContas();
+			codigoIdentificador = newValue.getIdentificador();
+			separador = ".";
+		}
+
+		StringBuilder stringBuilder = new StringBuilder(codigoIdentificador);
+		stringBuilder.append(separador);
 
 		String identificador = String.format(chContaAnalitica.isSelected() ? "%03d" : "%d",
-				planoContasService.getNextIdentifier(newValue.getIdPlanoContas()));
+				planoContasService.getNextIdentifier(codigoContaPrincipal));
 
 		stringBuilder.append(identificador);
 
