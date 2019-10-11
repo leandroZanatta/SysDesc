@@ -48,7 +48,6 @@ import org.apache.commons.io.FileUtils;
 
 import br.com.sysdesc.upgrade.enumeradores.TipoConexaoEnum;
 import br.com.sysdesc.upgrade.util.classes.ImageUtil;
-import br.com.sysdesc.upgrade.util.resources.Configuracoes;
 
 public class FrmConexao extends JDialog {
 
@@ -75,8 +74,11 @@ public class FrmConexao extends JDialog {
 	private JButton btnSalvar;
 	private JButton btnCancelar;
 	private JButton btnPesquisa;
+	private String arquivoConfiguracao;
 
-	public FrmConexao() {
+	public FrmConexao(String arquivoConfiguracao) {
+		this.arquivoConfiguracao = arquivoConfiguracao;
+
 		initComponents();
 	}
 
@@ -183,7 +185,7 @@ public class FrmConexao extends JDialog {
 
 			properties.store(writer, translate(FRMCONEXAO_PRP_CONEXAO));
 
-			FileUtils.writeStringToFile(new File(Configuracoes.CONEXAO), toBlowfish(writer.toString()), CHARSET);
+			FileUtils.writeStringToFile(new File(this.arquivoConfiguracao), toBlowfish(writer.toString()), CHARSET);
 
 			dispose();
 

@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.com.sysdesc</groupId>
 	<artifactId>sysdesc-rest</artifactId>
-	<version>1.00.00.000</version>
+	<version>0.0.1</version>
 	<name>sysdesc-rest</name>
 	<description>Demo project for Spring Boot</description>
 
