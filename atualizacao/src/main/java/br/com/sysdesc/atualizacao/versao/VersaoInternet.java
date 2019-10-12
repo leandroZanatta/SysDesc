@@ -25,13 +25,13 @@ public class VersaoInternet {
 	public File obterArquivoVersaoZip(VersaoVO versaoVO) throws IOException, MalformedURLException {
 
 		File arquivoVersaoZip = new File(Configuracoes.PATH_VERSOES,
-				FilenameUtils.getName(new URL(versaoVO.getArquivo()).getPath()));
+				FilenameUtils.getName(new URL(versaoVO.getVersaoERP()).getPath()));
 
 		if (!arquivoVersaoZip.exists()) {
 
 			createFileAndFloders(arquivoVersaoZip);
 
-			baixarVersaoZipInternet(arquivoVersaoZip, versaoVO.getArquivo());
+			baixarVersaoZipInternet(arquivoVersaoZip, versaoVO.getArquivoERP());
 		}
 
 		return arquivoVersaoZip;

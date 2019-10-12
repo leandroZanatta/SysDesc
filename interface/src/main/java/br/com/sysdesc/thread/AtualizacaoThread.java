@@ -81,7 +81,7 @@ public class AtualizacaoThread extends Thread {
 
 				VersaoVO versaoVO = new Gson().fromJson(stringBuilder.toString(), VersaoVO.class);
 
-				if (!versaoBase.equals(versaoVO.getVersao())) {
+				if (!versaoBase.equals(versaoVO.getVersaoERP())) {
 
 					efetuarDownloadVersao(versaoVO);
 				}
@@ -105,8 +105,8 @@ public class AtualizacaoThread extends Thread {
 
 	private void efetuarDownloadVersao(VersaoVO versaoVO) throws IOException {
 
-		Integer retornoOpcao = JOptionPane.showConfirmDialog(null,
-				String.format(Resources.translate(MensagemConstants.MENSAGEM_ATUALIZAR_VERSAO), versaoVO.getVersao()),
+		Integer retornoOpcao = JOptionPane.showConfirmDialog(null, String
+				.format(Resources.translate(MensagemConstants.MENSAGEM_ATUALIZAR_VERSAO), versaoVO.getVersaoERP()),
 				Resources.OPTION_VALIDACAO, JOptionPane.YES_NO_OPTION);
 
 		if (retornoOpcao == JOptionPane.YES_OPTION) {
@@ -119,7 +119,7 @@ public class AtualizacaoThread extends Thread {
 
 			contentVersao.add(progres);
 
-			URL arquivoUrl = new URL(versaoVO.getArquivo());
+			URL arquivoUrl = new URL(versaoVO.getArquivoERP());
 
 			URLConnection urlConnection = arquivoUrl.openConnection();
 
@@ -172,7 +172,7 @@ public class AtualizacaoThread extends Thread {
 			folderVersao.mkdir();
 		}
 
-		File arquivoVersao = new File(folderVersao, FilenameUtils.getName(new URL(versaoVO.getArquivo()).getPath()));
+		File arquivoVersao = new File(folderVersao, FilenameUtils.getName(new URL(versaoVO.getArquivoERP()).getPath()));
 
 		if (!arquivoVersao.exists()) {
 			log.info("gerando arquivo:" + arquivoVersao.getName());
