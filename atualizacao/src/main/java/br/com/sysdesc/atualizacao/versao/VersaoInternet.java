@@ -25,7 +25,7 @@ public class VersaoInternet {
 	public File obterArquivoVersaoZip(VersaoVO versaoVO) throws IOException, MalformedURLException {
 
 		File arquivoVersaoZip = new File(Configuracoes.PATH_VERSOES,
-				FilenameUtils.getName(new URL(versaoVO.getVersaoERP()).getPath()));
+				FilenameUtils.getName(new URL(versaoVO.getArquivoERP()).getPath()));
 
 		if (!arquivoVersaoZip.exists()) {
 
