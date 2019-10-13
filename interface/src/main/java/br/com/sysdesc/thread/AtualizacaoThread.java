@@ -44,7 +44,7 @@ public class AtualizacaoThread extends Thread {
 
 	private String versaoBase;
 
-	private final String URLVersao = "http://raw.githubusercontent.com/leandroZanatta/SysDesc/develop/versoes/versao.json";
+	private final String URLVersao = "https://raw.githubusercontent.com/leandroZanatta/SysDesc/develop/versoes/versao.json";
 
 	private VersaoDAO versaoDAO = new VersaoDAO();
 
@@ -176,7 +176,9 @@ public class AtualizacaoThread extends Thread {
 
 		try {
 
-			return versaoPDVDAO.last();
+			VersaoPDV versaoPDV = versaoPDVDAO.last();
+
+			return versaoPDV != null ? versaoPDV : new VersaoPDV();
 		} catch (Exception e) {
 
 			return new VersaoPDV();
