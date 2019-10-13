@@ -10,7 +10,7 @@
 			</not>
 		</preConditions>
 
-		<createTable tableName="tb_versao">
+		<createTable tableName="tb_versaopdv">
 			<column name="id_versaopdv" type="NUMBER(18,0)" remarks="CÓDIGO INDENTIFICADOR">
 				<constraints primaryKey="true" primaryKeyName="versaopdv_pk" nullable="false" />
 			</column>
