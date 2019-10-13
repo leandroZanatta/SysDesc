@@ -1,5 +1,7 @@
 package br.com.sysdesc.repository.conexao;
 
+import static br.com.sysdesc.util.constants.MensagemConstants.MENSAGEM_DRIVER_NAO_ENCONTRADO;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -12,89 +14,96 @@ import javax.persistence.Persistence;
 
 import org.apache.commons.io.FileUtils;
 
+import com.mysema.query.sql.H2Templates;
 import com.mysema.query.sql.MySQLTemplates;
 import com.mysema.query.sql.PostgresTemplates;
 import com.mysema.query.sql.SQLTemplates;
 
-import br.com.sysdesc.repository.enumeradores.TipoConexaoEnum;
 import br.com.sysdesc.util.classes.CryptoUtil;
+import br.com.sysdesc.util.exception.SysDescException;
 import br.com.sysdesc.util.resources.Configuracoes;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Conexao {
 
-	private static EntityManager entityManager;
+    private static EntityManager entityManager;
 
-	private static SQLTemplates sqlTemplates;
+    private static SQLTemplates sqlTemplates;
 
-	private static Boolean isconfigured() {
-		return new File(Configuracoes.CONEXAO).exists();
-	}
+    private static Boolean isconfigured() {
+        return new File(Configuracoes.CONEXAO).exists();
+    }
 
-	public static File getConfiguracaoBanco() throws ConfigurationException {
+    public static File getConfiguracaoBanco() throws ConfigurationException {
 
-		if (!isconfigured()) {
+        if (!isconfigured()) {
 
-			throw new ConfigurationException("Configuração de banco de dados não encontrada");
-		}
+            throw new ConfigurationException("Configura��o de banco de dados n�o encontrada");
+        }
 
-		return new File(Configuracoes.CONEXAO);
-	}
+        return new File(Configuracoes.CONEXAO);
+    }
 
-	public static void buildEntityManager() throws ConfigurationException {
+    public static void buildEntityManager() throws ConfigurationException {
 
-		Properties propertiesConexao = buscarPropertiesConexao();
+        Properties propertiesConexao = buscarPropertiesConexao();
 
-		entityManager = Persistence.createEntityManagerFactory("SysDesc", propertiesConexao).createEntityManager();
+        entityManager = Persistence.createEntityManagerFactory("SysDesc", propertiesConexao).createEntityManager();
 
-		sqlTemplates = createTemplate(propertiesConexao);
+        sqlTemplates = createTemplate(propertiesConexao);
 
-	}
+    }
 
-	private static SQLTemplates createTemplate(Properties propertiesConexao) {
+    private static SQLTemplates createTemplate(Properties propertiesConexao) {
 
-		TipoConexaoEnum conexao = TipoConexaoEnum.POSTGRES;
+        String driver = propertiesConexao.getProperty("javax.persistence.jdbc.driver", "");
 
-		if (propertiesConexao.get(conexao.getJdbcDriver()).equals(conexao.getDriver())) {
-			return PostgresTemplates.DEFAULT;
-		}
+        switch (driver) {
+            case "org.postgresql.Driver":
+                return PostgresTemplates.DEFAULT;
+            case "com.mysql.jdbc.Driver":
+                return MySQLTemplates.DEFAULT;
+            case "org.h2.Driver":
+                return H2Templates.DEFAULT;
 
-		return MySQLTemplates.DEFAULT;
-	}
+            default:
+                throw new SysDescException(MENSAGEM_DRIVER_NAO_ENCONTRADO);
+        }
 
-	public static EntityManager getEntityManager() {
+    }
 
-		return entityManager;
-	}
+    public static EntityManager getEntityManager() {
 
-	public static SQLTemplates getSqlTemplates() {
-		return sqlTemplates;
-	}
+        return entityManager;
+    }
 
-	private static Properties buscarPropertiesConexao() throws ConfigurationException {
+    public static SQLTemplates getSqlTemplates() {
+        return sqlTemplates;
+    }
 
-		try {
-			String arquivoConfiguracao = CryptoUtil
-					.fromBlowfish(FileUtils.readFileToString(getConfiguracaoBanco(), Charset.forName("UTF-8")));
+    private static Properties buscarPropertiesConexao() throws ConfigurationException {
 
-			if (arquivoConfiguracao == null) {
-				throw new ConfigurationException("Configuração de conexão inválida");
-			}
+        try {
+            String arquivoConfiguracao = CryptoUtil.fromBlowfish(FileUtils.readFileToString(getConfiguracaoBanco(), Charset.forName("UTF-8")));
 
-			Properties properties = new Properties();
+            if (arquivoConfiguracao == null) {
+                throw new ConfigurationException("Configura��o de conex�o inv�lida");
+            }
 
-			properties.load(new StringReader(arquivoConfiguracao));
+            Properties properties = new Properties();
 
-			return properties;
+            properties.load(new StringReader(arquivoConfiguracao));
 
-		} catch (IOException e) {
+            return properties;
 
-			log.error("");
-			e.printStackTrace();
+        } catch (IOException e) {
 
-			return null;
-		}
-	}
+            log.error("");
+            e.printStackTrace();
+
+            return null;
+        }
+    }
 
 }

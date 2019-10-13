@@ -5,13 +5,9 @@ import static br.com.sysdesc.util.resources.Resources.translate;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
@@ -25,14 +21,18 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.border.EtchedBorder;
 
+import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.enumerator.ProgramasEnum;
+import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Programa;
 import br.com.sysdesc.repository.model.Usuario;
 import br.com.sysdesc.service.main.MainService;
+import br.com.sysdesc.thread.AtualizacaoThread;
 import br.com.sysdesc.thread.TimerThread;
 import br.com.sysdesc.util.classes.ImageUtil;
 import br.com.sysdesc.util.classes.ListUtil;
 import br.com.sysdesc.util.classes.StringUtil;
+import net.miginfocom.swing.MigLayout;
 
 public class FrmApplication extends JFrame {
 
@@ -47,12 +47,12 @@ public class FrmApplication extends JFrame {
 	private JDesktopPane desktopPane;
 	private JToolBar toolBar;
 	private JPanel panel;
-	private JPanel panel_2;
 	private JPanel panel_3;
 	private JLabel lbHorario;
 	private static FrmApplication frmApplication;
-
-	private List<AbstractInternalFrame> frames = new ArrayList<>();
+	private JPanel panel_1;
+	private JPanel panel_2;
+	private JPanel panel_4;
 
 	public FrmApplication() {
 
@@ -67,45 +67,35 @@ public class FrmApplication extends JFrame {
 		desktopPane = new JDesktopPane();
 		toolBar = new JToolBar();
 		panel = new JPanel();
-		panel_2 = new JPanel();
 		panel_3 = new JPanel();
-		lbHorario = new JLabel();
-		lbUsuario = new JLabel();
-
-		TimerThread timerThread = new TimerThread(lbHorario);
-		GridBagLayout gbl_panel = new GridBagLayout();
-		GridBagConstraints gbc_panel_3 = new GridBagConstraints();
-		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
-		FlowLayout flowLayout = (FlowLayout) panel_2.getLayout();
-
-		gbl_panel.columnWidths = new int[] { 0, 0, 0 };
-		gbl_panel.rowHeights = new int[] { 10, 0 };
-		gbl_panel.columnWeights = new double[] { 1.0, 0.0, Double.MIN_VALUE };
-		gbl_panel.rowWeights = new double[] { 1.0, Double.MIN_VALUE };
-
-		flowLayout.setAlignment(FlowLayout.LEFT);
-
-		gbc_panel_2.fill = GridBagConstraints.BOTH;
-		gbc_panel_2.gridx = 0;
-		gbc_panel_2.gridy = 0;
-		gbc_panel_3.fill = GridBagConstraints.BOTH;
-		gbc_panel_3.gridx = 1;
-		gbc_panel_3.gridy = 0;
 
 		contentPane.setLayout(new BorderLayout(0, 0));
-		panel.setLayout(gbl_panel);
-		panel_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 
 		contentPane.add(panel, BorderLayout.SOUTH);
 		contentPane.add(desktopPane, BorderLayout.CENTER);
 		contentPane.add(toolBar, BorderLayout.NORTH);
-		panel.add(panel_2, gbc_panel_2);
-		panel.add(panel_3, gbc_panel_3);
-		panel_3.add(lbHorario);
-		panel_2.add(lbUsuario);
+		panel.setLayout(new MigLayout("", "[grow][400px][]", "[]"));
+
+		panel_1 = new JPanel();
+		panel.add(panel_1, "cell 0 0,alignx left,aligny center");
+		lbUsuario = new JLabel();
+		panel_1.add(lbUsuario);
+
+		panel_2 = new JPanel();
+		panel.add(panel_2, "cell 1 0,alignx center");
+
+		AtualizacaoThread atualizacaoThread = new AtualizacaoThread(panel_2);
+
+		panel_4 = new JPanel();
+		panel.add(panel_4, "cell 2 0,alignx right");
+		lbHorario = new JLabel();
+		panel_4.add(lbHorario);
+
+		TimerThread timerThread = new TimerThread(lbHorario);
 
 		timerThread.start();
+		atualizacaoThread.start();
 
 		setJMenuBar(menuBar);
 		setTitle(SYS_DESC);
@@ -117,33 +107,29 @@ public class FrmApplication extends JFrame {
 
 	}
 
-	private void getSingleInstance(Class<? extends AbstractInternalFrame> frame) {
+	private void getSingleInstance(Class<? extends AbstractInternalFrame> frame, PermissaoPrograma permissaoPrograma) {
 
 		try {
 
-			Optional<AbstractInternalFrame> optional = frames.stream().filter(x -> x.getClass().equals(frame))
-					.findFirst();
+			Constructor<? extends AbstractInternalFrame> constructor = frame.getConstructor(PermissaoPrograma.class,
+					Long.class);
 
-			if (!optional.isPresent()) {
+			AbstractInternalFrame internalFrame = constructor.newInstance(permissaoPrograma, usuario.getIdUsuario());
 
-				Constructor<? extends AbstractInternalFrame> constructor = frame.getConstructor(FrmApplication.class);
+			desktopPane.add(internalFrame);
 
-				optional = Optional.of(constructor.newInstance(this));
+			Dimension desktopSize = desktopPane.getSize();
+			Dimension jInternalFrameSize = internalFrame.getSize();
 
-				desktopPane.add(optional.get());
+			internalFrame.setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
+					(desktopSize.height - jInternalFrameSize.height) / 2);
 
-				Dimension desktopSize = desktopPane.getSize();
-				Dimension jInternalFrameSize = optional.get().getSize();
-
-				optional.get().setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
-						(desktopSize.height - jInternalFrameSize.height) / 2);
-
-				frames.add(optional.get());
-			}
-
-			optional.get().setVisible(Boolean.TRUE);
+			internalFrame.setVisible(Boolean.TRUE);
 
 		} catch (Exception e) {
+
+			e.printStackTrace();
+
 			JOptionPane.showMessageDialog(this, "ERRO");
 		}
 
@@ -179,6 +165,8 @@ public class FrmApplication extends JFrame {
 
 		List<Programa> permissoes = mainService.buscarPermissaoUsuario(usuario.getIdUsuario());
 
+		permissoes.sort(Comparator.comparing(Programa::getOrdem));
+
 		permissoes.forEach(menu -> {
 
 			if (!ListUtil.isNullOrEmpty(menu.getProgramas())) {
@@ -192,28 +180,29 @@ public class FrmApplication extends JFrame {
 					createSubMenus(menuToolbar, programa);
 
 				});
-
-				menuBar.repaint();
-				toolBar.repaint();
-
 			}
 
 		});
+
+		menuBar.repaint();
+		toolBar.repaint();
 	}
 
 	private void createSubMenus(JMenu menuToolbar, Programa menu) {
 
 		if (!ListUtil.isNullOrEmpty(menu.getProgramas())) {
 
-			menu.getProgramas().forEach(programa -> {
+			JMenu submenu = new JMenu(translate(menu.getDescricao()));
 
-				JMenu submenu = new JMenu(translate(programa.getDescricao()));
+			menuToolbar.add(submenu);
+
+			menu.getProgramas().sort(Comparator.comparing(Programa::getOrdem));
+
+			menu.getProgramas().forEach(programa -> {
 
 				if (!StringUtil.isNullOrEmpty(programa.getIcone())) {
 					submenu.setIcon(ImageUtil.resize(programa.getIcone(), 15, 15));
 				}
-
-				menuToolbar.add(submenu);
 
 				createSubMenus(submenu, programa);
 			});
@@ -226,7 +215,8 @@ public class FrmApplication extends JFrame {
 		ProgramasEnum programa = ProgramasEnum.findByCodigo(menu.getIdPrograma());
 
 		if (programa != null) {
-			menuitem.addActionListener((e) -> getSingleInstance(programa.getInternalFrame()));
+			menuitem.addActionListener(
+					(e) -> getSingleInstance(programa.getInternalFrame(), menu.getPermissaoProgramas().get(0)));
 		}
 
 		if (!StringUtil.isNullOrEmpty(menu.getIcone())) {
@@ -239,7 +229,8 @@ public class FrmApplication extends JFrame {
 
 				botao.setToolTipText(translate(menu.getDescricao()));
 
-				botao.addActionListener((e) -> getSingleInstance(programa.getInternalFrame()));
+				botao.addActionListener(
+						(e) -> getSingleInstance(programa.getInternalFrame(), menu.getPermissaoProgramas().get(0)));
 
 				toolBar.add(botao);
 			}
@@ -248,10 +239,4 @@ public class FrmApplication extends JFrame {
 		menuToolbar.add(menuitem);
 
 	}
-
-	public void closeFrame(AbstractInternalFrame abstractInternalFrame) {
-
-		this.frames.remove(abstractInternalFrame);
-	}
-
 }

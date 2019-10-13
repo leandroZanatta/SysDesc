@@ -1,0 +1,58 @@
+{
+    "name": "sysdescpdv",
+    "version": "0.1.0",
+    "main": "main.js",
+    "homepage": "./",
+    "private": true,
+    "dependencies": {
+        "ag-grid-community": "^21.2.2",
+        "ag-grid-react": "^21.2.2",
+        "axios": "^0.19.0",
+        "axios-retry": "^3.1.2",
+        "bootstrap": "^4.3.1",
+        "classnames": "^2.2.6",
+        "intl": "^1.2.5",
+        "react": "^16.9.0",
+        "react-bootstrap": "^1.0.0-beta.12",
+        "react-dom": "^16.9.0",
+        "react-loading": "^2.0.3",
+        "react-router-dom": "^5.1.0",
+        "react-scripts": "3.1.1"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build-react": "react-scripts build",
+        "prebuild-asar": " npm run build-react && node bin/copy-resources-electron.js",
+        "build-asar": " npm run prebuild-asar && asar pack build app.asar",
+        "build": "npm run build-asar"
+    },
+    "build": {
+        "appId": "nonExistentID",
+        "files": [
+            "build/**/*"
+        ],
+        "directories": {
+            "buildResources": "assets"
+        }
+    },
+    "eslintConfig": {
+        "extends": "react-app"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "asar": "^2.0.1",
+        "electron": "^6.0.10",
+        "electron-builder": "^21.2.0"
+    }
+}

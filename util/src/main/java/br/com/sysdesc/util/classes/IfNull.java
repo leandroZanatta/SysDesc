@@ -11,4 +11,26 @@ public class IfNull {
 		return objeto;
 	}
 
+	public static String getStringEmpty(String value) {
+
+		if (!StringUtil.isNullOrEmptyTrim(value)) {
+			return value.trim();
+		}
+
+		return null;
+	}
+
+	public static String getStringChar(String value, String string) {
+
+		if (StringUtil.isNullOrEmptyTrim(value)) {
+			return null;
+		}
+
+		if (!value.contains(string)) {
+			return value;
+		}
+
+		return null;
+	}
+
 }

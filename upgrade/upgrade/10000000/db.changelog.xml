@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+	<include file="10000000/changeset/20190508_215100_tb_estado.xml" />
+	<include file="10000000/changeset/20190508_215600_tb_cidade.xml" />
+	<include file="10000000/changeset/20190508_215800_tb_cliente.xml" />
+	<include file="10000000/changeset/20190508_220000_tb_perfil.xml" />
+	<include file="10000000/changeset/20190508_220400_tb_usuario.xml" />
+	<include file="10000000/changeset/20190508_221100_tb_perfilusuario.xml" />
+	<include file="10000000/changeset/20190508_221800_tb_pesquisa.xml" />
+	<include file="10000000/changeset/20190508_223000_tb_pesquisacampo.xml" />
+	<include file="10000000/changeset/20190508_223300_tb_permissaopesquisa.xml" />
+	<include file="10000000/changeset/20190511_181200_tb_programa.xml" />
+	<include file="10000000/changeset/20190511_181600_tb_permissaoprograma.xml" />
+	<include file="10000000/changeset/20190515_201300_tb_marca.xml" />
+	<include file="10000000/changeset/20190522_193200_tb_departamento.xml" />
+	<include file="10000000/changeset/20190508_221900_tb_pesquisaselect.xml" />
+	<include file="10000000/changeset/20190605_195000_tb_unidade.xml" />
+	<include file="10000000/changeset/20190522_193200_tb_departamento.xml" />
+	<include file="10000000/changeset/20190605_190100_tb_categoria.xml" />
+	<include file="10000000/changeset/20190630_230800_tb_versao.xml" />
+	<include file="10000000/changeset/20190701_191000_tb_subcategoria.xml" />
+	<include file="10000000/changeset/20190701_204630_tb_produto.xml" />
+	<include file="10000000/changeset/20190807_215530_tb_formapagamento.xml" />
+	<include file="10000000/changeset/20190828_211700_tb_entradacabecalho.xml" />
+	<include file="10000000/changeset/20190828_213300_tb_entradadetalhe.xml" />
+	<include file="10000000/changeset/20190911_191100_tb_planocontas.xml" />
+	<include file="10000000/changeset/20190911_194200_tb_fornecedor.xml" />
+	<include file="10000000/changeset/20190911_203000_tb_limite.xml" />
+	<include file="10000000/changeset/20190911_203800_tb_operacoesestoque.xml" />
+	<include file="10000000/changeset/20190911_205200_tb_limiteextra.xml" />
+	<include file="10000000/changeset/20190921_211600_tb_pesquisapadrao.xml" />
+	<include file="10000000/changeset/20191006_141600_tb_pdv.xml" />
+	<include file="10000000/changeset/20191006_141601_tb_modulo.xml" />
+	<include file="10000000/changeset/20191006_141602_tb_modulopdv.xml" />
+	<include file="10000000/changeset/20191012_210600_tb_versaopdv.xml" />
+
+	<!-- INSERTS PROGRAMAS E PESQUISAS -->
+	<include file="10000000/inserts/20190626_113800_carga_usuario.xml" />
+	<include file="10000000/inserts/20190626_113900_carga_menu.xml" />
+	<include file="10000000/inserts/20190626_114000_carga_permissao_programa.xml" />
+	<include file="10000000/inserts/20190626_115100_carga_pesquisa.xml" />
+	<include file="10000000/inserts/20190626_115101_carga_pesquisacampo.xml" />
+	<include file="10000000/inserts/20190626_115102_carga_permissaopesquisa.xml" />
+	<include file="10000000/inserts/20190630_231900_carga_versao.xml" />
+	<include file="10000000/inserts/20191006_143400_carga_modulo.xml" />
+	<include file="10000000/inserts/20191006_182000_carga_pesquisa.xml" />
+	<include file="10000000/inserts/20191006_182100_carga_pesquisacampo.xml" />
+	<include file="10000000/inserts/20191006_182500_carga_permissaopesquisa.xml" />
+	<include file="10000000/inserts/20191006_184100_carga_versao.xml" />
+
+</databaseChangeLog>

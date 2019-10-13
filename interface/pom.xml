@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>br.com</groupId>
 		<artifactId>sysdesc</artifactId>
-		<version>1.00.00.000</version>
+		<version>0.0.14</version>
 	</parent>
 
 	<groupId>br.com.sysdesc</groupId>
@@ -23,31 +23,79 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>br.com.sysdesc</groupId>
 			<artifactId>util</artifactId>
 			<version>${project.parent.version}</version>
+			<scope>compile</scope>
 		</dependency>
-		<dependency>
-			<groupId>br.com.sysdesc</groupId>
-			<artifactId>repository</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
+
 		<dependency>
 			<groupId>br.com.sysdesc</groupId>
 			<artifactId>components</artifactId>
-			<version>1.00.00.000</version>
+			<version>${project.parent.version}</version>
+			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>br.com.sysdesc</groupId>
 			<artifactId>service</artifactId>
 			<version>${project.parent.version}</version>
+			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>br.com.sysdesc</groupId>
 			<artifactId>pesquisa</artifactId>
 			<version>${project.parent.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>br.com</groupId>
+			<artifactId>atualizacao</artifactId>
+			<version>${project.parent.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.toedter</groupId>
+			<artifactId>jcalendar</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.swinglabs</groupId>
+			<artifactId>swingx</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>ar.com.fdvs</groupId>
+			<artifactId>DynamicJasper</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -64,7 +112,7 @@
 	</dependencyManagement>
 
 	<build>
-
+		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -81,6 +129,22 @@
 							<resources>
 								<resource>
 									<directory>resources</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-resources-2</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/upgrade</outputDirectory>
+							<resources>
+								<resource>
+									<directory>upgrade</directory>
 									<filtering>true</filtering>
 								</resource>
 							</resources>

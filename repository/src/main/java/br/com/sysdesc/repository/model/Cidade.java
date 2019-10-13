@@ -24,12 +24,15 @@ public class Cidade implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_CIDADE")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "GEN_CIDADE")
 	@Column(name = "id_cidade")
 	private Long idCidade;
 
 	@Column(name = "tx_descricao")
 	private String descricao;
+
+	@Column(name = "cd_estado", insertable = false, updatable = false)
+	private Long codigoEstado;
 
 	@ManyToOne
 	@JoinColumn(name = "cd_estado")
@@ -38,4 +41,8 @@ public class Cidade implements Serializable {
 	@OneToMany(mappedBy = "cidade")
 	private List<Cliente> clientes;
 
+	@Override
+	public String toString() {
+		return this.descricao;
+	}
 }

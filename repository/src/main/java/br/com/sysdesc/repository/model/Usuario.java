@@ -1,8 +1,10 @@
 package br.com.sysdesc.repository.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,14 +21,14 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "tb_usuario")
-@SequenceGenerator(name = "GEN_USUARIO", sequenceName = "GEN_USUARIO")
+@SequenceGenerator(name = "GEN_USUARIO", sequenceName = "GEN_USUARIO", allocationSize = 1)
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_USUARIO")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "GEN_USUARIO")
 	@Column(name = "id_usuario")
-	private long idUsuario;
+	private Long idUsuario;
 
 	@Column(name = "tx_senha")
 	private String senha;
@@ -34,14 +36,27 @@ public class Usuario implements Serializable {
 	@Column(name = "tx_usuario")
 	private String usuario;
 
-	@OneToMany(mappedBy = "usuario")
-	private List<PermissaoPrograma> permissaoProgramas;
-
-	@OneToMany(mappedBy = "usuario")
-	private List<PerfilUsuario> perfilUsuarios;
-
 	@ManyToOne
 	@JoinColumn(name = "cd_cliente")
 	private Cliente cliente;
+
+	@OneToMany(mappedBy = "usuario")
+	private List<PermissaoPrograma> permissaoProgramas;
+
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+	private List<PerfilUsuario> perfilUsuarios = new ArrayList<>();
+
+	@OneToMany(mappedBy = "usuario")
+	private List<PermissaoPesquisa> permissaoPesquisas;
+
+	public void addPerfilUsuario(Perfil perfil) {
+
+		PerfilUsuario perfilUsuario = new PerfilUsuario();
+
+		perfilUsuario.setPerfil(perfil);
+		perfilUsuario.setUsuario(this);
+
+		perfilUsuarios.add(perfilUsuario);
+	}
 
 }

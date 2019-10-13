@@ -7,12 +7,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "tb_pesquisacampo")
 @SequenceGenerator(name = "GEN_PESQUISACAMPO", allocationSize = 1, sequenceName = "GEN_PESQUISACAMPO")
@@ -20,11 +24,11 @@ public class PesquisaCampo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_PESQUISACAMPO")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "GEN_PESQUISACAMPO")
 	@Column(name = "id_pesquisacampo")
 	private Long idPesquisacampo;
 
-	@Column(name = "cd_pesquisa")
+	@Column(name = "cd_pesquisa", insertable = false, updatable = false)
 	private Long codigoPesquisa;
 
 	@Column(name = "fl_formatacao")
@@ -53,5 +57,9 @@ public class PesquisaCampo implements Serializable {
 
 	@Column(name = "tx_formato")
 	private String formato;
+
+	@ManyToOne
+	@JoinColumn(name = "cd_pesquisa")
+	private Pesquisa pesquisa;
 
 }

@@ -2,6 +2,8 @@ package br.com.sysdesc.util.exception;
 
 import java.io.Serializable;
 
+import br.com.sysdesc.util.resources.Resources;
+
 public class SysDescException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
@@ -12,7 +14,7 @@ public class SysDescException extends RuntimeException {
 
 		super(mensagem);
 
-		this.sysDescModel = new SysDescModel(mensagem);
+		this.sysDescModel = new SysDescModel(Resources.translate(mensagem));
 	}
 
 	public String getMensagem() {

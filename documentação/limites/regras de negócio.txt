@@ -1,0 +1,41 @@
+Código do Programa: 24
+
+Cliente: Campo de seleção única.
+		- Ao selecionar cliente carregar as informações.
+		- Campo obrigatório
+		- Campo tb_limite.cd_cliente
+
+Limites:
+	Cheque:
+			- Campo monetário
+			- Campo Opcional
+			- Campo tb_limite.vl_limitecheque
+	Convênio:
+			- Campo monetário
+			- Campo Opcional
+			- Campo tb_limite.vl_limiteconvenio
+	Crediário:
+			- Campo monetário
+			- Campo Opcional
+			- Campo tb_limite.vl_limitecrediario
+			
+Limite Extra de Cheques: tb_limiteextra pk codigo do cliente , 1
+	Utiliza Limite: checkbox, caso selecionado habilitar demais campos
+	Valor de limite: Valor do limite extra.
+		- Campo tb_limiteextra.vl_limite
+	Vencimento: Data de vencimento do limite extra.
+		- Campo tb_limiteextra.dt_vencimento
+
+Limite Extra de Convênio: tb_limiteextra pk codigo do cliente , 2
+	Utiliza Limite: checkbox, caso selecionado habilitar demais campos
+	Valor de limite: Valor do limite extra.
+		- Campo tb_limiteextra.vl_limite
+	Vencimento: Data de vencimento do limite extra.
+		- Campo tb_limiteextra.dt_vencimento
+
+Limite Extra de Crediário: tb_limiteextra pk codigo do cliente , 3
+	Utiliza Limite: checkbox, caso selecionado habilitar demais campos
+	Valor de limite: Valor do limite extra.
+		- Campo tb_limiteextra.vl_limite
+	Vencimento: Data de vencimento do limite extra.
+		- Campo tb_limiteextra.dt_vencimento

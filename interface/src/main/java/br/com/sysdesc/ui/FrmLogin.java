@@ -83,7 +83,7 @@ public class FrmLogin extends JDialog {
 		contentPanel.add(btLogin);
 		contentPanel.add(btCancelar);
 
-		this.setSize(230, 220);
+		this.setSize(230, 250);
 		this.setUndecorated(true);
 		this.setModal(Boolean.TRUE);
 		this.setLocationRelativeTo(null);
