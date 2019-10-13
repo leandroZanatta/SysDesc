@@ -44,7 +44,7 @@ public class AtualizacaoThread extends Thread {
 
 	private String versaoBase;
 
-	private final String URLVersao = "https://raw.githubusercontent.com/leandroZanatta/SysDesc/develop/versoes/versao.json";
+	private final String URLVersao = "http://raw.githubusercontent.com/leandroZanatta/SysDesc/develop/versoes/versao.json";
 
 	private VersaoDAO versaoDAO = new VersaoDAO();
 
@@ -125,6 +125,8 @@ public class AtualizacaoThread extends Thread {
 				if (retornoOpcao == JOptionPane.YES_OPTION) {
 
 					efetuarDownloadVersao(versaoVO.getArquivoERP());
+
+					efetuarDownloadVersao(versaoVO.getArquivoSysdesc());
 
 					versaoLocal.setVersaoERP(versaoVO.getVersaoERP());
 					versaoLocal.setArquivoERP(versaoVO.getArquivoERP());

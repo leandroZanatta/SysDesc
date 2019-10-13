@@ -43,14 +43,13 @@ public class GerarVersaoERP {
 			File interfaceJar = new File(target, "interface.jar");
 
 			File sysdesc = new File(pathDir, "atualizacao\\target\\sysdesc.jar");
-			File sysdesResources = new File(pathDir, "atualizacao\\resources");
 
 			versaoService.changeMavenVersion(pathDir, novaVersao);
 
 			atualizacao.renameTo(sysdesc);
 
 			zipService.createZip(pathDir, "versoes\\" + novaVersao + "-erp.zip", resources, lib, interfaceJar, upgrade);
-			zipService.createZip(pathDir, "versoes\\" + novaVersao + "-sysdesc.zip", sysdesc, sysdesResources);
+			zipService.createZip(pathDir, "versoes\\" + novaVersao + "-sysdesc.zip", sysdesc);
 
 			versaoVO.setArquivoERP(URL_VERSOES + novaVersao + "-erp.zip");
 			versaoVO.setArquivoSysdesc(URL_VERSOES + novaVersao + "-sysdesc.zip");
