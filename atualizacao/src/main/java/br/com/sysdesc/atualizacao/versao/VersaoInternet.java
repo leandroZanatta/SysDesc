@@ -33,7 +33,7 @@ public class VersaoInternet {
 		if (!arquivoVersaoZip.exists()) {
 			log.info("Arquivo de configuração não encontrado localmente");
 
-			createFileAndFloders(arquivoVersaoZip);
+			createFloders(arquivoVersaoZip);
 
 			baixarVersaoZipInternet(arquivoVersaoZip, versaoVO.getArquivoERP());
 		}
@@ -41,11 +41,8 @@ public class VersaoInternet {
 		return arquivoVersaoZip;
 	}
 
-	private void createFileAndFloders(File arquivoVersaoZip) throws IOException {
+	private void createFloders(File arquivoVersaoZip) throws IOException {
 		new File(arquivoVersaoZip.getParent()).mkdirs();
-
-		arquivoVersaoZip.createNewFile();
-
 	}
 
 	public VersaoVO obterVersaoVO(File arquivoVersao) throws Exception {
@@ -53,7 +50,7 @@ public class VersaoInternet {
 		if (!arquivoVersao.exists()) {
 			log.info("Arquivo de versão inexistente - Criando arquivos");
 
-			createFileAndFloders(arquivoVersao);
+			createFloders(arquivoVersao);
 
 			buscarArquivoVersaoInternet(arquivoVersao);
 		}

@@ -4,8 +4,8 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -40,50 +40,65 @@ public class FrmDownloader extends JDialog {
 			URL arquivoUrl;
 
 			try {
+
 				log.info("fazendo download do arquivo: " + this.url);
 
 				arquivoUrl = new URL(this.url);
 
-				URLConnection urlConnection = arquivoUrl.openConnection();
+				HttpURLConnection urlConnection = (HttpURLConnection) arquivoUrl.openConnection();
 				urlConnection.setUseCaches(Boolean.FALSE);
+				urlConnection.setDoOutput(true);
+				urlConnection.setDoInput(true);
+				urlConnection.setReadTimeout(10000);
+				urlConnection.setConnectTimeout(15000);
+				urlConnection.setRequestMethod("GET");
 
 				Long tamanhoArquivo = urlConnection.getContentLengthLong();
 
-				try (BufferedInputStream in = new BufferedInputStream(urlConnection.getInputStream());
-						FileOutputStream fileOutputStream = new FileOutputStream(this.fileOut)) {
+				log.info("Tamanho do arquivo: " + tamanhoArquivo);
 
-					log.info("Tamanho do arquivo: " + tamanhoArquivo);
+				if (tamanhoArquivo > 0L) {
 
-					byte dataBuffer[] = new byte[1024];
+					if (!fileOut.exists()) {
 
-					int bytesRead;
-
-					Long bufferTotal = 0L;
-
-					while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
-
-						bufferTotal += bytesRead;
-
-						fileOutputStream.write(dataBuffer, 0, bytesRead);
-
-						Integer progresso = Double
-								.valueOf(bufferTotal.doubleValue() / tamanhoArquivo.doubleValue() * 100).intValue();
-
-						log.info("progresso: " + progresso);
-
-						progressBar.setValue(progresso);
-
+						fileOut.createNewFile();
 					}
 
-					sucesso = Boolean.TRUE;
-				} catch (IOException e) {
-					log.error("OCORREU UM ERRO AO EFETUAR O DOWNLOAD", e);
+					try (BufferedInputStream in = new BufferedInputStream(urlConnection.getInputStream());
+							FileOutputStream fileOutputStream = new FileOutputStream(this.fileOut)) {
 
-					JOptionPane.showMessageDialog(this, "OCORREU UM ERRO AO EFETUAR O DOWNLOAD:\n" + e.getMessage());
+						byte dataBuffer[] = new byte[1024];
+
+						int bytesRead;
+
+						Long bufferTotal = 0L;
+
+						while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+
+							bufferTotal += bytesRead;
+
+							fileOutputStream.write(dataBuffer, 0, bytesRead);
+
+							Integer progresso = Double
+									.valueOf(bufferTotal.doubleValue() / tamanhoArquivo.doubleValue() * 100).intValue();
+
+							log.info("progresso: " + progresso);
+
+							progressBar.setValue(progresso);
+
+						}
+
+						sucesso = Boolean.TRUE;
+					} catch (IOException e) {
+						log.error("OCORREU UM ERRO AO EFETUAR O DOWNLOAD", e);
+
+						JOptionPane.showMessageDialog(this,
+								"OCORREU UM ERRO AO EFETUAR O DOWNLOAD:\n" + e.getMessage());
+					}
+
+					dispose();
 				}
-
 				dispose();
-
 			} catch (Exception e) {
 				log.error("OCORREU UM ERRO AO EFETUAR O DOWNLOAD", e);
 
