@@ -65,7 +65,7 @@ public class FrmPrincipal extends JFrame {
 
 		VersaoVO versaoVO = buscarVersoes();
 
-		txConfiguracao.setText(System.getProperty("user.dir") + "\\interface\\config\\config.01");
+		txConfiguracao.setText(new File(System.getProperty("user.dir")).getParent() + "\\interface\\config\\config.01");
 		txVersaoErp.setText(versaoVO.getVersaoERP());
 		txVersaoFront.setText(versaoVO.getVersaoPDV());
 
