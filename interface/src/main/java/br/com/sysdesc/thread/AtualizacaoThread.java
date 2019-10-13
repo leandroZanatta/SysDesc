@@ -148,7 +148,7 @@ public class AtualizacaoThread extends Thread {
 
 				VersaoPDV novaVersao = new VersaoPDV();
 				novaVersao.setDataAtualizacao(new Date());
-				novaVersao.setVersaoGerenciador(versaoVO.getArquivoGerenciador());
+				novaVersao.setVersaoGerenciador(versaoVO.getVersaoPDV());
 				novaVersao.setVersaoPDV(versaoVO.getVersaoPDV());
 
 				versaoPDVDAO.salvar(novaVersao);
