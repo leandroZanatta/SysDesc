@@ -52,6 +52,8 @@ public class FrmDownloader extends JDialog {
 				try (BufferedInputStream in = new BufferedInputStream(urlConnection.getInputStream());
 						FileOutputStream fileOutputStream = new FileOutputStream(this.fileOut)) {
 
+					log.info("Tamanho do arquivo: " + tamanhoArquivo);
+
 					byte dataBuffer[] = new byte[1024];
 
 					int bytesRead;
