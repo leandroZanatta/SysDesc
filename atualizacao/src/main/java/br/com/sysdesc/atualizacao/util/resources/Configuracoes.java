@@ -6,7 +6,7 @@ public class Configuracoes {
 
 	public static final String USER_DIR = System.getProperty("user.dir");
 	public static final String SEPARATOR = File.separator;
-	public static final String FOLDER_IMAGE = "image";
+	public static final String FOLDER_IMAGE = File.separator + "image";
 
 	public static final String CONEXAO = USER_DIR + SEPARATOR + "config" + SEPARATOR + "config.01";
 	public static final String RESOURCES = USER_DIR + SEPARATOR + "config" + SEPARATOR + "resources.01";

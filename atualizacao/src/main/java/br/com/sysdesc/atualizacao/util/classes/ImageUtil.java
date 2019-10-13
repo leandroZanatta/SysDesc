@@ -3,13 +3,10 @@ package br.com.sysdesc.atualizacao.util.classes;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
-
-import br.com.sysdesc.atualizacao.util.resources.Configuracoes;
 
 public class ImageUtil {
 
@@ -17,8 +14,7 @@ public class ImageUtil {
 
 		try {
 
-			URL inputStream = ImageUtil.class.getClassLoader()
-					.getResource(Configuracoes.FOLDER_IMAGE + File.separator + source);
+			URL inputStream = ImageUtil.class.getClassLoader().getResource(source);
 
 			return resize(inputStream, width, height);
 
