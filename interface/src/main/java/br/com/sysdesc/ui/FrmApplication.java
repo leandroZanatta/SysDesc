@@ -239,4 +239,9 @@ public class FrmApplication extends JFrame {
 		menuToolbar.add(menuitem);
 
 	}
+
+	public JDesktopPane getDesktopPane() {
+		return desktopPane;
+	}
+
 }

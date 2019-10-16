@@ -7,11 +7,13 @@ import static br.com.sysdesc.util.resources.Resources.FRMPDV_LB_NUMEROPDV;
 import static br.com.sysdesc.util.resources.Resources.FRMPDV_LB_SITUACAO;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComboBox;
+import javax.swing.JDesktopPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -28,7 +30,7 @@ import br.com.sysdesc.ui.buttonactions.ButtonActionModulos;
 import br.com.sysdesc.util.classes.ContadorUtil;
 import net.miginfocom.swing.MigLayout;
 
-public class FrmCadastroPDVS extends AbstractInternalFrame {
+public class FrmPDVS extends AbstractInternalFrame {
 
 	private static final long serialVersionUID = 1L;
 
@@ -49,7 +51,7 @@ public class FrmCadastroPDVS extends AbstractInternalFrame {
 
 	private PDVService pdvService = new PDVService();
 
-	public FrmCadastroPDVS(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
+	public FrmPDVS(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
 
 		initComponentes();
@@ -81,6 +83,19 @@ public class FrmCadastroPDVS extends AbstractInternalFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+
+				JDesktopPane desktopPane = FrmApplication.getInstance().getDesktopPane();
+				FrmModulos internalFrame = new FrmModulos(panelActions.getObjetoPesquisa());
+
+				desktopPane.add(internalFrame);
+
+				Dimension desktopSize = desktopPane.getSize();
+				Dimension jInternalFrameSize = internalFrame.getSize();
+
+				internalFrame.setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
+						(desktopSize.height - jInternalFrameSize.height) / 2);
+
+				internalFrame.setVisible(Boolean.TRUE);
 
 			}
 
