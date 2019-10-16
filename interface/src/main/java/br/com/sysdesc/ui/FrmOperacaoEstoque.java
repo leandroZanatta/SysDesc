@@ -121,6 +121,8 @@ public class FrmOperacaoEstoque extends AbstractInternalFrame {
 				txCadastro.setDate(objeto.getCadastro());
 				txManutencao.setDate(objeto.getManutencao());
 				chAtualizaCusto.setSelected(objeto.getAtualizacusto());
+				txPanoDeContas.setValue(objeto.getPlanoContas());
+
 			}
 
 			@Override
