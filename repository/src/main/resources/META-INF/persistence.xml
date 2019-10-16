@@ -32,6 +32,7 @@
 		<class>br.com.sysdesc.repository.model.Pdv</class>
 		<class>br.com.sysdesc.repository.model.Modulo</class>
 		<class>br.com.sysdesc.repository.model.ModuloPDV</class>
+		<class>br.com.sysdesc.repository.model.VersaoPDV</class>
 	</persistence-unit>
 
 </persistence>

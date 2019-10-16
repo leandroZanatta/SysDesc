@@ -161,6 +161,13 @@ public class Resources {
 	public static final String TBLENTRADA_VALOR_UNITARIO = "TBLENTRADA_VALOR_UNITARIO";
 	public static final String TBLENTRADA_VALOR_TOTAL = "TBLENTRADA_VALOR_TOTAL";
 
+	public static final String TBLMODULOS_CODIGO = "TBLMODULOS_CODIGO";
+	public static final String TBLMODULOS_IP = "TBLMODULOS_IP";
+	public static final String TBLMODULOS_DESCRICAO = "TBLMODULOS_DESCRICAO";
+	public static final String TBLMODULOS_DESACOPLADO = "TBLMODULOS_DESACOPLADO";
+	public static final String TBLMODULOS_GERENCIADOR = "TBLMODULOS_GERENCIADOR";
+	public static final String TBLMODULOS_CONFIGURACAO = "TBLMODULOS_CONFIGURACAO";
+
 	static {
 		try {
 			File arquivoConfiguracao = new File(Configuracoes.RESOURCES);

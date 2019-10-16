@@ -40,9 +40,9 @@ public class Conexao {
 		return new File(Configuracoes.CONEXAO);
 	}
 
-	public static Connection buscarConexao() throws Exception {
+	public static Connection buscarConexao(String caminho) throws Exception {
 
-		Properties propertiesConexao = buscarPropertiesConexao();
+		Properties propertiesConexao = buscarPropertiesConexao(caminho);
 
 		String clazz = propertiesConexao.getProperty(TipoConexaoEnum.jdbcDriver);
 		String url = propertiesConexao.getProperty(TipoConexaoEnum.jdbcUrl);
@@ -55,11 +55,14 @@ public class Conexao {
 
 	}
 
-	private static Properties buscarPropertiesConexao() throws ConfigurationException {
+	private static Properties buscarPropertiesConexao(String caminho) throws ConfigurationException {
 
 		try {
+
+			File config = caminho != null ? new File(caminho) : getConfiguracaoBanco();
+
 			String arquivoConfiguracao = CryptoUtil
-					.fromBlowfish(FileUtils.readFileToString(getConfiguracaoBanco(), Charset.forName("UTF-8")));
+					.fromBlowfish(FileUtils.readFileToString(config, Charset.forName("UTF-8")));
 
 			if (arquivoConfiguracao == null) {
 				throw new ConfigurationException(translate(MENSAGEM_CONFIGURACOES_INVALIDAS));

@@ -7,6 +7,7 @@ import com.mysema.query.BooleanBuilder;
 import br.com.sysdesc.repository.dao.PlanoContasDAO;
 import br.com.sysdesc.repository.model.PlanoContas;
 import br.com.sysdesc.service.interfaces.impl.AbstractGenericService;
+import br.com.sysdesc.util.classes.LongUtil;
 import br.com.sysdesc.util.classes.StringUtil;
 import br.com.sysdesc.util.constants.MensagemConstants;
 import br.com.sysdesc.util.exception.SysDescException;
@@ -41,7 +42,11 @@ public class PlanoContasService extends AbstractGenericService<PlanoContas> {
 		}
 
 		if (StringUtil.isNullOrEmpty(objetoPersistir.getSaldo())) {
+			throw new SysDescException(MensagemConstants.MENSAGEM_SELECIONE_SALDO);
+		}
 
+		if (LongUtil.isNullOrZero(objetoPersistir.getSituacao())) {
+			throw new SysDescException(MensagemConstants.MENSAGEM_SELECIONE_SITUACAO);
 		}
 	}
 

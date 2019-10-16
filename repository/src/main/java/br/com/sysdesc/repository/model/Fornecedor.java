@@ -50,5 +50,5 @@ public class Fornecedor implements Serializable {
 	private Long tipoConta;
 
 	@Column(name = "cd_status")
-	private Long codigoStatsus;
+	private Long codigoStatus;
 }

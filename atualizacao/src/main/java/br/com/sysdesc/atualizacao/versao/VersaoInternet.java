@@ -17,41 +17,45 @@ import br.com.sysdesc.atualizacao.ui.FrmDownloader;
 import br.com.sysdesc.atualizacao.util.resources.Configuracoes;
 import br.com.sysdesc.atualizacao.vo.VersaoVO;
 import liquibase.util.file.FilenameUtils;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class VersaoInternet {
 
 	private static final String URL_ARQUIVO_VERSOES = translate(APPLICATION_VERSOES);
 
 	public File obterArquivoVersaoZip(VersaoVO versaoVO) throws IOException, MalformedURLException {
+		log.info("Buscando arquivo de configurações");
 
 		File arquivoVersaoZip = new File(Configuracoes.PATH_VERSOES,
-				FilenameUtils.getName(new URL(versaoVO.getArquivo()).getPath()));
+				FilenameUtils.getName(new URL(versaoVO.getArquivoERP()).getPath()));
 
 		if (!arquivoVersaoZip.exists()) {
+			log.info("Arquivo de configuração não encontrado localmente");
 
-			createFileAndFloders(arquivoVersaoZip);
+			createFloders(arquivoVersaoZip);
 
-			baixarVersaoZipInternet(arquivoVersaoZip, versaoVO.getArquivo());
+			baixarVersaoZipInternet(arquivoVersaoZip, versaoVO.getArquivoERP());
 		}
 
 		return arquivoVersaoZip;
 	}
 
-	private void createFileAndFloders(File arquivoVersaoZip) throws IOException {
+	private void createFloders(File arquivoVersaoZip) throws IOException {
 		new File(arquivoVersaoZip.getParent()).mkdirs();
-
-		arquivoVersaoZip.createNewFile();
-
 	}
 
 	public VersaoVO obterVersaoVO(File arquivoVersao) throws Exception {
 
 		if (!arquivoVersao.exists()) {
+			log.info("Arquivo de versão inexistente - Criando arquivos");
 
-			createFileAndFloders(arquivoVersao);
+			createFloders(arquivoVersao);
 
 			buscarArquivoVersaoInternet(arquivoVersao);
 		}
+
+		log.info("Carregando arquivo" + arquivoVersao);
 
 		return obterVersaoVOArquivo(arquivoVersao);
 	}
@@ -62,6 +66,7 @@ public class VersaoInternet {
 	}
 
 	private void baixarVersaoZipInternet(File arquivoVersaoZip, String arquivo) {
+		log.info("Baixando Versão da internet");
 
 		FrmDownloader frmDownloader = new FrmDownloader(arquivo, arquivoVersaoZip);
 
@@ -71,6 +76,8 @@ public class VersaoInternet {
 
 			throw new RuntimeException("Não foi possivel fazer download da versão.");
 		}
+
+		log.info("Arquivo de versão baixado com sucesso");
 	}
 
 	private void buscarArquivoVersaoInternet(File arquivoVersao) throws Exception {

@@ -44,13 +44,13 @@ public class StartUp {
 
 		String versaoBanco = versaoBancoDados.buscarVersaoBanco();
 
-		if (!versaoBanco.equals(versaoVO.getVersao())) {
+		if (!versaoBanco.equals(versaoVO.getVersaoERP())) {
 
 			File arquivoZip = versaoInternet.obterArquivoVersaoZip(versaoVO);
 
 			extratorZip.extrairVersao(arquivoZip);
 
-			versaoBancoDados.upgradeDatabase(versaoVO.getVersao());
+			versaoBancoDados.upgradeDatabase(versaoVO.getVersaoERP());
 
 			if (arquivoZip.exists()) {
 				arquivoZip.delete();

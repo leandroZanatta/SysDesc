@@ -1,0 +1,19 @@
+{
+	"frontEnds": [{
+			"id": 5,
+			"directory": "desktop", 
+			"serverName": "PDV",
+			"comand": "desktop/sysdesc",
+			"async": true
+		}],
+	"servers": [
+		{
+			"id": 1,
+			"serverName": "Sysdesc REST",
+			"comand": "java -jar -Dspring.profiles.active=production -Dspring.config.location=sysdesc-rest/config/sysdesc-db_production.properties sysdesc-rest/sysdesc-rest.jar",
+			"msgValidacaoStart": "Started Application",
+			"maximumExecutionTime": 600,
+			"async": true
+		}
+	]
+}
