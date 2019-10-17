@@ -133,9 +133,8 @@ public class FrmOperacaoEstoque extends AbstractInternalFrame {
 				OperacaoEnum operacao = (OperacaoEnum) cbOperacao.getSelectedItem();
 				objetoPesquisa.setOperacao(operacao.getCodigo());
 
-				objetoPesquisa.setCadastro(txCadastro.getDate());
-				objetoPesquisa.setManutencao(txManutencao.getDate());
 				objetoPesquisa.setAtualizacusto(chAtualizaCusto.isSelected());
+				objetoPesquisa.setPlanoContas(txPanoDeContas.getObjetoPesquisado());
 				return Boolean.TRUE;
 			}
 
