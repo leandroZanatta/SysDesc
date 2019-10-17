@@ -121,6 +121,8 @@ public class FrmOperacaoEstoque extends AbstractInternalFrame {
 				txCadastro.setDate(objeto.getCadastro());
 				txManutencao.setDate(objeto.getManutencao());
 				chAtualizaCusto.setSelected(objeto.getAtualizacusto());
+				txPanoDeContas.setValue(objeto.getPlanoContas());
+
 			}
 
 			@Override
@@ -131,9 +133,8 @@ public class FrmOperacaoEstoque extends AbstractInternalFrame {
 				OperacaoEnum operacao = (OperacaoEnum) cbOperacao.getSelectedItem();
 				objetoPesquisa.setOperacao(operacao.getCodigo());
 
-				objetoPesquisa.setCadastro(txCadastro.getDate());
-				objetoPesquisa.setManutencao(txManutencao.getDate());
 				objetoPesquisa.setAtualizacusto(chAtualizaCusto.isSelected());
+				objetoPesquisa.setPlanoContas(txPanoDeContas.getObjetoPesquisado());
 				return Boolean.TRUE;
 			}
 
