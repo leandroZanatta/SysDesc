@@ -30,9 +30,11 @@
 		<class>br.com.sysdesc.repository.model.Fornecedor</class>
 		<class>br.com.sysdesc.repository.model.PesquisaPadrao</class>
 		<class>br.com.sysdesc.repository.model.Pdv</class>
-		<class>br.com.sysdesc.repository.model.Modulo</class>
 		<class>br.com.sysdesc.repository.model.ModuloPDV</class>
+		<class>br.com.sysdesc.repository.model.ModuloGerenciadorPDV</class>
 		<class>br.com.sysdesc.repository.model.VersaoPDV</class>
+		<class>br.com.sysdesc.repository.model.GerenciadorPDV</class>
+		<class>br.com.sysdesc.repository.model.PDVModuloGerenciadorPDV</class>
 	</persistence-unit>
 
 </persistence>

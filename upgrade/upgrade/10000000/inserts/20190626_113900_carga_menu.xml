@@ -171,8 +171,7 @@
 			<column name="id_programa" value="20" />
 			<column name="nr_ordem" value="1" />
 			<column name="cd_programa" value="19" />
-			<column name="tx_descricao" value="FRMAPPLICATION_MI_CADASTRO_PDVS" />
-			<column name="tx_icone" value="pdv.png" />
+			<column name="tx_descricao" value="FRMAPPLICATION_MI_CADASTRO" />
 			<column name="fl_acessorapido" valueBoolean="false" />
 		</insert>
 
@@ -358,6 +357,24 @@
 			<column name="cd_programa" value="28" />
 			<column name="tx_descricao" value="FRMAPPLICATION_MI_OPERACOES_ESTOQUE" />
 			<column name="tx_icone" value="estoque.png" />
+			<column name="fl_acessorapido" valueBoolean="false" />
+		</insert>
+		
+		<insert tableName="tb_programa">
+			<column name="id_programa" value="43" />
+			<column name="nr_ordem" value="1" />
+			<column name="cd_programa" value="20" />
+			<column name="tx_descricao" value="FRMAPPLICATION_MI_CADASTRO_PDV" />
+			<column name="tx_icone" value="pdv.png" />
+			<column name="fl_acessorapido" valueBoolean="false" />
+		</insert>
+		
+		<insert tableName="tb_programa">
+			<column name="id_programa" value="44" />
+			<column name="nr_ordem" value="2" />
+			<column name="cd_programa" value="20" />
+			<column name="tx_descricao" value="FRMAPPLICATION_MI_CADASTRO_MODULOS" />
+			<column name="tx_icone" value="module.png" />
 			<column name="fl_acessorapido" valueBoolean="false" />
 		</insert>
 	</changeSet>

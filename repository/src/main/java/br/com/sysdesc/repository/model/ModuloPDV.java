@@ -1,15 +1,12 @@
 package br.com.sysdesc.repository.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -17,29 +14,26 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "tb_modulopdv")
-@SequenceGenerator(name = "GEN_MODULOPDV", allocationSize = 1, sequenceName = "GEN_MODULOPDV")
 public class ModuloPDV implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "GEN_MODULOPDV")
 	@Column(name = "id_modulopdv")
 	private Long idModuloPDV;
 
-	@Column(name = "cd_pdv", insertable = false, updatable = false)
-	private Long codigoPDV;
+	@Column(name = "tx_descricao")
+	private String descricao;
 
-	@Column(name = "cd_modulo", insertable = false, updatable = false)
-	private Long codigoModulo;
+	@Column(name = "fl_desacoplar")
+	private String desacoplado;
 
-	@ManyToOne
-	@JoinColumn(name = "cd_pdv")
-	private Pdv pdv;
+	@Column(name = "fl_possuiporta")
+	private String possuiPorta;
 
-	@ManyToOne
-	@JoinColumn(name = "cd_modulo")
-	private Modulo modulo;
+	@Column(name = "nr_portapadrao")
+	private Long portaPadrao;
 
-	@Column(name = "tx_ip")
-	private String ipModulo;
+	@OneToMany(mappedBy = "moduloPDV")
+	private List<ModuloGerenciadorPDV> moduloGerenciadorPDVs;
+
 }

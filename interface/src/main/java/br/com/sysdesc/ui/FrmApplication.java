@@ -198,11 +198,11 @@ public class FrmApplication extends JFrame {
 
 			menu.getProgramas().sort(Comparator.comparing(Programa::getOrdem));
 
-			menu.getProgramas().forEach(programa -> {
+			if (!StringUtil.isNullOrEmpty(menu.getIcone())) {
+				submenu.setIcon(ImageUtil.resize(menu.getIcone(), 15, 15));
+			}
 
-				if (!StringUtil.isNullOrEmpty(programa.getIcone())) {
-					submenu.setIcon(ImageUtil.resize(programa.getIcone(), 15, 15));
-				}
+			menu.getProgramas().forEach(programa -> {
 
 				createSubMenus(submenu, programa);
 			});

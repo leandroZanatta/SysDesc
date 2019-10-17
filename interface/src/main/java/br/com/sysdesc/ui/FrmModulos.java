@@ -6,27 +6,20 @@ import static br.com.sysdesc.util.resources.Resources.translate;
 import java.awt.BorderLayout;
 
 import javax.swing.JButton;
-import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.event.InternalFrameEvent;
 
-import br.com.sysdesc.components.ButtonColumn;
-import br.com.sysdesc.repository.model.Pdv;
-import br.com.sysdesc.tablemodels.ModulosTableModel;
+import br.com.sysdesc.components.AbstractInternalFrame;
+import br.com.sysdesc.repository.model.PermissaoPrograma;
 
-public class FrmModulos extends JInternalFrame {
+public class FrmModulos extends AbstractInternalFrame {
 
 	private static final long serialVersionUID = 1L;
 
 	private JPanel painelContent;
-	private JTable tbModulo;
-	private Pdv pdv;
-	private ModulosTableModel model;
 
-	public FrmModulos(Pdv pdv) {
-		this.pdv = pdv;
+	public FrmModulos(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
+		super(permissaoPrograma, codigoUsuario);
 
 		initComponents();
 
@@ -59,26 +52,6 @@ public class FrmModulos extends JInternalFrame {
 		JButton btCancelar = new JButton("Cancelar");
 		btCancelar.addActionListener((e) -> dispose());
 		panel.add(btCancelar);
-
-		JScrollPane scrollPane = new JScrollPane();
-		painelContent.add(scrollPane, BorderLayout.CENTER);
-
-		model = new ModulosTableModel(pdv.getModuloPDVs());
-		tbModulo = new JTable(model);
-
-		ButtonColumn buttonColumn = new ButtonColumn(tbModulo, 4);
-		ButtonColumn buttonConfiguracoes = new ButtonColumn(tbModulo, 5);
-
-		buttonColumn.addButtonListener(e -> configurarGerenciador(e));
-		buttonConfiguracoes.addButtonListener(e -> alterarConfiguracoesModulo(e));
-		scrollPane.setViewportView(tbModulo);
-	}
-
-	private void alterarConfiguracoesModulo(int collumn) {
-
-	}
-
-	private void configurarGerenciador(int collumn) {
 
 	}
 

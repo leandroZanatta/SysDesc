@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd  http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+	<changeSet id="20191006_141604" author="Leandro Zanatta">
+
+		<preConditions onFail="CONTINUE">
+			<not>
+				<tableExists tableName="tb_pdvmodulogerenciadorpdv" />
+			</not>
+		</preConditions>
+
+		<createTable tableName="tb_pdvmodulogerenciadorpdv">
+
+			<column name="id_pdvmodulogerenciadorpdv" type="NUMBER(18,0)" remarks="CÓDIGO INDENTIFICADOR">
+				<constraints primaryKey="true" primaryKeyName="pdvmodulogerenciadorpdv_pk" nullable="false" />
+			</column>
+
+			<column name="cd_pdv" type="NUMBER(18,0)" remarks="CÓDIGO DO PDV">
+				<constraints nullable="false" foreignKeyName="pdvmodulogerenciadorpdv_pdv_fk" references="tb_pdv(id_pdv)" />
+			</column>
+
+			<column name="cd_modulogerenciadorpdv" type="NUMBER(18,0)" remarks="CÓDIGO DO MÓDULO GERENCIADOR">
+				<constraints nullable="false" foreignKeyName="modulogerenciadorpdv_gerenciadorpdv_fk"
+					references="tb_modulogerenciadorpdv(id_modulogerenciadorpdv)" />
+			</column>
+
+		</createTable>
+
+		<createSequence sequenceName="gen_pdvmodulogerenciadorpdv" />
+	</changeSet>
+</databaseChangeLog>

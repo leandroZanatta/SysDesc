@@ -7,13 +7,7 @@ import static br.com.sysdesc.util.resources.Resources.FRMPDV_LB_NUMEROPDV;
 import static br.com.sysdesc.util.resources.Resources.FRMPDV_LB_SITUACAO;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JComboBox;
-import javax.swing.JDesktopPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -26,8 +20,6 @@ import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.model.Pdv;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.service.pdv.PDVService;
-import br.com.sysdesc.ui.buttonactions.ButtonActionModulos;
-import br.com.sysdesc.util.classes.ContadorUtil;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmPDVS extends AbstractInternalFrame {
@@ -47,7 +39,6 @@ public class FrmPDVS extends AbstractInternalFrame {
 	private JComboBox<TipoStatusEnum> cbSituacao;
 
 	private PanelActions<Pdv> panelActions;
-	private ButtonActionModulos actionModulos;
 
 	private PDVService pdvService = new PDVService();
 
@@ -73,33 +64,8 @@ public class FrmPDVS extends AbstractInternalFrame {
 		txCodigo = new JTextFieldId();
 		txNumeroPDV = new JNumericField();
 		cbSituacao = new JComboBox<>(TipoStatusEnum.values());
-		actionModulos = new ButtonActionModulos();
 
 		painelContent.setLayout(new MigLayout("", "[][grow][grow]", "[][][][][grow]"));
-
-		Action actionEditarModulos = new AbstractAction() {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				JDesktopPane desktopPane = FrmApplication.getInstance().getDesktopPane();
-				FrmModulos internalFrame = new FrmModulos(panelActions.getObjetoPesquisa());
-
-				desktopPane.add(internalFrame);
-
-				Dimension desktopSize = desktopPane.getSize();
-				Dimension jInternalFrameSize = internalFrame.getSize();
-
-				internalFrame.setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
-						(desktopSize.height - jInternalFrameSize.height) / 2);
-
-				internalFrame.setVisible(Boolean.TRUE);
-
-			}
-
-		};
 
 		painelContent.add(lblCodigo, "cell 0 0");
 		painelContent.add(lblNumeroDoPdv, "cell 0 2");
@@ -113,31 +79,9 @@ public class FrmPDVS extends AbstractInternalFrame {
 
 		getContentPane().add(painelContent);
 
-		panelActions = new PanelActions<Pdv>(this, pdvService, PES_PDVS, Boolean.TRUE, actionModulos) {
+		panelActions = new PanelActions<Pdv>(this, pdvService, PES_PDVS, Boolean.TRUE) {
 
 			private static final long serialVersionUID = 1L;
-
-			protected void posicionarBotoes() {
-
-				ContadorUtil contadorUtil = new ContadorUtil();
-
-				posicionarBotao(contadorUtil, btPrimeiro, Boolean.TRUE);
-				posicionarBotao(contadorUtil, btRetroceder, Boolean.TRUE);
-				posicionarBotao(contadorUtil, actionModulos, Boolean.TRUE);
-				posicionarBotao(contadorUtil, btSalvar, Boolean.TRUE);
-				posicionarBotao(contadorUtil, btEditar, Boolean.TRUE);
-				posicionarBotao(contadorUtil, btNovo, Boolean.TRUE);
-				posicionarBotao(contadorUtil, btBuscar, Boolean.TRUE);
-				posicionarBotao(contadorUtil, btCancelar, Boolean.TRUE);
-				posicionarBotao(contadorUtil, btAvancar, Boolean.TRUE);
-				posicionarBotao(contadorUtil, btUltimo, Boolean.TRUE);
-
-			}
-
-			@Override
-			protected void registrarEventosBotoesPagina() {
-				registrarEvento(actionModulos, actionEditarModulos);
-			}
 
 			@Override
 			public void carregarObjeto(Pdv objeto) {

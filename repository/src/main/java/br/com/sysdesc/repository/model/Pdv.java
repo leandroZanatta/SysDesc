@@ -38,6 +38,6 @@ public class Pdv implements Serializable {
 	private Long situacao;
 
 	@OneToMany(mappedBy = "pdv", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<ModuloPDV> moduloPDVs = new ArrayList<>();
+	private List<PDVModuloGerenciadorPDV> moduloGerenciadorPDVs = new ArrayList<>();
 
 }

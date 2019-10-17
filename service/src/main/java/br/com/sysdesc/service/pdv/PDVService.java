@@ -1,12 +1,17 @@
 package br.com.sysdesc.service.pdv;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import br.com.sysdesc.repository.dao.ModuloDAO;
+import br.com.sysdesc.repository.dao.GerenciadorPDVDAO;
+import br.com.sysdesc.repository.dao.ModuloPDVDAO;
+import br.com.sysdesc.repository.dao.PDVModuloGerenciadorPDVDAO;
 import br.com.sysdesc.repository.dao.PdvDAO;
-import br.com.sysdesc.repository.model.Modulo;
+import br.com.sysdesc.repository.model.GerenciadorPDV;
+import br.com.sysdesc.repository.model.ModuloGerenciadorPDV;
 import br.com.sysdesc.repository.model.ModuloPDV;
+import br.com.sysdesc.repository.model.PDVModuloGerenciadorPDV;
 import br.com.sysdesc.repository.model.Pdv;
 import br.com.sysdesc.service.interfaces.impl.AbstractGenericService;
 import br.com.sysdesc.util.classes.IPUtil;
@@ -19,7 +24,11 @@ public class PDVService extends AbstractGenericService<Pdv> {
 
 	private PdvDAO pdvDAO;
 
-	private ModuloDAO moduloDAO = new ModuloDAO();
+	private GerenciadorPDVDAO gerenciadorPDVDAO = new GerenciadorPDVDAO();
+
+	private ModuloPDVDAO moduloDAO = new ModuloPDVDAO();
+
+	private PDVModuloGerenciadorPDVDAO pDVmoduloGerenciadorPDVDAO = new PDVModuloGerenciadorPDVDAO();
 
 	public PDVService() {
 		this(new PdvDAO());
@@ -72,35 +81,71 @@ public class PDVService extends AbstractGenericService<Pdv> {
 	@Override
 	public void salvar(Pdv objetoPersistir) {
 
-		List<Modulo> modulos = moduloDAO.listar();
+		List<ModuloPDV> modulos = moduloDAO.listar();
+
+		List<PDVModuloGerenciadorPDV> pDVmoduloGerenciadorPDVs = buscarModuloGerenciador(objetoPersistir);
+
+		GerenciadorPDV gerenciadorPDV = buscarGerenciador(objetoPersistir);
 
 		modulos.forEach(modulo -> {
 
-			ModuloPDV moduloPDV = getModulo(modulo, objetoPersistir.getModuloPDVs());
-
-			moduloPDV.setIpModulo(objetoPersistir.getIpPDV());
+			PDVModuloGerenciadorPDV moduloPDV = getModuloPDV(modulo, pDVmoduloGerenciadorPDVs, gerenciadorPDV);
 			moduloPDV.setPdv(objetoPersistir);
 
-			objetoPersistir.getModuloPDVs().add(moduloPDV);
-
+			objetoPersistir.getModuloGerenciadorPDVs().add(moduloPDV);
 		});
 
 		pdvDAO.salvar(objetoPersistir);
 	}
 
-	private ModuloPDV getModulo(Modulo modulo, List<ModuloPDV> moduloPDVs) {
+	private GerenciadorPDV buscarGerenciador(Pdv objetoPersistir) {
 
-		Optional<ModuloPDV> optional = moduloPDVs.stream()
-				.filter(x -> x.getModulo().getIdModulo().equals(modulo.getIdModulo())).findFirst();
+		GerenciadorPDV gerenciadorPDV = gerenciadorPDVDAO.buscarPorIp(objetoPersistir.getIpPDV());
+
+		if (gerenciadorPDV == null) {
+
+			gerenciadorPDV = new GerenciadorPDV();
+			gerenciadorPDV.setIpGerenciador(objetoPersistir.getIpPDV());
+			gerenciadorPDV.setCodigoPorta(3100L);
+
+			gerenciadorPDVDAO.salvar(gerenciadorPDV);
+		}
+
+		return gerenciadorPDV;
+	}
+
+	private List<PDVModuloGerenciadorPDV> buscarModuloGerenciador(Pdv objetoPersistir) {
+
+		if (!LongUtil.isNullOrZero(objetoPersistir.getIdPdv())) {
+			return pDVmoduloGerenciadorPDVDAO.buscarPorCodigoPDV(objetoPersistir.getIdPdv());
+		}
+
+		return new ArrayList<>();
+	}
+
+	private PDVModuloGerenciadorPDV getModuloPDV(ModuloPDV modulo,
+			List<PDVModuloGerenciadorPDV> pDVmoduloGerenciadorPDVs, GerenciadorPDV gerenciadorPDV) {
+
+		Optional<PDVModuloGerenciadorPDV> optional = pDVmoduloGerenciadorPDVs.stream()
+				.filter(x -> x.getModuloGerenciadorPDV() != null)
+				.filter(x -> x.getModuloGerenciadorPDV().getModuloPDV() != null).filter(x -> x.getModuloGerenciadorPDV()
+						.getModuloPDV().getIdModuloPDV().equals(modulo.getIdModuloPDV()))
+				.findFirst();
 
 		if (optional.isPresent()) {
 
 			return optional.get();
 		}
 
-		ModuloPDV moduloPDV = new ModuloPDV();
-		moduloPDV.setModulo(modulo);
+		PDVModuloGerenciadorPDV pdvModuloGerenciadorPDV = new PDVModuloGerenciadorPDV();
 
-		return moduloPDV;
+		ModuloGerenciadorPDV moduloGerenciadorPDV = new ModuloGerenciadorPDV();
+		moduloGerenciadorPDV.setCodigoGerenciadorPDV(gerenciadorPDV.getIdGerenciadorPDV());
+		moduloGerenciadorPDV.setCodigoModuloPDV(modulo.getIdModuloPDV());
+		moduloGerenciadorPDV.setCodigoPorta(modulo.getPortaPadrao());
+
+		pdvModuloGerenciadorPDV.setModuloGerenciadorPDV(moduloGerenciadorPDV);
+
+		return pdvModuloGerenciadorPDV;
 	}
 }
