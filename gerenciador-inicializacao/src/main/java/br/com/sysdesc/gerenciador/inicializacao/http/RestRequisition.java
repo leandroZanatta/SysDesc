@@ -11,59 +11,61 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import br.com.sysdesc.gerenciador.inicializacao.http.enumerators.HttpMethod;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class RestRequisition extends Thread {
 
-	private Socket socket;
+    private Socket socket;
 
-	public RestRequisition(Socket socket) {
+    public RestRequisition(Socket socket) {
 
-		this.socket = socket;
-	}
+        this.socket = socket;
+    }
 
-	@Override
-	public void run() {
+    @Override
+    public void run() {
 
-		try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-				PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
-				BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(socket.getOutputStream())) {
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
+                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(socket.getOutputStream())) {
 
-			String input = in.readLine();
+            String input = in.readLine();
 
-			StringTokenizer parse = new StringTokenizer(input);
+            StringTokenizer parse = new StringTokenizer(input);
 
-			HttpMethod method = HttpMethod.valueOf(parse.nextToken().toUpperCase());
+            HttpMethod method = HttpMethod.valueOf(parse.nextToken().toUpperCase());
 
-			String fileRequested = parse.nextToken().toLowerCase();
+            String fileRequested = parse.nextToken().toLowerCase();
 
-			String headerLine = null;
+            String headerLine = null;
 
-			Map<String, String> headers = new HashMap<>();
+            Map<String, String> headers = new HashMap<>();
 
-			while ((headerLine = in.readLine()).length() != 0) {
+            while ((headerLine = in.readLine()).length() != 0) {
 
-				String[] params = headerLine.split(":");
+                String[] params = headerLine.split(":");
 
-				if (params.length == 2) {
-					headers.put(params[0], params[1]);
-				}
-			}
+                if (params.length == 2) {
+                    headers.put(params[0], params[1]);
+                }
+            }
 
-			StringBuilder payload = new StringBuilder();
+            StringBuilder payload = new StringBuilder();
 
-			while (in.ready()) {
-				payload.append((char) in.read());
-			}
+            while (in.ready()) {
+                payload.append((char) in.read());
+            }
 
-			Request request = new Request(method, fileRequested, headers, payload.toString(), printWriter,
-					bufferedOutputStream);
+            Request request = new Request(method, fileRequested, headers, payload.toString(), printWriter, bufferedOutputStream);
 
-			request.process();
+            request.process();
 
-		} catch (IOException ioe) {
-			System.err.println("Server error : " + ioe);
-		}
+        } catch (IOException ioe) {
 
-	}
+            log.error("Server error ", ioe);
+        }
+
+    }
 
 }

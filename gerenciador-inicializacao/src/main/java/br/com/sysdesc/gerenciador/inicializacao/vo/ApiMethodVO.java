@@ -9,7 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class ApiMethodVO {
 
-	private Method method;
+    private Method method;
 
-	private Object instance;
+    private Object instance;
 }
