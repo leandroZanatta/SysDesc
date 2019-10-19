@@ -1,5 +1,6 @@
 package br.com.sysdesc.gerenciador.inicializacao.service.impl;
 
+import static br.com.sysdesc.gerenciador.inicializacao.util.GerenciadorInicializacaoConstants.FILE_NETWORK_JSON;
 import static br.com.sysdesc.gerenciador.inicializacao.util.GerenciadorInicializacaoConstants.FILE_SERVER_JSON;
 
 import java.io.File;
@@ -7,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,16 +21,23 @@ import java.util.stream.Collectors;
 
 import javax.swing.event.EventListenerList;
 
-import com.google.gson.Gson;
+import org.apache.commons.io.FileUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import br.com.sysdesc.gerenciador.inicializacao.intercomm.ConfiguracaoModulosClient;
+import br.com.sysdesc.gerenciador.inicializacao.intercomm.builder.RequestBuilder;
 import br.com.sysdesc.gerenciador.inicializacao.listener.InicializacaoModulosListener;
 import br.com.sysdesc.gerenciador.inicializacao.service.InicializacaoModulosService;
 import br.com.sysdesc.gerenciador.inicializacao.thread.ModuleFactory;
 import br.com.sysdesc.gerenciador.inicializacao.util.GerenciadorInicializacaoLogConstants;
-import br.com.sysdesc.gerenciador.inicializacao.vo.ConfigurationVO;
-import br.com.sysdesc.gerenciador.inicializacao.vo.ModuleVO;
-import br.com.sysdesc.gerenciador.inicializacao.vo.ServerVO;
+import br.com.sysdesc.util.classes.IPUtil;
 import br.com.sysdesc.util.classes.ListUtil;
+import br.com.sysdesc.util.vo.ConfigurationVO;
+import br.com.sysdesc.util.vo.IPVO;
+import br.com.sysdesc.util.vo.ModuleVO;
+import br.com.sysdesc.util.vo.ServerVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -100,21 +109,22 @@ public class InicializacaoModulosServiceIpml implements InicializacaoModulosServ
 		}
 	}
 
-	protected ConfigurationVO buscarConfiguracaoModulos() {
+	private List<IPVO> buscarConfiguracaoIP() {
 
-		ConfigurationVO configuracao = null;
+		List<IPVO> configuracao = null;
 
-		try (InputStream inputStream = new FileInputStream(new File(FILE_SERVER_JSON));
+		try (InputStream inputStream = new FileInputStream(new File(FILE_NETWORK_JSON));
 
 				InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.defaultCharset())) {
 
-			configuracao = new Gson().fromJson(inputStreamReader, ConfigurationVO.class);
+			configuracao = new Gson().fromJson(inputStreamReader,
+					TypeToken.getParameterized(List.class, IPVO.class).getType());
 
 		} catch (Exception e) {
 
-			log.info(GerenciadorInicializacaoLogConstants.CONFIGURACAO_MODULOS_NAO_ENCONTRADA, e);
+			log.info(GerenciadorInicializacaoLogConstants.CONFIGURACAO_NETWORK_NAO_ENCONTRADA, e);
 
-			configuracao = new ConfigurationVO();
+			configuracao = new ArrayList<>();
 		}
 
 		return configuracao;
@@ -254,6 +264,129 @@ public class InicializacaoModulosServiceIpml implements InicializacaoModulosServ
 				((InicializacaoModulosListener) listeners[i + 1]).moduloStopped(codigoModulo);
 			}
 		}
+	}
+
+	@Override
+	public void atualizarConfiguracao(List<IPVO> ipvos) {
+		log.info("Atualizando Configuração de ips de conexão do ERP");
+
+		if (!ListUtil.isNullOrEmpty(ipvos)) {
+
+			List<IPVO> ipsCadastrados = buscarConfiguracaoIP();
+
+			if (ListUtil.isNullOrEmpty(ipsCadastrados)) {
+
+				new Thread(() -> atualizarConfiguracaoGerenciador(ipvos)).start();
+			}
+
+			String strIp = new Gson().toJson(ipvos);
+
+			if (!strIp.equals(new Gson().toJson(ipsCadastrados))) {
+
+				salvarConfiguracaoIPs(strIp);
+			}
+		}
+	}
+
+	private void atualizarConfiguracaoGerenciador(List<IPVO> ipvos) {
+
+		ConfigurationVO configurationVO = buscarConfiguracoesGerenciador(ipvos);
+
+		if (configurationVO != null) {
+
+			salvarConfiguracaoModulos(configurationVO);
+		}
+
+	}
+
+	private ConfigurationVO buscarConfiguracoesGerenciador(List<IPVO> ipvos) {
+
+		List<IPVO> ipsGerenciador = IPUtil.getIps();
+
+		ConfigurationVO configurationVO = null;
+
+		while (configurationVO == null) {
+
+			for (IPVO ipRede : ipvos) {
+
+				List<IPVO> ipsValidos = ipsGerenciador.stream()
+						.filter(ipGerenciador -> IPUtil.isNetworkMatch(ipRede, ipGerenciador.getIp()))
+						.collect(Collectors.toList());
+
+				for (IPVO ipValido : ipsValidos) {
+
+					String requisicao = String.format("http://%s:%d", ipRede.getIp(), ipRede.getPorta());
+
+					log.info("Tentando conectar ao endpoint: " + requisicao);
+
+					configurationVO = RequestBuilder.build().target(ConfiguracaoModulosClient.class, requisicao)
+							.buscarConfiguracaoModulos(ipValido.getIp());
+
+					if (configurationVO != null) {
+
+						return configurationVO;
+					}
+				}
+
+			}
+
+			try {
+				Thread.sleep(5000);
+
+			} catch (InterruptedException e) {
+
+				log.error(GerenciadorInicializacaoLogConstants.ERRO_BUSCAR_CONFIGURACAO_MODULOS, e);
+			}
+		}
+
+		return null;
+	}
+
+	private void salvarConfiguracaoModulos(ConfigurationVO configurationVO) {
+
+		try {
+
+			String data = new Gson().toJson(configurationVO);
+
+			FileUtils.writeStringToFile(new File(FILE_SERVER_JSON), data, Charset.defaultCharset());
+
+		} catch (Exception e) {
+
+			log.error(GerenciadorInicializacaoLogConstants.ERRO_SALVAR_CONFIGURACAO_MODULOS, e);
+		}
+	}
+
+	private void salvarConfiguracaoIPs(String data) {
+		log.info("Salvando Configuração de ips de conexão do ERP");
+
+		try {
+
+			FileUtils.writeStringToFile(new File(FILE_NETWORK_JSON), data, Charset.defaultCharset());
+
+		} catch (Exception e) {
+
+			log.error(GerenciadorInicializacaoLogConstants.ERRO_SALVAR_CONFIGURACAO_MODULOS, e);
+		}
+	}
+
+	protected ConfigurationVO buscarConfiguracaoModulos() {
+
+		ConfigurationVO configuracao = null;
+
+		try (InputStream inputStream = new FileInputStream(new File(FILE_SERVER_JSON));
+
+				InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.defaultCharset())) {
+
+			configuracao = new Gson().fromJson(inputStreamReader, ConfigurationVO.class);
+
+		} catch (Exception e) {
+
+			log.info(GerenciadorInicializacaoLogConstants.CONFIGURACAO_MODULOS_NAO_ENCONTRADA, e);
+
+			configuracao = new ConfigurationVO();
+		}
+
+		return configuracao;
 	}
 
 }

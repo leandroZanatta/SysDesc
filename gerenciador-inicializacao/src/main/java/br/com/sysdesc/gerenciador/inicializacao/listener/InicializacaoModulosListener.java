@@ -2,7 +2,7 @@ package br.com.sysdesc.gerenciador.inicializacao.listener;
 
 import java.util.EventListener;
 
-import br.com.sysdesc.gerenciador.inicializacao.vo.ConfigurationVO;
+import br.com.sysdesc.util.vo.ConfigurationVO;
 
 public interface InicializacaoModulosListener extends EventListener {
 

@@ -1,6 +1,8 @@
 package br.com.sysdesc.startup;
 
 import br.com.sysdesc.repository.conexao.Conexao;
+import br.com.sysdesc.rest.SysdescRest;
+import br.com.sysdesc.thread.PDVSchedule;
 import br.com.sysdesc.ui.FrmApplication;
 import br.com.sysdesc.util.classes.LookAndFeelUtil;
 
@@ -11,6 +13,10 @@ public class StartUp {
 		LookAndFeelUtil.configureLayout();
 
 		Conexao.buildEntityManager();
+
+		PDVSchedule.getInstance().startScheduleAtualizacaoGerenciadores();
+
+		SysdescRest.startServer();
 
 		FrmApplication.getInstance();
 	}

@@ -28,12 +28,11 @@ import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 
 import br.com.sysdesc.gerenciador.inicializacao.adapter.InicializacaoModulosPrincipalAdapter;
-import br.com.sysdesc.gerenciador.inicializacao.http.JavaHTTPServer;
 import br.com.sysdesc.gerenciador.inicializacao.service.InicializacaoModulosService;
 import br.com.sysdesc.gerenciador.inicializacao.service.impl.InicializacaoModulosServiceIpml;
-import br.com.sysdesc.gerenciador.inicializacao.util.ApplicationProperies;
-import br.com.sysdesc.gerenciador.inicializacao.vo.InicializacaoModulosVO;
 import br.com.sysdesc.util.classes.ListUtil;
+import br.com.sysdesc.util.resources.ApplicationProperies;
+import br.com.sysdesc.util.vo.InicializacaoModulosVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -78,14 +77,13 @@ public class FrmPrincipal extends JFrame {
 
 		txLogServicos.setEditable(Boolean.FALSE);
 		scrollPane.setViewportView(txLogServicos);
+		contentPane.setLayout(null);
 
-		scrollPane.setBounds(7, 90, 480, 124);
 		btAbrirPDV.setBounds(52, 36, 134, 23);
 		btReiniciar.setBounds(190, 36, 131, 23);
 		btCancelar.setBounds(325, 36, 117, 23);
 		chIniciarPDV.setBounds(7, 63, 157, 23);
-
-		contentPane.setLayout(null);
+		scrollPane.setBounds(7, 90, 480, 124);
 
 		contentPane.add(btAbrirPDV);
 		contentPane.add(btReiniciar);
@@ -136,8 +134,6 @@ public class FrmPrincipal extends JFrame {
 				});
 
 		this.iniciarModulos();
-
-		new JavaHTTPServer().start();
 	}
 
 	private void adicionarAcoesBotoes() {

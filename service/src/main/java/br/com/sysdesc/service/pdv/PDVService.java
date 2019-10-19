@@ -54,7 +54,7 @@ public class PDVService extends AbstractGenericService<Pdv> {
 			throw new SysDescException(MensagemConstants.MENSAGEM_IP_PDV_INVALIDO);
 		}
 
-		if (!IPUtil.isNetworkMatch(objetoPersistir.getIpPDV())) {
+		if (!IPUtil.isOnlyNetworkMatch(objetoPersistir.getIpPDV())) {
 
 			throw new SysDescException(MensagemConstants.MENSAGEM_IP_PDV_FORA_REDE);
 		}

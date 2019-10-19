@@ -41,6 +41,20 @@
 
 		<dependency>
 			<groupId>br.com.sysdesc</groupId>
+			<artifactId>intercomm</artifactId>
+			<version>${project.parent.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>br.com.sysdesc</groupId>
+			<artifactId>controller</artifactId>
+			<version>${project.parent.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>br.com.sysdesc</groupId>
 			<artifactId>components</artifactId>
 			<version>${project.parent.version}</version>
 			<scope>compile</scope>

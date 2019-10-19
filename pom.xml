@@ -15,6 +15,9 @@
 		<module>components</module>
 		<module>service</module>
 		<module>pesquisa</module>
+		<module>sysdesc-http-server</module>
+		<module>controller</module>
+		<module>intercomm</module>
 		<module>interface</module>
 		<module>upgrade</module>
 	</modules>

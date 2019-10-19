@@ -1,5 +1,6 @@
 package br.com.sysdesc.util.classes;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,4 +22,13 @@ public class ListUtil {
 		return lista == null || lista.isEmpty();
 	}
 
+	@SuppressWarnings("unchecked")
+	public static <T> T[] toArray(List<T> lista, Class<T> returnType) {
+
+		T[] array = null;
+
+		array = (T[]) Array.newInstance(returnType, lista.size());
+
+		return lista.toArray(array);
+	}
 }

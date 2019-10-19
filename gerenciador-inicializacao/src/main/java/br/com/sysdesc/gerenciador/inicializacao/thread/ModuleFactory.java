@@ -15,11 +15,11 @@ import javax.swing.event.EventListenerList;
 
 import br.com.sysdesc.gerenciador.inicializacao.listener.InicializacaoModulosListener;
 import br.com.sysdesc.gerenciador.inicializacao.util.GerenciadorInicializacaoResources;
-import br.com.sysdesc.gerenciador.inicializacao.vo.ModuleVO;
-import br.com.sysdesc.gerenciador.inicializacao.vo.ServerVO;
 import br.com.sysdesc.util.classes.LongUtil;
 import br.com.sysdesc.util.classes.ProcessUtil;
 import br.com.sysdesc.util.classes.StringUtil;
+import br.com.sysdesc.util.vo.ModuleVO;
+import br.com.sysdesc.util.vo.ServerVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

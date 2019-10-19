@@ -8,9 +8,9 @@ import java.util.Optional;
 import javax.swing.JTextPane;
 
 import br.com.sysdesc.gerenciador.inicializacao.listener.InicializacaoModulosListener;
-import br.com.sysdesc.gerenciador.inicializacao.vo.ConfigurationVO;
-import br.com.sysdesc.gerenciador.inicializacao.vo.InicializacaoModulosVO;
 import br.com.sysdesc.util.classes.DateUtil;
+import br.com.sysdesc.util.vo.ConfigurationVO;
+import br.com.sysdesc.util.vo.InicializacaoModulosVO;
 
 public abstract class InicializacaoModulosPrincipalAdapter implements InicializacaoModulosListener {
 

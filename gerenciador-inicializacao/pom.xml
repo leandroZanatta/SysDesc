@@ -12,7 +12,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<sysdesc.version>0.0.12</sysdesc.version>
+		<sysdesc.version>0.0.14</sysdesc.version>
 	</properties>
 
 
@@ -25,33 +25,20 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
+			<groupId>br.com.sysdesc</groupId>
+			<artifactId>http-server</artifactId>
+			<version>${sysdesc.version}</version>
+			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
+			<groupId>io.github.openfeign</groupId>
+			<artifactId>feign-core</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>com.miglayout</groupId>
-			<artifactId>miglayout</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.reflections</groupId>
-			<artifactId>reflections</artifactId>
+			<groupId>io.github.openfeign</groupId>
+			<artifactId>feign-gson</artifactId>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
