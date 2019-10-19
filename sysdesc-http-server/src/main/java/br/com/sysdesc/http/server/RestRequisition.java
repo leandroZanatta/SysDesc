@@ -16,56 +16,76 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RestRequisition extends Thread {
 
-    private Socket socket;
+	private Socket socket;
 
-    public RestRequisition(Socket socket) {
+	public RestRequisition(Socket socket) {
 
-        this.socket = socket;
-    }
+		this.socket = socket;
+	}
 
-    @Override
-    public void run() {
+	@Override
+	public void run() {
 
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
-                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(socket.getOutputStream())) {
+		try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
+				BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(socket.getOutputStream())) {
 
-            String input = in.readLine();
+			String input = in.readLine();
 
-            StringTokenizer parse = new StringTokenizer(input);
+			StringTokenizer parse = new StringTokenizer(input);
 
-            HttpMethod method = HttpMethod.valueOf(parse.nextToken().toUpperCase());
+			HttpMethod method = HttpMethod.valueOf(parse.nextToken().toUpperCase());
 
-            String fileRequested = parse.nextToken().toLowerCase();
+			String urlParams[] = parse.nextToken().toLowerCase().split("\\?");
 
-            String headerLine = null;
+			String fileRequested = urlParams[0];
 
-            Map<String, String> headers = new HashMap<>();
+			String headerLine = null;
 
-            while ((headerLine = in.readLine()).length() != 0) {
+			Map<String, String> headers = new HashMap<>();
 
-                String[] params = headerLine.split(":");
+			Map<String, String> queryParams = new HashMap<>();
 
-                if (params.length == 2) {
-                    headers.put(params[0], params[1]);
-                }
-            }
+			if (urlParams.length > 1) {
 
-            StringBuilder payload = new StringBuilder();
+				String[] arrayParam = urlParams[1].split("&");
 
-            while (in.ready()) {
-                payload.append((char) in.read());
-            }
+				for (String itemArray : arrayParam) {
 
-            Request request = new Request(method, fileRequested, headers, payload.toString(), printWriter, bufferedOutputStream);
+					String[] query = itemArray.split("=");
 
-            request.process();
+					if (query.length == 2) {
+						queryParams.put(query[0], query[1]);
+					}
+				}
 
-        } catch (IOException ioe) {
+			}
 
-            log.error("Server error ", ioe);
-        }
+			while ((headerLine = in.readLine()).length() != 0) {
 
-    }
+				String[] params = headerLine.split(":");
+
+				if (params.length == 2) {
+					headers.put(params[0], params[1]);
+				}
+			}
+
+			StringBuilder payload = new StringBuilder();
+
+			while (in.ready()) {
+				payload.append((char) in.read());
+			}
+
+			Request request = new Request(method, fileRequested, headers, queryParams, payload.toString(), printWriter,
+					bufferedOutputStream);
+
+			request.process();
+
+		} catch (IOException ioe) {
+
+			log.error("Server error ", ioe);
+		}
+
+	}
 
 }

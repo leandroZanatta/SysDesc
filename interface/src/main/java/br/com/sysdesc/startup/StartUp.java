@@ -1,5 +1,6 @@
 package br.com.sysdesc.startup;
 
+import br.com.sysdesc.ftp.SysdescFTP;
 import br.com.sysdesc.repository.conexao.Conexao;
 import br.com.sysdesc.rest.SysdescRest;
 import br.com.sysdesc.thread.PDVSchedule;
@@ -17,6 +18,8 @@ public class StartUp {
 		PDVSchedule.getInstance().startScheduleAtualizacaoGerenciadores();
 
 		SysdescRest.startServer();
+
+		SysdescFTP.startServer();
 
 		FrmApplication.getInstance();
 	}

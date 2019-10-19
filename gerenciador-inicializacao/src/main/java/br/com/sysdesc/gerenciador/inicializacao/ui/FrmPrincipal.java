@@ -46,7 +46,6 @@ public class FrmPrincipal extends JFrame {
 	private static final String PARAR_SERVICOS = "3 - Parar Serviços";
 	private static final String ABRIR_PDV = "1 - Abrir PDV";
 	private static final String REINICIAR_SERVICOS = "2 - Reiniciar Serviços";
-	private static final String INICIALIZACAO_AUTOMATICA_FRONTEND = "inicializacao.automatica.frontend";
 
 	private JPanel contentPane;
 	private JButton btAbrirPDV;
@@ -185,7 +184,7 @@ public class FrmPrincipal extends JFrame {
 		};
 
 		Boolean inicializacaoAutomatica = Boolean.valueOf(ApplicationProperies.getInstance()
-				.getProperty(INICIALIZACAO_AUTOMATICA_FRONTEND, Boolean.TRUE.toString()));
+				.getProperty(ApplicationProperies.INICIALIZACAO_AUTOMATICA_FRONTEND, Boolean.TRUE.toString()));
 
 		btAbrirPDV.addActionListener(actionAbrirPDV);
 		btReiniciar.addActionListener(actionReiniciar);
@@ -207,7 +206,8 @@ public class FrmPrincipal extends JFrame {
 
 		String inicializacaoAutomatica = String.valueOf(chIniciarPDV.isSelected());
 
-		ApplicationProperies.getInstance().setPropertie(INICIALIZACAO_AUTOMATICA_FRONTEND, inicializacaoAutomatica);
+		ApplicationProperies.getInstance().setPropertie(ApplicationProperies.INICIALIZACAO_AUTOMATICA_FRONTEND,
+				inicializacaoAutomatica);
 	}
 
 	private void abrirPDV() {
@@ -265,7 +265,7 @@ public class FrmPrincipal extends JFrame {
 
 			try {
 
-				inicializacaoModulosService.iniciarModulos(chIniciarPDV.isSelected());
+				inicializacaoModulosService.iniciarModulos();
 
 			} catch (Exception e) {
 

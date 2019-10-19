@@ -74,6 +74,12 @@
 			</dependency>
 
 			<dependency>
+				<groupId>io.github.openfeign</groupId>
+				<artifactId>feign-slf4j</artifactId>
+				<version>10.5.1</version>
+			</dependency>
+
+			<dependency>
 				<groupId>com.google.googlejavaformat</groupId>
 				<artifactId>google-java-format</artifactId>
 				<version>1.6</version>

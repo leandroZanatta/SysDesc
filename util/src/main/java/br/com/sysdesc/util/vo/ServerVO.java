@@ -8,20 +8,22 @@ import lombok.Data;
 @Data
 public class ServerVO {
 
-    private Long id;
+	private Long id;
 
-    private String serverName;
+	private String serverName;
 
-    private Long maximumExecutionTime;
+	private Long maximumExecutionTime;
 
-    private String comand;
+	private String comand;
 
-    private String msgValidacaoStart;
+	private String msgValidacaoStart;
 
-    private Boolean async;
-    
-    private String directory;
+	private Boolean async;
 
-    private List<Long> dependsOn = new ArrayList<>();
+	private String directory;
+
+	private String zipFile;
+
+	private List<Long> dependsOn = new ArrayList<>();
 
 }

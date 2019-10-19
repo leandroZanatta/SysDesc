@@ -15,27 +15,32 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import br.com.sysdesc.http.server.anotation.RequestBody;
+import br.com.sysdesc.http.server.anotation.RequestParam;
 import br.com.sysdesc.http.server.enumeradores.HttpMethod;
 import br.com.sysdesc.http.server.vo.ApiMethodVO;
 import br.com.sysdesc.http.server.vo.InternalErrorVO;
 import br.com.sysdesc.http.server.vo.NotFoundVO;
 import br.com.sysdesc.http.server.vo.OKOptionsVO;
 import br.com.sysdesc.util.classes.ListUtil;
+import br.com.sysdesc.util.classes.StringUtil;
 
 public class Request {
 
 	private HttpMethod method;
 	private String fileRequested;
 	private Map<String, String> headers;
+	private Map<String, String> queryParams;
 	private String payload;
 	private PrintWriter printWriter;
 	private BufferedOutputStream bufferedOutputStream;
 
-	public Request(HttpMethod method, String fileRequested, Map<String, String> headers, String payload,
-			PrintWriter printWriter, BufferedOutputStream bufferedOutputStream) {
+	public Request(HttpMethod method, String fileRequested, Map<String, String> headers,
+			Map<String, String> queryParams, String payload, PrintWriter printWriter,
+			BufferedOutputStream bufferedOutputStream) {
 		this.method = method;
 		this.fileRequested = fileRequested;
 		this.headers = headers;
+		this.queryParams = queryParams;
 		this.payload = payload;
 		this.printWriter = printWriter;
 		this.bufferedOutputStream = bufferedOutputStream;
@@ -70,6 +75,9 @@ public class Request {
 					if (parametro.isAnnotationPresent(RequestBody.class)) {
 
 						valores.add(getParameter(parametro));
+					} else if (parametro.isAnnotationPresent(RequestParam.class)) {
+
+						valores.add(getQueryParameter(parametro));
 					}
 				}
 
@@ -85,6 +93,19 @@ public class Request {
 		}
 
 		retornarNotFound();
+	}
+
+	private Object getQueryParameter(Parameter parametro) {
+
+		RequestParam param = parametro.getAnnotation(RequestParam.class);
+
+		String queryParam = this.queryParams.get(param.value().toLowerCase());
+
+		if (!StringUtil.isNullOrEmpty(queryParam)) {
+			return parametro.getType().cast(queryParam);
+		}
+
+		return null;
 	}
 
 	private Object getParameter(Parameter parametro) {

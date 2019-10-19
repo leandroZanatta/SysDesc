@@ -14,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ApplicationProperies {
 
+	public static final String INICIALIZACAO_AUTOMATICA_FRONTEND = "inicializacao.automatica.frontend";
+
 	private static ApplicationProperies applicationProperies;
 
 	private Properties properties;
@@ -54,6 +56,10 @@ public class ApplicationProperies {
 	}
 
 	public String getProperty(String key, String defaultValue) {
+
+		if (!properties.contains(key)) {
+			setPropertie(key, defaultValue);
+		}
 
 		return properties.getProperty(key, defaultValue);
 	}

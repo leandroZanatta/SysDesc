@@ -16,7 +16,7 @@ public class PDVSchedule {
 
 	public void startScheduleAtualizacaoGerenciadores() {
 
-		executorService.schedule(new AtualizacaoGerenciadorPDVThread(), 5, TimeUnit.SECONDS);
+		executorService.scheduleAtFixedRate(new AtualizacaoGerenciadorPDVThread(), 0, 5, TimeUnit.SECONDS);
 	}
 
 	public static PDVSchedule getInstance() {
