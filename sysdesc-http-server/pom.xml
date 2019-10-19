@@ -4,12 +4,12 @@
 	<parent>
 		<groupId>br.com</groupId>
 		<artifactId>sysdesc</artifactId>
-		<version>0.0.14</version>
+		<version>0.0.15</version>
 	</parent>
 
 	<groupId>br.com.sysdesc</groupId>
 	<artifactId>http-server</artifactId>
-	<version>0.0.14</version>
+	<version>0.0.15</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
