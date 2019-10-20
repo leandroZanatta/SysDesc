@@ -39,7 +39,7 @@ public class ApplicationProperies {
 
 			} catch (IOException e) {
 
-				log.error(MensagemConstants.MENSAGEM_ARQUIVO_CONFIGURACOES_NAO_ENCONTRADO, e);
+				log.error(MensagemConstants.MENSAGEM_ARQUIVO_CONFIGURACOES_NAO_ENCONTRADO + " - " + e.getMessage());
 			}
 
 		}
@@ -75,7 +75,7 @@ public class ApplicationProperies {
 			properties.store(fileOutputStream, null);
 
 		} catch (Exception e) {
-			log.error(MensagemConstants.MENSAGEM_ARQUIVO_CONFIGURACOES_NAO_ENCONTRADO, e);
+			log.error(MensagemConstants.MENSAGEM_ARQUIVO_CONFIGURACOES_NAO_ENCONTRADO + " - " + e.getMessage());
 		}
 
 	}

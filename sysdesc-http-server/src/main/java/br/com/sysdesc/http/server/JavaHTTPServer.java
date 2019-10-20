@@ -10,32 +10,34 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JavaHTTPServer extends Thread {
 
-    private ExecutorService executorService = Executors.newCachedThreadPool();
+	private ExecutorService executorService = Executors.newCachedThreadPool();
 
-    private final Integer port;
-    private final String[] apiPackages;
+	private final Integer port;
+	private final String[] apiPackages;
 
-    public JavaHTTPServer(Integer port, String... apiPackages) {
-        this.port = port;
-        this.apiPackages = apiPackages;
-    }
+	public JavaHTTPServer(Integer port, String... apiPackages) {
+		this.port = port;
+		this.apiPackages = apiPackages;
+	}
 
-    @Override
-    public void run() {
+	@Override
+	public void run() {
 
-        ApisController.initialize(apiPackages);
+		ApisController.initialize(apiPackages);
 
-        try (ServerSocket serverConnect = new ServerSocket(port);) {
+		log.info("Inicializando o Servidor http na porta: " + this.port);
 
-            while (true) {
+		try (ServerSocket serverConnect = new ServerSocket(port);) {
 
-                executorService.submit(new RestRequisition(serverConnect.accept()));
-            }
+			while (true) {
 
-        } catch (IOException e) {
+				executorService.submit(new RestRequisition(serverConnect.accept()));
+			}
 
-            log.error("N�o foi possivel inicializar o servidor", e);
-        }
-    }
+		} catch (IOException e) {
+
+			log.error("Não foi possivel inicializar o servidor", e);
+		}
+	}
 
 }

@@ -46,6 +46,7 @@ public class ConfiguracaoModulosServiceImpl implements ConfiguracaoModulosServic
 
 	@Override
 	public ConfigurationVO buscarConfiguracaoModulos() {
+		log.info("==>Executando o método buscarConfiguracaoModulos");
 
 		ConfigurationVO configuracao = null;
 
@@ -57,7 +58,7 @@ public class ConfiguracaoModulosServiceImpl implements ConfiguracaoModulosServic
 
 		} catch (Exception e) {
 
-			log.info(GerenciadorInicializacaoLogConstants.CONFIGURACAO_MODULOS_NAO_ENCONTRADA, e);
+			log.info(GerenciadorInicializacaoLogConstants.CONFIGURACAO_MODULOS_NAO_ENCONTRADA + " - " + e.getMessage());
 
 			configuracao = new ConfigurationVO();
 		}
@@ -67,6 +68,7 @@ public class ConfiguracaoModulosServiceImpl implements ConfiguracaoModulosServic
 
 	@Override
 	public void salvarConfiguracaoModulos(ConfigurationVO configurationVO) {
+		log.info("==>Executando o método salvarConfiguracaoModulos");
 
 		try {
 
@@ -76,13 +78,14 @@ public class ConfiguracaoModulosServiceImpl implements ConfiguracaoModulosServic
 
 		} catch (Exception e) {
 
-			log.error(GerenciadorInicializacaoLogConstants.ERRO_SALVAR_CONFIGURACAO_MODULOS, e);
+			log.error(GerenciadorInicializacaoLogConstants.ERRO_SALVAR_CONFIGURACAO_MODULOS + " - " + e.getMessage());
 		}
 
 	}
 
 	@Override
 	public ConfigurationVO buscarConfiguracoesGerenciadorERP(List<IPVO> ipvos) {
+		log.info("==>Executando o método buscarConfiguracoesGerenciadorERP");
 
 		List<IPVO> ipsGerenciador = IPUtil.getIps();
 
@@ -117,7 +120,8 @@ public class ConfiguracaoModulosServiceImpl implements ConfiguracaoModulosServic
 
 			} catch (InterruptedException e) {
 
-				log.error(GerenciadorInicializacaoLogConstants.ERRO_BUSCAR_CONFIGURACAO_MODULOS, e);
+				log.error(
+						GerenciadorInicializacaoLogConstants.ERRO_BUSCAR_CONFIGURACAO_MODULOS + " - " + e.getMessage());
 			}
 		}
 
@@ -135,7 +139,7 @@ public class ConfiguracaoModulosServiceImpl implements ConfiguracaoModulosServic
 
 		} catch (Exception e) {
 
-			log.error(GerenciadorInicializacaoLogConstants.ERRO_SALVAR_CONFIGURACAO_MODULOS, e);
+			log.error(GerenciadorInicializacaoLogConstants.ERRO_SALVAR_CONFIGURACAO_MODULOS + " - " + e.getMessage());
 
 			return Boolean.FALSE;
 		}
@@ -171,6 +175,7 @@ public class ConfiguracaoModulosServiceImpl implements ConfiguracaoModulosServic
 	}
 
 	private List<IPVO> buscarConfiguracaoIP() {
+		log.info("==>Executando o método buscarConfiguracaoIP");
 
 		List<IPVO> configuracao = null;
 
@@ -183,7 +188,7 @@ public class ConfiguracaoModulosServiceImpl implements ConfiguracaoModulosServic
 
 		} catch (Exception e) {
 
-			log.info(GerenciadorInicializacaoLogConstants.CONFIGURACAO_NETWORK_NAO_ENCONTRADA, e);
+			log.info(GerenciadorInicializacaoLogConstants.CONFIGURACAO_NETWORK_NAO_ENCONTRADA + " - " + e.getMessage());
 
 			configuracao = new ArrayList<>();
 		}
@@ -192,6 +197,7 @@ public class ConfiguracaoModulosServiceImpl implements ConfiguracaoModulosServic
 	}
 
 	private void atualizarConfiguracaoGerenciador(List<IPVO> ipvos) {
+		log.info("==>Executando o método atualizarConfiguracaoGerenciador");
 
 		ConfigurationVO configurationVO = buscarConfiguracoesGerenciadorERP(ipvos);
 
@@ -213,6 +219,7 @@ public class ConfiguracaoModulosServiceImpl implements ConfiguracaoModulosServic
 	}
 
 	private void efetuarDownloadModulos(List<IPVO> ipvos, ConfigurationVO configurationVO) {
+		log.info("==>Executando o método efetuarDownloadModulos");
 
 		File pastaVersoes = new File(Configuracoes.FOLDER_VERSOES);
 
@@ -230,6 +237,7 @@ public class ConfiguracaoModulosServiceImpl implements ConfiguracaoModulosServic
 	}
 
 	private void descompactarArquivos(ConfigurationVO configurationVO) {
+		log.info("==>Executando o método descompactarArquivos");
 
 		descompactar(configurationVO.getFrontEnds());
 
@@ -238,6 +246,7 @@ public class ConfiguracaoModulosServiceImpl implements ConfiguracaoModulosServic
 	}
 
 	private void descompactar(List<ServerVO> servers) {
+		log.info("==>Executando o método descompactar");
 
 		File path = new File(Configuracoes.FOLDER_VERSOES);
 
@@ -263,6 +272,7 @@ public class ConfiguracaoModulosServiceImpl implements ConfiguracaoModulosServic
 	}
 
 	private Map<String, Boolean> buscarArquivosConfiguracao(ConfigurationVO configurationVO) {
+		log.info("==>Executando o método buscarArquivosConfiguracao");
 
 		Map<String, Boolean> mapaDownloads = new HashMap<>();
 
@@ -276,7 +286,7 @@ public class ConfiguracaoModulosServiceImpl implements ConfiguracaoModulosServic
 	}
 
 	private Boolean efetuarDownloadArquivo(Map<String, Boolean> zipFiles, File pastaVersoes, IPVO ipErp) {
-
+		log.info("==>Executando o método efetuarDownloadArquivo");
 		try {
 
 			for (Entry<String, Boolean> file : zipFiles.entrySet()) {

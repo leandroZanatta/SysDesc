@@ -76,6 +76,8 @@ public class RestRequisition extends Thread {
 				payload.append((char) in.read());
 			}
 
+			log.info(String.format("Requisição recebida: Método: %s - Path: %s ", method, fileRequested));
+
 			Request request = new Request(method, fileRequested, headers, queryParams, payload.toString(), printWriter,
 					bufferedOutputStream);
 

@@ -31,15 +31,15 @@ public class IPUtil {
 
 			return false;
 		}
-		if (mascara[0].equals("255") && !ip1[1].equals(ip2[1])) {
+		if (mascara[1].equals("255") && !ip1[1].equals(ip2[1])) {
 
 			return false;
 		}
-		if (mascara[0].equals("255") && !ip1[2].equals(ip2[2])) {
+		if (mascara[2].equals("255") && !ip1[2].equals(ip2[2])) {
 
 			return false;
 		}
-		if (mascara[0].equals("255") && !ip1[3].equals(ip2[3])) {
+		if (mascara[3].equals("255") && !ip1[3].equals(ip2[3])) {
 
 			return false;
 		}
