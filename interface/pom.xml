@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>br.com</groupId>
@@ -68,6 +70,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.jtattoo</groupId>
+			<artifactId>JTattoo</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>br.com.sysdesc</groupId>
 			<artifactId>pesquisa</artifactId>
 			<version>${project.parent.version}</version>
@@ -75,7 +83,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>br.com</groupId>
+			<groupId>br.com.sysdesc</groupId>
 			<artifactId>atualizacao</artifactId>
 			<version>${sysdesc.atualizacao.version}</version>
 			<scope>test</scope>

@@ -5,7 +5,7 @@ import br.com.sysdesc.repository.conexao.Conexao;
 import br.com.sysdesc.rest.SysdescRest;
 import br.com.sysdesc.thread.PDVSchedule;
 import br.com.sysdesc.ui.FrmApplication;
-import br.com.sysdesc.util.classes.LookAndFeelUtil;
+import br.com.sysdesc.ui.util.LookAndFeelUtil;
 
 public class StartUp {
 
