@@ -73,11 +73,11 @@
 			<version>${project.parent.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>br.com</groupId>
 			<artifactId>atualizacao</artifactId>
-			<version>${project.parent.version}</version>
+			<version>${sysdesc.atualizacao.version}</version>
 			<scope>test</scope>
 		</dependency>
 
