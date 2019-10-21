@@ -29,7 +29,7 @@
 		<dependency>
 			<groupId>br.com.sysdesc</groupId>
 			<artifactId>util</artifactId>
-			<version>${project.parent.version}</version>
+			<version>${sysdesc.util.version}</version>
 		</dependency>
 
 		<dependency>

@@ -7,18 +7,18 @@
 	<version>0.0.15</version>
 	<packaging>pom</packaging>
 
+	<properties>
+		<sysdesc.util.version>0.0.1</sysdesc.util.version>
+	</properties>
+
 	<modules>
-		<module>atualizacao</module>
 		<module>libraries</module>
-		<module>util</module>
 		<module>repository</module>
 		<module>components</module>
 		<module>service</module>
 		<module>pesquisa</module>
-		<module>sysdesc-http-server</module>
 		<module>controller</module>
 		<module>intercomm</module>
 		<module>interface</module>
-		<module>upgrade</module>
 	</modules>
 </project>
