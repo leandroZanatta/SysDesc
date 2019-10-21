@@ -28,6 +28,7 @@ import br.com.sysdesc.service.perfil.PerfilService;
 import br.com.sysdesc.service.permissoes.PermissoesProgramaService;
 import br.com.sysdesc.service.programa.ProgramaService;
 import br.com.sysdesc.tablemodels.PermissaoTreeTableModel;
+import br.com.sysdesc.util.constants.MensagemConstants;
 import br.com.sysdesc.util.resources.Resources;
 import br.com.sysdesc.util.vo.PermissaoProgramaVO;
 import net.miginfocom.swing.MigLayout;
@@ -158,7 +159,7 @@ public class FrmPermissoes extends AbstractInternalFrame {
 	private void salvarPermissoesPrograma() {
 
 		if (salvarPermissoes()) {
-			JOptionPane.showMessageDialog(null, "permissoes salvas com sucesso");
+			JOptionPane.showMessageDialog(null, Resources.translate(MensagemConstants.MENSAGENS_PERMISSOES_SALVAS));
 
 			dispose();
 		}

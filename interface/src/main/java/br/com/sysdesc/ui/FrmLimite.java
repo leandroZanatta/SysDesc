@@ -21,6 +21,7 @@ import br.com.sysdesc.repository.model.Limite;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.service.cliente.ClienteService;
 import br.com.sysdesc.service.limite.LimiteService;
+import br.com.sysdesc.util.resources.Resources;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmLimite extends AbstractInternalFrame {
@@ -78,6 +79,7 @@ public class FrmLimite extends AbstractInternalFrame {
 		setSize(450, 450);
 		setClosable(Boolean.TRUE);
 		setTitle("Cadastro de Limite");
+		Resources.translate(Resources.FRMLIMITE_TITLE);
 
 		EtchedBorder bordaGravada = new EtchedBorder(EtchedBorder.LOWERED, null, null);
 
