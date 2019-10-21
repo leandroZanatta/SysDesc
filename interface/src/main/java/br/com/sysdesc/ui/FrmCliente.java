@@ -17,6 +17,7 @@ import javax.swing.text.MaskFormatter;
 import com.toedter.calendar.JDateChooser;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
+import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.enumerator.EstadoCivilEnum;
 import br.com.sysdesc.enumerator.SexoEnum;
@@ -48,7 +49,7 @@ public class FrmCliente extends AbstractInternalFrame {
 	private JTextFieldMaiusculo txIncricaoEstadual;
 	private JTextFieldMaiusculo txEndereco;
 	private JTextFieldMaiusculo txBairro;
-	private JTextFieldMaiusculo txNumero;
+	private JNumericField txNumero;
 	private JFormattedTextField txCelular;
 	private JFormattedTextField txCep;
 	private JFormattedTextField txCgc;
@@ -133,7 +134,7 @@ public class FrmCliente extends AbstractInternalFrame {
 		txCelular = new JFormattedTextField();
 		txNome = new JTextFieldMaiusculo();
 		txEndereco = new JTextFieldMaiusculo();
-		txNumero = new JTextFieldMaiusculo();
+		txNumero = new JNumericField();
 		txBairro = new JTextFieldMaiusculo();
 		cbEstado = new JComboBox<Estado>();
 		cbEstadoCivil = new JComboBox<>();
@@ -315,7 +316,7 @@ public class FrmCliente extends AbstractInternalFrame {
 		rdbtnFisca.setSelected(Boolean.TRUE);
 
 		mascaraCep.install(txCep);
-
+		mascaraCelular.install(txCelular);
 		selecionouPessoaFisica();
 	}
 

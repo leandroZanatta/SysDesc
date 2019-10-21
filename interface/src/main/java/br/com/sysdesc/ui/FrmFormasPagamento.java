@@ -66,6 +66,7 @@ public class FrmFormasPagamento extends AbstractInternalFrame {
 
 		txCodigo = new JTextFieldId();
 		txDescricao = new JTextFieldMaiusculo();
+
 		cbFormaPagamento = new JComboBox<>();
 		chPermiteTroco = new JCheckBox("Permite Troco");
 		chPermitePagamentoPrazo = new JCheckBox("Permite Pagamentos á Prazo");
@@ -169,6 +170,9 @@ public class FrmFormasPagamento extends AbstractInternalFrame {
 		}
 
 		chPermitePagamentoPrazo.setEnabled(pagamentoAprazo);
+		txNumeroMaximoParcelas.setEnabled(pagamentoAprazo);
+		txValorMinimoPagamento.setEnabled(pagamentoAprazo);
+		txDiasPagamento.setEnabled(pagamentoAprazo);
 	}
 
 	private void bloquearPagamentos() {
