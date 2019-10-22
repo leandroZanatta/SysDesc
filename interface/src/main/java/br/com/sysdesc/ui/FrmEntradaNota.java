@@ -12,6 +12,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+
 import com.mysema.query.BooleanBuilder;
 import com.toedter.calendar.JDateChooser;
 
@@ -20,16 +22,20 @@ import br.com.sysdesc.components.ButtonColumn;
 import br.com.sysdesc.components.JMoneyField;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JmoneyFieldColumn;
+import br.com.sysdesc.enumerator.OperacaoEnum;
 import br.com.sysdesc.pesquisa.components.CampoPesquisa;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.pesquisa.ui.FrmPesquisa;
 import br.com.sysdesc.repository.model.Cliente;
+import br.com.sysdesc.repository.model.Departamento;
 import br.com.sysdesc.repository.model.EntradaCabecalho;
+import br.com.sysdesc.repository.model.OperacaoEstoque;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Produto;
 import br.com.sysdesc.service.cliente.ClienteService;
 import br.com.sysdesc.service.entradas.EntradasService;
+import br.com.sysdesc.service.operacaoestoque.OperacaoEstoqueService;
 import br.com.sysdesc.service.produto.ProdutoService;
 import br.com.sysdesc.tablemodels.EntradaMercadoriasTableModel;
 import br.com.sysdesc.util.exception.SysDescException;
@@ -49,6 +55,8 @@ public class FrmEntradaNota extends AbstractInternalFrame {
 	private PanelActions<EntradaCabecalho> panelActions;
 	private EntradaMercadoriasTableModel entradaMercadoriasTableModel;
 	private CampoPesquisa<Cliente> cpFornecedor;
+	private JComboBox<OperacaoEnum> cbTipoOperacao;
+	private JComboBox<OperacaoEstoque> cbNaturezaOperacao;
 
 	private JmoneyFieldColumn colunaQuantidade;
 	private JmoneyFieldColumn colunaValorUnitario;
@@ -57,6 +65,7 @@ public class FrmEntradaNota extends AbstractInternalFrame {
 	private ClienteService clienteService = new ClienteService();
 	private ProdutoService produtoService = new ProdutoService();
 	private EntradasService entradasService = new EntradasService();
+	private OperacaoEstoqueService operacaoEstoqueService = new OperacaoEstoqueService();
 
 	public FrmEntradaNota(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
@@ -87,10 +96,10 @@ public class FrmEntradaNota extends AbstractInternalFrame {
 		JLabel lblNmeroNota = new JLabel("Número Nota:");
 		getContentPane().add(lblNmeroNota, "cell 4 2");
 
-		JComboBox cbNaturezaOperacao = new JComboBox();
+		cbNaturezaOperacao = new JComboBox<>();
 		getContentPane().add(cbNaturezaOperacao, "cell 0 3 3 1,growx");
 
-		JComboBox cbTipoOperacao = new JComboBox();
+		cbTipoOperacao = new JComboBox(OperacaoEnum.values());
 		getContentPane().add(cbTipoOperacao, "cell 3 3,growx");
 
 		txNumeroNota = new JTextField();
@@ -98,6 +107,10 @@ public class FrmEntradaNota extends AbstractInternalFrame {
 
 		JLabel lblEmitente = new JLabel("Emitente:");
 		getContentPane().add(lblEmitente, "cell 0 4");
+
+		operacaoEstoqueService.listarOperacaoEstoque().forEach(cbNaturezaOperacao::addItem);
+		cbNaturezaOperacao.setEditable(Boolean.TRUE);
+		AutoCompleteDecorator.decorate(cbNaturezaOperacao);
 
 		cpFornecedor = new CampoPesquisa<Cliente>(clienteService, PES_CLIENTES, getCodigoUsuario()) {
 
@@ -156,12 +169,18 @@ public class FrmEntradaNota extends AbstractInternalFrame {
 
 			@Override
 			public void carregarObjeto(EntradaCabecalho objeto) {
-
+				cbTipoOperacao.setSelectedItem(objeto.getTipoOperacao());
+				cbNaturezaOperacao.setSelectedItem(objeto.getNaturezaOperacao());
 			}
 
 			@Override
 			public Boolean preencherObjeto(EntradaCabecalho objetoPesquisa) {
 
+				if (cbNaturezaOperacao.getSelectedIndex() >= 0) {
+					// objetoPesquisa.setNaturezaOperacao((OperacaoEstoque)
+					// cbNaturezaOperacao.getSelectedItem());
+
+				}
 				return Boolean.TRUE;
 			}
 		};

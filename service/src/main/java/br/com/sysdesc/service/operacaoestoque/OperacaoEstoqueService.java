@@ -1,10 +1,12 @@
 package br.com.sysdesc.service.operacaoestoque;
 
 import java.util.Date;
+import java.util.List;
 
 import org.w3c.dom.CDATASection;
 
 import br.com.sysdesc.repository.dao.OperacaoEstoqueDAO;
+import br.com.sysdesc.repository.model.Departamento;
 import br.com.sysdesc.repository.model.OperacaoEstoque;
 import br.com.sysdesc.service.interfaces.impl.AbstractGenericService;
 import br.com.sysdesc.util.classes.LongUtil;
@@ -13,9 +15,15 @@ import br.com.sysdesc.util.exception.SysDescException;
 
 public class OperacaoEstoqueService extends AbstractGenericService<OperacaoEstoque> {
 
-	public OperacaoEstoqueService() {
-		super(new OperacaoEstoqueDAO(), OperacaoEstoque::getIdOperacoesEstoque);
+	private final OperacaoEstoqueDAO operacaoEstoqueDAO;
 
+	public OperacaoEstoqueService() {
+		this(new OperacaoEstoqueDAO());
+	}
+
+	public OperacaoEstoqueService(OperacaoEstoqueDAO operacaoEstoqueDAO) {
+		super(new OperacaoEstoqueDAO(), OperacaoEstoque::getIdOperacoesEstoque);
+		this.operacaoEstoqueDAO = operacaoEstoqueDAO;
 	}
 
 	@Override
@@ -29,5 +37,12 @@ public class OperacaoEstoqueService extends AbstractGenericService<OperacaoEstoq
 			objetoPersistir.setCadastro(date);
 		}
 		objetoPersistir.setManutencao(date);
+
 	}
+
+	public List<OperacaoEstoque> listarOperacaoEstoque() {
+
+		return operacaoEstoqueDAO.listar();
+	}
+
 }
