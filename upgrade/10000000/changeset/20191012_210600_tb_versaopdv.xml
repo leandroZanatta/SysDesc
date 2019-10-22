@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd  http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+	<changeSet id="20191012_210600" author="Leandro Zanatta">
+
+		<preConditions onFail="CONTINUE">
+			<not>
+				<tableExists tableName="tb_versaopdv" />
+			</not>
+		</preConditions>
+
+		<createTable tableName="tb_versaopdv">
+			<column name="id_versaopdv" type="NUMBER(18,0)" remarks="CÓDIGO INDENTIFICADOR">
+				<constraints primaryKey="true" primaryKeyName="versaopdv_pk" nullable="false" />
+			</column>
+
+			<column name="nr_versaopdv" type="VARCHAR(20)" remarks="VERSÃO DO PDV" />
+
+			<column name="nr_versaogerenciador" type="VARCHAR(20)" remarks="VERSÃO DO GERENCIADOR" />
+
+			<column name="dt_atualizacao" type="TIMESTAMP" remarks="DATA DE ATUALIZACAO" />
+		</createTable>
+
+		<createSequence sequenceName="gen_versaopdv" />
+	</changeSet>
+</databaseChangeLog>

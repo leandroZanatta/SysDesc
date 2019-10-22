@@ -31,7 +31,7 @@ import br.com.sysdesc.repository.dao.VersaoDAO;
 import br.com.sysdesc.repository.dao.VersaoPDVDAO;
 import br.com.sysdesc.repository.model.Versao;
 import br.com.sysdesc.repository.model.VersaoPDV;
-import br.com.sysdesc.util.vo.VersaoVO;
+import br.com.sysdesc.util.vo.VersaoERPVO;
 import liquibase.util.file.FilenameUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -59,7 +59,7 @@ public class AtualizacaoThread extends Thread {
 	@Override
 	public void run() {
 
-		VersaoVO versaoVO = this.recuperarVersaoInternet();
+		VersaoERPVO versaoVO = this.recuperarVersaoInternet();
 
 		this.verificarVersaoBase(versaoVO);
 
@@ -67,7 +67,7 @@ public class AtualizacaoThread extends Thread {
 
 	}
 
-	private VersaoVO recuperarVersaoInternet() {
+	private VersaoERPVO recuperarVersaoInternet() {
 
 		URL arquivoUrl;
 
@@ -89,7 +89,7 @@ public class AtualizacaoThread extends Thread {
 					stringBuilder.append(inputLine);
 				}
 
-				return new Gson().fromJson(stringBuilder.toString(), VersaoVO.class);
+				return new Gson().fromJson(stringBuilder.toString(), VersaoERPVO.class);
 
 			}
 		} catch (IOException e) {
@@ -109,11 +109,11 @@ public class AtualizacaoThread extends Thread {
 
 	}
 
-	private void verificarVersaoRemota(VersaoVO versaoVO) {
+	private void verificarVersaoRemota(VersaoERPVO versaoVO) {
 
 		try {
 
-			VersaoVO versaoLocal = getArquivoVersaoLocal();
+			VersaoERPVO versaoLocal = getArquivoVersaoLocal();
 
 			if (!versaoBase.equals(versaoVO.getVersaoERP())) {
 
@@ -185,14 +185,14 @@ public class AtualizacaoThread extends Thread {
 		}
 	}
 
-	private VersaoVO getArquivoVersaoLocal() {
+	private VersaoERPVO getArquivoVersaoLocal() {
 		try {
 
 			return new Gson().fromJson(FileUtils.readFileToString(new File(VERSAO), Charset.defaultCharset()),
-					VersaoVO.class);
+					VersaoERPVO.class);
 		} catch (Exception e) {
 
-			return new VersaoVO();
+			return new VersaoERPVO();
 		}
 
 	}
@@ -263,7 +263,7 @@ public class AtualizacaoThread extends Thread {
 		return arquivoVersao;
 	}
 
-	private void verificarVersaoBase(VersaoVO versaoVO) {
+	private void verificarVersaoBase(VersaoERPVO versaoVO) {
 
 		Versao versao = versaoDAO.last();
 

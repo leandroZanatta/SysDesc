@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd  http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+	<changeSet id="20190828_213300" author="Leandro Zanatta">
+		<preConditions onFail="CONTINUE">
+			<not>
+				<tableExists tableName="tb_entradadetalhe" />
+			</not>
+		</preConditions>
+		<createTable tableName="tb_entradadetalhe">
+			<column name="id_entradadetalhe" type="NUMBER(18,0)" remarks="CÓDIGO INDENTIFICADOR">
+				<constraints primaryKey="true" primaryKeyName="entradadetalhe_pk" nullable="false" />
+			</column>
+
+			<column name="cd_entradacabecalho" type="NUMBER(18,0)" remarks="CÓDIGO DA NOTA CABEÇALHO">
+				<constraints nullable="false" foreignKeyName="entradadetalhe_cabecalho_fk" references="tb_entradacabecalho(id_entradacabecalho)" />
+			</column>
+
+			<column name="cd_produto" type="NUMBER(18,0)" remarks="CÓDIGO DO PRODUTO">
+				<constraints nullable="false" foreignKeyName="entradadetalhe_produto_fk" references="tb_produto(id_produto)" />
+			</column>
+
+			<column name="nr_quantidade" type="NUMBER(18,3)" remarks="QUANTIDADE">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="vl_unitario" type="NUMBER(18,4)" remarks="VALOR UNITÁRIO DO PRODUTO">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="vl_total" type="NUMBER(18,2)" remarks="VALOR TOTAL DO PRODUTO">
+				<constraints nullable="false" />
+			</column>
+
+		</createTable>
+
+		<createSequence sequenceName="gen_entradadetalhe" />
+	</changeSet>
+</databaseChangeLog>

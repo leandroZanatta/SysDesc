@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd  http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+	<changeSet id="20190828_211700" author="Leandro Zanatta">
+		<preConditions onFail="CONTINUE">
+			<not>
+				<tableExists tableName="tb_entradacabecalho" />
+			</not>
+		</preConditions>
+		<createTable tableName="tb_entradacabecalho">
+			<column name="id_entradacabecalho" type="NUMBER(18,0)" remarks="CÓDIGO INDENTIFICADOR">
+				<constraints primaryKey="true" primaryKeyName="entradacabecalho_pk" nullable="false" />
+			</column>
+
+			<column name="nr_naturezaoperacao" type="NUMBER(18,0)" remarks="NATUREZA OPERAÇÃO">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="nr_nota" type="NUMBER(18,0)" remarks="NÚMERO DA NOTA">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="dt_emissao" type="DATE" remarks="DATA DE EMISSÃO">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="dt_saida" type="DATE" remarks="DATA DE SAÍDA">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="fl_tipooperacao" type="VARCHAR(1)" remarks="TIPO DE OPERAÇÃO(E,S)">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="cd_emitente" type="NUMBER(18,0)" remarks="CÓDIGO DO EMITENTE">
+				<constraints nullable="false" foreignKeyName="entrada_cliente_fk" references="tb_cliente(id_cliente)" />
+			</column>
+
+			<column name="vl_frete" type="NUMBER(18,2)" remarks="VALOR DO FRETE">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="vl_produtos" type="NUMBER(18,2)" remarks="VALOR DOS PRODUTOS">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="vl_nota" type="NUMBER(18,2)" remarks="VALOR DA NOTA">
+				<constraints nullable="false" />
+			</column>
+
+		</createTable>
+
+		<createSequence sequenceName="gen_entradacabecalho" />
+	</changeSet>
+</databaseChangeLog>

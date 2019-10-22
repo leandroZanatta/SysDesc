@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd  http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+	<changeSet id="20191006_143400" author="Leandro Zanatta">
+
+		<insert tableName="tb_modulopdv">
+			<column name="id_modulopdv" value="1" />
+			<column name="tx_descricao" value="FRONTEND" />
+			<column name="fl_desacoplar" value="N" />
+			<column name="fl_possuiporta" value="N" />
+		</insert>
+
+		<insert tableName="tb_modulopdv">
+			<column name="id_modulopdv" value="2" />
+			<column name="tx_descricao" value="VENDA" />
+			<column name="fl_desacoplar" value="S" />
+			<column name="fl_possuiporta" value="S" />
+			<column name="nr_portapadrao" value="3000" />
+		</insert>
+
+	</changeSet>
+</databaseChangeLog>
