@@ -11,6 +11,7 @@ import javax.swing.event.InternalFrameEvent;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
+import br.com.sysdesc.util.resources.Resources;
 
 public class FrmModulos extends AbstractInternalFrame {
 
@@ -48,8 +49,10 @@ public class FrmModulos extends AbstractInternalFrame {
 
 		JButton btSalvar = new JButton("Salvar");
 		panel.add(btSalvar);
+		Resources.translate(Resources.FRMMODULOS_BTN_SALVAR);
 
 		JButton btCancelar = new JButton("Cancelar");
+		Resources.translate(Resources.FRMMODULOS_BTN_CANCELAR);
 		btCancelar.addActionListener((e) -> dispose());
 		panel.add(btCancelar);
 
