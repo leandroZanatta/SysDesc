@@ -30,11 +30,14 @@ import br.com.sysdesc.pesquisa.ui.FrmPesquisa;
 import br.com.sysdesc.repository.model.Cliente;
 import br.com.sysdesc.repository.model.Departamento;
 import br.com.sysdesc.repository.model.EntradaCabecalho;
+import br.com.sysdesc.repository.model.EntradaDetalhe;
+import br.com.sysdesc.repository.model.Fornecedor;
 import br.com.sysdesc.repository.model.OperacaoEstoque;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Produto;
 import br.com.sysdesc.service.cliente.ClienteService;
 import br.com.sysdesc.service.entradas.EntradasService;
+import br.com.sysdesc.service.fornecedor.FornecedorService;
 import br.com.sysdesc.service.operacaoestoque.OperacaoEstoqueService;
 import br.com.sysdesc.service.produto.ProdutoService;
 import br.com.sysdesc.tablemodels.EntradaMercadoriasTableModel;
@@ -45,7 +48,7 @@ public class FrmEntradaNota extends AbstractInternalFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JNumericField txCodigo;
-	private JTextField txNumeroNota;
+	private JNumericField txNumeroNota;
 	private JDateChooser dtEmissao;
 	private JDateChooser dtSaida;
 	private JMoneyField txFrete;
@@ -54,15 +57,14 @@ public class FrmEntradaNota extends AbstractInternalFrame {
 	private JTable tbProdutos;
 	private PanelActions<EntradaCabecalho> panelActions;
 	private EntradaMercadoriasTableModel entradaMercadoriasTableModel;
-	private CampoPesquisa<Cliente> cpFornecedor;
-	private JComboBox<OperacaoEnum> cbTipoOperacao;
-	private JComboBox<OperacaoEstoque> cbNaturezaOperacao;
+	private CampoPesquisa<Fornecedor> cpFornecedor;
+	private CampoPesquisa<OperacaoEstoque> cpNaturezaOperacao;
 
 	private JmoneyFieldColumn colunaQuantidade;
 	private JmoneyFieldColumn colunaValorUnitario;
 	private JmoneyFieldColumn colunaValorTotal;
 
-	private ClienteService clienteService = new ClienteService();
+	private FornecedorService fornecedorService = new FornecedorService();
 	private ProdutoService produtoService = new ProdutoService();
 	private EntradasService entradasService = new EntradasService();
 	private OperacaoEstoqueService operacaoEstoqueService = new OperacaoEstoqueService();
@@ -90,35 +92,33 @@ public class FrmEntradaNota extends AbstractInternalFrame {
 		JLabel lblNewLabel = new JLabel("Natureza da Operação:");
 		getContentPane().add(lblNewLabel, "cell 0 2");
 
-		JLabel lblNewLabel_1 = new JLabel("Tipo de Operação:");
-		getContentPane().add(lblNewLabel_1, "cell 3 2");
-
 		JLabel lblNmeroNota = new JLabel("Número Nota:");
 		getContentPane().add(lblNmeroNota, "cell 4 2");
 
-		cbNaturezaOperacao = new JComboBox<>();
-		getContentPane().add(cbNaturezaOperacao, "cell 0 3 3 1,growx");
+		cpNaturezaOperacao = new CampoPesquisa<OperacaoEstoque>(operacaoEstoqueService,
+				PesquisaEnum.PES_OPERACOES_ESTOQUE, getCodigoUsuario()) {
 
-		cbTipoOperacao = new JComboBox(OperacaoEnum.values());
-		getContentPane().add(cbTipoOperacao, "cell 3 3,growx");
+			@Override
+			public String formatarValorCampo(OperacaoEstoque objeto) {
+				return String.format("%d - %s", objeto.getIdOperacoesEstoque(), objeto.getDescricao());
+			}
+		};
+		getContentPane().add(cpNaturezaOperacao, "cell 0 3 4 1,growx");
 
-		txNumeroNota = new JTextField();
+		txNumeroNota = new JNumericField();
 		getContentPane().add(txNumeroNota, "cell 4 3,growx");
 
 		JLabel lblEmitente = new JLabel("Emitente:");
 		getContentPane().add(lblEmitente, "cell 0 4");
 
-		operacaoEstoqueService.listarOperacaoEstoque().forEach(cbNaturezaOperacao::addItem);
-		cbNaturezaOperacao.setEditable(Boolean.TRUE);
-		AutoCompleteDecorator.decorate(cbNaturezaOperacao);
-
-		cpFornecedor = new CampoPesquisa<Cliente>(clienteService, PES_CLIENTES, getCodigoUsuario()) {
+		cpFornecedor = new CampoPesquisa<Fornecedor>(fornecedorService, PesquisaEnum.PES_FORNECEDORES,
+				getCodigoUsuario()) {
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public String formatarValorCampo(Cliente objeto) {
-				return String.format("%s - %s", objeto.getIdCliente(), objeto.getNome());
+			public String formatarValorCampo(Fornecedor objeto) {
+				return String.format("%s - %s", objeto.getIdfornecedor(), objeto.getCliente().getNome());
 			}
 
 		};
@@ -169,18 +169,24 @@ public class FrmEntradaNota extends AbstractInternalFrame {
 
 			@Override
 			public void carregarObjeto(EntradaCabecalho objeto) {
-				cbTipoOperacao.setSelectedItem(objeto.getTipoOperacao());
-				cbNaturezaOperacao.setSelectedItem(objeto.getNaturezaOperacao());
 			}
 
 			@Override
 			public Boolean preencherObjeto(EntradaCabecalho objetoPesquisa) {
 
-				if (cbNaturezaOperacao.getSelectedIndex() >= 0) {
-					// objetoPesquisa.setNaturezaOperacao((OperacaoEstoque)
-					// cbNaturezaOperacao.getSelectedItem());
+				objetoPesquisa.setOperacaoEstoque(cpNaturezaOperacao.getObjetoPesquisado());
+				objetoPesquisa.setNumeroNota(txNumeroNota.getValue());
+				objetoPesquisa.setEmitente(cpFornecedor.getObjetoPesquisado());
+				objetoPesquisa.setDataEmissao(dtEmissao.getDate());
+				objetoPesquisa.setDataSaida(dtSaida.getDate());
+				objetoPesquisa.setValorFrete(txFrete.getValue());
+				objetoPesquisa.setValorProdutos(txValorProdutos.getValue());
+				objetoPesquisa.setValorNota(txValorNota.getValue());
 
-				}
+				objetoPesquisa.setEntradaDetalhes(entradaMercadoriasTableModel.getRows());
+
+				objetoPesquisa.getEntradaDetalhes().forEach(detalhe -> detalhe.setEntradaCabecalho(objetoPesquisa));
+				
 				return Boolean.TRUE;
 			}
 		};

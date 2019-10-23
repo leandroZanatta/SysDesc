@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -33,8 +35,19 @@ public class EntradaCabecalho implements Serializable {
 	@Column(name = "id_entradacabecalho")
 	private Long idEntradaCabecalho;
 
-	@Column(name = "nr_naturezaoperacao")
-	private Long naturezaOperacao;
+	@Column(name = "cd_operacaoestoque", insertable = false, updatable = false)
+	private Long codigoOperacaoEstoque;
+
+	@Column(name = "cd_emitente", insertable = false, updatable = false)
+	private Long codigoEmitente;
+
+	@ManyToOne
+	@JoinColumn(name = "cd_operacaoestoque")
+	private OperacaoEstoque operacaoEstoque;
+
+	@ManyToOne
+	@JoinColumn(name = "cd_emitente")
+	private Fornecedor emitente;
 
 	@Column(name = "nr_nota")
 	private Long numeroNota;
@@ -49,9 +62,6 @@ public class EntradaCabecalho implements Serializable {
 
 	@Column(name = "fl_tipooperacao")
 	private String tipoOperacao;
-
-	@Column(name = "cd_emitente")
-	private Long codigoEmitente;
 
 	@Column(name = "vl_frete")
 	private BigDecimal valorFrete;

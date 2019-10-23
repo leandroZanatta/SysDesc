@@ -23,6 +23,7 @@ import br.com.sysdesc.repository.model.PlanoContas;
 import br.com.sysdesc.service.cliente.ClienteService;
 import br.com.sysdesc.service.fornecedor.FornecedorService;
 import br.com.sysdesc.service.planocontas.PlanoContasService;
+import br.com.sysdesc.util.classes.CPFUtil;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmFornecedor extends AbstractInternalFrame {
@@ -196,7 +197,7 @@ public class FrmFornecedor extends AbstractInternalFrame {
 				objetoPesquisa.setTipoConta(tipoConta);
 				objetoPesquisa.setAgencia(txAgencia.getText());
 				objetoPesquisa.setConta(txConta.getText());
-
+				objetoPesquisa.setPlanoContas(txContaContabil.getObjetoPesquisado());
 				return Boolean.TRUE;
 			}
 
