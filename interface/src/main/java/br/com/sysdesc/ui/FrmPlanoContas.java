@@ -20,8 +20,6 @@ import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.PlanoContas;
 import br.com.sysdesc.service.planocontas.PlanoContasService;
-import br.com.sysdesc.util.constants.MensagemConstants;
-import br.com.sysdesc.util.resources.Resources;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmPlanoContas extends AbstractInternalFrame {
@@ -65,7 +63,6 @@ public class FrmPlanoContas extends AbstractInternalFrame {
 		setSize(550, 270);
 		setClosable(Boolean.TRUE);
 		setTitle("Cadastro de plano de contas");
-		Resources.translate());
 
 		lbCodigo = new JLabel("Código:");
 		lbContaPrincipal = new JLabel("Conta Principal:");

@@ -16,7 +16,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
-import java.util.Date;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -133,27 +132,26 @@ public class AtualizacaoThread extends Thread {
 				}
 			}
 
-			VersaoPDV versaoPDV = getVersaoPDV();
-
-			if (!versaoVO.getVersaoPDV().equals(versaoPDV.getVersaoPDV())) {
-
-				efetuarDownloadVersao(versaoVO.getArquivoPDV());
-				efetuarDownloadVersao(versaoVO.getArquivoREST());
-				efetuarDownloadVersao(versaoVO.getArquivoGerenciador());
-
-				versaoLocal.setVersaoPDV(versaoVO.getVersaoPDV());
-				versaoLocal.setArquivoGerenciador(versaoVO.getArquivoGerenciador());
-				versaoLocal.setArquivoPDV(versaoVO.getArquivoPDV());
-				versaoLocal.setArquivoREST(versaoVO.getArquivoREST());
-
-				VersaoPDV novaVersao = new VersaoPDV();
-				novaVersao.setDataAtualizacao(new Date());
-				novaVersao.setVersaoGerenciador(versaoVO.getVersaoPDV());
-				novaVersao.setVersaoPDV(versaoVO.getVersaoPDV());
-
-				versaoPDVDAO.salvar(novaVersao);
-			}
-
+			/*
+			 * VersaoPDV versaoPDV = getVersaoPDV();
+			 * 
+			 * if (!versaoVO.getVersaoPDV().equals(versaoPDV.getVersaoPDV())) {
+			 * 
+			 * efetuarDownloadVersao(versaoVO.getArquivoPDV());
+			 * efetuarDownloadVersao(versaoVO.getArquivoREST());
+			 * efetuarDownloadVersao(versaoVO.getArquivoGerenciador());
+			 * 
+			 * versaoLocal.setVersaoPDV(versaoVO.getVersaoPDV());
+			 * versaoLocal.setArquivoGerenciador(versaoVO.getArquivoGerenciador());
+			 * versaoLocal.setArquivoPDV(versaoVO.getArquivoPDV());
+			 * versaoLocal.setArquivoREST(versaoVO.getArquivoREST());
+			 * 
+			 * VersaoPDV novaVersao = new VersaoPDV(); novaVersao.setDataAtualizacao(new
+			 * Date()); novaVersao.setVersaoGerenciador(versaoVO.getVersaoPDV());
+			 * novaVersao.setVersaoPDV(versaoVO.getVersaoPDV());
+			 * 
+			 * versaoPDVDAO.salvar(novaVersao); }
+			 */
 			FileUtils.writeStringToFile(new File(VERSAO), new Gson().toJson(versaoLocal), Charset.defaultCharset());
 
 		} catch (IOException e) {
