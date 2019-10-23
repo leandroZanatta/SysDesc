@@ -7,27 +7,40 @@ import javax.swing.text.PlainDocument;
 
 public class JTextFieldMaiusculo extends JTextField {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public JTextFieldMaiusculo() {
-        super();
-        setDocument(new CustomDocument());
-    }
+	public JTextFieldMaiusculo() {
+		this(0);
+	}
+
+	public JTextFieldMaiusculo(int limiteCampo) {
+		super();
+		setDocument(new CustomDocument(limiteCampo));
+	}
 
 }
 
 class CustomDocument extends PlainDocument {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
+	private final int limiteCampo;
 
-    public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
+	public CustomDocument(int limiteCampo) {
+		this.limiteCampo = limiteCampo;
+	}
 
-        if (str == null) {
-            return;
-        }
+	public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
 
-        super.insertString(offset, str.toUpperCase(), attr);
+		if (str == null) {
+			return;
+		}
 
-        return;
-    }
+		if (limiteCampo == 0 || getLength() < this.limiteCampo) {
+
+			super.insertString(offset, str.toUpperCase(), attr);
+
+		}
+
+		return;
+	}
 }

@@ -1,5 +1,26 @@
 package br.com.sysdesc.ui;
 
+import static br.com.sysdesc.util.resources.Resources.FRMCLIENTE_LBL_BAIRRO;
+import static br.com.sysdesc.util.resources.Resources.FRMCLIENTE_LBL_CELULAR;
+import static br.com.sysdesc.util.resources.Resources.FRMCLIENTE_LBL_CEP;
+import static br.com.sysdesc.util.resources.Resources.FRMCLIENTE_LBL_CIDADE;
+import static br.com.sysdesc.util.resources.Resources.FRMCLIENTE_LBL_CODIGO;
+import static br.com.sysdesc.util.resources.Resources.FRMCLIENTE_LBL_CPF_CNPJ;
+import static br.com.sysdesc.util.resources.Resources.FRMCLIENTE_LBL_DATA_DE_NASCIMENTO;
+import static br.com.sysdesc.util.resources.Resources.FRMCLIENTE_LBL_EMAIL;
+import static br.com.sysdesc.util.resources.Resources.FRMCLIENTE_LBL_ENDERECO;
+import static br.com.sysdesc.util.resources.Resources.FRMCLIENTE_LBL_ESTADO;
+import static br.com.sysdesc.util.resources.Resources.FRMCLIENTE_LBL_ESTADO_CIVIL;
+import static br.com.sysdesc.util.resources.Resources.FRMCLIENTE_LBL_INSCRICAO_ESTADUAL;
+import static br.com.sysdesc.util.resources.Resources.FRMCLIENTE_LBL_NUMERO;
+import static br.com.sysdesc.util.resources.Resources.FRMCLIENTE_LBL_RAZAO_SOCIAL;
+import static br.com.sysdesc.util.resources.Resources.FRMCLIENTE_LBL_SEXO;
+import static br.com.sysdesc.util.resources.Resources.FRMCLIENTE_LBL_SITUACAO;
+import static br.com.sysdesc.util.resources.Resources.FRMCLIENTE_RB_PESSOA_FISICA;
+import static br.com.sysdesc.util.resources.Resources.FRMCLIENTE_RB_PESSOA_JURIDICA;
+import static br.com.sysdesc.util.resources.Resources.FRMCLIENTE_TITLE;
+import static br.com.sysdesc.util.resources.Resources.translate;
+
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.text.ParseException;
@@ -36,7 +57,6 @@ import br.com.sysdesc.service.estado.EstadoService;
 import br.com.sysdesc.util.classes.CNPJUtil;
 import br.com.sysdesc.util.classes.CPFUtil;
 import br.com.sysdesc.util.classes.IfNull;
-import br.com.sysdesc.util.resources.Resources;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmCliente extends AbstractInternalFrame {
@@ -96,7 +116,7 @@ public class FrmCliente extends AbstractInternalFrame {
 
 	private void initComponents() throws ParseException {
 
-		setTitle(Resources.translate(Resources.FRMCLIENTE_TITLE));
+		setTitle(translate(FRMCLIENTE_TITLE));
 		setSize(600, 460);
 		setClosable(Boolean.TRUE);
 		getContentPane().setLayout(new MigLayout("", "[grow][grow][grow][grow][grow][grow][grow]",
@@ -107,34 +127,34 @@ public class FrmCliente extends AbstractInternalFrame {
 		mascaraCPF = new MaskFormatter("###.###.###-##");
 		mascaraCelular = new MaskFormatter("(##) #####-####");
 
-		lblCdigo = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_CODIGO));
-		lblCpfcnpj = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_CPF_CNPJ));
-		lblRazoSocial = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_RAZAO_SOCIAL));
-		lblInscrioEstadual = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_INSCRICAO_ESTADUAL));
-		lblDataNascimento = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_DATA_DE_NASCIMENTO));
-		lblEstado = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_ESTADO));
-		lblCidade = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_CIDADE));
-		lblEndereo = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_ENDERECO));
-		lblNmero = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_NUMERO));
-		lblNewLabel = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_BAIRRO));
-		lblCep = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_CEP));
-		lbCelular = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_CELULAR));
-		lblEmail = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_EMAIL));
-		lblSituacao = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_SITUACAO));
-		lblEstadoCivil = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_ESTADO_CIVIL));
-		lblSexo = new JLabel(Resources.translate(Resources.FRMCLIENTE_LBL_SEXO));
-		rdbtnFisca = new JRadioButton(Resources.translate(Resources.FRMCLIENTE_RB_PESSOA_FISICA));
-		rdbtnJurdica = new JRadioButton(Resources.translate(Resources.FRMCLIENTE_RB_PESSOA_JURIDICA));
+		lblCdigo = new JLabel(translate(FRMCLIENTE_LBL_CODIGO));
+		lblCpfcnpj = new JLabel(translate(FRMCLIENTE_LBL_CPF_CNPJ));
+		lblRazoSocial = new JLabel(translate(FRMCLIENTE_LBL_RAZAO_SOCIAL));
+		lblInscrioEstadual = new JLabel(translate(FRMCLIENTE_LBL_INSCRICAO_ESTADUAL));
+		lblDataNascimento = new JLabel(translate(FRMCLIENTE_LBL_DATA_DE_NASCIMENTO));
+		lblEstado = new JLabel(translate(FRMCLIENTE_LBL_ESTADO));
+		lblCidade = new JLabel(translate(FRMCLIENTE_LBL_CIDADE));
+		lblEndereo = new JLabel(translate(FRMCLIENTE_LBL_ENDERECO));
+		lblNmero = new JLabel(translate(FRMCLIENTE_LBL_NUMERO));
+		lblNewLabel = new JLabel(translate(FRMCLIENTE_LBL_BAIRRO));
+		lblCep = new JLabel(translate(FRMCLIENTE_LBL_CEP));
+		lbCelular = new JLabel(translate(FRMCLIENTE_LBL_CELULAR));
+		lblEmail = new JLabel(translate(FRMCLIENTE_LBL_EMAIL));
+		lblSituacao = new JLabel(translate(FRMCLIENTE_LBL_SITUACAO));
+		lblEstadoCivil = new JLabel(translate(FRMCLIENTE_LBL_ESTADO_CIVIL));
+		lblSexo = new JLabel(translate(FRMCLIENTE_LBL_SEXO));
+		rdbtnFisca = new JRadioButton(translate(FRMCLIENTE_RB_PESSOA_FISICA));
+		rdbtnJurdica = new JRadioButton(translate(FRMCLIENTE_RB_PESSOA_JURIDICA));
 		buttonGroup = new ButtonGroup();
 		txDataDeNascimento = new JDateChooser("dd/MM/yyyy", "##/##/#####", '_');
 		txCodigo = new JTextFieldId();
-		txIncricaoEstadual = new JTextFieldMaiusculo();
+		txIncricaoEstadual = new JTextFieldMaiusculo(30);
 		txCgc = new JFormattedTextField();
 		txCep = new JFormattedTextField();
 		txCelular = new JFormattedTextField();
 		txNome = new JTextFieldMaiusculo();
 		txEndereco = new JTextFieldMaiusculo();
-		txNumero = new JNumericField();
+		txNumero = new JNumericField(5);
 		txBairro = new JTextFieldMaiusculo();
 		cbEstado = new JComboBox<Estado>();
 		cbEstadoCivil = new JComboBox<>();
