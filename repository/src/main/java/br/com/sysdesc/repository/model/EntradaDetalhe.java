@@ -14,8 +14,11 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "tb_entradadetalhe")
 @SequenceGenerator(name = "GEN_ENTRADADETALHE", allocationSize = 1, sequenceName = "GEN_ENTRADADETALHE")
