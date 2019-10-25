@@ -7,6 +7,6 @@ import feign.RequestLine;
 
 public interface PDVClient {
 
-	@RequestLine("POST /configuracaoModulo/atualizarConfiguracoes")
-	public abstract Boolean atualizarGerenciadorPDV(List<IPVO> ipERP);
+    @RequestLine("POST /configuracaoModulo/atualizarConfiguracoes")
+    public abstract Boolean atualizarGerenciadorPDV(List<IPVO> ipERP);
 }

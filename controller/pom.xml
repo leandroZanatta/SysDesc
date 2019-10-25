@@ -34,6 +34,13 @@
 
 		<dependency>
 			<groupId>br.com.sysdesc</groupId>
+			<artifactId>sysdesc-dto</artifactId>
+			<version>${sysdesc.dto.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>br.com.sysdesc</groupId>
 			<artifactId>http-server</artifactId>
 			<version>${sysdesc.http.server.version}</version>
 		</dependency>
@@ -43,6 +50,7 @@
 			<artifactId>repository</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
+
 
 		<dependency>
 			<groupId>br.com.sysdesc</groupId>

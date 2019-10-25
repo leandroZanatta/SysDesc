@@ -9,6 +9,7 @@
 
 	<properties>
 		<sysdesc.util.version>0.0.1</sysdesc.util.version>
+		<sysdesc.dto.version>0.0.1</sysdesc.dto.version>
 		<sysdesc.http.server.version>0.0.1</sysdesc.http.server.version>
 		<sysdesc.atualizacao.version>0.0.1</sysdesc.atualizacao.version>
 	</properties>

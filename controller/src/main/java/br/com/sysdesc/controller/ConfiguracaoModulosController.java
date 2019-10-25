@@ -10,11 +10,11 @@ import br.com.sysdesc.util.vo.ConfigurationVO;
 @RestController(path = "/configuracaoModulos")
 public class ConfiguracaoModulosController {
 
-	private GerenciadorInicializacaoService gerenciadorInicializacaoService = new GerenciadorInicializacaoService();
+    private GerenciadorInicializacaoService gerenciadorInicializacaoService = new GerenciadorInicializacaoService();
 
-	@RequestMethod(method = HttpMethod.GET, path = "/buscarconfiguracaomodulos")
-	public ConfigurationVO atualizarConfiguracoes(@RequestParam(value = "ipGerenciador") String ipGerenciador) {
+    @RequestMethod(method = HttpMethod.GET, path = "/buscarconfiguracaomodulos")
+    public ConfigurationVO atualizarConfiguracoes(@RequestParam(value = "ipGerenciador") String ipGerenciador) {
 
-		return gerenciadorInicializacaoService.buscarConfiguracoesInicializacaoAtualizadas(ipGerenciador);
-	}
+        return gerenciadorInicializacaoService.buscarConfiguracoesInicializacaoAtualizadas(ipGerenciador);
+    }
 }

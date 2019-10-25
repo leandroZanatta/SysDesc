@@ -27,9 +27,8 @@ import org.apache.commons.io.FileUtils;
 import com.google.gson.Gson;
 
 import br.com.sysdesc.repository.dao.VersaoDAO;
-import br.com.sysdesc.repository.dao.VersaoPDVDAO;
 import br.com.sysdesc.repository.model.Versao;
-import br.com.sysdesc.repository.model.VersaoPDV;
+import br.com.sysdesc.util.classes.ExtratorZip;
 import br.com.sysdesc.util.vo.VersaoERPVO;
 import liquibase.util.file.FilenameUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -37,246 +36,214 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AtualizacaoThread extends Thread {
 
-	private JPanel contentVersao;
+    private JPanel contentVersao;
 
-	private JLabel lbVersao;
+    private JLabel lbVersao;
 
-	private String versaoBase;
+    private String versaoBase;
 
-	private final String URLVersao = "https://raw.githubusercontent.com/leandroZanatta/SysDesc/develop/versoes/versao.json";
+    private static final String URLVERSAO = "https://raw.githubusercontent.com/leandroZanatta/SysDesc/develop/versoes/versao.json";
 
-	private VersaoDAO versaoDAO = new VersaoDAO();
+    private VersaoDAO versaoDAO = new VersaoDAO();
 
-	private VersaoPDVDAO versaoPDVDAO = new VersaoPDVDAO();
+    public AtualizacaoThread(JPanel contentVersao) {
+        this.contentVersao = contentVersao;
 
-	public AtualizacaoThread(JPanel contentVersao) {
-		this.contentVersao = contentVersao;
+        lbVersao = new JLabel();
+    }
 
-		lbVersao = new JLabel();
-	}
+    @Override
+    public void run() {
 
-	@Override
-	public void run() {
+        this.verificarVersaoBase();
 
-		VersaoERPVO versaoVO = this.recuperarVersaoInternet();
+        VersaoERPVO versaoVO = this.recuperarVersaoInternet();
 
-		this.verificarVersaoBase(versaoVO);
+        this.verificarVersaoRemota(versaoVO);
 
-		this.verificarVersaoRemota(versaoVO);
+    }
 
-	}
+    private VersaoERPVO recuperarVersaoInternet() {
 
-	private VersaoERPVO recuperarVersaoInternet() {
+        URL arquivoUrl;
 
-		URL arquivoUrl;
+        try {
 
-		try {
+            arquivoUrl = new URL(URLVERSAO);
 
-			arquivoUrl = new URL(this.URLVersao);
+            URLConnection urlConnection = arquivoUrl.openConnection();
+            urlConnection.setUseCaches(Boolean.FALSE);
 
-			URLConnection urlConnection = arquivoUrl.openConnection();
-			urlConnection.setUseCaches(Boolean.FALSE);
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()))) {
 
-			try (BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()))) {
+                String inputLine;
 
-				String inputLine;
+                StringBuilder stringBuilder = new StringBuilder();
 
-				StringBuilder stringBuilder = new StringBuilder();
+                while ((inputLine = in.readLine()) != null) {
 
-				while ((inputLine = in.readLine()) != null) {
+                    stringBuilder.append(inputLine);
+                }
 
-					stringBuilder.append(inputLine);
-				}
+                return new Gson().fromJson(stringBuilder.toString(), VersaoERPVO.class);
 
-				return new Gson().fromJson(stringBuilder.toString(), VersaoERPVO.class);
+            }
 
-			}
-		} catch (IOException e) {
+        } catch (IOException e) {
 
-			try {
-				Thread.sleep(18000);
+            try {
+                Thread.sleep(18000);
 
-				return recuperarVersaoInternet();
+                return recuperarVersaoInternet();
 
-			} catch (InterruptedException e1) {
+            } catch (InterruptedException e1) {
 
-				log.error(MENSAGEM_THREAD_VERSAO_INTEROMPIDA);
+                log.error(MENSAGEM_THREAD_VERSAO_INTEROMPIDA, e1);
 
-				return null;
-			}
-		}
+                return null;
+            }
+        }
 
-	}
+    }
 
-	private void verificarVersaoRemota(VersaoERPVO versaoVO) {
+    private void verificarVersaoRemota(VersaoERPVO versaoVO) {
 
-		try {
+        try {
 
-			VersaoERPVO versaoLocal = getArquivoVersaoLocal();
+            VersaoERPVO versaoLocal = getArquivoVersaoLocal();
 
-			if (!versaoBase.equals(versaoVO.getVersaoERP())) {
+            if (!versaoBase.equals(versaoVO.getVersaoERP())) {
 
-				String mensagem = String.format(translate(MENSAGEM_ATUALIZAR_VERSAO), versaoVO.getVersaoERP());
+                String mensagem = String.format(translate(MENSAGEM_ATUALIZAR_VERSAO), versaoVO.getVersaoERP());
 
-				Integer retornoOpcao = JOptionPane.showConfirmDialog(null, mensagem, OPTION_VALIDACAO,
-						JOptionPane.YES_NO_OPTION);
+                Integer retornoOpcao = JOptionPane.showConfirmDialog(null, mensagem, OPTION_VALIDACAO, JOptionPane.YES_NO_OPTION);
 
-				if (retornoOpcao == JOptionPane.YES_OPTION) {
+                if (retornoOpcao == JOptionPane.YES_OPTION) {
 
-					efetuarDownloadVersao(versaoVO.getArquivoERP());
+                    efetuarDownloadVersao(versaoVO.getArquivoERP());
+                    efetuarDownloadVersao(versaoVO.getArquivoSysdesc());
 
-					efetuarDownloadVersao(versaoVO.getArquivoSysdesc());
+                    new ExtratorZip().extrairVersao(criarArquivoVersao(versaoVO.getArquivoSysdesc()));
 
-					versaoLocal.setVersaoERP(versaoVO.getVersaoERP());
-					versaoLocal.setArquivoERP(versaoVO.getArquivoERP());
-				}
-			}
+                    versaoLocal.setVersaoERP(versaoVO.getVersaoERP());
+                    versaoLocal.setArquivoERP(versaoVO.getArquivoERP());
+                }
+            }
 
-			/*
-			 * VersaoPDV versaoPDV = getVersaoPDV();
-			 * 
-			 * if (!versaoVO.getVersaoPDV().equals(versaoPDV.getVersaoPDV())) {
-			 * 
-			 * efetuarDownloadVersao(versaoVO.getArquivoPDV());
-			 * efetuarDownloadVersao(versaoVO.getArquivoREST());
-			 * efetuarDownloadVersao(versaoVO.getArquivoGerenciador());
-			 * 
-			 * versaoLocal.setVersaoPDV(versaoVO.getVersaoPDV());
-			 * versaoLocal.setArquivoGerenciador(versaoVO.getArquivoGerenciador());
-			 * versaoLocal.setArquivoPDV(versaoVO.getArquivoPDV());
-			 * versaoLocal.setArquivoREST(versaoVO.getArquivoREST());
-			 * 
-			 * VersaoPDV novaVersao = new VersaoPDV(); novaVersao.setDataAtualizacao(new
-			 * Date()); novaVersao.setVersaoGerenciador(versaoVO.getVersaoPDV());
-			 * novaVersao.setVersaoPDV(versaoVO.getVersaoPDV());
-			 * 
-			 * versaoPDVDAO.salvar(novaVersao); }
-			 */
-			FileUtils.writeStringToFile(new File(VERSAO), new Gson().toJson(versaoLocal), Charset.defaultCharset());
+            FileUtils.writeStringToFile(new File(VERSAO), new Gson().toJson(versaoLocal), Charset.defaultCharset());
 
-		} catch (IOException e) {
+        } catch (Exception e) {
 
-			try {
-				Thread.sleep(18000);
+            try {
+                Thread.sleep(18000);
 
-				verificarVersaoRemota(versaoVO);
+                verificarVersaoRemota(versaoVO);
 
-			} catch (InterruptedException e1) {
+            } catch (InterruptedException e1) {
 
-				log.error(MENSAGEM_THREAD_VERSAO_INTEROMPIDA);
+                log.error(MENSAGEM_THREAD_VERSAO_INTEROMPIDA);
 
-			}
-		}
+                Thread.currentThread().interrupt();
+            }
+        }
 
-	}
+    }
 
-	private VersaoPDV getVersaoPDV() {
+    private VersaoERPVO getArquivoVersaoLocal() {
+        try {
 
-		try {
+            return new Gson().fromJson(FileUtils.readFileToString(new File(VERSAO), Charset.defaultCharset()), VersaoERPVO.class);
+        } catch (Exception e) {
 
-			VersaoPDV versaoPDV = versaoPDVDAO.last();
+            return new VersaoERPVO();
+        }
 
-			return versaoPDV != null ? versaoPDV : new VersaoPDV();
-		} catch (Exception e) {
+    }
 
-			return new VersaoPDV();
-		}
-	}
+    private void efetuarDownloadVersao(String urlVersao) throws IOException {
 
-	private VersaoERPVO getArquivoVersaoLocal() {
-		try {
+        JProgressBar progres = new JProgressBar();
 
-			return new Gson().fromJson(FileUtils.readFileToString(new File(VERSAO), Charset.defaultCharset()),
-					VersaoERPVO.class);
-		} catch (Exception e) {
+        progres.setStringPainted(true);
 
-			return new VersaoERPVO();
-		}
+        contentVersao.removeAll();
 
-	}
+        contentVersao.add(progres);
 
-	private void efetuarDownloadVersao(String urlVersao) throws IOException {
+        URL arquivoUrl = new URL(urlVersao);
 
-		JProgressBar progres = new JProgressBar();
+        URLConnection urlConnection = arquivoUrl.openConnection();
 
-		progres.setStringPainted(true);
+        urlConnection.setUseCaches(Boolean.FALSE);
 
-		contentVersao.removeAll();
+        Long tamanhoArquivo = urlConnection.getContentLengthLong();
 
-		contentVersao.add(progres);
+        File arquivoVersao = criarArquivoVersao(urlVersao);
 
-		URL arquivoUrl = new URL(urlVersao);
+        try (BufferedInputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                FileOutputStream fileOutputStream = new FileOutputStream(arquivoVersao)) {
 
-		URLConnection urlConnection = arquivoUrl.openConnection();
+            byte[] dataBuffer = new byte[1024];
 
-		urlConnection.setUseCaches(Boolean.FALSE);
+            int bytesRead;
 
-		Long tamanhoArquivo = urlConnection.getContentLengthLong();
+            Long bufferTotal = 0L;
 
-		File arquivoVersao = criarArquivoVersao(urlVersao);
+            while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
 
-		try (BufferedInputStream in = new BufferedInputStream(urlConnection.getInputStream());
-				FileOutputStream fileOutputStream = new FileOutputStream(arquivoVersao)) {
+                bufferTotal += bytesRead;
 
-			byte dataBuffer[] = new byte[1024];
+                fileOutputStream.write(dataBuffer, 0, bytesRead);
 
-			int bytesRead;
+                progres.setValue(Double.valueOf(bufferTotal.doubleValue() / tamanhoArquivo.doubleValue() * 100).intValue());
 
-			Long bufferTotal = 0L;
+            }
+        }
 
-			while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+        contentVersao.removeAll();
 
-				bufferTotal += bytesRead;
+        contentVersao.add(lbVersao);
+    }
 
-				fileOutputStream.write(dataBuffer, 0, bytesRead);
+    private File criarArquivoVersao(String arquivo) throws IOException {
+        log.info("criando arquivo Versão");
 
-				progres.setValue(
-						Double.valueOf(bufferTotal.doubleValue() / tamanhoArquivo.doubleValue() * 100).intValue());
+        File folderVersao = new File(FOLDER_VERSOES);
 
-			}
-		}
+        if (!folderVersao.exists()) {
+            log.info("gerando arquivo:" + folderVersao.getName());
+            folderVersao.mkdir();
+        }
 
-		contentVersao.removeAll();
+        File arquivoVersao = new File(folderVersao, FilenameUtils.getName(new URL(arquivo).getPath()));
 
-		contentVersao.add(lbVersao);
-	}
+        if (!arquivoVersao.exists()) {
+            log.info("gerando arquivo: " + arquivoVersao.getName());
 
-	private File criarArquivoVersao(String arquivo) throws IOException {
-		log.info("criando arquivo Versão");
+            if (arquivoVersao.createNewFile()) {
+                log.error("Arquivo de versão não pode ser gerado: " + arquivoVersao.getName());
+            }
+        }
 
-		File folderVersao = new File(FOLDER_VERSOES);
+        return arquivoVersao;
+    }
 
-		if (!folderVersao.exists()) {
-			log.info("gerando arquivo:" + folderVersao.getName());
-			folderVersao.mkdir();
-		}
+    private void verificarVersaoBase() {
 
-		File arquivoVersao = new File(folderVersao, FilenameUtils.getName(new URL(arquivo).getPath()));
+        Versao versao = versaoDAO.last();
 
-		if (!arquivoVersao.exists()) {
-			log.info("gerando arquivo:" + arquivoVersao.getName());
-			arquivoVersao.createNewFile();
-		}
+        contentVersao.add(lbVersao);
 
-		return arquivoVersao;
-	}
+        if (versao != null) {
 
-	private void verificarVersaoBase(VersaoERPVO versaoVO) {
+            this.versaoBase = versao.getVersao();
 
-		Versao versao = versaoDAO.last();
+            lbVersao.setText(this.versaoBase);
 
-		contentVersao.add(lbVersao);
+            return;
+        }
 
-		if (versao != null) {
-
-			this.versaoBase = versao.getVersao();
-
-			lbVersao.setText(this.versaoBase);
-
-			return;
-		}
-
-		this.versaoBase = "0.0.0";
-	}
+        this.versaoBase = "0.0.0";
+    }
 
 }
