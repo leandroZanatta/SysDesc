@@ -8,8 +8,11 @@ import static br.com.sysdesc.util.resources.Resources.translate;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +53,8 @@ public class FrmPesquisa<T> extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final String STR_REGISTROS = "Exibindo %d de %d registros";
+	private static final String STR_REGISTROS = "Exibindo %s de %s registros";
+	private NumberFormat numberFormat = NumberFormat.getNumberInstance();
 	private JTable table;
 	private JButton btConfigurar;
 	private JPanel panel;
@@ -147,6 +151,22 @@ public class FrmPesquisa<T> extends JDialog {
 		panel_1.add(btnSelecionar, "cell 3 0,alignx left,aligny top");
 
 		scrollPane = new JScrollPane();
+		scrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+
+			@Override
+			public void adjustmentValueChanged(AdjustmentEvent e) {
+
+				int extent = scrollPane.getVerticalScrollBar().getModel().getExtent();
+				int maximum = scrollPane.getVerticalScrollBar().getMaximum();
+				int vPos = scrollPane.getVerticalScrollBar().getValue();
+
+				if (vPos + extent >= maximum) {
+					pesquisar();
+				}
+
+			}
+		});
+
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
 
 		table = new JTable();
@@ -219,7 +239,8 @@ public class FrmPesquisa<T> extends JDialog {
 
 		rows += valores.size();
 
-		lbRegistros.setText(String.format(STR_REGISTROS, rows, numeroregistros));
+		lbRegistros
+				.setText(String.format(STR_REGISTROS, numberFormat.format(rows), numberFormat.format(numeroregistros)));
 
 	}
 
