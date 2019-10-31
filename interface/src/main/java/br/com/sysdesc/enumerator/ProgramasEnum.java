@@ -68,7 +68,9 @@ public enum ProgramasEnum {
 
 	CADASTRO_PDVS(43L, FrmPDVS.class),
 
-	CADASTRO_MODULOS(44L, FrmModulos.class);
+	CADASTRO_MODULOS(44L, FrmModulos.class),
+
+	CADASTRO_EMPRESAS(45L, FrmModulos.class);
 
 	private static Map<Long, ProgramasEnum> mapa = new HashMap<>();
 
