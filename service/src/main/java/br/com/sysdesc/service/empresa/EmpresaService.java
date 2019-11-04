@@ -24,6 +24,3 @@ public class EmpresaService extends AbstractGenericService<Empresa> {
 	}
 
 }
-
-codigo campo
-de pesquisa
