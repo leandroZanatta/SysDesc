@@ -2,8 +2,6 @@ package br.com.sysdesc.ui;
 
 import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_UNIDADES;
 import static br.com.sysdesc.util.resources.Resources.FRMUNIDADE_LB_CODIGO;
-import static br.com.sysdesc.util.resources.Resources.FRMUNIDADE_LB_DESCRICAO;
-import static br.com.sysdesc.util.resources.Resources.FRMUNIDADE_LB_DESCRICAO_REDUZIDA;
 import static br.com.sysdesc.util.resources.Resources.FRMUNIDADE_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
@@ -11,10 +9,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
-import br.com.sysdesc.components.JTextFieldMaiusculo;
+import br.com.sysdesc.pesquisa.components.CampoPesquisa;
 import br.com.sysdesc.pesquisa.components.JTextFieldId;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
+import br.com.sysdesc.repository.model.PlanoContas;
 import br.com.sysdesc.repository.model.Unidade;
 import br.com.sysdesc.service.unidade.UnidadeService;
 import net.miginfocom.swing.MigLayout;
@@ -28,6 +27,7 @@ public class FrmEmpresa extends AbstractInternalFrame {
 	private JLabel lblCodigo;
 	private PanelActions<Unidade> panelActions;
 	private UnidadeService unidadeService = new UnidadeService();
+	private CampoPesquisa<PlanoContas> txContaContabil;
 
 	public FrmEmpresa(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 		super(permissaoPrograma, codigoUsuario);
@@ -56,17 +56,11 @@ public class FrmEmpresa extends AbstractInternalFrame {
 
 			@Override
 			public void carregarObjeto(Unidade objeto) {
-				txCodigo.setValue(objeto.getIdUnidade());
-				txDescricao.setText(objeto.getDescricao());
-				textField.setText(objeto.getDescricaoReduzida());
+
 			}
 
 			@Override
 			public Boolean preencherObjeto(Unidade objetoPesquisa) {
-
-				objetoPesquisa.setIdUnidade(txCodigo.getValue());
-				objetoPesquisa.setDescricao(txDescricao.getText());
-				objetoPesquisa.setDescricaoReduzida(textField.getText());
 
 				return Boolean.TRUE;
 			}
