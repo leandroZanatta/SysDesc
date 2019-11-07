@@ -1,0 +1,41 @@
+Ciclo de Vida de Estoques
+
+Tabelas
+tb_empresa
+tb_produto
+tb_apuracaoestoque
+tb_kardex
+tb_estoquediario
+tb_estoque
+
+
+
+Métodos de Apuração de estoque
+-PEPS
+-UEPS
+-Custo Médio
+
+Cadastro de Empresas
+Atualizar o campo cd_apuracaoestoque na tabela tb_empresa
+Verificar alteração do método de auracao de estoque tb_apuracaoestoque
+	Caso Novo - Criar registro com código da empresae data atual na tabela tb_apuracaoestoque
+	Caso Alterado - Setar data fim no registro anterior, criar novo registro com o proximo dia.
+	
+Entrada de mercadorias:
+	Criar registro na tb_kardex flag E caso for metodo diferente de custo medio setar valor no nr_disponivel
+	atualizar o registro na tabela tb_estoque com quantidade + quantidade da tb_estoque +valores
+	
+	
+consulta kardex
+	buscar maior data proxima a data inicial na tb_estoquediario setando os valores iniciais do estoque
+	selecionar registros da tabela por empresa e por data
+	
+	--------------------------------------------------------------------------------------------
+	Data         			| Operação          |quantidade		| valor Operação	|Saldo		|
+	--------------------------------------------------------------------------------------------
+	2019-11-01 00:00:00		| Estoque Inicial	| 100.000		| 850.30			| 850.30	|
+	--------------------------------------------------------------------------------------------
+	2019-11-01 08:55:13		| Entrada			| 10.000		| 100.00			| 950.30	|
+	--------------------------------------------------------------------------------------------
+	2019-11-01 08:55:45		| Saída				| 1.000			| 8.53				| 941.57	|
+	--------------------------------------------------------------------------------------------
