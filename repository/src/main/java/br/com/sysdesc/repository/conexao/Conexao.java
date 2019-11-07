@@ -5,7 +5,7 @@ import static br.com.sysdesc.util.constants.MensagemConstants.MENSAGEM_DRIVER_NA
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 import javax.naming.ConfigurationException;
@@ -15,7 +15,6 @@ import javax.persistence.Persistence;
 import org.apache.commons.io.FileUtils;
 
 import com.mysema.query.sql.H2Templates;
-import com.mysema.query.sql.MySQLTemplates;
 import com.mysema.query.sql.PostgresTemplates;
 import com.mysema.query.sql.SQLTemplates;
 
@@ -39,7 +38,7 @@ public class Conexao {
 
         if (!isconfigured()) {
 
-            throw new ConfigurationException("Configura��o de banco de dados n�o encontrada");
+            throw new ConfigurationException("Configuração de banco de dados não encontrada");
         }
 
         return new File(Configuracoes.CONEXAO);
@@ -47,12 +46,16 @@ public class Conexao {
 
     public static void buildEntityManager() throws ConfigurationException {
 
-        Properties propertiesConexao = buscarPropertiesConexao();
+        createConnection(getConfiguracaoBanco());
+    }
+
+    public static void createConnection(File configuracaoBanco) throws ConfigurationException {
+
+        Properties propertiesConexao = buscarPropertiesConexao(configuracaoBanco);
 
         entityManager = Persistence.createEntityManagerFactory("SysDesc", propertiesConexao).createEntityManager();
 
         sqlTemplates = createTemplate(propertiesConexao);
-
     }
 
     private static SQLTemplates createTemplate(Properties propertiesConexao) {
@@ -62,11 +65,8 @@ public class Conexao {
         switch (driver) {
             case "org.postgresql.Driver":
                 return PostgresTemplates.DEFAULT;
-            case "com.mysql.jdbc.Driver":
-                return MySQLTemplates.DEFAULT;
             case "org.h2.Driver":
                 return H2Templates.DEFAULT;
-
             default:
                 throw new SysDescException(MENSAGEM_DRIVER_NAO_ENCONTRADO);
         }
@@ -82,13 +82,13 @@ public class Conexao {
         return sqlTemplates;
     }
 
-    private static Properties buscarPropertiesConexao() throws ConfigurationException {
+    public static Properties buscarPropertiesConexao(File configuracaoBanco) throws ConfigurationException {
 
         try {
-            String arquivoConfiguracao = CryptoUtil.fromBlowfish(FileUtils.readFileToString(getConfiguracaoBanco(), Charset.forName("UTF-8")));
+            String arquivoConfiguracao = CryptoUtil.fromBlowfish(FileUtils.readFileToString(configuracaoBanco, StandardCharsets.UTF_8));
 
             if (arquivoConfiguracao == null) {
-                throw new ConfigurationException("Configura��o de conex�o inv�lida");
+                throw new ConfigurationException("Configuração de conexão inválida");
             }
 
             Properties properties = new Properties();
@@ -99,8 +99,7 @@ public class Conexao {
 
         } catch (IOException e) {
 
-            log.error("");
-            e.printStackTrace();
+            log.error("Erro ao buscar propriedades de conexão", e);
 
             return null;
         }
