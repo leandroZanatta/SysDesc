@@ -32,7 +32,7 @@ public class MainService {
 
 		for (Entry<Long, List<PermissaoPrograma>> entry : rootMenusMap.entrySet()) {
 
-			permissoes.add(createMenu(permissaoUsuarioPerfil, entry));
+			permissoes.add(createMenu(permissaoUsuarioPerfil, entry.getValue()));
 
 		}
 
@@ -53,7 +53,7 @@ public class MainService {
 
 			for (Entry<Long, List<PermissaoPrograma>> entry : rootMenusMap.entrySet()) {
 
-				permissoes.add(createMenu(permissaoUsuarioPerfil, entry));
+				permissoes.add(createMenu(permissaoUsuarioPerfil, entry.getValue()));
 			}
 
 		}
@@ -61,10 +61,9 @@ public class MainService {
 		return permissoes;
 	}
 
-	private Programa createMenu(List<PermissaoPrograma> permissaoUsuarioPerfil,
-			Entry<Long, List<PermissaoPrograma>> entry) {
+	private Programa createMenu(List<PermissaoPrograma> permissaoUsuarioPerfil, List<PermissaoPrograma> entry) {
 
-		PermissaoPrograma permissaoPrograma = buscarPermissaoPorUsuario(entry.getValue());
+		PermissaoPrograma permissaoPrograma = buscarPermissaoPorUsuario(entry);
 
 		Programa menu = permissaoPrograma.getPrograma();
 

@@ -35,6 +35,8 @@
 		<class>br.com.sysdesc.repository.model.VersaoPDV</class>
 		<class>br.com.sysdesc.repository.model.GerenciadorPDV</class>
 		<class>br.com.sysdesc.repository.model.PDVModuloGerenciadorPDV</class>
+		<class>br.com.sysdesc.repository.model.SincronizacaoTabelas</class>
+		<class>br.com.sysdesc.repository.model.Empresa</class>
 	</persistence-unit>
 
 </persistence>
