@@ -7,34 +7,39 @@ import br.com.sysdesc.repository.model.PermissaoPrograma;
 
 public class AbstractInternalFrame extends JInternalFrame {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private final PermissaoPrograma permissaoPrograma;
+    private final PermissaoPrograma permissaoPrograma;
 
-	private final Long codigoUsuario;
+    private final Long codigoUsuario;
 
-	public AbstractInternalFrame(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
+    public AbstractInternalFrame(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
 
-		this.permissaoPrograma = permissaoPrograma;
-		this.codigoUsuario = codigoUsuario;
+        this.permissaoPrograma = permissaoPrograma;
+        this.codigoUsuario = codigoUsuario;
 
-		this.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
+        this.initComponents();
+    }
 
-			@Override
-			public void internalFrameClosed(InternalFrameEvent e) {
+    private void initComponents() {
 
-				super.internalFrameClosed(e);
-			}
-		});
+        this.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
 
-	}
+            @Override
+            public void internalFrameClosed(InternalFrameEvent e) {
 
-	public PermissaoPrograma getPermissaoPrograma() {
-		return permissaoPrograma;
-	}
+                super.internalFrameClosed(e);
+            }
+        });
 
-	public Long getCodigoUsuario() {
-		return codigoUsuario;
-	}
+    }
+
+    public PermissaoPrograma getPermissaoPrograma() {
+        return permissaoPrograma;
+    }
+
+    public Long getCodigoUsuario() {
+        return codigoUsuario;
+    }
 
 }

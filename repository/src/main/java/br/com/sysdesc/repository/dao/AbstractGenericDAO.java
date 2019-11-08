@@ -23,215 +23,209 @@ import br.com.sysdesc.util.exception.SysDescException;
 
 public abstract class AbstractGenericDAO<T> implements GenericDAO<T> {
 
-	private final EntityManager entityManager = Conexao.getEntityManager();
-	private final SQLTemplates sqlTemplates = Conexao.getSqlTemplates();
-	private EntityPath<T> entityPath;
-	private NumberPath<Long> campoId;
+    private final EntityManager entityManager = Conexao.getEntityManager();
+    private final SQLTemplates sqlTemplates = Conexao.getSqlTemplates();
+    private EntityPath<T> entityPath;
+    private NumberPath<Long> campoId;
 
-	public AbstractGenericDAO(EntityPath<T> entityPath, NumberPath<Long> idLogin) {
-		this.entityPath = entityPath;
-		this.campoId = idLogin;
-	}
+    public AbstractGenericDAO(EntityPath<T> entityPath, NumberPath<Long> idLogin) {
+        this.entityPath = entityPath;
+        this.campoId = idLogin;
+    }
 
-	public JPASQLQuery sqlQuery() {
+    public JPASQLQuery sqlQuery() {
 
-		return new JPASQLQuery(entityManager, sqlTemplates);
-	}
+        return new JPASQLQuery(entityManager, sqlTemplates);
+    }
 
-	public JPASQLQuery sqlFrom() {
-		return new JPASQLQuery(entityManager, sqlTemplates).from(entityPath);
-	}
+    public JPASQLQuery sqlFrom() {
+        return new JPASQLQuery(entityManager, sqlTemplates).from(entityPath);
+    }
 
-	public JPASubQuery subQuery() {
-		return new JPASubQuery();
-	}
+    public JPASubQuery subQuery() {
+        return new JPASubQuery();
+    }
 
-	public JPAQuery query() {
-		return new JPAQuery(entityManager);
-	}
+    public JPAQuery query() {
+        return new JPAQuery(entityManager);
+    }
 
-	public JPAQuery from() {
-		return new JPAQuery(entityManager).from(entityPath);
-	}
+    public JPAQuery from() {
+        return new JPAQuery(entityManager).from(entityPath);
+    }
 
-	public List<T> listar() {
-		return query().from(entityPath).list(entityPath);
-	}
+    public List<T> listar() {
+        return query().from(entityPath).list(entityPath);
+    }
 
-	public List<T> pesquisar(BooleanBuilder clausulas, NumberPath<Long> aliasOrdenacao, Integer numeroRegistros,
-			Integer tamanhoPagina) {
-		JPAQuery query = from();
+    public List<T> pesquisar(BooleanBuilder clausulas, NumberPath<Long> aliasOrdenacao, Integer numeroRegistros, Integer tamanhoPagina) {
+        JPAQuery query = from();
 
-		if (clausulas.hasValue()) {
-			query.where(clausulas);
-		}
+        if (clausulas.hasValue()) {
+            query.where(clausulas);
+        }
 
-		return query.offset(numeroRegistros).limit(tamanhoPagina).orderBy(aliasOrdenacao.asc()).list(entityPath);
-	}
+        return query.offset(numeroRegistros).limit(tamanhoPagina).orderBy(aliasOrdenacao.asc()).list(entityPath);
+    }
 
-	public EntityPath<T> getEntityPath() {
-		return entityPath;
-	}
+    public EntityPath<T> getEntityPath() {
+        return entityPath;
+    }
 
-	public void setEntityPath(EntityPath<T> entityPath) {
-		this.entityPath = entityPath;
-	}
+    public void setEntityPath(EntityPath<T> entityPath) {
+        this.entityPath = entityPath;
+    }
 
-	public void salvar(T perist) {
-		try {
-			entityManager.getTransaction().begin();
-			entityManager.persist(perist);
-			entityManager.flush();
-			entityManager.getTransaction().commit();
-		} catch (Exception e) {
-			e.printStackTrace();
-			entityManager.getTransaction().rollback();
+    public void salvar(T perist) {
+        try {
+            entityManager.getTransaction().begin();
+            entityManager.persist(perist);
+            entityManager.flush();
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            entityManager.getTransaction().rollback();
 
-			throw new SysDescException(e.getMessage());
-		}
-	}
+            throw new SysDescException(e.getMessage());
+        }
+    }
 
-	public List<T> salvar(List<T> perist) {
-		entityManager.getTransaction().begin();
-		for (T t : perist) {
-			entityManager.persist(t);
-		}
-		entityManager.flush();
-		entityManager.getTransaction().commit();
-		return perist;
-	}
+    public List<T> salvar(List<T> perist) {
+        entityManager.getTransaction().begin();
+        for (T t : perist) {
+            entityManager.persist(t);
+        }
+        entityManager.flush();
+        entityManager.getTransaction().commit();
+        return perist;
+    }
 
-	public void remove(T remove) {
-		entityManager.getTransaction().begin();
-		entityManager.remove(remove);
-		entityManager.flush();
-		entityManager.getTransaction().commit();
-	}
+    public void remove(T remove) {
+        entityManager.getTransaction().begin();
+        entityManager.remove(remove);
+        entityManager.flush();
+        entityManager.getTransaction().commit();
+    }
 
-	public T obterPorId(Long id) {
-		return from().where(campoId.eq(id)).singleResult(entityPath);
-	}
+    public T obterPorId(Long id) {
+        return from().where(campoId.eq(id)).singleResult(entityPath);
+    }
 
-	public T obterPorId(Long id, BooleanBuilder filter) {
+    public T obterPorId(Long id, BooleanBuilder filter) {
 
-		filter.and(campoId.eq(id));
+        filter.and(campoId.eq(id));
 
-		return from().where(filter).singleResult(entityPath);
-	}
+        return from().where(filter).singleResult(entityPath);
+    }
 
-	public T next(Long id) {
+    public T next(Long id) {
 
-		if (LongUtil.isNullOrZero(id)) {
-			return last();
-		}
+        if (LongUtil.isNullOrZero(id)) {
+            return last();
+        }
 
-		T objeto = from().where(campoId.gt(id)).orderBy(campoId.asc()).limit(1L).singleResult(entityPath);
+        T objeto = from().where(campoId.gt(id)).orderBy(campoId.asc()).limit(1L).singleResult(entityPath);
 
-		if (objeto == null) {
-			return first();
-		}
+        if (objeto == null) {
+            return first();
+        }
 
-		return objeto;
+        return objeto;
 
-	}
+    }
 
-	public T previows(Long id) {
+    public T previows(Long id) {
 
-		if (LongUtil.isNullOrZero(id)) {
-			return last();
-		}
+        if (LongUtil.isNullOrZero(id)) {
+            return last();
+        }
 
-		T objeto = from().where(campoId.lt(id)).orderBy(campoId.desc()).limit(1L).singleResult(entityPath);
+        T objeto = from().where(campoId.lt(id)).orderBy(campoId.desc()).limit(1L).singleResult(entityPath);
 
-		if (objeto == null) {
-			return last();
-		}
+        if (objeto == null) {
+            return last();
+        }
 
-		return objeto;
+        return objeto;
 
-	}
+    }
 
-	public T last() {
-		return from().orderBy(campoId.desc()).singleResult(entityPath);
-	}
+    public T last() {
+        return from().orderBy(campoId.desc()).singleResult(entityPath);
+    }
 
-	public T first() {
-		return from().orderBy(campoId.asc()).singleResult(entityPath);
-	}
+    public T first() {
+        return from().orderBy(campoId.asc()).singleResult(entityPath);
+    }
 
-	@Override
-	public List<T> pesquisar(boolean selected, String pesquisa, BooleanBuilder preFilter, Pesquisa pesquisaExibir,
-			Integer rows) {
+    @Override
+    public List<T> pesquisar(boolean selected, String pesquisa, BooleanBuilder preFilter, Pesquisa pesquisaExibir, Integer rows) {
 
-		JPAQuery query = from();
+        JPAQuery query = from();
 
-		BooleanBuilder booleanBuilder = getClausule(selected, pesquisa, preFilter, pesquisaExibir);
+        BooleanBuilder booleanBuilder = getClausule(selected, pesquisa, preFilter, pesquisaExibir);
 
-		if (booleanBuilder.hasValue()) {
-			query.where(booleanBuilder);
-		}
+        if (booleanBuilder.hasValue()) {
+            query.where(booleanBuilder);
+        }
 
-		return query.orderBy(campoId.asc()).offset(rows.intValue()).limit(pesquisaExibir.getPaginacao())
-				.list(entityPath);
-	}
+        return query.orderBy(campoId.asc()).offset(rows.intValue()).limit(pesquisaExibir.getPaginacao()).list(entityPath);
+    }
 
-	public List<T> pesquisarTodos(boolean selected, String pesquisa, BooleanBuilder preFilter,
-			Pesquisa pesquisaExibir) {
+    public List<T> pesquisarTodos(boolean selected, String pesquisa, BooleanBuilder preFilter, Pesquisa pesquisaExibir) {
 
-		JPAQuery query = from();
+        JPAQuery query = from();
 
-		BooleanBuilder booleanBuilder = getClausule(selected, pesquisa, preFilter, pesquisaExibir);
+        BooleanBuilder booleanBuilder = getClausule(selected, pesquisa, preFilter, pesquisaExibir);
 
-		if (booleanBuilder.hasValue()) {
-			query.where(booleanBuilder);
-		}
+        if (booleanBuilder.hasValue()) {
+            query.where(booleanBuilder);
+        }
 
-		return query.orderBy(campoId.asc()).list(entityPath);
-	}
+        return query.orderBy(campoId.asc()).list(entityPath);
+    }
 
-	@Override
-	public Long count(boolean selected, String pesquisa, BooleanBuilder preFilter, Pesquisa pesquisaExibir) {
+    @Override
+    public Long count(boolean selected, String pesquisa, BooleanBuilder preFilter, Pesquisa pesquisaExibir) {
 
-		JPAQuery query = from();
+        JPAQuery query = from();
 
-		BooleanBuilder booleanBuilder = getClausule(selected, pesquisa, preFilter, pesquisaExibir);
+        BooleanBuilder booleanBuilder = getClausule(selected, pesquisa, preFilter, pesquisaExibir);
 
-		if (booleanBuilder.hasValue()) {
-			query.where(booleanBuilder);
-		}
+        if (booleanBuilder.hasValue()) {
+            query.where(booleanBuilder);
+        }
 
-		return query.orderBy(campoId.asc()).count();
-	}
+        return query.orderBy(campoId.asc()).count();
+    }
 
-	private BooleanBuilder getClausule(boolean selected, String pesquisa, BooleanBuilder preFilter,
-			Pesquisa pesquisaExibir) {
+    private BooleanBuilder getClausule(boolean selected, String pesquisa, BooleanBuilder preFilter, Pesquisa pesquisaExibir) {
 
-		BooleanBuilder booleanBuilder = new BooleanBuilder();
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
 
-		if (!StringUtil.isNullOrEmpty(pesquisa)) {
+        if (!StringUtil.isNullOrEmpty(pesquisa)) {
 
-			pesquisaExibir.getPesquisaCampos().forEach(campo -> {
+            pesquisaExibir.getPesquisaCampos().forEach(campo -> {
 
-				BooleanExpression clausula = EntityPathUtil.getExpressionLike(this.entityPath, selected, pesquisa,
-						campo);
+                BooleanExpression clausula = EntityPathUtil.getExpressionLike(this.entityPath, selected, pesquisa, campo);
 
-				if (clausula != null) {
+                if (clausula != null) {
 
-					booleanBuilder.or(clausula);
-				}
-			});
+                    booleanBuilder.or(clausula);
+                }
+            });
 
-		}
+        }
 
-		if (preFilter.hasValue()) {
-			return preFilter.and(booleanBuilder);
-		}
+        if (preFilter.hasValue()) {
+            return preFilter.and(booleanBuilder);
+        }
 
-		return booleanBuilder;
-	}
+        return booleanBuilder;
+    }
 
-	public EntityManager getEntityManager() {
-		return entityManager;
-	}
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
 
 }
