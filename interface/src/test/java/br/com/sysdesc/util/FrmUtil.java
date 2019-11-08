@@ -1,21 +1,33 @@
 package br.com.sysdesc.util;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
+import br.com.sysdesc.components.JTextFieldMaiusculo;
 import br.com.sysdesc.enumerator.ProgramasEnum;
+import br.com.sysdesc.pesquisa.components.JTextFieldId;
 import br.com.sysdesc.pesquisa.components.PanelActions;
+import br.com.sysdesc.pesquisa.components.buttonactions.AbstractButtonAction;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Usuario;
 import br.com.sysdesc.ui.FrmApplication;
-import br.com.sysdesc.ui.FrmDepartamento;
 
 public class FrmUtil {
 
@@ -70,17 +82,71 @@ public class FrmUtil {
 		return (T) field.get(frm);
 	}
 
-	public static void novoRegistro(FrmDepartamento frmDepartamento, Class<?> clazz) throws Exception {
+	public static void novoRegistro(Object object, Class<?> clazz) throws Exception {
 
-		PanelActions<?> panelActions = FrmUtil.getFied(frmDepartamento, clazz, "panelActions");
+		PanelActions<?> panelActions = FrmUtil.getFied(object, clazz, "panelActions");
 
 		((JButton) FrmUtil.getFied(panelActions, PanelActions.class, "btNovo")).doClick();
 	}
 
-	public static void salvarRegistro(FrmDepartamento frmDepartamento, Class<FrmDepartamento> clazz) throws Exception {
-		PanelActions<?> panelActions = FrmUtil.getFied(frmDepartamento, clazz, "panelActions");
+	public static void salvarRegistro(Object object, Class<?> clazz) throws Exception {
+		PanelActions<?> panelActions = FrmUtil.getFied(object, clazz, "panelActions");
 
 		((JButton) FrmUtil.getFied(panelActions, PanelActions.class, "btSalvar")).doClick();
+	}
+
+	public static void assertLabels(Container container, Class<?> clazz, String... labels) throws Exception {
+
+		List<String> labelsComponent = new ArrayList<>();
+
+		findLabels(labelsComponent, container);
+
+		List<String> labelsAdicionados = labelsComponent.stream().filter(x -> !Arrays.asList(labels).contains(x))
+				.collect(Collectors.toList());
+
+		List<String> labelsNaoEncontrados = Arrays.asList(labels).stream().filter(x -> !labelsComponent.contains(x))
+				.collect(Collectors.toList());
+
+		if (labelsAdicionados.size() > 0 || labelsNaoEncontrados.size() > 0) {
+
+			fail(String.format("Formulário: %s \n Labels não encontrados %s \n Labels Adicionados: %s",
+					container.getClass().getName(), labelsNaoEncontrados.toString(), labelsAdicionados.toString()));
+		}
+
+	}
+
+	private static void findLabels(List<String> labelsComponent, Container object) {
+
+		for (Component component : object.getComponents()) {
+
+			if (!(component instanceof JLabel) && component instanceof Container) {
+				findLabels(labelsComponent, (Container) component);
+			}
+
+			if (component instanceof JLabel) {
+				labelsComponent.add(((JLabel) component).getText());
+			}
+		}
+	}
+
+	public static void assertTextFieldId(Object object, Class<?> clazz, int quantidade) throws Exception {
+		PanelActions<?> panelActions = FrmUtil.getFied(object, clazz, "panelActions");
+
+		Map<Class<? extends Component>, List<Component>> map = getFied(panelActions, AbstractButtonAction.class,
+				"camposTela");
+
+		assertEquals(quantidade, map.get(JTextFieldId.class).size());
+	}
+
+	public static void assertTextFieldMaiusculo(Object object, Class<?> clazz, int quantidade) throws Exception {
+		PanelActions<?> panelActions = FrmUtil.getFied(object, clazz, "panelActions");
+
+		Map<Class<? extends Component>, List<Component>> map = getFied(panelActions, AbstractButtonAction.class,
+				"camposTela");
+
+		Long count = map.get(JTextField.class).stream().filter(x -> x instanceof JTextFieldMaiusculo).count();
+
+		assertEquals(quantidade, count.intValue());
 	}
 
 }

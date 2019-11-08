@@ -1,5 +1,6 @@
 package br.com.sysdesc.util.integracao.cases;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -20,6 +21,20 @@ public class DepartamentoCases {
 		FrmDepartamento frmDepartamento = (FrmDepartamento) FrmUtil.openInstance(frmApplication, permissaoProgramas,
 				ProgramasEnum.CADASTRO_DEPARTAMENTOS);
 
+		testeValidacaoCampos(frmDepartamento);
+		testeInserirRegistro(frmDepartamento);
+
+	}
+
+	private static void testeValidacaoCampos(FrmDepartamento frmDepartamento) throws Exception {
+		assertEquals("CADASTRO DE DEPARTAMENTO", frmDepartamento.getTitle());
+		FrmUtil.assertLabels(frmDepartamento, FrmDepartamento.class, "Código:", "Descrição:");
+		FrmUtil.assertTextFieldMaiusculo(frmDepartamento, FrmDepartamento.class, 1);
+		FrmUtil.assertTextFieldId(frmDepartamento, FrmDepartamento.class, 1);
+	}
+
+	private static void testeInserirRegistro(FrmDepartamento frmDepartamento) throws Exception {
+
 		JTextField txDescricao = FrmUtil.getFied(frmDepartamento, FrmDepartamento.class, "txDescricao");
 		JTextField txCodigo = FrmUtil.getFied(frmDepartamento, FrmDepartamento.class, "txCodigo");
 
@@ -35,8 +50,8 @@ public class DepartamentoCases {
 
 		FrmUtil.salvarRegistro(frmDepartamento, FrmDepartamento.class);
 
-		Thread.sleep(10000);
-
+		assertTrue(!txDescricao.isEditable());
+		assertTrue(!txCodigo.isEditable());
 	}
 
 }
