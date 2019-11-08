@@ -7,48 +7,80 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 
-import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.enumerator.ProgramasEnum;
+import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Usuario;
 import br.com.sysdesc.ui.FrmApplication;
+import br.com.sysdesc.ui.FrmDepartamento;
 
 public class FrmUtil {
 
-    public static JInternalFrame openInstance(FrmApplication frmApplication, List<PermissaoPrograma> permissaoProgramas, ProgramasEnum programa)
-            throws Exception {
+	public static JInternalFrame openInstance(FrmApplication frmApplication, List<PermissaoPrograma> permissaoProgramas,
+			ProgramasEnum programa) throws Exception {
 
-        Optional<PermissaoPrograma> optional = permissaoProgramas.stream().filter(x -> x.getCodigoPrograma().equals(programa.getCodigo()))
-                .findFirst();
+		Optional<PermissaoPrograma> optional = permissaoProgramas.stream()
+				.filter(x -> x.getCodigoPrograma().equals(programa.getCodigo())).findFirst();
 
-        assertTrue(optional.isPresent());
+		assertTrue(optional.isPresent());
 
-        Class<?>[] parameters = { AbstractInternalFrame.class, PermissaoPrograma.class };
+		Class<?>[] parameters = { Class.class, PermissaoPrograma.class };
 
-        Method metodo = frmApplication.getClass().getDeclaredMethod("getSingleInstance", parameters);
+		Method metodo = frmApplication.getClass().getDeclaredMethod("getSingleInstance", parameters);
 
-        Object[] objeto = { programa.getInternalFrame(), optional.get() };
+		metodo.setAccessible(true);
 
-        metodo.invoke(frmApplication, objeto);
+		Object[] objeto = { programa.getInternalFrame(), optional.get() };
 
-        return frmApplication.getDesktopPane().getAllFrames()[0];
-    }
+		metodo.invoke(frmApplication, objeto);
 
-    public static void setarUsuario(FrmApplication frmApplication, Usuario usuario) throws Exception {
+		return frmApplication.getDesktopPane().getAllFrames()[0];
+	}
 
-        Field field = frmApplication.getClass().getDeclaredField("usuario");
+	public static void setarUsuario(FrmApplication frmApplication, Usuario usuario) throws Exception {
 
-        field.set(frmApplication, usuario);
+		Field field = frmApplication.getClass().getDeclaredField("usuario");
 
-    }
+		field.setAccessible(true);
 
-    public static void executeVoidMethod(FrmApplication frmApplication, String method, Class<?>[] parameters, Object[] valores) throws Exception {
+		field.set(frmApplication, usuario);
 
-        Method metodo = frmApplication.getClass().getDeclaredMethod(method, parameters);
+	}
 
-        metodo.invoke(frmApplication, valores);
-    }
+	public static void executeVoidMethod(Object object, String method, Class<?>[] parameters, Object[] valores)
+			throws Exception {
+
+		Method metodo = object.getClass().getDeclaredMethod(method, parameters);
+
+		metodo.setAccessible(true);
+
+		metodo.invoke(object, valores);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T getFied(Object frm, Class<?> clazz, String fieldStr) throws Exception {
+
+		Field field = clazz.getDeclaredField(fieldStr);
+
+		field.setAccessible(true);
+
+		return (T) field.get(frm);
+	}
+
+	public static void novoRegistro(FrmDepartamento frmDepartamento, Class<?> clazz) throws Exception {
+
+		PanelActions<?> panelActions = FrmUtil.getFied(frmDepartamento, clazz, "panelActions");
+
+		((JButton) FrmUtil.getFied(panelActions, PanelActions.class, "btNovo")).doClick();
+	}
+
+	public static void salvarRegistro(FrmDepartamento frmDepartamento, Class<FrmDepartamento> clazz) throws Exception {
+		PanelActions<?> panelActions = FrmUtil.getFied(frmDepartamento, clazz, "panelActions");
+
+		((JButton) FrmUtil.getFied(panelActions, PanelActions.class, "btSalvar")).doClick();
+	}
 
 }

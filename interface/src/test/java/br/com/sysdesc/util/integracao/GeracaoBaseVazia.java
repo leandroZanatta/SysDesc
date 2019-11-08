@@ -1,7 +1,7 @@
 package br.com.sysdesc.util.integracao;
 
 import static java.sql.DriverManager.getConnection;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.sql.Connection;
@@ -14,39 +14,41 @@ import br.com.sysdesc.repository.conexao.Conexao;
 
 public class GeracaoBaseVazia {
 
-    public void gerarBaseVazia() throws Exception {
+	public void gerarBaseVazia() throws Exception {
 
-        try {
-            File path = new File(Configuracoes.USER_DIR).getParentFile().getParentFile();
+		try {
 
-            File pastaChangesets = new File(path, "\\sysdesc-upgrade\\upgrade");
+			File path = new File(Configuracoes.USER_DIR).getParentFile().getParentFile();
 
-            String configuracao = Configuracoes.USER_DIR + Configuracoes.SEPARATOR + "config" + Configuracoes.SEPARATOR + "config.02";
+			File pastaChangesets = new File(path, "\\sysdesc-upgrade\\upgrade");
 
-            Changelog.runChangelog(buscarConexao(configuracao), pastaChangesets.getAbsolutePath(), Configuracoes.CHANGELOG);
+			String configuracao = Configuracoes.USER_DIR + Configuracoes.SEPARATOR + "config" + Configuracoes.SEPARATOR
+					+ "config.02";
 
-            Conexao.createConnection(new File(configuracao));
-        } catch (Exception e) {
-            e.printStackTrace();
-            assertTrue(false);
-        }
+			Changelog.runChangelog(buscarConexao(configuracao), pastaChangesets.getAbsolutePath(),
+					Configuracoes.CHANGELOG);
 
-        assertTrue(true);
-    }
+			Conexao.createConnection(new File(configuracao));
+		} catch (Exception e) {
 
-    public static Connection buscarConexao(String configuracao) throws Exception {
+			fail(e.getMessage());
+		}
 
-        Properties propertiesConexao = Conexao.buscarPropertiesConexao(new File(configuracao));
+	}
 
-        String clazz = propertiesConexao.getProperty(TipoConexaoEnum.jdbcDriver);
-        String url = propertiesConexao.getProperty(TipoConexaoEnum.jdbcUrl);
-        String usuario = propertiesConexao.getProperty(TipoConexaoEnum.jdbcUser);
-        String senha = propertiesConexao.getProperty(TipoConexaoEnum.jdbcPassword);
+	public static Connection buscarConexao(String configuracao) throws Exception {
 
-        Class.forName(clazz);
+		Properties propertiesConexao = Conexao.buscarPropertiesConexao(new File(configuracao));
 
-        return getConnection(url, usuario, senha);
+		String clazz = propertiesConexao.getProperty(TipoConexaoEnum.jdbcDriver);
+		String url = propertiesConexao.getProperty(TipoConexaoEnum.jdbcUrl);
+		String usuario = propertiesConexao.getProperty(TipoConexaoEnum.jdbcUser);
+		String senha = propertiesConexao.getProperty(TipoConexaoEnum.jdbcPassword);
 
-    }
+		Class.forName(clazz);
+
+		return getConnection(url, usuario, senha);
+
+	}
 
 }

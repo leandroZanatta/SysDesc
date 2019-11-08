@@ -1,92 +1,89 @@
 package br.com.sysdesc.util.integracao;
 
-import java.lang.reflect.Field;
+import static org.junit.Assert.fail;
 
-import javax.swing.JButton;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import java.io.File;
+import java.io.IOException;
+import java.util.Properties;
 
+import javax.naming.ConfigurationException;
+
+import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import br.com.sysdesc.atualizacao.enumeradores.TipoConexaoEnum;
+import br.com.sysdesc.atualizacao.util.resources.Configuracoes;
+import br.com.sysdesc.repository.conexao.Conexao;
 import br.com.sysdesc.repository.model.Usuario;
 import br.com.sysdesc.ui.FrmApplication;
 import br.com.sysdesc.ui.FrmLogin;
 import br.com.sysdesc.ui.util.LookAndFeelUtil;
 import br.com.sysdesc.util.FrmUtil;
+import br.com.sysdesc.util.integracao.cases.DepartamentoCases;
+import br.com.sysdesc.util.integracao.cases.LoginCases;
 
 @RunWith(MockitoJUnitRunner.class)
 public class IntegracaoGeral {
 
-    @Test
-    public void testarIntegracao() throws Exception {
+	@Test
+	public void testarIntegracao() throws Exception {
+		try {
+			Class<?>[] parameters = {};
 
-        Class<?>[] parameters = {};
+			Object[] valores = {};
 
-        Object[] valores = {};
+			deletarArquivoDb();
 
-        LookAndFeelUtil.configureLayout();
+			LookAndFeelUtil.configureLayout();
 
-        new GeracaoBaseVazia().gerarBaseVazia();
+			new GeracaoBaseVazia().gerarBaseVazia();
 
-        FrmApplication frmApplication = new FrmApplication();
-        frmApplication.setVisible(Boolean.TRUE);
+			FrmApplication frmApplication = new FrmApplication();
+			frmApplication.setVisible(Boolean.TRUE);
 
-        FrmUtil.setarUsuario(frmApplication, autenticarUsuario(frmApplication, "admin", "123456"));
+			FrmLogin frmLogin = new FrmLogin(frmApplication);
 
-        FrmUtil.executeVoidMethod(frmApplication, "createMenus", parameters, valores);
-        FrmUtil.executeVoidMethod(frmApplication, "setarLabels", parameters, valores);
-    }
+			Usuario usuario = LoginCases.autenticacao(frmLogin);
 
-    private Usuario autenticarUsuario(FrmApplication frmApplication, String usuario, String senha) {
+			FrmUtil.setarUsuario(frmApplication, usuario);
 
-        FrmLogin frmLogin = new FrmLogin(frmApplication);
+			FrmUtil.executeVoidMethod(frmApplication, "createMenus", parameters, valores);
+			FrmUtil.executeVoidMethod(frmApplication, "setarLabels", parameters, valores);
 
-        new Thread(new Runnable() {
+			DepartamentoCases.testCadastroDepartamento(frmApplication, usuario.getPermissaoProgramas());
+		} catch (Exception e) {
 
-            @Override
-            public void run() {
+			e.printStackTrace();
 
-                try {
+			fail(e.getMessage());
+		}
+	}
 
-                    Thread.sleep(1000);
+	private void deletarArquivoDb() throws ConfigurationException, IOException {
 
-                    Field field = frmLogin.getClass().getDeclaredField("txLogin");
+		String configuracao = Configuracoes.USER_DIR + Configuracoes.SEPARATOR + "config" + Configuracoes.SEPARATOR
+				+ "config.02";
 
-                    field.setAccessible(true);
+		Properties propriedadeconf = Conexao.buscarPropertiesConexao(new File(configuracao));
 
-                    JTextField txLogin = (JTextField) field.get(frmLogin);
+		String fileh2 = propriedadeconf.getProperty(TipoConexaoEnum.jdbcUrl).split(":")[3];
 
-                    txLogin.setText(usuario);
+		File arquivoDb = new File(
+				Configuracoes.USER_DIR + Configuracoes.SEPARATOR + fileh2.substring(2, fileh2.length()) + ".mv.db");
 
-                    Field fieldSenha = frmLogin.getClass().getDeclaredField("txSenha");
+		File arquivoTrace = new File(
+				Configuracoes.USER_DIR + Configuracoes.SEPARATOR + fileh2.substring(2, fileh2.length()) + ".trace.db");
 
-                    fieldSenha.setAccessible(true);
+		if (arquivoDb.exists()) {
 
-                    JPasswordField txSenha = (JPasswordField) fieldSenha.get(frmLogin);
+			FileUtils.forceDelete(arquivoDb);
+		}
 
-                    txSenha.setText(senha);
+		if (arquivoTrace.exists()) {
 
-                    Field fieldOk = frmLogin.getClass().getDeclaredField("btLogin");
-
-                    fieldOk.setAccessible(true);
-
-                    JButton btOk = (JButton) fieldOk.get(frmLogin);
-
-                    btOk.doClick();
-
-                } catch (Exception e) {
-
-                    System.exit(0);
-                }
-
-            }
-
-        }).start();
-
-        frmLogin.setVisible(Boolean.TRUE);
-
-        return frmLogin.getUsuario();
-    }
+			FileUtils.forceDelete(arquivoTrace);
+		}
+	}
 }
