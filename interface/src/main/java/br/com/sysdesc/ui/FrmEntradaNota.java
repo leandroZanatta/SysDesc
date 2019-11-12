@@ -1,18 +1,13 @@
 package br.com.sysdesc.ui;
 
-import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_CLIENTES;
 import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_ENTRADAS;
 import static br.com.sysdesc.util.resources.Resources.FRMDEPARTAMENTO_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-
-import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import com.mysema.query.BooleanBuilder;
 import com.toedter.calendar.JDateChooser;
@@ -22,26 +17,22 @@ import br.com.sysdesc.components.ButtonColumn;
 import br.com.sysdesc.components.JMoneyField;
 import br.com.sysdesc.components.JNumericField;
 import br.com.sysdesc.components.JmoneyFieldColumn;
-import br.com.sysdesc.enumerator.OperacaoEnum;
 import br.com.sysdesc.pesquisa.components.CampoPesquisa;
 import br.com.sysdesc.pesquisa.components.PanelActions;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.pesquisa.ui.FrmPesquisa;
-import br.com.sysdesc.repository.model.Cliente;
-import br.com.sysdesc.repository.model.Departamento;
 import br.com.sysdesc.repository.model.EntradaCabecalho;
-import br.com.sysdesc.repository.model.EntradaDetalhe;
 import br.com.sysdesc.repository.model.Fornecedor;
 import br.com.sysdesc.repository.model.OperacaoEstoque;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Produto;
-import br.com.sysdesc.service.cliente.ClienteService;
 import br.com.sysdesc.service.entradas.EntradasService;
 import br.com.sysdesc.service.fornecedor.FornecedorService;
 import br.com.sysdesc.service.operacaoestoque.OperacaoEstoqueService;
 import br.com.sysdesc.service.produto.ProdutoService;
 import br.com.sysdesc.tablemodels.EntradaMercadoriasTableModel;
 import br.com.sysdesc.util.exception.SysDescException;
+import br.com.sysdesc.util.resources.Resources;
 import net.miginfocom.swing.MigLayout;
 
 public class FrmEntradaNota extends AbstractInternalFrame {
@@ -83,16 +74,16 @@ public class FrmEntradaNota extends AbstractInternalFrame {
 
 		getContentPane().setLayout(new MigLayout("", "[grow][grow][grow][grow][grow]", "[][][][][][][][][grow][]"));
 
-		JLabel lblCdigo = new JLabel("Código:");
+		JLabel lblCdigo = new JLabel(Resources.translate(Resources.FRMENTRADANOTA_LB_CODIGO));
 		getContentPane().add(lblCdigo, "cell 0 0");
 
 		txCodigo = new JNumericField();
 		getContentPane().add(txCodigo, "cell 0 1,width 50:100:100");
 
-		JLabel lblNewLabel = new JLabel("Natureza da Operação:");
+		JLabel lblNewLabel = new JLabel(Resources.translate(Resources.FRMENTRADANOTA_LB_NATUREZA_OPERACAO));
 		getContentPane().add(lblNewLabel, "cell 0 2");
 
-		JLabel lblNmeroNota = new JLabel("Número Nota:");
+		JLabel lblNmeroNota = new JLabel(Resources.translate(Resources.FRMENTRADANOTA_LB_NUMERO_NOTA));
 		getContentPane().add(lblNmeroNota, "cell 4 2");
 
 		cpNaturezaOperacao = new CampoPesquisa<OperacaoEstoque>(operacaoEstoqueService,
@@ -108,7 +99,7 @@ public class FrmEntradaNota extends AbstractInternalFrame {
 		txNumeroNota = new JNumericField();
 		getContentPane().add(txNumeroNota, "cell 4 3,growx");
 
-		JLabel lblEmitente = new JLabel("Emitente:");
+		JLabel lblEmitente = new JLabel(Resources.translate(Resources.FRMENTRADANOTA_LB_EMITENTE));
 		getContentPane().add(lblEmitente, "cell 0 4");
 
 		cpFornecedor = new CampoPesquisa<Fornecedor>(fornecedorService, PesquisaEnum.PES_FORNECEDORES,
@@ -124,10 +115,10 @@ public class FrmEntradaNota extends AbstractInternalFrame {
 		};
 		getContentPane().add(cpFornecedor, "cell 0 5 5 1,growx");
 
-		JLabel lblDataEmisso = new JLabel("Data Emissão:");
+		JLabel lblDataEmisso = new JLabel(Resources.translate(Resources.FRMENTRADANOTA_LB_DATA_EMISSAO));
 		getContentPane().add(lblDataEmisso, "cell 0 6");
 
-		JLabel lblData = new JLabel("Data Saída:");
+		JLabel lblData = new JLabel(Resources.translate(Resources.FRMENTRADANOTA_LB_DATA_SAIDA));
 		getContentPane().add(lblData, "cell 1 6");
 
 		JLabel lblFrete = new JLabel("Frete:");
@@ -186,7 +177,7 @@ public class FrmEntradaNota extends AbstractInternalFrame {
 				objetoPesquisa.setEntradaDetalhes(entradaMercadoriasTableModel.getRows());
 
 				objetoPesquisa.getEntradaDetalhes().forEach(detalhe -> detalhe.setEntradaCabecalho(objetoPesquisa));
-				
+
 				return Boolean.TRUE;
 			}
 		};

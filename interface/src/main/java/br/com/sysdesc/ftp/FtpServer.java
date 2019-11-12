@@ -9,7 +9,9 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import br.com.sysdesc.util.constants.MensagemConstants;
 import br.com.sysdesc.util.resources.Configuracoes;
+import br.com.sysdesc.util.resources.Resources;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -72,14 +74,14 @@ public class FtpServer extends Thread {
 
 				} catch (IOException ioe) {
 
-					log.error("Server error ", ioe);
+					log.error(Resources.translate(MensagemConstants.MENSAGEM_LOG_SERVER_ERROR), ioe);
 				}
 
 			}
 
 		} catch (IOException e) {
 
-			log.error("Não foi possivel inicializar o servidor", e);
+			log.error(Resources.translate(MensagemConstants.MENSAGEM_LOG_NAO_INICIALIZAR_SERVIDOR), e);
 		}
 	}
 }

@@ -19,90 +19,93 @@ import com.mysema.query.sql.PostgresTemplates;
 import com.mysema.query.sql.SQLTemplates;
 
 import br.com.sysdesc.util.classes.CryptoUtil;
+import br.com.sysdesc.util.constants.MensagemConstants;
 import br.com.sysdesc.util.exception.SysDescException;
 import br.com.sysdesc.util.resources.Configuracoes;
+import br.com.sysdesc.util.resources.Resources;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Conexao {
 
-    private static EntityManager entityManager;
+	private static EntityManager entityManager;
 
-    private static SQLTemplates sqlTemplates;
+	private static SQLTemplates sqlTemplates;
 
-    private static Boolean isconfigured() {
-        return new File(Configuracoes.CONEXAO).exists();
-    }
+	private static Boolean isconfigured() {
+		return new File(Configuracoes.CONEXAO).exists();
+	}
 
-    public static File getConfiguracaoBanco() throws ConfigurationException {
+	public static File getConfiguracaoBanco() throws ConfigurationException {
 
-        if (!isconfigured()) {
+		if (!isconfigured()) {
 
-            throw new ConfigurationException("Configuração de banco de dados não encontrada");
-        }
+			throw new ConfigurationException("Configuração de banco de dados não encontrada");
+		}
 
-        return new File(Configuracoes.CONEXAO);
-    }
+		return new File(Configuracoes.CONEXAO);
+	}
 
-    public static void buildEntityManager() throws ConfigurationException {
+	public static void buildEntityManager() throws ConfigurationException {
 
-        createConnection(getConfiguracaoBanco());
-    }
+		createConnection(getConfiguracaoBanco());
+	}
 
-    public static void createConnection(File configuracaoBanco) throws ConfigurationException {
+	public static void createConnection(File configuracaoBanco) throws ConfigurationException {
 
-        Properties propertiesConexao = buscarPropertiesConexao(configuracaoBanco);
+		Properties propertiesConexao = buscarPropertiesConexao(configuracaoBanco);
 
-        entityManager = Persistence.createEntityManagerFactory("SysDesc", propertiesConexao).createEntityManager();
+		entityManager = Persistence.createEntityManagerFactory("SysDesc", propertiesConexao).createEntityManager();
 
-        sqlTemplates = createTemplate(propertiesConexao);
-    }
+		sqlTemplates = createTemplate(propertiesConexao);
+	}
 
-    private static SQLTemplates createTemplate(Properties propertiesConexao) {
+	private static SQLTemplates createTemplate(Properties propertiesConexao) {
 
-        String driver = propertiesConexao.getProperty("javax.persistence.jdbc.driver", "");
+		String driver = propertiesConexao.getProperty("javax.persistence.jdbc.driver", "");
 
-        switch (driver) {
-            case "org.postgresql.Driver":
-                return PostgresTemplates.DEFAULT;
-            case "org.h2.Driver":
-                return H2Templates.DEFAULT;
-            default:
-                throw new SysDescException(MENSAGEM_DRIVER_NAO_ENCONTRADO);
-        }
+		switch (driver) {
+		case "org.postgresql.Driver":
+			return PostgresTemplates.DEFAULT;
+		case "org.h2.Driver":
+			return H2Templates.DEFAULT;
+		default:
+			throw new SysDescException(MENSAGEM_DRIVER_NAO_ENCONTRADO);
+		}
 
-    }
+	}
 
-    public static EntityManager getEntityManager() {
+	public static EntityManager getEntityManager() {
 
-        return entityManager;
-    }
+		return entityManager;
+	}
 
-    public static SQLTemplates getSqlTemplates() {
-        return sqlTemplates;
-    }
+	public static SQLTemplates getSqlTemplates() {
+		return sqlTemplates;
+	}
 
-    public static Properties buscarPropertiesConexao(File configuracaoBanco) throws ConfigurationException {
+	public static Properties buscarPropertiesConexao(File configuracaoBanco) throws ConfigurationException {
 
-        try {
-            String arquivoConfiguracao = CryptoUtil.fromBlowfish(FileUtils.readFileToString(configuracaoBanco, StandardCharsets.UTF_8));
+		try {
+			String arquivoConfiguracao = CryptoUtil
+					.fromBlowfish(FileUtils.readFileToString(configuracaoBanco, StandardCharsets.UTF_8));
 
-            if (arquivoConfiguracao == null) {
-                throw new ConfigurationException("Configuração de conexão inválida");
-            }
+			if (arquivoConfiguracao == null) {
+				throw new ConfigurationException("Configuração de conexão inválida");
+			}
 
-            Properties properties = new Properties();
+			Properties properties = new Properties();
 
-            properties.load(new StringReader(arquivoConfiguracao));
+			properties.load(new StringReader(arquivoConfiguracao));
 
-            return properties;
+			return properties;
 
-        } catch (IOException e) {
+		} catch (IOException e) {
 
-            log.error("Erro ao buscar propriedades de conexão", e);
+			log.error(Resources.translate(MensagemConstants.MENSAGEM_LOG_PROPIEDADES_CONEXAO), e);
 
-            return null;
-        }
-    }
+			return null;
+		}
+	}
 
 }

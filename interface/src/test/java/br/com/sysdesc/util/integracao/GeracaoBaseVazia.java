@@ -7,7 +7,6 @@ import java.io.File;
 import java.sql.Connection;
 import java.util.Properties;
 
-import br.com.sysdesc.atualizacao.changelog.core.Changelog;
 import br.com.sysdesc.atualizacao.enumeradores.TipoConexaoEnum;
 import br.com.sysdesc.atualizacao.util.resources.Configuracoes;
 import br.com.sysdesc.repository.conexao.Conexao;
@@ -25,8 +24,9 @@ public class GeracaoBaseVazia {
 			String configuracao = Configuracoes.USER_DIR + Configuracoes.SEPARATOR + "config" + Configuracoes.SEPARATOR
 					+ "config.02";
 
-			Changelog.runChangelog(buscarConexao(configuracao), pastaChangesets.getAbsolutePath(),
-					Configuracoes.CHANGELOG);
+			// Changelog.runChangelog(buscarConexao(configuracao),
+			// pastaChangesets.getAbsolutePath(),
+			// Configuracoes.CHANGELOG);
 
 			Conexao.createConnection(new File(configuracao));
 		} catch (Exception e) {

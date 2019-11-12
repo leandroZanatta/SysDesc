@@ -7,7 +7,9 @@ import br.com.sysdesc.intercomm.builder.RequestBuilder;
 import br.com.sysdesc.repository.model.GerenciadorPDV;
 import br.com.sysdesc.service.gerenciador.GerenciadorInicializacaoService;
 import br.com.sysdesc.util.classes.IPUtil;
+import br.com.sysdesc.util.constants.MensagemConstants;
 import br.com.sysdesc.util.resources.ApplicationProperies;
+import br.com.sysdesc.util.resources.Resources;
 import br.com.sysdesc.util.vo.IPVO;
 import feign.Retryer;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +29,7 @@ public class AtualizacaoGerenciadorPDVThread implements Runnable {
 
 		List<GerenciadorPDV> gerenciadorPDVs = gerenciadorInicializacaoService.buscarGerenciadoresCadastrados();
 
-		log.info("Numero de gerenciadores cadastrados: " + gerenciadorPDVs.size());
+		log.info(Resources.translate(MensagemConstants.MENSAGEM_LOG_NUMERO_GERENCIADORES) + gerenciadorPDVs.size());
 
 		atualizarConfiguracoes(ipERP, gerenciadorPDVs);
 
@@ -46,14 +48,15 @@ public class AtualizacaoGerenciadorPDVThread implements Runnable {
 
 				if (retornoConfiguracao) {
 
-					log.info("Atualizada configuração de ip do gerenciador:" + url);
+					log.info(Resources.translate(MensagemConstants.MENSAGEM_LOG_IP_DO_GERENCIADOR) + url);
 				}
 
 				return retornoConfiguracao;
 
 			} catch (Exception e) {
 
-				log.warn("Erro ao atualizar configuração do gerenciador" + e.getMessage());
+				log.warn(Resources.translate(MensagemConstants.MENSAGEM_LOG_CONFIGURACAO_DO_GERENCIADOR)
+						+ e.getMessage());
 			}
 
 		}
