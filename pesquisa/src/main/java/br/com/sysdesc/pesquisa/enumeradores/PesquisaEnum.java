@@ -9,6 +9,7 @@ import br.com.sysdesc.repository.model.QCategoria;
 import br.com.sysdesc.repository.model.QCidade;
 import br.com.sysdesc.repository.model.QCliente;
 import br.com.sysdesc.repository.model.QDepartamento;
+import br.com.sysdesc.repository.model.QEmpresa;
 import br.com.sysdesc.repository.model.QEntradaCabecalho;
 import br.com.sysdesc.repository.model.QEstado;
 import br.com.sysdesc.repository.model.QFormasPagamento;
@@ -63,7 +64,9 @@ public enum PesquisaEnum {
 
 	PES_OPERACOES_ESTOQUE(18L, "Operações de Estoque", QOperacaoEstoque.class),
 
-	PES_PDVS(19L, "PDVs", QPdv.class);
+	PES_PDVS(19L, "PDVs", QPdv.class),
+
+	PES_EMPRESAS(20L, "Emmpresas", QEmpresa.class);
 
 	private static Map<Long, PesquisaEnum> map = new HashMap<>();
 
