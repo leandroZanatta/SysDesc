@@ -31,6 +31,7 @@ import br.com.sysdesc.service.fornecedor.FornecedorService;
 import br.com.sysdesc.service.operacaoestoque.OperacaoEstoqueService;
 import br.com.sysdesc.service.produto.ProdutoService;
 import br.com.sysdesc.tablemodels.EntradaMercadoriasTableModel;
+import br.com.sysdesc.util.constants.MensagemConstants;
 import br.com.sysdesc.util.exception.SysDescException;
 import br.com.sysdesc.util.resources.Resources;
 import net.miginfocom.swing.MigLayout;
@@ -206,21 +207,28 @@ public class FrmEntradaNota extends AbstractInternalFrame {
 
 	private void selecionarProduto(int selectedRow) {
 
-		try {
-			FrmPesquisa<Produto> pesquisaProduto = new FrmPesquisa<>(null, PesquisaEnum.PES_PRODUTOS,
-					new BooleanBuilder(), produtoService, getCodigoUsuario());
+		if (cpNaturezaOperacao.getObjetoPesquisado() != null) {
 
-			pesquisaProduto.setVisible(true);
+			try {
+				FrmPesquisa<Produto> pesquisaProduto = new FrmPesquisa<>(null, PesquisaEnum.PES_PRODUTOS,
+						new BooleanBuilder(), produtoService, getCodigoUsuario());
 
-			if (pesquisaProduto.getOk()) {
-				entradaMercadoriasTableModel.getRow(selectedRow).setProduto(pesquisaProduto.getObjeto());
+				pesquisaProduto.setVisible(true);
 
-				entradaMercadoriasTableModel.addRow();
+				if (pesquisaProduto.getOk()) {
+					entradaMercadoriasTableModel.getRow(selectedRow).setProduto(pesquisaProduto.getObjeto());
+
+					entradaMercadoriasTableModel.addRow();
+
+				}
+
+			} catch (SysDescException e) {
+				JOptionPane.showMessageDialog(null, e.getMensagem());
 			}
-
-		} catch (SysDescException e) {
-			JOptionPane.showMessageDialog(null, e.getMensagem());
+		}
+		else {
+			JOptionPane.showMessageDialog(null, Resources.translate(MensagemConstants.MENSAGEM_SELECIONE_NATUREZA_OPERACAO));
+			
 		}
 	}
-
 }

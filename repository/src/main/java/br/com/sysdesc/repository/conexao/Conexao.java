@@ -102,7 +102,7 @@ public class Conexao {
 
 		} catch (IOException e) {
 
-			log.error(Resources.translate(MensagemConstants.MENSAGEM_LOG_PROPIEDADES_CONEXAO), e);
+			log.error(Resources.translate(MensagemConstants.MENSAGEM_LOG_PROPRIEDADES_CONEXAO), e);
 
 			return null;
 		}
