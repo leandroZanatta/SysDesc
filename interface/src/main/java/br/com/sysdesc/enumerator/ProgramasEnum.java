@@ -14,6 +14,7 @@ import br.com.sysdesc.ui.FrmEntradaNota;
 import br.com.sysdesc.ui.FrmEstado;
 import br.com.sysdesc.ui.FrmFormasPagamento;
 import br.com.sysdesc.ui.FrmFornecedor;
+import br.com.sysdesc.ui.FrmKardex;
 import br.com.sysdesc.ui.FrmLimite;
 import br.com.sysdesc.ui.FrmMarca;
 import br.com.sysdesc.ui.FrmModulos;
@@ -71,7 +72,9 @@ public enum ProgramasEnum {
 
 	CADASTRO_MODULOS(44L, FrmModulos.class),
 
-	CADASTRO_EMPRESAS(45L, FrmEmpresa.class);
+	CADASTRO_EMPRESAS(45L, FrmEmpresa.class),
+
+	CADASTRO_KARDEX(29L, FrmKardex.class);
 
 	private static Map<Long, ProgramasEnum> mapa = new HashMap<>();
 
