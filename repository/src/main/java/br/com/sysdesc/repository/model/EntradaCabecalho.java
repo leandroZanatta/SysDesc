@@ -60,9 +60,6 @@ public class EntradaCabecalho implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date dataSaida;
 
-	@Column(name = "fl_tipooperacao")
-	private String tipoOperacao;
-
 	@Column(name = "vl_frete")
 	private BigDecimal valorFrete;
 
