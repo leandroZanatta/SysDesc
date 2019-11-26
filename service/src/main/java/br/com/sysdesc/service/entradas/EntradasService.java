@@ -1,9 +1,13 @@
 package br.com.sysdesc.service.entradas;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.com.sysdesc.repository.dao.EntradaCabecalhoDAO;
 import br.com.sysdesc.repository.model.EntradaCabecalho;
+import br.com.sysdesc.repository.model.Kardex;
 import br.com.sysdesc.service.interfaces.impl.AbstractGenericService;
 import br.com.sysdesc.util.classes.BigDecimalUtil;
 import br.com.sysdesc.util.classes.ListUtil;
@@ -13,9 +17,17 @@ import br.com.sysdesc.util.exception.SysDescException;
 
 public class EntradasService extends AbstractGenericService<EntradaCabecalho> {
 
+	private final EntradaCabecalhoDAO entradaCabecalhoDAO;
+
 	public EntradasService() {
 
-		super(new EntradaCabecalhoDAO(), EntradaCabecalho::getIdEntradaCabecalho);
+		this(new EntradaCabecalhoDAO());
+	}
+
+	public EntradasService(EntradaCabecalhoDAO entradaCabecalhoDAO) {
+		super(entradaCabecalhoDAO, EntradaCabecalho::getIdEntradaCabecalho);
+
+		this.entradaCabecalhoDAO = entradaCabecalhoDAO;
 	}
 
 	@Override
@@ -61,5 +73,43 @@ public class EntradasService extends AbstractGenericService<EntradaCabecalho> {
 		if (BigDecimalUtil.diferente(objetoPersistir.getValorNota(), BigDecimal.valueOf(somaItens))) {
 			throw new SysDescException(MensagemConstants.MENSAGEM_VALOR_ITENS_DIFERENTE_DO_VALOR_DE_NOTAS);
 		}
+	}
+
+	@Override
+	public void salvar(EntradaCabecalho objetoPersistir) {
+
+		entradaCabecalhoDAO.getEntityManager().getTransaction().begin();
+
+		entradaCabecalhoDAO.getEntityManager().persist(objetoPersistir);
+
+		List<Kardex> estoques = new ArrayList<>();
+
+		objetoPersistir.getEntradaDetalhes().forEach(detalhe -> {
+
+			if (detalhe.getProduto().getFlagMovimentaEstoque()
+					&& detalhe.getEntradaCabecalho().getOperacaoEstoque().getAtualizacusto()) {
+
+				Kardex kardex = new Kardex();
+				kardex.setFlagOperacao(detalhe.getEntradaCabecalho().getOperacaoEstoque().getOperacao());
+				kardex.setQuantidade(detalhe.getQuantidade());
+				kardex.setDataMovimento(detalhe.getEntradaCabecalho().getDataEmissao());
+				kardex.setCodigoProduto(detalhe.getProduto().getIdProduto());
+				kardex.setQuantidadeDisponivel(detalhe.getQuantidade());
+				kardex.setValorTotal(detalhe.getValorTotal());
+				kardex.setValorUnitario(
+						detalhe.getValorTotal().divide(detalhe.getQuantidade(), 8, RoundingMode.HALF_EVEN));
+
+				estoques.add(kardex);
+			}
+
+		});
+
+		if (!ListUtil.isNullOrEmpty(estoques)) {
+
+			entradaCabecalhoDAO.getEntityManager().persist(estoques);
+		}
+
+		entradaCabecalhoDAO.getEntityManager().getTransaction().commit();
+
 	}
 }
