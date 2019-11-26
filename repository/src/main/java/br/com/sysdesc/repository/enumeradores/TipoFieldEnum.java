@@ -35,6 +35,7 @@ public enum TipoFieldEnum {
 
 	private static Map<Long, TipoFieldEnum> mapa = new HashMap<>();
 
+	@SuppressWarnings("rawtypes")
 	private final Class<? extends Path> path;
 
 	private final Class<?> type;

@@ -64,8 +64,8 @@ public class FrmLogin extends JDialog {
 		lblSenha.setBounds(10, 106, 210, 14);
 		txLogin.setBounds(10, 73, 210, 20);
 		txSenha.setBounds(10, 123, 210, 20);
-		btLogin.setBounds(30, 169, 75, 23);
-		btCancelar.setBounds(113, 169, 75, 23);
+		btLogin.setBounds(28, 216, 75, 23);
+		btCancelar.setBounds(113, 216, 75, 23);
 
 		btLogin.addActionListener((e) -> efetuarLoginBtn());
 		btCancelar.addActionListener((e) -> System.exit(0));
@@ -124,5 +124,4 @@ public class FrmLogin extends JDialog {
 	public Usuario getUsuario() {
 		return usuario;
 	}
-
 }

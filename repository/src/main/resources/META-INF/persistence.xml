@@ -37,6 +37,9 @@
 		<class>br.com.sysdesc.repository.model.PDVModuloGerenciadorPDV</class>
 		<class>br.com.sysdesc.repository.model.SincronizacaoTabelas</class>
 		<class>br.com.sysdesc.repository.model.Empresa</class>
+		<class>br.com.sysdesc.repository.model.Kardex</class>
+		<class>br.com.sysdesc.repository.model.KardexDiario</class>
+		<class>br.com.sysdesc.repository.model.Estoque</class>
 	</persistence-unit>
 
 </persistence>

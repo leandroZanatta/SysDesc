@@ -12,6 +12,7 @@ import javax.swing.JTable;
 import com.toedter.calendar.JDateChooser;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
+import br.com.sysdesc.enumerator.OperacaoEnum;
 import br.com.sysdesc.pesquisa.components.CampoPesquisa;
 import br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum;
 import br.com.sysdesc.repository.model.Empresa;
@@ -37,7 +38,7 @@ public class FrmKardex extends AbstractInternalFrame {
 	private JLabel lbDataInicial;
 	private JLabel lbDataFinal;
 	private JPanel panel;
-	private JComboBox cbTipoestoque;
+	private JComboBox<OperacaoEnum> cbTipoestoque;
 	private JButton btCancelar;
 	private JButton btFiltrar;
 	private JScrollPane scrollPane;
@@ -104,7 +105,7 @@ public class FrmKardex extends AbstractInternalFrame {
 
 		scrollPane = new JScrollPane(tbEstoque);
 
-		cbTipoestoque = new JComboBox();
+		cbTipoestoque = new JComboBox<>(OperacaoEnum.values());
 
 		btCancelar.addActionListener((e) -> dispose());
 

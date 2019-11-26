@@ -1,6 +1,5 @@
 package br.com.sysdesc.tablemodels;
 
-import static br.com.sysdesc.util.classes.IfNull.get;
 import static br.com.sysdesc.util.resources.Resources.TBLENTRADA_BARRAS;
 import static br.com.sysdesc.util.resources.Resources.TBLENTRADA_CODIGO;
 import static br.com.sysdesc.util.resources.Resources.TBLENTRADA_PRODUTO;
@@ -10,20 +9,10 @@ import static br.com.sysdesc.util.resources.Resources.TBLENTRADA_VALOR_TOTAL;
 import static br.com.sysdesc.util.resources.Resources.TBLENTRADA_VALOR_UNITARIO;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import javax.swing.JPanel;
 
 import br.com.sysdesc.components.AbstractInternalFrameTable;
-import br.com.sysdesc.repository.model.EntradaDetalhe;
-import br.com.sysdesc.repository.model.Produto;
-import br.com.sysdesc.repository.model.Unidade;
-import br.com.sysdesc.util.classes.BigDecimalUtil;
 import br.com.sysdesc.util.resources.Resources;
 import br.com.sysdesc.util.vo.KardexVO;
 
@@ -32,10 +21,9 @@ public class KardexTableModel extends AbstractInternalFrameTable {
 	private static final long serialVersionUID = 1L;
 	private List<String> configuracoesPesquisa = new ArrayList<>();
 	private List<KardexVO> rows = new ArrayList<>();
-	private Boolean jtableEnabled = Boolean.TRUE;
 
 	public KardexTableModel() {
-		configuracoesPesquisa.add(translate(Resources.TBLKARDEX_DATAMOVIMENTO));
+		configuracoesPesquisa.add(translate(Resources.TBLENTRADA_CODIGO));
 		configuracoesPesquisa.add(translate(TBLENTRADA_CODIGO));
 		configuracoesPesquisa.add(translate(TBLENTRADA_BARRAS));
 		configuracoesPesquisa.add(translate(TBLENTRADA_PRODUTO));
@@ -48,88 +36,14 @@ public class KardexTableModel extends AbstractInternalFrameTable {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 
-		EntradaDetalhe entrada = rows.get(rowIndex);
+		return rows.get(rowIndex);
 
-		switch (columnIndex) {
-
-		case 1:
-			return getPropertie(getPropertie(entrada, EntradaDetalhe::getProduto), Produto::getIdProduto);
-		case 2:
-			return getPropertie(getPropertie(entrada, EntradaDetalhe::getProduto), Produto::getCodigoBarras);
-		case 3:
-			return getPropertie(getPropertie(entrada, EntradaDetalhe::getProduto), Produto::getDescricao);
-		case 4:
-			return getPropertie(getPropertie(getPropertie(entrada, EntradaDetalhe::getProduto), Produto::getUnidade),
-					Unidade::getDescricaoReduzida);
-		case 5:
-			return entrada.getQuantidade();
-		case 6:
-			return entrada.getValorUnitario();
-		case 7:
-			return entrada.getValorTotal();
-		}
-		return "";
-	}
-
-	private <K, P> P getPropertie(K objeto, Function<K, P> function) {
-
-		if (objeto == null) {
-
-			return null;
-		}
-
-		return function.apply(objeto);
-	}
-
-	@Override
-	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-
-		if (columnIndex != 5 && columnIndex != 6) {
-			return;
-		}
-
-		EntradaDetalhe entradaDetalhe = getRow(rowIndex);
-
-		if (columnIndex == 5) {
-
-			entradaDetalhe.setQuantidade((BigDecimal) aValue);
-
-		} else if (columnIndex == 6) {
-
-			entradaDetalhe.setValorUnitario((BigDecimal) aValue);
-		}
-
-		BigDecimal valorTotal = get(entradaDetalhe.getQuantidade(), BigDecimalUtil.ZERO)
-				.multiply(get(entradaDetalhe.getValorUnitario(), BigDecimalUtil.ZERO));
-
-		entradaDetalhe.setValorTotal(valorTotal.setScale(2, RoundingMode.HALF_EVEN));
-
-		fireTableCellUpdated(rowIndex, 7);
-	}
-
-	@Override
-	public Class<?> getColumnClass(int columnIndex) {
-
-		if (columnIndex == 0) {
-			return JPanel.class;
-		}
-
-		if (columnIndex == 3 || columnIndex == 4) {
-			return String.class;
-		}
-
-		if (columnIndex == 1 || columnIndex == 2) {
-			return Long.class;
-		}
-
-		return BigDecimal.class;
 	}
 
 	@Override
 	public boolean isCellEditable(int row, int column) {
 
-		return jtableEnabled
-				&& (column == 0 || ((column == 5 || column == 6) && (this.rows.get(row).getProduto() != null)));
+		return false;
 	}
 
 	@Override
@@ -147,7 +61,7 @@ public class KardexTableModel extends AbstractInternalFrameTable {
 		return rows.size();
 	}
 
-	public EntradaDetalhe getRow(int selectedRow) {
+	public KardexVO getRow(int selectedRow) {
 		return rows.get(selectedRow);
 	}
 
@@ -161,24 +75,13 @@ public class KardexTableModel extends AbstractInternalFrameTable {
 		fireTableDataChanged();
 	}
 
-	public List<EntradaDetalhe> getRows() {
-		return rows.stream().filter(x -> x.getProduto() != null).collect(Collectors.toList());
+	public List<KardexVO> getRows() {
+		return rows;
 	}
 
-	public void setRows(List<EntradaDetalhe> rows) {
+	public void setRows(List<KardexVO> rows) {
 		this.rows = rows;
 		fireTableDataChanged();
-	}
-
-	public void addRow() {
-
-		if (this.rows.stream().noneMatch(x -> x.getProduto() == null)) {
-
-			this.rows.add(new EntradaDetalhe());
-
-			fireTableDataChanged();
-		}
-
 	}
 
 	@Override
@@ -186,11 +89,10 @@ public class KardexTableModel extends AbstractInternalFrameTable {
 
 		this.rows.clear();
 
-		this.rows.add(new EntradaDetalhe());
 	}
 
 	@Override
 	public void setEnabled(Boolean enabled) {
-		this.jtableEnabled = enabled;
+
 	}
 }
