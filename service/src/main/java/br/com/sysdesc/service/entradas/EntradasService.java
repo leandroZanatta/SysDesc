@@ -5,6 +5,8 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import br.com.sysdesc.repository.dao.EntradaCabecalhoDAO;
 import br.com.sysdesc.repository.model.EntradaCabecalho;
 import br.com.sysdesc.repository.model.Kardex;
@@ -78,9 +80,11 @@ public class EntradasService extends AbstractGenericService<EntradaCabecalho> {
 	@Override
 	public void salvar(EntradaCabecalho objetoPersistir) {
 
-		entradaCabecalhoDAO.getEntityManager().getTransaction().begin();
+		EntityManager entityManager = entradaCabecalhoDAO.getEntityManager();
 
-		entradaCabecalhoDAO.getEntityManager().persist(objetoPersistir);
+		entityManager.getTransaction().begin();
+
+		entityManager.persist(objetoPersistir);
 
 		List<Kardex> estoques = new ArrayList<>();
 
@@ -107,10 +111,11 @@ public class EntradasService extends AbstractGenericService<EntradaCabecalho> {
 
 		if (!ListUtil.isNullOrEmpty(estoques)) {
 
-			entradaCabecalhoDAO.getEntityManager().persist(estoques);
+			estoques.forEach(entityManager::persist);
+
 		}
 
-		entradaCabecalhoDAO.getEntityManager().getTransaction().commit();
+		entityManager.getTransaction().commit();
 
 	}
 }
