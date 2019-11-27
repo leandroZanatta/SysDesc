@@ -94,7 +94,7 @@ public class EntradasService extends AbstractGenericService<EntradaCabecalho> {
 					&& detalhe.getEntradaCabecalho().getOperacaoEstoque().getAtualizacusto()) {
 
 				Kardex kardex = new Kardex();
-				kardex.setCodigoEmpresa(1L);
+				kardex.setCodigoEmpresa(detalhe.getEntradaCabecalho().getCodigoEmpresa());
 				kardex.setFlagOperacao(detalhe.getEntradaCabecalho().getOperacaoEstoque().getOperacao());
 				kardex.setQuantidade(detalhe.getQuantidade());
 				kardex.setDataMovimento(detalhe.getEntradaCabecalho().getDataEmissao());

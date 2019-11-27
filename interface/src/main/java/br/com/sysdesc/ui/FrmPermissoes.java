@@ -49,8 +49,8 @@ public class FrmPermissoes extends AbstractInternalFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	public FrmPermissoes(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
-		super(permissaoPrograma, codigoUsuario);
+	public FrmPermissoes(PermissaoPrograma permissaoPrograma, Long codigoUsuario, Long codigoEmpresa) {
+		super(permissaoPrograma, codigoUsuario, codigoEmpresa);
 
 		initComponents();
 	}

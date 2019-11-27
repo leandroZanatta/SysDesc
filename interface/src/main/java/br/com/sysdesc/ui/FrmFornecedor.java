@@ -61,9 +61,9 @@ public class FrmFornecedor extends AbstractInternalFrame {
 
 	private PlanoContasService planoContasService = new PlanoContasService();
 
-	public FrmFornecedor(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
+	public FrmFornecedor(PermissaoPrograma permissaoPrograma, Long codigoUsuario, Long codigoEmpresa) {
 
-		super(permissaoPrograma, codigoUsuario);
+		super(permissaoPrograma, codigoUsuario, codigoEmpresa);
 
 		initComponents();
 	}

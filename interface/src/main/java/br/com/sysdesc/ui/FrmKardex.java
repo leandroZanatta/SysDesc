@@ -46,8 +46,8 @@ public class FrmKardex extends AbstractInternalFrame {
 	private ProdutoService produtoService = new ProdutoService();
 	private EmpresaService empresaService = new EmpresaService();
 
-	public FrmKardex(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
-		super(permissaoPrograma, codigoUsuario);
+	public FrmKardex(PermissaoPrograma permissaoPrograma, Long codigoUsuario, Long codigoEmpresa) {
+		super(permissaoPrograma, codigoUsuario, codigoEmpresa);
 
 		initComponents();
 	}

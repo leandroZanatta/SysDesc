@@ -52,8 +52,8 @@ public class FrmPlanoContas extends AbstractInternalFrame {
 
 	private PlanoContasService planoContasService = new PlanoContasService();
 
-	public FrmPlanoContas(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
-		super(permissaoPrograma, codigoUsuario);
+	public FrmPlanoContas(PermissaoPrograma permissaoPrograma, Long codigoUsuario, Long codigoEmpresa) {
+		super(permissaoPrograma, codigoUsuario, codigoEmpresa);
 
 		initComponents();
 	}

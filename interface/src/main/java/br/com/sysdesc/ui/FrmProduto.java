@@ -116,8 +116,8 @@ public class FrmProduto extends AbstractInternalFrame {
 	private JLabel lbCodigodebarras;
 	private JNumericField txCodigodeBarras;
 
-	public FrmProduto(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
-		super(permissaoPrograma, codigoUsuario);
+	public FrmProduto(PermissaoPrograma permissaoPrograma, Long codigoUsuario, Long codigoEmpresa) {
+		super(permissaoPrograma, codigoUsuario, codigoEmpresa);
 
 		initComponents(codigoUsuario);
 	}

@@ -61,8 +61,8 @@ public class FrmEntradaNota extends AbstractInternalFrame {
 	private EntradasService entradasService = new EntradasService();
 	private OperacaoEstoqueService operacaoEstoqueService = new OperacaoEstoqueService();
 
-	public FrmEntradaNota(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
-		super(permissaoPrograma, codigoUsuario);
+	public FrmEntradaNota(PermissaoPrograma permissaoPrograma, Long codigoUsuario, Long codigoEmpresa) {
+		super(permissaoPrograma, codigoUsuario, codigoEmpresa);
 
 		initComponents();
 	}
@@ -166,6 +166,7 @@ public class FrmEntradaNota extends AbstractInternalFrame {
 			@Override
 			public Boolean preencherObjeto(EntradaCabecalho objetoPesquisa) {
 
+				objetoPesquisa.setCodigoEmpresa(getCodigoEmpresa());
 				objetoPesquisa.setOperacaoEstoque(cpNaturezaOperacao.getObjetoPesquisado());
 				objetoPesquisa.setNumeroNota(txNumeroNota.getValue());
 				objetoPesquisa.setEmitente(cpFornecedor.getObjetoPesquisado());
@@ -225,10 +226,10 @@ public class FrmEntradaNota extends AbstractInternalFrame {
 			} catch (SysDescException e) {
 				JOptionPane.showMessageDialog(null, e.getMensagem());
 			}
-		}
-		else {
-			JOptionPane.showMessageDialog(null, Resources.translate(MensagemConstants.MENSAGEM_SELECIONE_NATUREZA_OPERACAO));
-			
+		} else {
+			JOptionPane.showMessageDialog(null,
+					Resources.translate(MensagemConstants.MENSAGEM_SELECIONE_NATUREZA_OPERACAO));
+
 		}
 	}
 }

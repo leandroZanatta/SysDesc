@@ -33,8 +33,8 @@ public class FrmPerfil extends AbstractInternalFrame {
 	private PanelActions<Perfil> panelActions;
 	private PerfilService perfilService = new PerfilService();
 
-	public FrmPerfil(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
-		super(permissaoPrograma, codigoUsuario);
+	public FrmPerfil(PermissaoPrograma permissaoPrograma, Long codigoUsuario, Long codigoEmpresa) {
+		super(permissaoPrograma, codigoUsuario, codigoEmpresa);
 
 		initComponents();
 	}

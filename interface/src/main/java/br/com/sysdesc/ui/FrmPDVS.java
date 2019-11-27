@@ -42,8 +42,8 @@ public class FrmPDVS extends AbstractInternalFrame {
 
 	private PDVService pdvService = new PDVService();
 
-	public FrmPDVS(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
-		super(permissaoPrograma, codigoUsuario);
+	public FrmPDVS(PermissaoPrograma permissaoPrograma, Long codigoUsuario, Long codigoEmpresa) {
+		super(permissaoPrograma, codigoUsuario, codigoEmpresa);
 
 		initComponentes();
 	}

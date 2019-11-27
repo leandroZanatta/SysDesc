@@ -32,8 +32,8 @@ public class FrmDepartamento extends AbstractInternalFrame {
 	private PanelActions<Departamento> panelActions;
 	private DepartamentoService departamentoService = new DepartamentoService();
 
-	public FrmDepartamento(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
-		super(permissaoPrograma, codigoUsuario);
+	public FrmDepartamento(PermissaoPrograma permissaoPrograma, Long codigoUsuario, Long codigoEmpresa) {
+		super(permissaoPrograma, codigoUsuario, codigoEmpresa);
 
 		initComponents();
 	}

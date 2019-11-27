@@ -48,8 +48,8 @@ public class FrmOperacaoEstoque extends AbstractInternalFrame {
 	private OperacaoEstoqueService operacaoEstoqueService = new OperacaoEstoqueService();
 	private PlanoContasService planoContasService = new PlanoContasService();
 
-	public FrmOperacaoEstoque(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
-		super(permissaoPrograma, codigoUsuario);
+	public FrmOperacaoEstoque(PermissaoPrograma permissaoPrograma, Long codigoUsuario, Long codigoEmpresa) {
+		super(permissaoPrograma, codigoUsuario, codigoEmpresa);
 
 		initComponents();
 

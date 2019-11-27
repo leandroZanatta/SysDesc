@@ -30,8 +30,8 @@ public class FrmMarca extends AbstractInternalFrame {
 	private PanelActions<Marca> panelActions;
 	private MarcaService marcaService = new MarcaService();
 
-	public FrmMarca(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
-		super(permissaoPrograma, codigoUsuario);
+	public FrmMarca(PermissaoPrograma permissaoPrograma, Long codigoUsuario, Long codigoEmpresa) {
+		super(permissaoPrograma, codigoUsuario, codigoEmpresa);
 
 		initComponents();
 	}

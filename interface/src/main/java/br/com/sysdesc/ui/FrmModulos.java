@@ -19,8 +19,8 @@ public class FrmModulos extends AbstractInternalFrame {
 
 	private JPanel painelContent;
 
-	public FrmModulos(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
-		super(permissaoPrograma, codigoUsuario);
+	public FrmModulos(PermissaoPrograma permissaoPrograma, Long codigoUsuario, Long codigoEmpresa) {
+		super(permissaoPrograma, codigoUsuario, codigoEmpresa);
 
 		initComponents();
 

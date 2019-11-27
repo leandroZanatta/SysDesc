@@ -107,9 +107,10 @@ public class FrmCliente extends AbstractInternalFrame {
 	private JRadioButton rdbtnFisca;
 	private JRadioButton rdbtnJurdica;
 
-	public FrmCliente(PermissaoPrograma permissaoPrograma, Long codigoUsuario) throws ParseException {
+	public FrmCliente(PermissaoPrograma permissaoPrograma, Long codigoUsuario, Long codigoEmpresa)
+			throws ParseException {
 
-		super(permissaoPrograma, codigoUsuario);
+		super(permissaoPrograma, codigoUsuario, codigoEmpresa);
 
 		initComponents();
 	}

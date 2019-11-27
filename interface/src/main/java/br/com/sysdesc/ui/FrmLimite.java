@@ -69,8 +69,8 @@ public class FrmLimite extends AbstractInternalFrame {
 
 	private LimiteService limitePesquisa = new LimiteService();
 
-	public FrmLimite(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
-		super(permissaoPrograma, codigoUsuario);
+	public FrmLimite(PermissaoPrograma permissaoPrograma, Long codigoUsuario, Long codigoEmpresa) {
+		super(permissaoPrograma, codigoUsuario, codigoEmpresa);
 
 		initComponentes();
 	}

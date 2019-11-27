@@ -38,8 +38,8 @@ public class FrmCidade extends AbstractInternalFrame {
 	private CidadeService cidadeService = new CidadeService();
 	private EstadoService estadoService = new EstadoService();
 
-	public FrmCidade(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
-		super(permissaoPrograma, codigoUsuario);
+	public FrmCidade(PermissaoPrograma permissaoPrograma, Long codigoUsuario, Long codigoEmpresa) {
+		super(permissaoPrograma, codigoUsuario, codigoEmpresa);
 
 		initComponents();
 	}

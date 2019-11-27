@@ -33,8 +33,8 @@ public class FrmEstado extends AbstractInternalFrame {
 	private PanelActions<Estado> panelActions;
 	private EstadoService estadoService = new EstadoService();
 
-	public FrmEstado(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
-		super(permissaoPrograma, codigoUsuario);
+	public FrmEstado(PermissaoPrograma permissaoPrograma, Long codigoUsuario, Long codigoEmpresa) {
+		super(permissaoPrograma, codigoUsuario, codigoEmpresa);
 
 		initComponents();
 	}

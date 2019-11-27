@@ -33,8 +33,8 @@ public class FrmUnidade extends AbstractInternalFrame {
 	private UnidadeService unidadeService = new UnidadeService();
 	private JTextFieldMaiusculo textField;
 
-	public FrmUnidade(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
-		super(permissaoPrograma, codigoUsuario);
+	public FrmUnidade(PermissaoPrograma permissaoPrograma, Long codigoUsuario, Long codigoEmpresa) {
+		super(permissaoPrograma, codigoUsuario, codigoEmpresa);
 
 		initComponents();
 	}

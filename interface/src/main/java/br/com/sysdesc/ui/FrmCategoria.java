@@ -42,8 +42,8 @@ public class FrmCategoria extends AbstractInternalFrame {
 	private DepartamentoService departamentoService = new DepartamentoService();
 	private CategoriaService categoriaService = new CategoriaService();
 
-	public FrmCategoria(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
-		super(permissaoPrograma, codigoUsuario);
+	public FrmCategoria(PermissaoPrograma permissaoPrograma, Long codigoUsuario, Long codigoEmpresa) {
+		super(permissaoPrograma, codigoUsuario, codigoEmpresa);
 
 		initComponents();
 	}

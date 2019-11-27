@@ -1,5 +1,7 @@
 package br.com.sysdesc.service.empresa;
 
+import java.util.List;
+
 import br.com.sysdesc.repository.dao.EmpresaDAO;
 import br.com.sysdesc.repository.model.Empresa;
 import br.com.sysdesc.service.interfaces.impl.AbstractGenericService;
@@ -21,6 +23,11 @@ public class EmpresaService extends AbstractGenericService<Empresa> {
 	@Override
 	public void validar(Empresa objetoPersistir) {
 
+	}
+
+	public List<Empresa> buscarTodos() {
+
+		return empresaDAO.listar();
 	}
 
 }

@@ -55,8 +55,8 @@ public class FrmUsuario extends AbstractInternalFrame {
 	private ButtonActionAlterarPermissoes alterarPermissoes;
 	private JLabel lblUsuario;
 
-	public FrmUsuario(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
-		super(permissaoPrograma, codigoUsuario);
+	public FrmUsuario(PermissaoPrograma permissaoPrograma, Long codigoUsuario, Long codigoEmpresa) {
+		super(permissaoPrograma, codigoUsuario, codigoEmpresa);
 
 		initComponents();
 	}

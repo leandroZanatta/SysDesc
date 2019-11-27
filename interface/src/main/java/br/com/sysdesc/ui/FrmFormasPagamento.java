@@ -48,8 +48,8 @@ public class FrmFormasPagamento extends AbstractInternalFrame {
 
 	private FormasPagamentoService formasPagamentoService = new FormasPagamentoService();
 
-	public FrmFormasPagamento(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
-		super(permissaoPrograma, codigoUsuario);
+	public FrmFormasPagamento(PermissaoPrograma permissaoPrograma, Long codigoUsuario, Long codigoEmpresa) {
+		super(permissaoPrograma, codigoUsuario, codigoEmpresa);
 		setTitle("Cadastro De Formas De Pagamento");
 
 		setSize(460, 440);

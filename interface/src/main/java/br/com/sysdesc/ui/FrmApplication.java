@@ -23,9 +23,11 @@ import javax.swing.border.EtchedBorder;
 
 import br.com.sysdesc.components.AbstractInternalFrame;
 import br.com.sysdesc.enumerator.ProgramasEnum;
+import br.com.sysdesc.repository.model.Empresa;
 import br.com.sysdesc.repository.model.PermissaoPrograma;
 import br.com.sysdesc.repository.model.Programa;
 import br.com.sysdesc.repository.model.Usuario;
+import br.com.sysdesc.service.empresa.EmpresaService;
 import br.com.sysdesc.service.main.MainService;
 import br.com.sysdesc.thread.AtualizacaoThread;
 import br.com.sysdesc.thread.TimerThread;
@@ -36,213 +38,244 @@ import net.miginfocom.swing.MigLayout;
 
 public class FrmApplication extends JFrame {
 
-    private static final String SYS_DESC = "SysDesc";
+	private static final String SYS_DESC = "SysDesc";
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private JPanel contentPane;
-    private static Usuario usuario;
-    private static JLabel lbUsuario;
-    private JMenuBar menuBar;
-    private JDesktopPane desktopPane;
-    private JToolBar toolBar;
-    private JPanel panel;
-    private JPanel panel_3;
-    private JLabel lbHorario;
-    private static FrmApplication frmApplication;
-    private JPanel panel_1;
-    private JPanel panel_2;
-    private JPanel panel_4;
+	private static Usuario usuario;
+	private static FrmApplication frmApplication;
+	private Empresa empresa;
+	private JPanel contentPane;
+	private JLabel lbUsuario;
+	private JLabel lbEmpresa;
+	private JMenuBar menuBar;
+	private JDesktopPane desktopPane;
+	private JToolBar toolBar;
+	private JPanel panel;
+	private JPanel panel_3;
+	private JLabel lbHorario;
+	private JPanel panel_1;
+	private JPanel panel_2;
+	private JPanel panel_4;
 
-    public FrmApplication() {
+	private EmpresaService empresaService = new EmpresaService();
 
-        initComponents();
-    }
+	public FrmApplication() {
 
-    private void initComponents() {
+		initComponents();
+	}
 
-        contentPane = new JPanel();
-        menuBar = new JMenuBar();
-        desktopPane = new JDesktopPane();
-        toolBar = new JToolBar();
-        panel = new JPanel();
-        panel_3 = new JPanel();
+	private void initComponents() {
 
-        contentPane.setLayout(new BorderLayout(0, 0));
-        panel_3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		contentPane = new JPanel();
+		menuBar = new JMenuBar();
+		desktopPane = new JDesktopPane();
+		toolBar = new JToolBar();
+		panel = new JPanel();
+		panel_3 = new JPanel();
+		lbEmpresa = new JLabel();
 
-        contentPane.add(panel, BorderLayout.SOUTH);
-        contentPane.add(desktopPane, BorderLayout.CENTER);
-        contentPane.add(toolBar, BorderLayout.NORTH);
-        panel.setLayout(new MigLayout("", "[grow][400px][]", "[]"));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		panel_3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 
-        panel_1 = new JPanel();
-        panel.add(panel_1, "cell 0 0,alignx left,aligny center");
-        lbUsuario = new JLabel();
-        panel_1.add(lbUsuario);
+		contentPane.add(panel, BorderLayout.SOUTH);
+		contentPane.add(desktopPane, BorderLayout.CENTER);
+		contentPane.add(toolBar, BorderLayout.NORTH);
+		panel.setLayout(new MigLayout("", "[grow][][400px][]", "[]"));
 
-        panel_2 = new JPanel();
-        panel.add(panel_2, "cell 1 0,alignx center");
+		panel_1 = new JPanel();
+		panel.add(panel_1, "cell 0 0,alignx left,aligny center");
+		lbUsuario = new JLabel();
+		panel_1.add(lbUsuario);
 
-        AtualizacaoThread atualizacaoThread = new AtualizacaoThread(panel_2);
+		panel_2 = new JPanel();
+		panel.add(panel_2, "cell 2 0,alignx center");
 
-        panel_4 = new JPanel();
-        panel.add(panel_4, "cell 2 0,alignx right");
-        lbHorario = new JLabel();
-        panel_4.add(lbHorario);
+		AtualizacaoThread atualizacaoThread = new AtualizacaoThread(panel_2);
 
-        TimerThread timerThread = new TimerThread(lbHorario);
+		panel_4 = new JPanel();
+		panel.add(panel_4, "cell 3 0,alignx right");
+		lbHorario = new JLabel();
+		panel_4.add(lbHorario);
 
-        timerThread.start();
-        atualizacaoThread.start();
+		List<Empresa> empresas = empresaService.buscarTodos();
 
-        setJMenuBar(menuBar);
-        setTitle(SYS_DESC);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1024, 600);
-        setExtendedState(MAXIMIZED_BOTH);
-        setLocationRelativeTo(null);
-        setContentPane(contentPane);
+		if (empresas.size() == 1) {
 
-    }
+			empresa = empresas.get(0);
+		}
 
-    private void getSingleInstance(Class<? extends AbstractInternalFrame> frame, PermissaoPrograma permissaoPrograma) {
+		atualizarLabelEmpresa();
 
-        try {
+		panel.add(lbEmpresa, "cell 1 0");
 
-            Constructor<? extends AbstractInternalFrame> constructor = frame.getConstructor(PermissaoPrograma.class, Long.class);
+		TimerThread timerThread = new TimerThread(lbHorario);
 
-            AbstractInternalFrame internalFrame = constructor.newInstance(permissaoPrograma, usuario.getIdUsuario());
+		timerThread.start();
+		atualizacaoThread.start();
 
-            desktopPane.add(internalFrame);
+		setJMenuBar(menuBar);
+		setTitle(SYS_DESC);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(1024, 600);
+		setExtendedState(MAXIMIZED_BOTH);
+		setLocationRelativeTo(null);
+		setContentPane(contentPane);
 
-            Dimension desktopSize = desktopPane.getSize();
-            Dimension jInternalFrameSize = internalFrame.getSize();
+	}
 
-            internalFrame.setLocation((desktopSize.width - jInternalFrameSize.width) / 2, (desktopSize.height - jInternalFrameSize.height) / 2);
+	private void atualizarLabelEmpresa() {
 
-            internalFrame.setVisible(Boolean.TRUE);
+		String label = "";
 
-        } catch (Exception e) {
+		if (empresa != null) {
+			label = String.format("%d - %s", empresa.getIdEmpresa(), empresa.getNomeFantasia());
+		}
 
-            e.printStackTrace();
+		lbEmpresa.setText(label);
+	}
 
-            JOptionPane.showMessageDialog(this, "ERRO");
-        }
+	private void getSingleInstance(Class<? extends AbstractInternalFrame> frame, PermissaoPrograma permissaoPrograma) {
 
-    }
+		try {
 
-    public static FrmApplication getInstance() {
+			Constructor<? extends AbstractInternalFrame> constructor = frame.getConstructor(PermissaoPrograma.class,
+					Long.class, Long.class);
 
-        if (frmApplication == null) {
+			AbstractInternalFrame internalFrame = constructor.newInstance(permissaoPrograma, usuario.getIdUsuario(),
+					empresa.getIdEmpresa());
 
-            frmApplication = new FrmApplication();
+			desktopPane.add(internalFrame);
 
-            frmApplication.setVisible(Boolean.TRUE);
+			Dimension desktopSize = desktopPane.getSize();
+			Dimension jInternalFrameSize = internalFrame.getSize();
 
-            FrmLogin frmLogin = new FrmLogin(frmApplication);
+			internalFrame.setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
+					(desktopSize.height - jInternalFrameSize.height) / 2);
 
-            frmLogin.setVisible(Boolean.TRUE);
+			internalFrame.setVisible(Boolean.TRUE);
 
-            usuario = frmLogin.getUsuario();
+		} catch (Exception e) {
 
-            frmApplication.createMenus();
+			e.printStackTrace();
 
-            frmApplication.setarLabels();
+			JOptionPane.showMessageDialog(this, "ERRO");
+		}
 
-        }
+	}
 
-        return frmApplication;
-    }
+	public static FrmApplication getInstance() {
 
-    private void setarLabels() {
+		if (frmApplication == null) {
 
-        String formattedUser = String.format(" %s - %s", usuario.getIdUsuario(), usuario.getCliente().getNome());
+			frmApplication = new FrmApplication();
 
-        lbUsuario.setText(translate(FRMAPPLICATION_LB_USUARIO) + formattedUser);
-    }
+			frmApplication.setVisible(Boolean.TRUE);
 
-    private void createMenus() {
+			FrmLogin frmLogin = new FrmLogin(frmApplication);
 
-        MainService mainService = new MainService();
+			frmLogin.setVisible(Boolean.TRUE);
 
-        List<Programa> permissoes = mainService.buscarPermissaoUsuario(usuario.getIdUsuario());
+			usuario = frmLogin.getUsuario();
 
-        permissoes.sort(Comparator.comparing(Programa::getOrdem));
+			frmApplication.createMenus();
 
-        permissoes.forEach(menu -> {
+			frmApplication.setarLabels();
 
-            if (!ListUtil.isNullOrEmpty(menu.getProgramas())) {
+		}
 
-                JMenu menuToolbar = new JMenu(translate(menu.getDescricao()));
+		return frmApplication;
+	}
 
-                menuBar.add(menuToolbar);
+	private void setarLabels() {
 
-                menu.getProgramas().forEach(programa -> {
+		String formattedUser = String.format(" %s - %s", usuario.getIdUsuario(), usuario.getCliente().getNome());
 
-                    createSubMenus(menuToolbar, programa);
+		lbUsuario.setText(translate(FRMAPPLICATION_LB_USUARIO) + formattedUser);
+	}
 
-                });
-            }
+	private void createMenus() {
 
-        });
+		MainService mainService = new MainService();
 
-        menuBar.repaint();
-        toolBar.repaint();
-    }
+		List<Programa> permissoes = mainService.buscarPermissaoUsuario(usuario.getIdUsuario());
 
-    private void createSubMenus(JMenu menuToolbar, Programa menu) {
+		permissoes.sort(Comparator.comparing(Programa::getOrdem));
 
-        if (!ListUtil.isNullOrEmpty(menu.getProgramas())) {
+		permissoes.forEach(menu -> {
 
-            JMenu submenu = new JMenu(translate(menu.getDescricao()));
+			if (!ListUtil.isNullOrEmpty(menu.getProgramas())) {
 
-            menuToolbar.add(submenu);
+				JMenu menuToolbar = new JMenu(translate(menu.getDescricao()));
 
-            menu.getProgramas().sort(Comparator.comparing(Programa::getOrdem));
+				menuBar.add(menuToolbar);
 
-            if (!StringUtil.isNullOrEmpty(menu.getIcone())) {
-                submenu.setIcon(ImageUtil.resize(menu.getIcone(), 15, 15));
-            }
+				menu.getProgramas().forEach(programa -> {
 
-            menu.getProgramas().forEach(programa -> {
+					createSubMenus(menuToolbar, programa);
 
-                createSubMenus(submenu, programa);
-            });
+				});
+			}
 
-            return;
-        }
+		});
 
-        JMenuItem menuitem = new JMenuItem(translate(menu.getDescricao()));
+		menuBar.repaint();
+		toolBar.repaint();
+	}
 
-        ProgramasEnum programa = ProgramasEnum.findByCodigo(menu.getIdPrograma());
+	private void createSubMenus(JMenu menuToolbar, Programa menu) {
 
-        if (programa != null) {
-            menuitem.addActionListener((e) -> getSingleInstance(programa.getInternalFrame(), menu.getPermissaoProgramas().get(0)));
-        }
+		if (!ListUtil.isNullOrEmpty(menu.getProgramas())) {
 
-        if (!StringUtil.isNullOrEmpty(menu.getIcone())) {
+			JMenu submenu = new JMenu(translate(menu.getDescricao()));
 
-            menuitem.setIcon(ImageUtil.resize(menu.getIcone(), 15, 15));
+			menuToolbar.add(submenu);
 
-            if (menu.getFlagAcessoRapido()) {
+			menu.getProgramas().sort(Comparator.comparing(Programa::getOrdem));
 
-                JButton botao = new JButton(ImageUtil.resize(menu.getIcone(), 15, 15));
+			if (!StringUtil.isNullOrEmpty(menu.getIcone())) {
+				submenu.setIcon(ImageUtil.resize(menu.getIcone(), 15, 15));
+			}
 
-                botao.setToolTipText(translate(menu.getDescricao()));
+			menu.getProgramas().forEach(programa -> {
 
-                botao.addActionListener((e) -> getSingleInstance(programa.getInternalFrame(), menu.getPermissaoProgramas().get(0)));
+				createSubMenus(submenu, programa);
+			});
 
-                toolBar.add(botao);
-            }
-        }
+			return;
+		}
 
-        menuToolbar.add(menuitem);
+		JMenuItem menuitem = new JMenuItem(translate(menu.getDescricao()));
 
-    }
+		ProgramasEnum programa = ProgramasEnum.findByCodigo(menu.getIdPrograma());
 
-    public JDesktopPane getDesktopPane() {
-        return desktopPane;
-    }
+		if (programa != null) {
+			menuitem.addActionListener(
+					(e) -> getSingleInstance(programa.getInternalFrame(), menu.getPermissaoProgramas().get(0)));
+		}
 
+		if (!StringUtil.isNullOrEmpty(menu.getIcone())) {
+
+			menuitem.setIcon(ImageUtil.resize(menu.getIcone(), 15, 15));
+
+			if (menu.getFlagAcessoRapido()) {
+
+				JButton botao = new JButton(ImageUtil.resize(menu.getIcone(), 15, 15));
+
+				botao.setToolTipText(translate(menu.getDescricao()));
+
+				botao.addActionListener(
+						(e) -> getSingleInstance(programa.getInternalFrame(), menu.getPermissaoProgramas().get(0)));
+
+				toolBar.add(botao);
+			}
+		}
+
+		menuToolbar.add(menuitem);
+
+	}
+
+	public JDesktopPane getDesktopPane() {
+		return desktopPane;
+	}
 }

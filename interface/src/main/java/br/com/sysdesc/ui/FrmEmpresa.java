@@ -29,8 +29,8 @@ public class FrmEmpresa extends AbstractInternalFrame {
 	private UnidadeService unidadeService = new UnidadeService();
 	private CampoPesquisa<PlanoContas> txContaContabil;
 
-	public FrmEmpresa(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
-		super(permissaoPrograma, codigoUsuario);
+	public FrmEmpresa(PermissaoPrograma permissaoPrograma, Long codigoUsuario, Long codigoEmpresa) {
+		super(permissaoPrograma, codigoUsuario, codigoEmpresa);
 
 		initComponents();
 	}

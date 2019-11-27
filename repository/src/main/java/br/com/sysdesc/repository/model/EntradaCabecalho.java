@@ -41,6 +41,9 @@ public class EntradaCabecalho implements Serializable {
 	@Column(name = "cd_emitente", insertable = false, updatable = false)
 	private Long codigoEmitente;
 
+	@Column(name = "cd_empresa")
+	private Long codigoEmpresa;
+
 	@ManyToOne
 	@JoinColumn(name = "cd_operacaoestoque")
 	private OperacaoEstoque operacaoEstoque;
