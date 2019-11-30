@@ -5,6 +5,8 @@ import java.util.Map;
 
 public enum OperacaoEnum {
 
+	TODOS("T", "Todos"),
+
 	ENTRADA("E", "Entrada"),
 
 	SAÍDA("S", "Saída");

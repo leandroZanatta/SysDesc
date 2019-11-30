@@ -4,6 +4,8 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.NotImplementedException;
+
 import br.com.sysdesc.components.AbstractInternalFrameTable;
 import br.com.sysdesc.util.classes.DateUtil;
 import br.com.sysdesc.util.vo.KardexVO;
@@ -20,8 +22,10 @@ public class KardexTableModel extends AbstractInternalFrameTable {
 		colunas.add("Data");
 		colunas.add("Operação");
 		colunas.add("Quantidade");
-		colunas.add("Valor da Operação");
-		colunas.add("Saldo");
+		colunas.add("Valor");
+		colunas.add("Custo unitário");
+		colunas.add("Quantidade Total");
+		colunas.add("Saldo Total");
 
 		formatQuantidadeFormat.setMaximumFractionDigits(3);
 		formatQuantidadeFormat.setMinimumFractionDigits(3);
@@ -45,8 +49,14 @@ public class KardexTableModel extends AbstractInternalFrameTable {
 			return formatQuantidadeFormat.format(kardexvo.getQuantidade());
 		case 3:
 			return formatMonetario.format(kardexvo.getValorOperacao());
+		case 4:
+			return formatQuantidadeFormat.format(kardexvo.getCustoUnitario());
+		case 5:
+			return formatQuantidadeFormat.format(kardexvo.getQuantidadeTotal());
+		case 6:
+			return formatMonetario.format(kardexvo.getSaldoTotal());
 		default:
-			return formatMonetario.format(kardexvo.getSaldo());
+			throw new NotImplementedException("Coluna não configurada para exibir");
 		}
 
 	}

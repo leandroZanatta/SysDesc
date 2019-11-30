@@ -86,12 +86,8 @@ public class FrmCadastroPesquisa extends AbstractInternalFrame {
 	private LoginService loginService = new LoginService();
 	private PerfilService perfilService = new PerfilService();
 
-	public FrmCadastroPesquisa() {
-		this(null, 1L);
-	}
-
-	public FrmCadastroPesquisa(PermissaoPrograma permissaoPrograma, Long codigoUsuario) {
-		super(permissaoPrograma, codigoUsuario);
+	public FrmCadastroPesquisa(PermissaoPrograma permissaoPrograma, Long codigoUsuario, Long codigoEmpresa) {
+		super(permissaoPrograma, codigoUsuario, codigoEmpresa);
 
 		setSize(800, 400);
 		setClosable(Boolean.TRUE);

@@ -84,11 +84,14 @@ public class FrmOperacaoEstoque extends AbstractInternalFrame {
 		txManutencao = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
 		txCadastro = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
 
-		cbOperacao = new JComboBox<>(OperacaoEnum.values());
+		cbOperacao = new JComboBox<>();
 
 		panelContent = new JPanel();
 
 		chAtualizaCusto = new JCheckBox("Atualiza custo");
+
+		cbOperacao.addItem(OperacaoEnum.ENTRADA);
+		cbOperacao.addItem(OperacaoEnum.SAÍDA);
 
 		panelContent.setLayout(new MigLayout("", "[grow][][grow][grow]", "[][][][][][][][][grow]"));
 
