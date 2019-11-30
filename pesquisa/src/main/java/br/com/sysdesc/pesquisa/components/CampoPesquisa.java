@@ -178,4 +178,9 @@ public abstract class CampoPesquisa<T> extends JPanel {
 		btPesquisa.setEnabled(editable);
 	}
 
+	public void setValueById(Long id) {
+		
+		setValue(genericService.buscarPorId(id));
+	}
+
 }

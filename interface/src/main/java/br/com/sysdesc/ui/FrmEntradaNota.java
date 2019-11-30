@@ -4,6 +4,8 @@ import static br.com.sysdesc.pesquisa.enumeradores.PesquisaEnum.PES_ENTRADAS;
 import static br.com.sysdesc.util.resources.Resources.FRMDEPARTAMENTO_TITLE;
 import static br.com.sysdesc.util.resources.Resources.translate;
 
+import java.util.Date;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -183,6 +185,8 @@ public class FrmEntradaNota extends AbstractInternalFrame {
 				return Boolean.TRUE;
 			}
 		};
+
+		panelActions.addNewListener(() -> dtEmissao.setDate(new Date()));
 
 		ButtonColumn buttonColumn = new ButtonColumn(tbProdutos, 0);
 

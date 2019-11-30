@@ -1,42 +1,53 @@
 package br.com.sysdesc.tablemodels;
 
-import static br.com.sysdesc.util.resources.Resources.TBLENTRADA_BARRAS;
-import static br.com.sysdesc.util.resources.Resources.TBLENTRADA_CODIGO;
-import static br.com.sysdesc.util.resources.Resources.TBLENTRADA_PRODUTO;
-import static br.com.sysdesc.util.resources.Resources.TBLENTRADA_QUANTIDADE;
-import static br.com.sysdesc.util.resources.Resources.TBLENTRADA_UNIDADE;
-import static br.com.sysdesc.util.resources.Resources.TBLENTRADA_VALOR_TOTAL;
-import static br.com.sysdesc.util.resources.Resources.TBLENTRADA_VALOR_UNITARIO;
-import static br.com.sysdesc.util.resources.Resources.translate;
-
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.sysdesc.components.AbstractInternalFrameTable;
-import br.com.sysdesc.util.resources.Resources;
+import br.com.sysdesc.util.classes.DateUtil;
 import br.com.sysdesc.util.vo.KardexVO;
 
 public class KardexTableModel extends AbstractInternalFrameTable {
 
 	private static final long serialVersionUID = 1L;
-	private List<String> configuracoesPesquisa = new ArrayList<>();
+	private List<String> colunas = new ArrayList<>();
 	private List<KardexVO> rows = new ArrayList<>();
+	private NumberFormat formatQuantidadeFormat = NumberFormat.getNumberInstance();
+	private NumberFormat formatMonetario = NumberFormat.getNumberInstance();
 
 	public KardexTableModel() {
-		configuracoesPesquisa.add(translate(Resources.TBLENTRADA_CODIGO));
-		configuracoesPesquisa.add(translate(TBLENTRADA_CODIGO));
-		configuracoesPesquisa.add(translate(TBLENTRADA_BARRAS));
-		configuracoesPesquisa.add(translate(TBLENTRADA_PRODUTO));
-		configuracoesPesquisa.add(translate(TBLENTRADA_UNIDADE));
-		configuracoesPesquisa.add(translate(TBLENTRADA_QUANTIDADE));
-		configuracoesPesquisa.add(translate(TBLENTRADA_VALOR_UNITARIO));
-		configuracoesPesquisa.add(translate(TBLENTRADA_VALOR_TOTAL));
+		colunas.add("Data");
+		colunas.add("Operação");
+		colunas.add("Quantidade");
+		colunas.add("Valor da Operação");
+		colunas.add("Saldo");
+
+		formatQuantidadeFormat.setMaximumFractionDigits(3);
+		formatQuantidadeFormat.setMinimumFractionDigits(3);
+
+		formatMonetario.setMaximumFractionDigits(2);
+		formatMonetario.setMinimumFractionDigits(2);
 	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 
-		return rows.get(rowIndex);
+		KardexVO kardexvo = rows.get(rowIndex);
+
+		switch (columnIndex) {
+
+		case 0:
+			return DateUtil.format(DateUtil.FORMATO_DD_MM_YYYY_HH_MM_SS, kardexvo.getDataMovimento());
+		case 1:
+			return kardexvo.getTipoOperacao();
+		case 2:
+			return formatQuantidadeFormat.format(kardexvo.getQuantidade());
+		case 3:
+			return formatMonetario.format(kardexvo.getValorOperacao());
+		default:
+			return formatMonetario.format(kardexvo.getSaldo());
+		}
 
 	}
 
@@ -48,25 +59,31 @@ public class KardexTableModel extends AbstractInternalFrameTable {
 
 	@Override
 	public int getColumnCount() {
-		return configuracoesPesquisa.size();
+
+		return colunas.size();
 	}
 
 	@Override
 	public String getColumnName(int column) {
-		return configuracoesPesquisa.get(column);
+
+		return colunas.get(column);
 	}
 
 	@Override
 	public int getRowCount() {
+
 		return rows.size();
 	}
 
 	public KardexVO getRow(int selectedRow) {
+
 		return rows.get(selectedRow);
 	}
 
 	public void remove(int selectedRow) {
+
 		rows.remove(selectedRow);
+
 		fireTableDataChanged();
 	}
 

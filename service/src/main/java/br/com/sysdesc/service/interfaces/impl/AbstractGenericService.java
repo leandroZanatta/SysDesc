@@ -36,35 +36,46 @@ public abstract class AbstractGenericService<T> implements GenericService<T> {
 		return id;
 	}
 
+	@Override
 	public T previows(Long valueId) {
 
 		return validarObjeto(abstractGenericDAO.previows(valueId));
 	};
 
+	@Override
 	public T last() {
 
 		return validarObjeto(abstractGenericDAO.last());
 	};
 
+	@Override
 	public T first() {
 
 		return validarObjeto(abstractGenericDAO.first());
 	};
 
+	@Override
 	public T next(Long valueId) {
 
 		return validarObjeto(abstractGenericDAO.next(valueId));
 	};
 
+	@Override
 	public List<T> pesquisar(boolean selected, String pesquisa, BooleanBuilder preFilter, Pesquisa pesquisaExibir,
 			Integer rows) {
 
 		return abstractGenericDAO.pesquisar(selected, pesquisa, preFilter, pesquisaExibir, rows);
 	}
 
+	@Override
 	public Long count(boolean selected, String pesquisa, BooleanBuilder preFilter, Pesquisa pesquisaExibir) {
 
 		return abstractGenericDAO.count(selected, pesquisa, preFilter, pesquisaExibir);
+	};
+
+	public T buscarPorId(Long id) {
+
+		return validarObjeto(abstractGenericDAO.obterPorId(id));
 	};
 
 	private T validarObjeto(T objetoPesquisa) {
